@@ -3,8 +3,9 @@
  * Module dependencies.
  */
 
-var express = require('express')
-  , routes = require('./routes');
+var express = require('express'),
+    routes = require('./routes'),
+    webbAPI = require('./webbAPI');
 
 var app = module.exports = express.createServer();
 var port = process.env.port || 1337;
@@ -28,9 +29,39 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
-// Routes
+// Login
+app.post('/login', function (req, res) {
+    console.log('login: ', req.body.usr);
+    res.json(webbAPI.login(req.body.usr, req.body.pw));
+});
 
+// Routes
 app.get('/', routes.index);
 
 app.listen(port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+
+// NowJS component
+var nowjs = require("now");
+var everyone = nowjs.initialize(app);
+
+nowjs.on('connect', function () {
+    console.log("Joined: " + this.now.name);
+});
+
+
+nowjs.on('disconnect', function () {
+    console.log("Left: " + this.now.name);
+});
+
+everyone.now.distributeMessage = function (message) {
+    everyone.now.receiveMessage(this.now.name, message);
+};
+
+everyone.now.encodeBase64 = function (value) {
+    return new Buffer(value).toString('base64')
+}
+
+everyone.now.decodeBase64 = function (value) {
+    return new Buffer(value, 'base64').toString('ascii')
+}

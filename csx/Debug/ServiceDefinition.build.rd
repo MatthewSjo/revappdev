@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<serviceModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="revappdev" generation="1" functional="0" release="0" Id="0ebef3b1-2d7a-45a2-972f-e4c8c4935c2b" dslVersion="1.2.0.0" xmlns="http://schemas.microsoft.com/dsltools/RDSM">
+<serviceModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="revappdev" generation="1" functional="0" release="0" Id="c906924e-4325-46b8-92bd-f7d0e3a38601" dslVersion="1.2.0.0" xmlns="http://schemas.microsoft.com/dsltools/RDSM">
   <groups>
     <group name="revappdevGroup" generation="1" functional="0" release="0">
       <componentports>
@@ -154,14 +154,14 @@
     </group>
   </groups>
   <implements>
-    <implementation Id="d64810b6-d2af-4067-98ec-bbb5cb80c01a" ref="Microsoft.RedDog.Contract\ServiceContract\revappdevContract@ServiceDefinition.build">
+    <implementation Id="7fcce8a3-b561-4a08-b30a-e4dc34b0d4ef" ref="Microsoft.RedDog.Contract\ServiceContract\revappdevContract@ServiceDefinition.build">
       <interfacereferences>
-        <interfaceReference Id="42325165-43ba-4758-b58c-00de986c899b" ref="Microsoft.RedDog.Contract\Interface\WebRole:Endpoint1@ServiceDefinition.build">
+        <interfaceReference Id="e8691167-279c-4c3f-9b9f-d066fc1a7bf7" ref="Microsoft.RedDog.Contract\Interface\WebRole:Endpoint1@ServiceDefinition.build">
           <inPort>
             <inPortMoniker name="/revappdev/revappdevGroup/WebRole:Endpoint1" />
           </inPort>
         </interfaceReference>
-        <interfaceReference Id="5b0a62f6-c8c2-4cbb-89bb-4bc5a6b8e915" ref="Microsoft.RedDog.Contract\Interface\WebRole:Microsoft.WindowsAzure.Plugins.RemoteForwarder.RdpInput@ServiceDefinition.build">
+        <interfaceReference Id="fa470a7e-cf14-482f-bc31-ed97f63f3385" ref="Microsoft.RedDog.Contract\Interface\WebRole:Microsoft.WindowsAzure.Plugins.RemoteForwarder.RdpInput@ServiceDefinition.build">
           <inPort>
             <inPortMoniker name="/revappdev/revappdevGroup/WebRole:Microsoft.WindowsAzure.Plugins.RemoteForwarder.RdpInput" />
           </inPort>

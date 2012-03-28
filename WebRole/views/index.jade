@@ -1,2 +1,13 @@
-h1= title
-p Welcome to #{title}
+#login_page
+	.toolbar 
+		h1 Revolution
+	ul.rounded
+		li
+			input#userNameTextbox(type='text', placeholder="User Name", value='asa.fama@statpro.com')
+		li
+			input#passwordTextbox(type='text', placeholder="Password")
+	ul.individual	
+		li
+			a#loginButton(href='#') Login
+		li
+			a#cancelButton(href='#') Cancel

@@ -1,6 +1,12 @@
-!!!
-html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body!= body
+!!! strict
+html(xmlns='http://www.w3.org/1999/xhtml')
+	head
+		style(type='text/css', media='screen')
+		style(type='text/css', media='screen')
+			@import "/themes/css/jqtouch.css";
+		script(src='/src/lib/zepto.min.js', type='text/javascript', charset='utf-8')
+		script(src='/src/jqtouch.min.js', type='text/javascript', charset='utf-8')
+		script(src='/nowjs/now.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/helper.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/main.js', type='text/javascript', charset='utf-8')
+	body!= body

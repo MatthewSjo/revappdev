@@ -1,1 +1,2 @@
+debugger listening on port 5240
 Express server listening on port NaN in development mode
