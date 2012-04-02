@@ -695,6 +695,7 @@
     <None Include="public\themes\scss\include\_core.scss" />
     <None Include="public\themes\scss\include\_skeleton.scss" />
     <None Include="public\themes\scss\jqtouch.scss" />
+    <None Include="views\portfolios.jade" />
     <None Include="views\index.jade" />
     <None Include="views\layout.jade" />
   </ItemGroup>
@@ -1624,7 +1625,6 @@
     <Content Include="routes\index.js" />
     <Content Include="Web.cloud.config" />
     <Content Include="Web.config" />
-    <Content Include="webbAPI.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\node.exe" />

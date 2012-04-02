@@ -11,7 +11,7 @@ helper.Base64 = {
         var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
         var i = 0;
 
-        input = Base64._utf8_encode(input);
+        input = this._utf8_encode(input);
 
         while (i < input.length) {
 
@@ -30,10 +30,8 @@ helper.Base64 = {
                 enc4 = 64;
             }
 
-            output = output +
-        this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
-        this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
-
+            output += this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
+                      this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
         }
 
         return output;
