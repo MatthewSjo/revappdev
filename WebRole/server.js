@@ -35,6 +35,12 @@ app.post('/login', function (req, res) {
     res.json(webbAPI.login(req.body.usr, req.body.pw));
 });
 
+// Test
+app.get('/test', function (req, res) {
+    console.log('test: ', req.body.usr);
+    res.json(req.body);
+});
+
 // Routes
 app.get('/', routes.index);
 
@@ -46,9 +52,10 @@ var nowjs = require("now");
 var everyone = nowjs.initialize(app);
 
 nowjs.on('connect', function () {
+    this.now.webbAPI = {};
+    this.now.webbAPI.URI = 'https://revapidev.statpro.com/v1';
     console.log("Joined: " + this.now.name);
 });
-
 
 nowjs.on('disconnect', function () {
     console.log("Left: " + this.now.name);
@@ -59,7 +66,9 @@ everyone.now.distributeMessage = function (message) {
 };
 
 everyone.now.encodeBase64 = function (value) {
-    return new Buffer(value).toString('base64')
+    console.log('this.now.auth: ' + this.now.auth);
+    console.log('value: ' + value);
+    // return new Buffer(value).toString('base64')
 }
 
 everyone.now.decodeBase64 = function (value) {
