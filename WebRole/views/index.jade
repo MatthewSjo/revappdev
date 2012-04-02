@@ -1,13 +1,13 @@
-#login_page
-	.toolbar 
+#login
+	.toolbar
 		h1 Revolution
-	ul.rounded
-		li
-			input#userNameTextbox(type='text', placeholder="User Name", value='asa.fama@statpro.com')
-		li
-			input#passwordTextbox(type='password', placeholder="Password", value='StatPro123')
-	ul.individual	
-		li
-			a#loginButton(href='#') Login
-		li
-			a#cancelButton(href='#') Cancel
+	
+	form(method='post', action='/login')
+		ul.rounded
+			li
+				input#userNameTextbox(type='text', placeholder='User Name', name='user[username]', value='daniel.attfield@statpro.com')
+			li
+				input#passwordTextbox(type='password', placeholder='Password', name='user[password]', value="StatPro123")
+		ul.individual
+			li
+				input(type='submit', value='Login')
