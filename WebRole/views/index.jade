@@ -1,13 +1,28 @@
 #login
 	.toolbar
-		h1 Revolution
+		h1 login
 	
-	form(method='post', action='/login')
-		ul.rounded
-			li
-				input#userNameTextbox(type='text', placeholder='User Name', name='user[username]', value='daniel.attfield@statpro.com')
-			li
-				input#passwordTextbox(type='password', placeholder='Password', name='user[password]', value="StatPro123")
+	ul.rounded
+		li
+			input#userNameTextbox(type='text', placeholder='User Name', name='user[username]', value='asa.fama@statpro.com')
+		li
+			input#passwordTextbox(type='password', placeholder='Password', name='user[password]', value='StatPro123')
+	ul.individual
+		li
+			a#loginButton(href='#') Login
+			// input(type='submit') Submit
+
+#index
+	.toolbar
+		h1 Index
+
+#portfolios
+	.toolbar
+		h1 Portfolios
+	
+	#portfolios_details
+	form(method='post', action='/logout')
 		ul.individual
 			li
-				input(type='submit', value='Login')
+				// input(type='submit', value='Logout')
+				a.submit(href='#') Logout

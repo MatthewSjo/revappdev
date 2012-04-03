@@ -26,12 +26,27 @@ function getRequestOptions(req) {
 
 // Homepage
 exports.index = function (req, res) {
-    // If user has not already created a valid authorization token...
-    if (typeof req.session.token === 'undefined') {
-        res.render('index');
-    } else {
-        res.redirect('/portfolios');
-    }
+    console.log('index');
+    res.render('index');
+};
+
+// Login
+exports.login = function (req, res, next) {
+    console.log('login');
+    var userName, password;
+
+    // Retrieve the user object from the form body.
+    userName = req.body.usr;
+    password = req.body.pw;
+
+    // Persist our authorization token for future headers.
+    req.session.token = makeBaseAuth(userName, password);
+    res.json({ logged: true, succes: true, name: userName });
+};
+
+exports.authenticate = function (req, res) {
+    console.log('auth');
+    res.redirect('/');
 };
 
 exports.portfolios = function (req, res) {
@@ -48,6 +63,7 @@ exports.portfolios = function (req, res) {
             // Parse our JSON into an object we can use.
             obj = JSON.parse(chunk);
             viewModel = obj.service;
+            viewModel.layout = false;
 
             // Redirect to the login page.
             res.render('portfolios', viewModel);
@@ -60,20 +76,4 @@ exports.portfolios = function (req, res) {
 
     // post the data
     request.end();
-};
-
-// Login
-exports.login = function (req, res) {
-
-    var user;
-
-    // Retrieve the user object from the form body.
-    user = req.body.user;
-
-    // Persist our authorization token for future headers.
-    req.session.token = makeBaseAuth(user.username, user.password);
-
-    // Redirect to the portfolios page.
-    res.redirect('/portfolios');
-
 };

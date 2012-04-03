@@ -771,6 +771,7 @@
     <None Include="public\themes\scss\include\_core.scss" />
     <None Include="public\themes\scss\include\_skeleton.scss" />
     <None Include="public\themes\scss\jqtouch.scss" />
+    <None Include="views\login.jade" />
     <None Include="views\portfolios.jade" />
     <None Include="views\index.jade" />
     <None Include="views\layout.jade" />
@@ -1833,9 +1834,7 @@
     <Content Include="bin\vcredist_x64.exe" />
     <Content Include="server.js" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="server.js.logs\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>

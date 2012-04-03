@@ -1,0 +1,19 @@
+#login
+	.toolbar
+		h1 #{title}
+	
+	form(method='post', action='/authenticate')
+		input(type='hidden', value='#{url}')
+		ul.rounded
+			li
+				input#userNameTextbox(type='text', placeholder='User Name', name='user[username]', value='#{usr}')
+			li
+				input#passwordTextbox(type='password', placeholder='Password', name='user[password]', value="#{pw}")
+		ul.individual
+			li
+				a.submit(href='#') Login
+				input(type='submit') Submit
+
+#index
+	.toolbar
+		h1 Index
