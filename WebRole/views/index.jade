@@ -16,13 +16,15 @@
 	.toolbar
 		h1 Index
 
+#dashboard
+	.toolbar
+		h1 Dashboard
+		a#portfoliosButton.button(href='#') Portfolios
+
+	#dashboard_body
+
 #portfolios
 	.toolbar
 		h1 Portfolios
 	
-	#portfolios_details
-	form(method='post', action='/logout')
-		ul.individual
-			li
-				// input(type='submit', value='Logout')
-				a.submit(href='#') Logout
+	#portfolios_body

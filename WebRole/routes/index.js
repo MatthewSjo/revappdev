@@ -1,28 +1,9 @@
 var host = 'revapidev.statpro.com';
 var url = '/v1/';
+var webbApiUri = 'https://revapidev.statpro.com/v1/';
 var http = require('http');
-
-function makeBaseAuth(username, password) {
-    var credString, token;
-
-    credString = username + ':' + password;
-    token = new Buffer(credString).toString("base64");
-
-    return 'Basic ' + token;
-}
-
-function getRequestOptions(req) {
-    return {
-        host: host,
-        port: '80',
-        path: url,
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': req.session.token
-        }
-    };
-}
+var revApp = require('../rev-app');
+var webbApi = require('../webb-api');
 
 // Homepage
 exports.index = function (req, res) {
@@ -40,7 +21,9 @@ exports.login = function (req, res, next) {
     password = req.body.pw;
 
     // Persist our authorization token for future headers.
-    req.session.token = makeBaseAuth(userName, password);
+    req.session.token = revApp.makeBaseAuth(userName, password);
+    req.session.username = userName;
+    req.session.password = password;
     res.json({ logged: true, succes: true, name: userName });
 };
 
@@ -50,30 +33,51 @@ exports.authenticate = function (req, res) {
 };
 
 exports.portfolios = function (req, res) {
-    var options, request, view;
+    //    var options;
 
-    options = getRequestOptions(req);
+    //    options = revApp.getRequestOptions(revApp.WEBAPI_HOST, revApp.WEBAPI_URL, req.session.token);
+    //    revApp.getServiceResource(options, renderPortfolios);
 
-    // Set up the request.
-    request = http.request(options, function (response) {
-        response.setEncoding('utf8');
-        response.on('data', function (chunk) {
-            var obj, viewModel;
+    //    function renderPortfolios(viewModel) {
+    //        res.render('portfolios', viewModel);
+    //    }
+    var oData = {
+        filter: '', // 'Code eq "EQUITY5"',
+        orderby: '',
+        skip: '',
+        top: ''
+    };
 
-            // Parse our JSON into an object we can use.
-            obj = JSON.parse(chunk);
-            viewModel = obj.service;
-            viewModel.layout = false;
+    webbApi.getPortfolios(oData, onPortfolios);
 
-            // Redirect to the login page.
-            res.render('portfolios', viewModel);
-        });
-    });
+    function onPortfolios(service) {
+        var viewModel;
 
-    request.on('error', function (e) {
-        // Something went wrong.        
-    });
+        viewModel = service;
+        viewModel.layout = false;
+        res.render('portfolios', viewModel);
+    }
+};
 
-    // post the data
-    request.end();
+exports.dashboard = function (req, res) {
+    webbApi.initService(req.session.username, req.session.password, webbApiUri, serviceInited);
+
+    function serviceInited(service) {
+        var viewModel;
+        
+        viewModel = service;
+        viewModel.layout = false;
+        res.render('dashboard', viewModel);
+    }
+
+    //    var options;
+
+    //    options = revApp.getRequestOptions(revApp.WEBAPI_HOST, revApp.WEBAPI_URL, req.session.token);
+    //    revApp.getServiceResource(options, renderDashboard);
+
+    //    function renderDashboard(viewModel) {
+    //    res.render('dashboard', viewModel);
+    //    }
+
+
 };

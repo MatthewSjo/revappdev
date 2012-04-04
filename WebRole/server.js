@@ -39,9 +39,9 @@ function loggedIn(req, res, next) {
 // Routes
 app.get('/', routes.index);
 app.post('/login', routes.login);
+app.get('/dashboard', routes.dashboard);
 app.get('/portfolios', routes.portfolios);
 app.post('/authenticate', routes.authenticate);
-
 
 app.listen(port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

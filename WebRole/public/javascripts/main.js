@@ -15,16 +15,25 @@ $(function () {
         gotoPage(userName, password);
     });
 
+    $('#portfoliosButton').click(function () {
+        // alert('portfolios loaded');
+        $.get('/portfolios', function (data) {
+            $('#portfolios_body').html(data);
+            jQT.goTo($('#portfolios'));
+            //alert('Load was performed.');
+        });
+    });
+
     // Try: $('div').bind and then a big switch...
-    $('#portfolios').bind('pageAnimationEnd', function (event, info) {
+    $('#dashboard').bind('pageAnimationEnd', function (event, info) {
         // alert('portfolios loaded');
         $.ajax({
-            url: '/portfolios',
+            url: '/dashboard',
             method: 'GET',
             success: function (body) {
                 // Add code here...
                 // alert(body);
-                $('#portfolios_details').html(body);
+                $('#dashboard_body').html(body);
             },
             error: function (xhr, type) {
                 alert(xhr);
@@ -42,7 +51,7 @@ $(function () {
             success: function (body) {
                 // Add code here...
                 if (body.logged) {
-                    jQT.goTo($('#portfolios'));
+                    jQT.goTo($('#dashboard'));
                 }
                 // alert(body.name);
             },
