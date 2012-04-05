@@ -41,6 +41,9 @@ app.get('/', routes.index);
 app.post('/login', routes.login);
 app.get('/dashboard', routes.dashboard);
 app.get('/portfolios', routes.portfolios);
+app.get('/eula', routes.eula);
+app.get('/test', routes.test);
+app.post('/defaultAnalysis', routes.defaultAnalysis);
 app.post('/authenticate', routes.authenticate);
 
 app.listen(port);

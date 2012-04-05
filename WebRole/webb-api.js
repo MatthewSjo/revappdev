@@ -58,16 +58,21 @@ function getResource(resourceName, options, callback) {
         });
 
         response.on('end', function () {
-            var obj, resource;
+            var obj, resource = {};
 
             // Parse our JSON into an object we can use.
             // TODO: Manage errors.
-            obj = JSON.parse(data);
-            resource = obj[resourceName];
+            try {
+                obj = JSON.parse(data);
+                resource = obj[resourceName];
+            } catch (e) {
+                resource = data;
+                console.log("Webb-API Error parsing JSON: ", data);
+            }
 
             // Invoke the callback function.
             callback(resource);
-        }) 
+        })
     });
 
     request.on('error', function (e) {
@@ -91,8 +96,6 @@ function applyODataToURI(oData, URI) {
         .replace('{top}', top);
 
     console.log('applyODataToURI: ', URI);
-    // URI = URI.substr(29); // ASA: We need to remove the service root (included "https://") from the URI.
-        
     return URI;
 };
 
@@ -117,8 +120,56 @@ exports.getPortfolios = function (oData, callback) {
     var options, portfoliosQuery;
 
     portfoliosQuery = applyODataToURI(oData, ResourceLinks.portfolios);
+    console.log("getPortfolios - account.token: ", account.token);
     options = getRequestOptions(portfoliosQuery, account.token);
     getResource('portfolios', options, function (portfolios) {
         callback(portfolios);
     });
+};
+
+exports.getDefaultAnalysis = function (uri, callback) {
+    var options;
+
+    console.log("getDefaultAnalysis - uri: ", uri);
+    options = getRequestOptions(uri, account.token);
+    getResource('defaultAnalysis', options, function (defaultAnalysis) {
+        callback(defaultAnalysis);
+    });
+};
+
+// format:
+// - 'document'
+// - 'fragment'
+// - 'css'
+exports.getEula = function (eulaFormat, callback) {
+    var options;
+
+    options = getRequestOptions(ResourceLinks.eula, account.token);
+    getResource('eula', options, function (eula) {
+        var eulaUri = '';
+        switch (eulaFormat) {
+            case 'document':
+                eulaUri = eula.links.eulaDocument.href;
+                break;
+            case 'fragment':
+                eulaUri = eula.links.eulaFragment.href;
+                break;
+            case 'css':
+                eulaUri = eula.links.eulaFragmentStyles.href;
+                break;
+            default:
+                eulaUri = eula.links.eulaDocument.href;
+                break;
+        }
+        // console.log("eulaDoc: ", eulaDoc);
+        // callback(eulaUri);        
+        getEulaDoc(eulaUri);
+    });
+
+    function getEulaDoc(eulaUri) {
+        options = getRequestOptions(eulaUri, account.token);
+        getResource('', options, function (eulaDoc) {
+            callback(eulaDoc);        
+        });
+    }
 };

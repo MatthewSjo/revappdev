@@ -10,7 +10,6 @@
 	ul.individual
 		li
 			a#loginButton(href='#') Login
-			// input(type='submit') Submit
 
 #index
 	.toolbar
@@ -19,12 +18,37 @@
 #dashboard
 	.toolbar
 		h1 Dashboard
-		a#portfoliosButton.button(href='#') Portfolios
-
+		// a#portfoliosButton.button(href='#') Portfolios
+	ul.rounded
+		li.arrow 
+			a#portfoliosButton(href='#') Portfolios
+		li.arrow 
+			a#eulaButton(href='#') View EULA
+		li.arrow 
+			a#testButton(href='#') Test
+		
 	#dashboard_body
 
 #portfolios
 	.toolbar
 		h1 Portfolios
-	
-	#portfolios_body
+		a.back(href='#') Back
+	#wrap_portfolios
+		#scroll_portfolios
+			#portfolios_body // change it in #portfolios_partialview
+		
+#eula
+	.toolbar
+		h1 EULA
+		a.back(href='#') Back
+	#wrap_eula
+		#scroll_eula
+			#eula_body
+
+#test
+	.toolbar
+		h1 test
+		a.back(href='#') Back
+	#wrap_test
+		#scroll_test
+			#test_body

@@ -33,14 +33,6 @@ exports.authenticate = function (req, res) {
 };
 
 exports.portfolios = function (req, res) {
-    //    var options;
-
-    //    options = revApp.getRequestOptions(revApp.WEBAPI_HOST, revApp.WEBAPI_URL, req.session.token);
-    //    revApp.getServiceResource(options, renderPortfolios);
-
-    //    function renderPortfolios(viewModel) {
-    //        res.render('portfolios', viewModel);
-    //    }
     var oData = {
         filter: '', // 'Code eq "EQUITY5"',
         orderby: '',
@@ -48,27 +40,76 @@ exports.portfolios = function (req, res) {
         top: ''
     };
 
-    webbApi.getPortfolios(oData, onPortfolios);
-
-    function onPortfolios(service) {
+    webbApi.getPortfolios(oData, function (portfolios) {
         var viewModel;
-
-        viewModel = service;
+        // links.defaultAnalysis.href
+        viewModel = portfolios || {};
         viewModel.layout = false;
         res.render('portfolios', viewModel);
-    }
+    });
+};
+
+exports.defaultAnalysis = function (req, res) {
+    webbApi.getDefaultAnalysis(req.body.uri, function (defaultAnalysis) {
+        var viewModel = {};
+        // links.defaultAnalysis.href
+        viewModel = defaultAnalysis || {};
+        viewModel.layout = false;
+        res.render('defaultAnalysis', viewModel);
+    });
+};
+
+exports.eula = function (req, res) {
+    webbApi.getEula('fragment', function (eula) {
+        var viewModel = {};
+        // links.defaultAnalysis.href
+        viewModel.eula = eula || {};
+        viewModel.layout = false;
+        res.render('eula', viewModel);
+        // res.redirect(eula);
+    });
+};
+
+exports.test = function (req, res) {
+    var viewModel = {};
+    // links.defaultAnalysis.href
+    viewModel.items = [
+        { name: 'a' },
+        { name: 'b' },
+        { name: 'c' },
+        { name: 'd' },
+        { name: 'e' },
+        { name: 'f' },
+        { name: 'g' },
+        { name: 'h' },
+        { name: 'i' },
+        { name: 'm' },
+        { name: 'n' },
+        { name: 'o' },
+        { name: 'p' },
+        { name: 'q' },
+        { name: 'r' },
+        { name: 's' },
+        { name: 't' },
+        { name: 'u' },
+        { name: 'v' },
+        { name: 'z' }
+    ];
+
+    viewModel.layout = false;
+    res.render('test', viewModel);
+    // res.redirect(eula);
 };
 
 exports.dashboard = function (req, res) {
-    webbApi.initService(req.session.username, req.session.password, webbApiUri, serviceInited);
-
-    function serviceInited(service) {
+    webbApi.initService(req.session.username, req.session.password, webbApiUri, function (service) {
         var viewModel;
-        
+
         viewModel = service;
         viewModel.layout = false;
         res.render('dashboard', viewModel);
-    }
+    
+    });
 
     //    var options;
 

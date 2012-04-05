@@ -311,6 +311,10 @@
     <None Include="node_modules\socket.io\node_modules\socket.io-client\lib\vendor\web-socket-js\flash-src\WebSocketMain.as" />
     <None Include="node_modules\socket.io\node_modules\socket.io-client\lib\vendor\web-socket-js\flash-src\WebSocketMainInsecure.as" />
     <None Include="node_modules\socket.io\node_modules\socket.io-client\lib\vendor\web-socket-js\README.md" />
+    <Content Include="public\javascripts\ajax_long.html" />
+    <Content Include="public\src\ender.js" />
+    <Content Include="public\src\iscroll-lite.js" />
+    <Content Include="public\src\iscroll.js" />
     <Content Include="webb-api.js" />
     <Content Include="node_modules\socket.io\node_modules\socket.io-client\lib\vendor\web-socket-js\WebSocketMainInsecure.zip" />
     <None Include="node_modules\socket.io\node_modules\socket.io-client\Makefile" />
@@ -639,6 +643,9 @@
     <None Include="public\themes\scss\include\_core.scss" />
     <None Include="public\themes\scss\include\_skeleton.scss" />
     <None Include="public\themes\scss\jqtouch.scss" />
+    <None Include="views\test.jade" />
+    <None Include="views\eula.jade" />
+    <None Include="views\defaultAnalysis.jade" />
     <None Include="views\dashboard.jade" />
     <None Include="views\login.jade" />
     <None Include="views\portfolios.jade" />

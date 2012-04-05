@@ -1,1 +1,7 @@
+// .scroll
 h1 Portfolios Page
+ul.rounded
+	- each item in items
+		li.arrow 
+			a.defaultAnalysisLink(href="#{item.links.defaultAnalysis.href}") #{item.code}
+			// #{item.links.defaultAnalysis.href}
