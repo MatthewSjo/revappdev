@@ -311,10 +311,52 @@
     <None Include="node_modules\socket.io\node_modules\socket.io-client\lib\vendor\web-socket-js\flash-src\WebSocketMain.as" />
     <None Include="node_modules\socket.io\node_modules\socket.io-client\lib\vendor\web-socket-js\flash-src\WebSocketMainInsecure.as" />
     <None Include="node_modules\socket.io\node_modules\socket.io-client\lib\vendor\web-socket-js\README.md" />
+    <Content Include="public\img\backButton.png" />
+    <Content Include="public\img\iPhoneBackButton.png" />
+    <Content Include="public\img\istartup-2.png" />
+    <Content Include="public\img\istartup.png" />
+    <Content Include="public\img\iTab-glossy.png" />
+    <Content Include="public\img\jqtouch.png" />
+    <Content Include="public\img\jqtouch4.png" />
+    <Content Include="public\img\loading.gif" />
+    <Content Include="public\img\loading2.gif" />
+    <Content Include="public\img\logo72X72_flat.png" />
+    <Content Include="public\img\logo72X72_glossy.png" />
+    <Content Include="public\img\pinstripes.png" />
+    <Content Include="public\img\pinstripes2.gif" />
+    <Content Include="public\img\transparent button\button-back-touch.png" />
+    <Content Include="public\img\transparent button\button-back.png" />
+    <Content Include="public\img\transparent button\button-bg.png" />
+    <Content Include="public\img\transparent button\button-blue.png" />
+    <Content Include="public\img\transparent button\button-light.png" />
+    <Content Include="public\img\transparent button\button-simple-touch.png" />
+    <Content Include="public\img\transparent button\button-simple.png" />
+    <Content Include="public\img\transparent button\chevron-select.png" />
+    <Content Include="public\img\transparent button\less.png" />
+    <Content Include="public\img\transparent button\more.png" />
+    <Content Include="public\img\transparent button\select.png" />
+    <Content Include="public\img\transparent button\stars.png" />
+    <Content Include="public\img\UIBack.png" />
+    <Content Include="public\img\UIBackPressed.png" />
     <Content Include="public\javascripts\ajax_long.html" />
+    <Content Include="public\javascripts\demo.html" />
+    <Content Include="public\javascripts\_main_backup.js" />
+    <Content Include="public\src\add2home.js" />
+    <Content Include="public\src\add2home.min.js" />
     <Content Include="public\src\ender.js" />
+    <Content Include="public\src\fullscreen-standalone.js" />
+    <Content Include="public\src\fullscreen.js" />
     <Content Include="public\src\iscroll-lite.js" />
     <Content Include="public\src\iscroll.js" />
+    <Content Include="public\src\itabbar.js" />
+    <Content Include="public\src\jqt.autotitles.min.js" />
+    <Content Include="public\src\twitter.js" />
+    <Content Include="public\src\yql.js" />
+    <Content Include="public\src\zepto.min.js" />
+    <Content Include="public\stylesheets\add2home.css" />
+    <Content Include="public\stylesheets\apple.css" />
+    <Content Include="public\stylesheets\itabbar.css" />
+    <Content Include="public\stylesheets\style.css" />
     <Content Include="webb-api.js" />
     <Content Include="node_modules\socket.io\node_modules\socket.io-client\lib\vendor\web-socket-js\WebSocketMainInsecure.zip" />
     <None Include="node_modules\socket.io\node_modules\socket.io-client\Makefile" />
@@ -643,6 +685,8 @@
     <None Include="public\themes\scss\include\_core.scss" />
     <None Include="public\themes\scss\include\_skeleton.scss" />
     <None Include="public\themes\scss\jqtouch.scss" />
+    <None Include="views\_layout_backup.jade" />
+    <None Include="views\_index_backup.jade" />
     <None Include="views\test.jade" />
     <None Include="views\eula.jade" />
     <None Include="views\defaultAnalysis.jade" />
@@ -1353,9 +1397,7 @@
     <Content Include="bin\vcredist_x64.exe" />
     <Content Include="server.js" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="public\stylesheets\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>

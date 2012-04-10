@@ -2,14 +2,42 @@
 html(xmlns='http://www.w3.org/1999/xhtml')
 	
 	head
-		style(type='text/css', media='screen')
-		style(type='text/css', media='screen')
-			@import "/themes/css/jqtouch.css";
-		script(src='/src/lib/zepto.js', type='text/javascript', charset='utf-8')
-		script(src='/src/jqtouch.js', type='text/javascript', charset='utf-8')
-		script(src='/src/iscroll-lite.js', type='text/javascript', charset='utf-8')
-		script(src='/javascripts/main.js', type='text/javascript', charset='utf-8')
+		// itabbar metatags.
+		meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
+		meta(name='viewport', content='width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0')
+		meta(name='apple-mobile-web-app-capable', content='yes')
+		meta(name='apple-mobile-web-app-status-bar-style', content='black')
+		meta(name='viewport', content='width=device-width,user-scalable=no')
+
+		// iPad icon/splash
 		link(rel='apple-touch-icon', href='/images/icon.png')
 		link(rel='apple-touch-startup-image', href='/images/splash.png', media='screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)')
+		
+		// Styles
+			style(type='text/css', media='screen')
+			style(type='text/css', media='screen')
+				@import "/themes/css/jqtouch.css";
 
+		// Scripts
+			script(src='/src/lib/zepto.js', type='text/javascript', charset='utf-8')
+			script(src='/src/jqtouch.js', type='text/javascript', charset='utf-8')
+			script(src='/src/iscroll-lite.js', type='text/javascript', charset='utf-8')
+			
+		// itabbar stuffs.
+		link(rel='stylesheet', href='stylesheets/apple.css')
+		link(rel='stylesheet', href='stylesheets/itabbar.css')
+		link(rel='stylesheet', href='stylesheets/style.css')
+		link(rel='stylesheet', href='stylesheets/add2home.css')
+
+		script(type='text/javascript', src='src/iscroll.js')
+		script(type='text/javascript', src='src/zepto.min.js')
+		script(type='text/javascript', src='src/jqtouch.min.js')
+		script(type='text/javascript', src='src/jqt.autotitles.min.js')
+		script(type='text/javascript', src='src/yql.js')
+		script(type='text/javascript', src='src/twitter.js')
+		script(type='text/javascript', src='src/add2home.js', charset='utf-8')
+		script(type='text/javascript', src='src/itabbar.js')
+		script(type='text/javascript', src='src/fullscreen.js')
+
+		script(src='/javascripts/main.js', type='text/javascript', charset='utf-8')
 	body!= body
