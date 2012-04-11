@@ -5,6 +5,21 @@ var http = require('http');
 var revApp = require('../rev-app');
 var webbApi = require('../webb-api');
 
+/*
+    // ------------------------------------------
+    // How to use revApp instead of webbApi:
+    // ------------------------------------------
+    var options;
+
+    options = revApp.getRequestOptions(revApp.WEBAPI_HOST, revApp.WEBAPI_URL, req.session.token);
+    revApp.getServiceResource(options, renderDashboard);
+
+    function renderDashboard(viewModel) {
+        res.render('dashboard', viewModel);
+    }
+
+*/
+
 // Homepage
 exports.index = function (req, res) {
     console.log('index');
@@ -108,17 +123,5 @@ exports.dashboard = function (req, res) {
         viewModel = service;
         viewModel.layout = false;
         res.render('dashboard', viewModel);
-    
     });
-
-    //    var options;
-
-    //    options = revApp.getRequestOptions(revApp.WEBAPI_HOST, revApp.WEBAPI_URL, req.session.token);
-    //    revApp.getServiceResource(options, renderDashboard);
-
-    //    function renderDashboard(viewModel) {
-    //    res.render('dashboard', viewModel);
-    //    }
-
-
 };

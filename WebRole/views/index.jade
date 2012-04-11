@@ -1,54 +1,90 @@
-#login
-	.toolbar
-		h1 login
-	
-	ul.rounded
-		li
-			input#userNameTextbox(type='text', placeholder='User Name', name='user[username]', value='asa.fama@statpro.com')
-		li
-			input#passwordTextbox(type='password', placeholder='Password', name='user[password]', value='StatPro123')
-	ul.individual
-		li
-			a#loginButton(href='#') Login
+#page
+	#jqt
+		#login
+			.toolbar
+				h1 Revolution
+			// NOTA BENE: Calling initScroll() crack the textboxes on iPad. Please have a look
+			#wrapper
+				#scroller
+					ul.rounded
+						li
+							input#userNameTextbox(type='text', placeholder='User Name', name='user[username]', value='asa.fama@statpro.com')
+						li
+							input#passwordTextbox(type='password', placeholder='Password', name='user[password]', value='StatPro123')
+					ul.individual
+						li
+							a#loginButton(href='#') Login
+					.info
+						p Some info here..
 
-#index
-	.toolbar
-		h1 Index
+		#index
+			.toolbar
+				h1 Index
 
-#dashboard
-	.toolbar
-		h1 Dashboard
-		// a#portfoliosButton.button(href='#') Portfolios
-	ul.rounded
-		li.arrow 
-			a#portfoliosButton(href='#') Portfolios
-		li.arrow 
-			a#eulaButton(href='#') View EULA
-		li.arrow 
-			a#testButton(href='#') Test
+		#dashboard
+			.toolbar
+				h1 Dashboard
+				// a#portfoliosButton.button(href='#') Portfolios
+			#wrapper
+				#scroller
+					ul.rounded
+						li.arrow 
+							a#portfoliosButton(href='#') Portfolios
+						li.arrow 
+							a#eulaButton(href='#') View EULA
+						li.arrow 
+							a#testButton(href='#') Test
 		
-	#dashboard_body
+					#dashboard_body
 
-#portfolios
-	.toolbar
-		h1 Portfolios
-		a.back(href='#') Back
-	#wrapper
-		#scroller
-			#portfolios_body // change it in #portfolios_partialview
+		#portfolios
+			.toolbar
+				h1 Portfolios
+				a.back(href='#') Back
+			#wrapper
+				#scroller
+					#portfolios_body // change it in #portfolios_partialview
 		
-#eula
-	.toolbar
-		h1 EULA
-		a.back(href='#') Back
-	#wrapper
-		#scroller
-			#eula_body
+		#eula
+			.toolbar
+				h1 EULA
+				a.back(href='#') Back
+			#wrapper
+				#scroller
+					#eula_body
 
-#test
-	.toolbar
-		h1 test
-		a.back(href='#') Back
-	#wrapper
-		#scroller
-			#test_body
+		#test
+			.toolbar
+				h1 test
+				a.back(href='#') Back
+			#wrapper
+				#scroller
+					#test_body
+
+	#loading
+		p
+			img(src='img/loading.gif')
+
+	nav#tabbar
+		ul
+			li
+				a.current.flip(href='#login')
+					strong Revolution
+					.home
+			li
+				a.flip(href='#dashboard')
+					strong Cloud
+					.rss
+			li
+				a.flip(href='#portfolios')
+					small#badge_portfolios.badge.right(style="display: none;") 99+
+					strong Portfolios
+					.twitter
+			li
+				a.flip(href='#flickrlist')
+					strong Trends
+					.flickr
+			li
+				a.flip(href='#search')
+					strong Search
+					.search2
