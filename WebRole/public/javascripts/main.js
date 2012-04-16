@@ -152,4 +152,15 @@ Zepto(function ($) {
     $('.toolbar').click(function () {
         myScroll.scrollTo(0, 0, 200)
     });
+    
+//    $.ajaxSetup({
+//        dataType: "json"
+//    });
+
+    $(document).on('ajaxComplete', function (event, request, settings) {
+        // Return false to cancel this request.
+        var obj = JSON.parse(request.response);
+        console.log('ajaxComplete', event, request, settings, obj);
+    })
+
 });
