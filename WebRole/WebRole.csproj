@@ -315,6 +315,8 @@
     <Content Include="public\images\btn_logo2.png" />
     <Content Include="public\images\Calendar-Week.png" />
     <Content Include="public\images\Cloud.png" />
+    <Content Include="public\images\login_background.png" />
+    <Content Include="public\images\login_r.png" />
     <Content Include="public\images\trend.png" />
     <Content Include="public\images\Wallet.png" />
     <Content Include="public\img\backButton.png" />
@@ -344,6 +346,7 @@
     <Content Include="public\img\transparent button\stars.png" />
     <Content Include="public\img\UIBack.png" />
     <Content Include="public\img\UIBackPressed.png" />
+    <Content Include="public\login.htm" />
     <Content Include="public\src\add2home.js" />
     <Content Include="public\src\add2home.min.js" />
     <Content Include="public\src\ender.js" />
@@ -353,8 +356,12 @@
     <Content Include="public\src\jqt.autotitles.min.js" />
     <Content Include="public\src\zepto.min.js" />
     <Content Include="public\stylesheets\add2home.css" />
+    <Content Include="public\stylesheets\login.css" />
     <Content Include="public\stylesheets\itabbar.css" />
     <Content Include="public\stylesheets\style.css" />
+    <Content Include="site\dashboard.js" />
+    <Content Include="site\site.js" />
+    <Content Include="web-method.js" />
     <Content Include="webb-api.js" />
     <Content Include="node_modules\socket.io\node_modules\socket.io-client\lib\vendor\web-socket-js\WebSocketMainInsecure.zip" />
     <None Include="node_modules\socket.io\node_modules\socket.io-client\Makefile" />
@@ -683,11 +690,12 @@
     <None Include="public\themes\scss\include\_core.scss" />
     <None Include="public\themes\scss\include\_skeleton.scss" />
     <None Include="public\themes\scss\jqtouch.scss" />
+    <None Include="views\r.jade" />
     <None Include="views\test.jade" />
     <None Include="views\eula.jade" />
     <None Include="views\defaultAnalysis.jade" />
     <None Include="views\dashboard.jade" />
-    <None Include="views\login.jade" />
+    <None Include="views\iPadLogin.jade" />
     <None Include="views\portfolios.jade" />
     <None Include="views\index.jade" />
     <None Include="views\layout.jade" />
@@ -1393,7 +1401,9 @@
     <Content Include="bin\vcredist_x64.exe" />
     <Content Include="server.js" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="NewFolder1\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>

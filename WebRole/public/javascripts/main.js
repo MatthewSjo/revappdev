@@ -1,4 +1,5 @@
-﻿var myScroll;
+﻿var MobileApp = {}; // Main app namespace
+var myScroll;
 
 // Initialize jQTouch
 var jQT = new $.jQTouch({
@@ -7,114 +8,48 @@ var jQT = new $.jQTouch({
     useFastTouch: true,
     statusBar: 'default',
     preloadImages: [
-		'img/loading.gif',
-		'img/iTab-glossy.png',
-		'img/pinstripes2.gif',
-		'img/UIBack.png',
-		'img/UIBackPressed.png'
+            'images/login_background.png',
+            'images/login_r.png'
 		]
 });
 
 // Main functions:
-Zepto(function ($) { //$(function () {
-    
+Zepto(function ($) {
+
+    // ------------------------------------------
+    // MAIN ENTRY POINT
+    // ------------------------------------------
+
+    (function main() {
+        // window.location = '/iPadLogin'; // console.log('logged');
+
+        $.get('/isUserLoggedIn', function (data) {
+            if (data && data.success && data.logged) {
+            }
+        }, "json");
+    })();
+
     // ------------------------------------------
     // HELPER FUNCTIONS
     // ------------------------------------------
-    
+
     function rebuildScroll(id) {
         if (myScroll) {
             myScroll.destroy();
             myScroll = null;
-            //alert('destroy iscroll')
         }
 
         if ($('div#' + id + ' #wrapper').get(0)) {
             setTimeout(function () {
-                myScroll = new iScroll($('div#' + id + ' #wrapper').get(0));
-                //alert('New iscroll');
+                myScroll = new iScroll($('div#' + id + ' #wrapper').get(0)); // , { hScrollbar: false, vScrollbar: true }
             }, 0);
         }
     }
 
-    function showTabBar() {
-        //$("div.container").show();
-        $('#tabbar').show(); // If image gif
-    }
-
-    function hideTabBar() {
-        //$("div.container").show();
-        $('#tabbar').hide(); // If image gif
-    }
 
     // ------------------------------------------
-    // PAGE ANIMATION EVENTS
+    // LOGIN PAGE
     // ------------------------------------------
-
-    //    $(document).on('pageAnimationStart', '#login', function (e, info) {
-    //        // $('#login').bind('pageAnimationEnd', function (e, info) {
-    //        // rebuildScroll(e.target.id);
-    //        // console.log('#login start:', e, info);
-    //    }); //pageAnimationEnd
-
-    $(document).on('pageAnimationEnd', '#dashboard', function (e, info) {
-        //console.log('#dashboard:', e, info)
-        if (info.direction == 'in') {
-            // alert('portfolios loaded');
-            $.ajax({
-                url: '/dashboard',
-                method: 'GET',
-                success: function (body) {
-                    // Add code here...
-                    // alert(body);
-                    rebuildScroll(e.target.id);
-                    //$('#dashboard_body').html(body);
-                    $('small#badge_portfolios').html(body).show();
-                },
-                error: function (xhr, type) {
-                    alert(xhr);
-                }
-            });
-        }
-    });
-
-    $(document).on('pageAnimationEnd', '#eula', function (e, info) {
-        if (info.direction == 'in') {
-            // alert('portfolios loaded');
-            $.get('/eula', function (data) {
-                rebuildScroll(e.target.id);
-                $('#eula_body').html(data);
-            });
-        }
-    });
-
-    $(document).on('pageAnimationEnd', '#portfolios', function (e, info) {
-        if (info.direction == 'in') {
-            // alert('portfolios loaded');
-            $.get('/portfolios', function (data) {
-                rebuildScroll(e.target.id);
-                $('#portfolios_body').html(data);
-            });
-        }
-    });
-
-    // ------------------------------------------
-    // CLICK EVENTS
-    // ------------------------------------------
-
-    //$('#portfoliosButton').bind('click', function (e, info) {
-    $('#portfoliosButton').click(function () {
-        jQT.goTo($('#portfolios'));
-        //        $.get('/portfolios', function (data) {
-        //            rebuildScroll(e.target.id);
-        //            $('#portfolios_body').html(data);
-        //            
-        //        });
-    });
-
-    $('#eulaButton').click(function () {
-        jQT.goTo($('#eula'));
-    });
 
     $(document).on('click', 'a#loginButton', function (e) {
         var userName, password;
@@ -132,5 +67,83 @@ Zepto(function ($) { //$(function () {
             }
         }, "json")
         return false;
+    });
+
+    // ------------------------------------------
+    // DASHBOARD PAGE
+    // ------------------------------------------
+
+    $(document).on('pageAnimationStart', '#dashboard', function (e, info) {
+        // alert('start dashboard');
+        window.location = '/iPadLogin';
+    });
+
+    $(document).on('pageAnimationEnd', '#dashboard', function (e, info) {
+        //console.log('#dashboard:', e, info)
+        if (info.direction == 'in') {
+            // alert('portfolios loaded');
+            $.ajax({
+                url: '/dashboard',
+                method: 'GET',
+                success: function (body) {
+                    // Add code here...
+                    // alert(body);
+                    rebuildScroll(e.target.id);
+                    $('small#badge_portfolios').html(body).show();
+                },
+                error: function (xhr, type) {
+                    alert(xhr);
+                }
+            });
+        }
+    });
+
+    // ------------------------------------------
+    // PORTFOLIOS PAGE
+    // ------------------------------------------
+
+    $(document).on('pageAnimationEnd', '#portfolios', function (e, info) {
+        if (info.direction == 'in') {
+            // alert('portfolios loaded');
+            $.get('/portfolios', function (data) {
+                rebuildScroll(e.target.id);
+                $('#portfolios_body').html(data);
+            });
+        }
+    });
+
+    //$('#portfoliosButton').bind('click', function (e, info) {
+    $('#portfoliosButton').click(function () {
+        jQT.goTo($('#portfolios'));
+        //        $.get('/portfolios', function (data) {
+        //            rebuildScroll(e.target.id);
+        //            $('#portfolios_body').html(data);
+        //            
+        //        });
+    });
+
+    // ------------------------------------------
+    // EULA PAGE
+    // ------------------------------------------
+
+    $('#eulaButton').click(function () {
+        jQT.goTo($('#eula'));
+    });
+
+    $(document).on('pageAnimationEnd', '#eula', function (e, info) {
+        if (info.direction == 'in') {
+            $.get('/eula', function (data) {
+                rebuildScroll(e.target.id);
+                $('#eula_body').html(data);
+            }, 'xml');
+        }
+    });
+
+    // ------------------------------------------
+    // COMMON
+    // ------------------------------------------
+
+    $('.toolbar').click(function () {
+        myScroll.scrollTo(0, 0, 200)
     });
 });

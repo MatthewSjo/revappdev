@@ -1,0 +1,54 @@
+.login_background 
+{
+    background-image: url(../images/login_background.png) !important;
+}
+
+.login_r
+{
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    background-image: url(../images/login_r.png) !important;
+}
+
+#login_content
+{
+    width: 50%;
+    margin: 0 auto;
+    padding-top: 10%;
+}
+
+div#jqt ul.rounded.login_style {
+    -webkit-box-shadow: inset 0 0 10px #666666;
+    background-color: #ffffff;
+}
+
+div#jqt ul li.login_style {
+    background-color: transparent;
+}
+
+div#jqt ul li input[type="email"].login_style,  div#jqt ul li input[type="password"].login_style
+{
+    text-shadow: none;    
+    color: #000000;
+}
+
+div#jqt ul li.login_button {
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f3f3f3), to(#dcdcdc), color-stop(.5,#dbdbdb),color-stop(.51,#cacaca));
+    text-align: center;
+}
+
+div#jqt ul li.login_button a {
+    color: #48494b;
+    text-shadow: 0px 1px 0px #e4e4e4;    
+}
+
+p.login_style
+{
+    font-size: 12pt;
+    text-align: center;
+    color: #d69c9f;
+    text-shadow: 0px 1px 0px #77050b;
+    margin-top: 60px;
+    
+}

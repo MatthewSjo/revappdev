@@ -215,7 +215,7 @@ from { -webkit-transform: translateX(0); } to { -webkit-transform: translateX(10
 */
 
 
-/**
+/*
 #scroller {
 	position:absolute; z-index:1;
 
@@ -241,4 +241,4 @@ from { -webkit-transform: translateX(0); } to { -webkit-transform: translateX(10
 	background-color:#fafafa;
 	font-size:14px;
 }
-**/
+*/

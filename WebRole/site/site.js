@@ -1,4 +1,4 @@
-var host = 'revapidev.statpro.com';
+﻿var host = 'revapidev.statpro.com';
 var url = '/v1/';
 var webbApiUri = 'https://revapidev.statpro.com/v1/';
 var http = require('http');
@@ -6,17 +6,17 @@ var revApp = require('../rev-app');
 var webbApi = require('../webb-api');
 
 /*
-    // ------------------------------------------
-    // How to use revApp instead of webbApi:
-    // ------------------------------------------
-    var options;
+// ------------------------------------------
+// How to use revApp instead of webbApi:
+// ------------------------------------------
+var options;
 
-    options = revApp.getRequestOptions(revApp.WEBAPI_HOST, revApp.WEBAPI_URL, req.session.token);
-    revApp.getServiceResource(options, renderDashboard);
+options = revApp.getRequestOptions(revApp.WEBAPI_HOST, revApp.WEBAPI_URL, req.session.token);
+revApp.getServiceResource(options, renderDashboard);
 
-    function renderDashboard(viewModel) {
-        res.render('dashboard', viewModel);
-    }
+function renderDashboard(viewModel) {
+res.render('dashboard', viewModel);
+}
 
 */
 
@@ -26,14 +26,14 @@ exports.index = function (req, res) {
     res.render('index');
 };
 
-exports.r = function (req, res) {
-    console.log('log by r');
-    res.render('r');
+exports.iPadLogin = function (req, res) {
+    console.log('iPadLogin');
+    res.render('iPadLogin');
 };
 
 // Login
-exports.login = function (req, res, next) {
-    console.log('login');
+exports.authenticate = function (req, res, next) {
+    console.log('authenticate');
     var userName, password;
 
     // Retrieve the user object from the form body.
@@ -45,11 +45,6 @@ exports.login = function (req, res, next) {
     req.session.username = userName;
     req.session.password = password;
     res.json({ logged: true, succes: true, name: userName });
-};
-
-exports.authenticate = function (req, res) {
-    console.log('auth');
-    res.redirect('/');
 };
 
 exports.portfolios = function (req, res) {
@@ -119,14 +114,4 @@ exports.test = function (req, res) {
     viewModel.layout = false;
     res.render('test', viewModel);
     // res.redirect(eula);
-};
-
-exports.dashboard = function (req, res) {
-    webbApi.initService(req.session.username, req.session.password, webbApiUri, function (service) {
-        var viewModel;
-
-        viewModel = service;
-        viewModel.layout = false;
-        res.render('dashboard', viewModel);
-    });
 };
