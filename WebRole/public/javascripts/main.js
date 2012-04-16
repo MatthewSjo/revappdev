@@ -63,7 +63,8 @@ Zepto(function ($) {
         // alert('Click on: ' + uri + ' was blocked!');
         $.post('/authenticate', { usr: userName, pw: password }, function (body) {
             if (body.logged) {
-                jQT.goTo($('#dashboard'));
+                window.location = '/index';
+                // jQT.goTo($('#dashboard'));
             }
         }, "json")
         return false;
@@ -74,18 +75,23 @@ Zepto(function ($) {
     // ------------------------------------------
 
     $(document).on('pageAnimationStart', '#dashboard', function (e, info) {
+        console.log('#dashboard start:', e, info)
         // alert('start dashboard');
         // window.location = '/iPadLogin';
     });
 
     $(document).on('pageAnimationEnd', '#dashboard', function (e, info) {
-        //console.log('#dashboard:', e, info)
+        console.log('#dashboard end:', e, info)
         if (info.direction == 'in') {
             // alert('portfolios loaded');
             $.ajax({
                 url: '/dashboard',
                 method: 'GET',
+                dataType: 'json',
                 success: function (body) {
+                    if (body.redirect) {
+                        window.location = body.url;
+                    }
                     // Add code here...
                     // alert(body);
                     rebuildScroll(e.target.id);

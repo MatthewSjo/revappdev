@@ -36,14 +36,15 @@ function loggedIn(req, res, next) {
     console.log('loggedIn', req.session.user);
     req.session.user != null
 	    ? next()
-	    : res.redirect("/iPadLogin?url=" + req.url);
+	    : res.json({ redirect: true, url: '/' }); // res.redirect('/iPadLogin');
 }
 
 debugger;   // Using debugger here don't stop the execution but it's necessary to
             // add the server.js file to the list of scripts in the debugger window.
 
 // Site routes:
-app.get('/', site.index);
+app.get('/', site.iPadLogin);
+app.get('/index', site.index);
 app.get('/iPadLogin', site.iPadLogin);
 app.get('/dashboard', loggedIn, site.dashboard);
 app.get('/portfolios', site.portfolios);

@@ -44,6 +44,7 @@ exports.authenticate = function (req, res, next) {
     req.session.token = revApp.makeBaseAuth(userName, password);
     req.session.username = userName;
     req.session.password = password;
+    req.session.user = 'godzilla';
     res.json({ logged: true, succes: true, name: userName });
 };
 
