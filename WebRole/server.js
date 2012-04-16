@@ -6,7 +6,6 @@
 var express = require('express'),
     routes = require('./routes'),
     site = require('./site/site'),
-    dashboard = require('./site/dashboard'),
     wm = require('./web-method');
 
 var app = module.exports = express.createServer();
@@ -37,7 +36,7 @@ function loggedIn(req, res, next) {
     console.log('loggedIn', req.session.user);
     req.session.user != null
 	    ? next()
-	    : res.sendfile("public/login.htm?url=" + req.url);
+	    : res.redirect("/iPadLogin?url=" + req.url);
 }
 
 debugger;   // Using debugger here don't stop the execution but it's necessary to
@@ -45,9 +44,8 @@ debugger;   // Using debugger here don't stop the execution but it's necessary t
 
 // Site routes:
 app.get('/', site.index);
-app.get('/index', site.iPadLogin);
 app.get('/iPadLogin', site.iPadLogin);
-app.get('/dashboard', dashboard.dashboard);
+app.get('/dashboard', loggedIn, site.dashboard);
 app.get('/portfolios', site.portfolios);
 app.get('/eula', site.eula);
 app.get('/test', site.test);

@@ -61,7 +61,7 @@ Zepto(function ($) {
 
         var uri = $(this).attr("href");
         // alert('Click on: ' + uri + ' was blocked!');
-        $.post('/login', { usr: userName, pw: password }, function (body) {
+        $.post('/authenticate', { usr: userName, pw: password }, function (body) {
             if (body.logged) {
                 jQT.goTo($('#dashboard'));
             }
@@ -75,7 +75,7 @@ Zepto(function ($) {
 
     $(document).on('pageAnimationStart', '#dashboard', function (e, info) {
         // alert('start dashboard');
-        window.location = '/iPadLogin';
+        // window.location = '/iPadLogin';
     });
 
     $(document).on('pageAnimationEnd', '#dashboard', function (e, info) {

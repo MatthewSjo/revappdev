@@ -359,7 +359,6 @@
     <Content Include="public\stylesheets\login.css" />
     <Content Include="public\stylesheets\itabbar.css" />
     <Content Include="public\stylesheets\style.css" />
-    <Content Include="site\dashboard.js" />
     <Content Include="site\site.js" />
     <Content Include="web-method.js" />
     <Content Include="webb-api.js" />

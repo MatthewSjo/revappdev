@@ -115,3 +115,13 @@ exports.test = function (req, res) {
     res.render('test', viewModel);
     // res.redirect(eula);
 };
+
+exports.dashboard = function (req, res) {
+    webbApi.initService(req.session.username, req.session.password, webbApiUri, function (service) {
+        var viewModel;
+
+        viewModel = service;
+        viewModel.layout = false;
+        res.render('dashboard', viewModel);
+    });
+};
