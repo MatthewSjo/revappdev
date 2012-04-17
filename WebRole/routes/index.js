@@ -1,57 +1,57 @@
-var host = 'revapidev.statpro.com';
-var url = '/v1/';
-var webbApiUri = 'https://revapidev.statpro.com/v1/';
-var http = require('http');
-var revApp = require('../rev-app');
-var webbApi = require('../webb-api');
+// ------------------------------------------
+// ROUTING
+// ------------------------------------------
 
-/*
-    // ------------------------------------------
-    // How to use revApp instead of webbApi:
-    // ------------------------------------------
-    var options;
+var host = 'revapidev.statpro.com',
+    url = '/v1/',
+    webApiUri = 'https://revapidev.statpro.com/v1/',
+    http = require('http'),
+    webApi = require('../web-api');
 
-    options = revApp.getRequestOptions(revApp.WEBAPI_HOST, revApp.WEBAPI_URL, req.session.token);
-    revApp.getServiceResource(options, renderDashboard);
+// ------------------------------------------
+// VIEW ROUTING
+// ------------------------------------------
 
-    function renderDashboard(viewModel) {
-        res.render('dashboard', viewModel);
-    }
-
-*/
+// NOTE: These methods are distinct from the routes in routes/web-methods.js in that
+// they do not attempt to return data objects when called; instead, they render views. 
 
 // Homepage
 exports.index = function (req, res) {
-    console.log('index');
     res.render('index');
 };
 
-exports.r = function (req, res) {
-    console.log('log by r');
-    res.render('r');
+// Login Page
+exports.login = function (req, res) {
+    res.render('login');
 };
 
-// Login
-exports.login = function (req, res, next) {
-    console.log('login');
-    var userName, password;
+// Authentication
+exports.authenticate = function (req, res, next) {
+    var email, token;
 
-    // Retrieve the user object from the form body.
-    userName = req.body.usr;
-    password = req.body.pw;
+    // Extract the email and authentication token from the request body.
+    email = req.body.email;
+    token = req.body.token;
 
-    // Persist our authorization token for future headers.
-    req.session.token = revApp.makeBaseAuth(userName, password);
-    req.session.username = userName;
-    req.session.password = password;
-    res.json({ logged: true, succes: true, name: userName });
+    // Clear any authentication tokens in session that might currently exist.
+    delete req.session.token;
+
+    // Attempt to consume the service.
+    webApi.initService(email, token, webApiUri, function (resource) {
+
+        // If the authentication was successful...
+        if (!resource.error) {
+            // Persist our authorization token in a session variable.
+            req.session.token = token;
+        }
+
+        // Respond with a confirmation object, indicating whether the
+        // user's credentials have been accepted by the service.
+        res.json({ authenticated: !resource.error });
+    });
 };
 
-exports.authenticate = function (req, res) {
-    console.log('auth');
-    res.redirect('/');
-};
-
+// Portfolios List
 exports.portfolios = function (req, res) {
     var oData = {
         filter: '', // 'Code eq "EQUITY5"',
@@ -60,73 +60,37 @@ exports.portfolios = function (req, res) {
         top: ''
     };
 
-    webbApi.getPortfolios(oData, function (portfolios) {
+    webApi.getPortfolios(oData, function (resource) {
         var viewModel;
-        // links.defaultAnalysis.href
-        viewModel = portfolios || {};
+
+        viewModel = resource.data || {};
         viewModel.layout = false;
+
         res.render('portfolios', viewModel);
     });
 };
 
 exports.defaultAnalysis = function (req, res) {
-    webbApi.getDefaultAnalysis(req.body.uri, function (defaultAnalysis) {
+    webApi.getDefaultAnalysis(req.body.uri, function (resource) {
         var viewModel = {};
-        // links.defaultAnalysis.href
-        viewModel = defaultAnalysis || {};
+
+        viewModel = resource.data || {};
         viewModel.layout = false;
+
         res.render('defaultAnalysis', viewModel);
     });
 };
 
 exports.eula = function (req, res) {
-    webbApi.getEula('fragment', function (eula) {
+    webApi.getEula('fragment', function (resource) {
         var viewModel = {};
-        // links.defaultAnalysis.href
-        viewModel.eula = eula || {};
+
+        viewModel.eula = resource.data || {};
         viewModel.layout = false;
+
         res.render('eula', viewModel);
-        // res.redirect(eula);
     });
-};
-
-exports.test = function (req, res) {
-    var viewModel = {};
-    // links.defaultAnalysis.href
-    viewModel.items = [
-        { name: 'a' },
-        { name: 'b' },
-        { name: 'c' },
-        { name: 'd' },
-        { name: 'e' },
-        { name: 'f' },
-        { name: 'g' },
-        { name: 'h' },
-        { name: 'i' },
-        { name: 'm' },
-        { name: 'n' },
-        { name: 'o' },
-        { name: 'p' },
-        { name: 'q' },
-        { name: 'r' },
-        { name: 's' },
-        { name: 't' },
-        { name: 'u' },
-        { name: 'v' },
-        { name: 'z' }
-    ];
-
-    viewModel.layout = false;
-    res.render('test', viewModel);
-    // res.redirect(eula);
 };
 
 exports.dashboard = function (req, res) {
-    webbApi.initService(req.session.username, req.session.password, webbApiUri, function (service) {
-        var viewModel;
-
-        viewModel = service;
-        viewModel.layout = false;
-        res.render('dashboard', viewModel);
-    });
 };

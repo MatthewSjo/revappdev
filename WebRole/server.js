@@ -1,18 +1,18 @@
+// ------------------------------------------
+// NODE.JS + EXPRESS SERVER SETUP
+// ------------------------------------------
 
-/**
- * Module dependencies.
- */
-
+// Module Dependencies
 var express = require('express'),
     routes = require('./routes'),
-    site = require('./site/site'),
-    wm = require('./web-method');
+    wm = require('./routes/web-methods');
 
-var app = module.exports = express.createServer();
-var port = process.env.port || 1337;
+// Create and make global reference to new server,
+// and define which port it should be listening to.
+var app = module.exports = express.createServer(),
+    port = process.env.port || 1337;
 
-// Configuration
-
+// Server Configuration
 app.configure(function () {
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
@@ -24,6 +24,7 @@ app.configure(function () {
     app.use(app.router);
 });
 
+// Environment Configurations
 app.configure('development', function () {
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
@@ -32,30 +33,43 @@ app.configure('production', function () {
     app.use(express.errorHandler());
 });
 
-function loggedIn(req, res, next) {
-    console.log('loggedIn', req.session.user);
-    req.session.user != null
-	    ? next()
-	    : res.json({ redirect: true, url: '/' }); // res.redirect('/iPadLogin');
+// ------------------------------------------
+// MIDDLEWARE FUNCTIONS
+// ------------------------------------------
+
+function isAuthenticated(req, res, next) {
+    // If the token variable in the session exists, we continue with the request.
+    // Otherwise, the user is not authenticated, so redirect to the login page.
+    req.session.token ? next() : res.json({ redirect: true, url: '/' });
 }
 
-debugger;   // Using debugger here don't stop the execution but it's necessary to
+debugger;   // Using debugger here doesn't stop the execution but it's necessary to
             // add the server.js file to the list of scripts in the debugger window.
 
-// Site routes:
-app.get('/', site.iPadLogin);
-app.get('/index', site.index);
-app.get('/iPadLogin', site.iPadLogin);
-app.get('/dashboard', loggedIn, site.dashboard);
-app.get('/portfolios', site.portfolios);
-app.get('/eula', site.eula);
-app.get('/test', site.test);
-app.post('/defaultAnalysis', site.defaultAnalysis);
-app.post('/authenticate', site.authenticate);
+// ------------------------------------------
+// ROUTING REGISTRATION
+// ------------------------------------------
 
-// Web methods:
-app.get('/isUserLoggedIn', wm.isUserLoggedIn);
+// Site Routes (GET):
+app.get('/', routes.login);
+app.get('/index', routes.index);
+app.get('/dashboard', isAuthenticated, routes.dashboard);
+app.get('/portfolios', routes.portfolios);
+app.get('/eula', routes.eula);
 
+// Site Routes (POST):
+app.post('/authenticate', routes.authenticate);
+app.post('/defaultAnalysis', routes.defaultAnalysis);
 
+// Web Methods:
+app.get('/isUserAuthenticated', wm.isUserAuthenticated);
+
+// ------------------------------------------
+// INITIALISATION
+// ------------------------------------------
+
+// Start the server listening on the specified port.
 app.listen(port);
+
+// Write to the console to confirm that the server is listening.
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
