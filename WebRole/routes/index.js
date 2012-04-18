@@ -70,17 +70,17 @@ exports.portfolios = function (req, res) {
     });
 };
 
-exports.defaultAnalysis = function (req, res) {
-    webApi.getDefaultAnalysis(req.body.uri, function (resource) {
+// Portfolio Analysis
+exports.portfolioAnalysis = function (req, res) {
+    webApi.getPortfolioAnalysis(req.body.uri, function (analysis) {
         var viewModel = {};
-
-        viewModel = resource.data || {};
+        viewModel = analysis.data || {};
         viewModel.layout = false;
-
-        res.render('defaultAnalysis', viewModel);
+        res.render('portfolioAnalysis', viewModel);
     });
 };
 
+// EULA
 exports.eula = function (req, res) {
     webApi.getEula('fragment', function (resource) {
         var viewModel = {};

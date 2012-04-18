@@ -203,15 +203,15 @@ exports.getPortfolios = function (oData, callback) {
 //                may be null, and an error property, which will either be boolean false 
 //                (indicating that the request was successful), a boolean true, or a 
 //                complete error object (both indicating that the request failed).
-exports.getDefaultAnalysis = function (uri, callback) {
+exports.getPortfolioAnalysis = function (uri, callback) {
     var options;
 
     // Generate the request configuration.
     options = getRequestOptions(uri, account.token);
 
-    // Attempt to get the default analysis for the requested portfolio.
-    getResource('defaultAnalysis', options, function (resource) {
-        callback(resource);
+    // Attempt to get the portfolio analysis for the requested portfolio.
+    getResource('portfolioAnalysis', options, function (analysis) {
+        callback(analysis);
     });
 };
 

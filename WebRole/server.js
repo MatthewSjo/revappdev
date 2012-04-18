@@ -49,7 +49,6 @@ debugger;   // Using debugger here doesn't stop the execution but it's necessary
 // ------------------------------------------
 // ROUTING REGISTRATION
 // ------------------------------------------
-app.post('/portfolioAnalysis', site.portfolioAnalysis);
 
 // Site Routes (GET):
 app.get('/', routes.login);
@@ -60,7 +59,7 @@ app.get('/eula', routes.eula);
 
 // Site Routes (POST):
 app.post('/authenticate', routes.authenticate);
-app.post('/defaultAnalysis', routes.defaultAnalysis);
+app.post('/portfolioAnalysis', routes.portfolioAnalysis);
 
 // Web Methods:
 app.get('/isUserAuthenticated', wm.isUserAuthenticated);

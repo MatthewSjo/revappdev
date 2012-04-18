@@ -17,19 +17,6 @@ var jQT = new $.jQTouch({
 Zepto(function ($) {
 
     // ------------------------------------------
-    // MAIN ENTRY POINT
-    // ------------------------------------------
-
-    (function main() {
-        // window.location = '/iPadLogin'; // console.log('logged');
-
-        $.get('/isUserAuthenticated', function () {
-            if (data && data.authenticated) {
-            }
-        }, 'json');
-    })();
-
-    // ------------------------------------------
     // HELPER FUNCTIONS
     // ------------------------------------------
 

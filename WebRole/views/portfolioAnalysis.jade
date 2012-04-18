@@ -1,4 +1,4 @@
-h1 Default Analysis Page
+h2 Details:
 ul.rounded
 	li Name: #{name}
 	li Code: #{code}
@@ -6,17 +6,23 @@ ul.rounded
 	li Type: #{type}
 	li Currency: #{analysis.currency}
 	li Is Default: #{analysis.isDefault}
-	li Benchmarks: #{analysis.benchmarks.length}
-		select
-			- each benchmark in analysis.benchmarks
-				optgroup
-					option Name: #{benchmark.name}
-					option Type: #{benchmark.type}
-	h2 Results: 
-		a(href="#{analysis.results.links.segmentsTreeRootNodeQuery.href}") segmentsTreeRootNodeQuery
-	h2 Time Periods: #{analysis.results.length}
-	select
+h2 Benchmarks: #{analysis.benchmarks.length}
+ul.rounded
+	- each benchmark in analysis.benchmarks
+		li Name: #{benchmark.name}
+		li Type: #{benchmark.type}
+		li Results: 
+			a(href="#{analysis.results.links.segmentsTreeRootNodeQuery.href}") segmentsTreeRootNodeQuery
+h2 Classifiers:
+- if (analysis.classifiers.classifier1)
+	ul.rounded
+		li Classifier1: #{analysis.classifiers.classifier1.name}
+- else
+	ul.rounded
+		li No classifier available.
+
+h2 Time Periods: #{analysis.results.length}
+ul.rounded
 	- each timePeriod in analysis.results.timePeriods
-		optgroup (label = #{timePeriod.name})
-			option #{timePeriod.startDate}
-			option #{timePeriod.endDate}
+		li Start Date: #{timePeriod.startDate}
+		li End Date: #{timePeriod.endDate}
