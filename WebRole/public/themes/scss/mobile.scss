@@ -1,0 +1,159 @@
+$base-color: #D9D9D9;
+$page-background-color: #ffffff;
+$highlight-color: #3366CC;
+
+$list-background-color: #fff;
+
+$toolbar-background-color: #9b0b12;
+$toolbar-button-color: saturate(darken($toolbar-background-color, 10), 20);
+
+@import 'include/core';
+
+#jqt {
+    > * {
+        @include background-image(
+            background_noise($size: 60, $opacity: .07),
+            bevel-gradient($base-color)
+        );
+    }
+
+    .toolbar {
+        @include background-image(
+            linear-gradient(rgba(#fff, .15), rgba(#fff, 0)),
+            glossy-gradient($toolbar-background-color, $contrast: .8)
+        );
+    }
+
+    ul {
+        li {
+            border-top: 1px solid darken($base-color, 5);
+            @include background-gradient(rgba($base-color, .2), matte);
+
+            a {
+                @include color-by-background($base-color);
+            }
+        
+            .toggle input[type="checkbox"] {
+                @include border-radius(5px);
+                background: #fff url(../img/jqt/on_off.png) 0 0 no-repeat;
+            }
+
+            input[type='submit'] {
+                @include background-gradient(color-by-background($list-background-color), glossy);
+                border: 1px outset black;
+            }
+
+            small.counter {
+                @include box-shadow(rgba(#fff,.1) 0 1px 0);
+            }
+
+        } // /li
+
+        &.metal {
+            li {
+                background-image: none;
+                border-top: 1px solid #fff;
+                border-bottom: 1px solid #666;
+                background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(238,238,238,1)), to(rgba(156,158,160,1)));
+
+                a {
+                    text-shadow: #fff 0 1px 0;
+                    &.active { color: #000; }
+                }
+
+                em {
+                    color: #444;
+                }
+            }
+        } // ul.metal
+        
+        &.edgetoedge li {
+            @include background-gradient(darken($base-color, 10), color-stops(darken($base-color, 18), darken($base-color, 15)));
+            border-bottom: 1px solid darken($base-color, 22);
+            border-top: 1px solid darken($base-color, 13);
+
+            &.sep {
+                @include background-gradient(rgba(#000, .3), bevel);
+                @include color-by-background(darken($base-color, 25), 50);
+            }
+        }
+    }
+}
+
+/*
+#jqt {
+    > * {
+        @include background-striped(
+            $angle: left,
+            $minorsize: 1px,
+            $majorsize: 7px,
+            $bgcolor: $page-background-color,
+            $stripe-color: darken($page-background-color, 2)
+        )
+    }
+
+    .toolbar {
+        @include background-image(
+            linear-gradient(rgba(#fff, .15), rgba(#fff, 0)),
+            glossy-gradient($toolbar-background-color, $contrast: .6)
+        );
+        @include box-shadow(rgba(#fff, .3) 0 1px 0 inset);
+    }
+
+    ul {
+
+        li {
+            input[type="checkbox"], input[type="radio"] {
+                color: rgb(50,79,133);
+            }
+        }
+
+        .toggle input[type="checkbox"] {
+            background: transparent url(../img/apple/on_off.png) 0 0 no-repeat;
+        }
+
+        input[type='submit'] {
+            background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(238,238,238,1)), to(rgba(156,158,160,1)));
+            border: 1px outset #aaa;
+        }
+
+        // Edge to edge
+        &.edgetoedge li.sep {
+            @include background-gradient($page-background-color, recessed);
+            @include color-by-background($page-background-color);
+            border-bottom: 1px solid #b5c1c9;
+            border-top: 1px solid #b5c1c9;
+        }
+    }
+
+    ul.edgetoedge li, .metal li {
+        @include border-radius(0);
+    }
+
+    ul.edgetoedge li em {
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    ul.metal li {
+        border-top: 1px solid rgb(238,238,238);
+        border-bottom: 1px solid rgb(156,158,165);
+        font-size: 26px;
+        text-shadow: #fff 0 1px 0;
+
+        a:hover {
+            color: #000;
+        }
+        em {
+            color: #444;
+        }
+    }
+
+    .info {
+        background: #dce1eb;
+        text-shadow: rgba(255,255,255,.8) 0 1px 0;
+        color: rgb(76, 86, 108);
+        border-top: 1px solid rgba(76, 86, 108, .3);
+    }
+}
+*/

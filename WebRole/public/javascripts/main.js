@@ -20,14 +20,14 @@ Zepto(function ($) {
     // MAIN ENTRY POINT
     // ------------------------------------------
 
-    (function main() {
-        // window.location = '/iPadLogin'; // console.log('logged');
+    //    (function main() {
+    //        // window.location = '/iPadLogin'; // console.log('logged');
 
-        $.get('/isUserLoggedIn', function (data) {
-            if (data && data.success && data.logged) {
-            }
-        }, "json");
-    })();
+    //        $.get('/isUserLoggedIn', function (data) {
+    //            if (data && data.success && data.logged) {
+    //            }
+    //        }, "json");
+    //    })();
 
     // ------------------------------------------
     // HELPER FUNCTIONS
@@ -90,7 +90,7 @@ Zepto(function ($) {
                 dataType: 'json',
                 success: function (body) {
                     if (body.redirect) {
-                        window.location = body.url;
+                        // window.location = body.url;
                     }
                     // Add code here...
                     // alert(body);
@@ -129,6 +129,20 @@ Zepto(function ($) {
     });
 
     // ------------------------------------------
+    // DEFAULT ANALYSIS PAGE
+    // ------------------------------------------
+
+    $(document).on('click', '.defaultAnalysisLink', function (e) {
+        var uri = $(this).attr("href");
+        // alert('Click on: ' + uri + ' was blocked!');
+        $.post('/portfolioAnalysis', { uri: uri }, function (data) {
+            $('#portfolioAnalysis_body').html(data);
+            jQT.goTo($('#portfolioAnalysis'));
+        })
+        return false;
+    });
+
+    // ------------------------------------------
     // EULA PAGE
     // ------------------------------------------
 
@@ -150,16 +164,27 @@ Zepto(function ($) {
     // ------------------------------------------
 
     $('.toolbar').click(function () {
-        myScroll.scrollTo(0, 0, 200)
+        try {
+            myScroll.scrollTo(0, 0, 200)
+        } catch (e) {
+
+        }
+        
     });
-    
-//    $.ajaxSetup({
-//        dataType: "json"
-//    });
+
+    //    $.ajaxSetup({
+    //        dataType: "json"
+    //    });
 
     $(document).on('ajaxComplete', function (event, request, settings) {
         // Return false to cancel this request.
-        var obj = JSON.parse(request.response);
+        var obj = {};
+        try {
+            obj = JSON.parse(request.response);
+        } catch (e) {
+    
+        }
+         
         console.log('ajaxComplete', event, request, settings, obj);
     })
 

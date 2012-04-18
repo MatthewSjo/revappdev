@@ -1,0 +1,22 @@
+h1 Default Analysis Page
+ul.rounded
+	li Name: #{name}
+	li Code: #{code}
+	li Owner: #{owner}
+	li Type: #{type}
+	li Currency: #{analysis.currency}
+	li Is Default: #{analysis.isDefault}
+	li Benchmarks: #{analysis.benchmarks.length}
+		select
+			- each benchmark in analysis.benchmarks
+				optgroup
+					option Name: #{benchmark.name}
+					option Type: #{benchmark.type}
+	h2 Results: 
+		a(href="#{analysis.results.links.segmentsTreeRootNodeQuery.href}") segmentsTreeRootNodeQuery
+	h2 Time Periods: #{analysis.results.length}
+	select
+	- each timePeriod in analysis.results.timePeriods
+		optgroup (label = #{timePeriod.name})
+			option #{timePeriod.startDate}
+			option #{timePeriod.endDate}

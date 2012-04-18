@@ -346,7 +346,6 @@
     <Content Include="public\img\transparent button\stars.png" />
     <Content Include="public\img\UIBack.png" />
     <Content Include="public\img\UIBackPressed.png" />
-    <Content Include="public\login.htm" />
     <Content Include="public\src\add2home.js" />
     <Content Include="public\src\add2home.min.js" />
     <Content Include="public\src\ender.js" />
@@ -356,9 +355,12 @@
     <Content Include="public\src\jqt.autotitles.min.js" />
     <Content Include="public\src\zepto.min.js" />
     <Content Include="public\stylesheets\add2home.css" />
+    <Content Include="public\stylesheets\apple.css" />
+    <Content Include="public\stylesheets\jqtouch.css" />
     <Content Include="public\stylesheets\login.css" />
     <Content Include="public\stylesheets\itabbar.css" />
     <Content Include="public\stylesheets\style.css" />
+    <Content Include="public\themes\css\mobile.css" />
     <Content Include="site\site.js" />
     <Content Include="web-method.js" />
     <Content Include="webb-api.js" />
@@ -517,33 +519,163 @@
     <None Include="public\themes\compass-recipes\stylesheets\recipes\_ui.scss" />
     <None Include="public\themes\compass-recipes\stylesheets\recipes\_webfont-icon.scss" />
     <None Include="public\themes\compass-recipes\stylesheets\_recipes.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\background\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\base\normalize\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\color\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\effect\bevel\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\effect\corner-folded\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\effect\cutout\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\effect\glass\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\form\element\inline\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\form\skin\natural\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\google-webfont\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\layout\vertical-align\s.scss" />
+    <None Include="public\themes\compass-recipes\tests\recipes\background\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\base\normalize\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\color\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\effect\bevel\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\effect\corner-folded\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\effect\cutout\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\effect\glass\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\form\element\inline\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\form\skin\natural\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\google-webfont\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\layout\vertical-align\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
     <None Include="public\themes\compass-recipes\tests\recipes\media-queries\s.scssx" />
-    <None Include="public\themes\compass-recipes\tests\recipes\shadow\drop\curved\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\shadow\drop\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\shape\ellipse\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\shape\polygon\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\shape\polygon\star\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\shape\polygon\triangle\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\shape\symbol\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\shared\clearfix\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\ui\convex\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\ui\gradient\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\ui\keyboard\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\ui\menu\dropdown\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\ui\overlay\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\ui\separator\s.scss" />
-    <None Include="public\themes\compass-recipes\tests\recipes\ui\webfont-icons\s.scss" />
+    <None Include="public\themes\compass-recipes\tests\recipes\shadow\drop\curved\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\shadow\drop\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\shape\ellipse\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\shape\polygon\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\shape\polygon\star\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\shape\polygon\triangle\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\shape\symbol\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\shared\clearfix\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\ui\convex\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\ui\gradient\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\ui\keyboard\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\ui\menu\dropdown\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\ui\overlay\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\ui\separator\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\compass-recipes\tests\recipes\ui\webfont-icons\s.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
     <None Include="public\themes\compass-recipes\tests\_tests.scss" />
     <None Include="public\themes\compass-recipes\VERSION" />
     <None Include="public\themes\scss\.sass-cache\003ffe4b9a31e923bea5e28a170e27d25aeaaa1a\_block-inline-block.scssc" />
@@ -682,17 +814,53 @@
     <None Include="public\themes\scss\.sass-cache\d1b815ffbd075e4ffb86d3300f8f3092795d4e29\_utilities.scssc" />
     <None Include="public\themes\scss\.sass-cache\d32148868ed05cab321b73962d7a8bfdb9a0b2ad\_element.scssc" />
     <None Include="public\themes\scss\.sass-cache\d32148868ed05cab321b73962d7a8bfdb9a0b2ad\_skin.scssc" />
-    <None Include="public\themes\scss\apple.scss" />
+    <None Include="public\themes\scss\apple.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
     <None Include="public\themes\scss\config.rb" />
-    <None Include="public\themes\scss\include\_animations.scss" />
-    <None Include="public\themes\scss\include\_base.scss" />
-    <None Include="public\themes\scss\include\_core.scss" />
-    <None Include="public\themes\scss\include\_skeleton.scss" />
-    <None Include="public\themes\scss\jqtouch.scss" />
+    <None Include="public\themes\scss\mobile.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\scss\include\_animations.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\scss\include\_base.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\scss\include\_core.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\scss\include\_skeleton.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
+    <None Include="public\themes\scss\jqtouch.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
     <None Include="views\r.jade" />
     <None Include="views\test.jade" />
     <None Include="views\eula.jade" />
-    <None Include="views\defaultAnalysis.jade" />
+    <None Include="views\portfolioAnalysis.jade" />
     <None Include="views\dashboard.jade" />
     <None Include="views\iPadLogin.jade" />
     <None Include="views\portfolios.jade" />

@@ -127,13 +127,13 @@ exports.getPortfolios = function (oData, callback) {
     });
 };
 
-exports.getDefaultAnalysis = function (uri, callback) {
+exports.getPortfolioAnalysis = function (uri, callback) {
     var options;
 
     console.log("getDefaultAnalysis - uri: ", uri);
     options = getRequestOptions(uri, account.token);
-    getResource('defaultAnalysis', options, function (defaultAnalysis) {
-        callback(defaultAnalysis);
+    getResource('portfolioAnalysis', options, function (analysis) {
+        callback(analysis);
     });
 };
 

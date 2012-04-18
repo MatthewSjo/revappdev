@@ -23,7 +23,17 @@ res.render('dashboard', viewModel);
 // Homepage
 exports.index = function (req, res) {
     console.log('index');
-    res.render('index');
+    webbApi.initService(req.session.username, req.session.password, webbApiUri, function (service) {
+        /*
+        var viewModel;
+
+        viewModel = service;
+        viewModel.layout = false;
+        res.render('dashboard', viewModel);
+        */
+        res.render('index');
+    });
+    
 };
 
 exports.iPadLogin = function (req, res) {
@@ -65,13 +75,13 @@ exports.portfolios = function (req, res) {
     });
 };
 
-exports.defaultAnalysis = function (req, res) {
-    webbApi.getDefaultAnalysis(req.body.uri, function (defaultAnalysis) {
+exports.portfolioAnalysis = function (req, res) {
+    webbApi.getPortfolioAnalysis(req.body.uri, function (analysis) {
         var viewModel = {};
-        // links.defaultAnalysis.href
-        viewModel = defaultAnalysis || {};
+        // links.portfolioAnalysis.href
+        viewModel = analysis || {};
         viewModel.layout = false;
-        res.render('defaultAnalysis', viewModel);
+        res.render('portfolioAnalysis', viewModel);
     });
 };
 
@@ -118,11 +128,11 @@ exports.test = function (req, res) {
 };
 
 exports.dashboard = function (req, res) {
-    webbApi.initService(req.session.username, req.session.password, webbApiUri, function (service) {
-        var viewModel;
+//    webbApi.initService(req.session.username, req.session.password, webbApiUri, function (service) {
+//        var viewModel;
 
-        viewModel = service;
-        viewModel.layout = false;
-        res.render('dashboard', viewModel);
-    });
+//        viewModel = service;
+//        viewModel.layout = false;
+//        res.render('dashboard', viewModel);
+//    });
 };

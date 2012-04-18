@@ -50,7 +50,7 @@ app.get('/dashboard', loggedIn, site.dashboard);
 app.get('/portfolios', site.portfolios);
 app.get('/eula', site.eula);
 app.get('/test', site.test);
-app.post('/defaultAnalysis', site.defaultAnalysis);
+app.post('/portfolioAnalysis', site.portfolioAnalysis);
 app.post('/authenticate', site.authenticate);
 
 // Web methods:
