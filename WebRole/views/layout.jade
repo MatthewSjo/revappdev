@@ -11,8 +11,10 @@ html(xmlns='http://www.w3.org/1999/xhtml')
 
 		// iPad icon/splash
 		link(rel='apple-touch-icon', href='/images/icon.png')
-		link(rel='apple-touch-startup-image', href='/images/splash.png', media='screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)')
-		
+		link(rel='apple-touch-startup-image', href='/images/splash-portrait.gif', media='screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)')
+		link(rel='apple-touch-startup-image', href='/images/splash-landscape.gif', media='screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape) and (-webkit-min-device-pixel-ratio: 1)')
+		link(rel='apple-touch-startup-image', href='/images/splash-landscape-retina.gif', media='screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape) and (-webkit-min-device-pixel-ratio: 2)')
+
 		// Styles
 		style(type='text/css', media='screen')
 		style(type='text/css', media='screen')
@@ -33,7 +35,9 @@ html(xmlns='http://www.w3.org/1999/xhtml')
 		script(type='text/javascript', src='src/jqt.autotitles.min.js')
 		script(type='text/javascript', src='src/add2home.js', charset='utf-8')
 
+		script(src='/javascripts/helper.js', type='text/javascript', charset='utf-8')
 		script(src='/javascripts/main.js', type='text/javascript', charset='utf-8')
+
 	body!= body
 
 	script(type='text/javascript', src='src/itabbar.js')

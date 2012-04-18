@@ -8,9 +8,9 @@ var jQT = new $.jQTouch({
     useFastTouch: true,
     statusBar: 'default',
     preloadImages: [
-            'images/login_background.png',
-            'images/login_r.png'
-		]
+        'images/login_background.png',
+        'images/login_r.png'
+	]
 });
 
 // Main functions:
@@ -20,14 +20,14 @@ Zepto(function ($) {
     // MAIN ENTRY POINT
     // ------------------------------------------
 
-    //    (function main() {
-    //        // window.location = '/iPadLogin'; // console.log('logged');
+    (function main() {
+        // window.location = '/iPadLogin'; // console.log('logged');
 
-    //        $.get('/isUserLoggedIn', function (data) {
-    //            if (data && data.success && data.logged) {
-    //            }
-    //        }, "json");
-    //    })();
+        $.get('/isUserAuthenticated', function () {
+            if (data && data.authenticated) {
+            }
+        }, 'json');
+    })();
 
     // ------------------------------------------
     // HELPER FUNCTIONS
@@ -46,27 +46,29 @@ Zepto(function ($) {
         }
     }
 
-
     // ------------------------------------------
     // LOGIN PAGE
     // ------------------------------------------
 
     $(document).on('click', 'a#loginButton', function (e) {
-        var userName, password;
+        var username, password, token;
 
-        userName = $('#userNameTextbox').val();
+        // Obtain the username and password from the form.
+        username = $('#userNameTextbox').val();
         password = $('#passwordTextbox').val();
 
-        // alert('doLogin(userName, password);');
+        // Create a Base64 encoded token from the credentials.
+        token = 'Basic ' + helper.Base64.encode(username + ':' + password);
 
-        var uri = $(this).attr("href");
-        // alert('Click on: ' + uri + ' was blocked!');
-        $.post('/authenticate', { usr: userName, pw: password }, function (body) {
-            if (body.logged) {
+        // Post the created token and the user's email to the authenticate action.
+        $.post('/authenticate', { email: username, token: token }, function (response) {
+            // If our response indicates that the user has been authenticated...
+            if (response.authenticated) {
+                // ...redirect to the default page.
                 window.location = '/index';
-                // jQT.goTo($('#dashboard'));
             }
-        }, "json")
+        }, 'json');
+
         return false;
     });
 
@@ -75,15 +77,13 @@ Zepto(function ($) {
     // ------------------------------------------
 
     $(document).on('pageAnimationStart', '#dashboard', function (e, info) {
-        console.log('#dashboard start:', e, info)
-        // alert('start dashboard');
-        // window.location = '/iPadLogin';
+        console.log('#dashboard start:', e, info);
     });
 
     $(document).on('pageAnimationEnd', '#dashboard', function (e, info) {
         console.log('#dashboard end:', e, info)
         if (info.direction == 'in') {
-            // alert('portfolios loaded');
+            /* 
             $.ajax({
                 url: '/dashboard',
                 method: 'GET',
@@ -100,7 +100,8 @@ Zepto(function ($) {
                 error: function (xhr, type) {
                     alert(xhr);
                 }
-            });
+            }); 
+            */
         }
     });
 
@@ -110,7 +111,6 @@ Zepto(function ($) {
 
     $(document).on('pageAnimationEnd', '#portfolios', function (e, info) {
         if (info.direction == 'in') {
-            // alert('portfolios loaded');
             $.get('/portfolios', function (data) {
                 rebuildScroll(e.target.id);
                 $('#portfolios_body').html(data);
@@ -118,14 +118,8 @@ Zepto(function ($) {
         }
     });
 
-    //$('#portfoliosButton').bind('click', function (e, info) {
     $('#portfoliosButton').click(function () {
         jQT.goTo($('#portfolios'));
-        //        $.get('/portfolios', function (data) {
-        //            rebuildScroll(e.target.id);
-        //            $('#portfolios_body').html(data);
-        //            
-        //        });
     });
 
     // ------------------------------------------
@@ -172,10 +166,6 @@ Zepto(function ($) {
         
     });
 
-    //    $.ajaxSetup({
-    //        dataType: "json"
-    //    });
-
     $(document).on('ajaxComplete', function (event, request, settings) {
         // Return false to cancel this request.
         var obj = {};
@@ -186,6 +176,6 @@ Zepto(function ($) {
         }
          
         console.log('ajaxComplete', event, request, settings, obj);
-    })
+    });
 
 });
