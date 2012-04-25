@@ -1,4 +1,4 @@
-h2 Details:
+h2.elegant Details:
 ul.rounded
 	li Name: #{name}
 	li Code: #{code}
@@ -6,14 +6,14 @@ ul.rounded
 	li Type: #{type}
 	li Currency: #{analysis.currency}
 	li Is Default: #{analysis.isDefault}
-h2 Benchmarks: #{analysis.benchmarks.length}
+h2.elegant Benchmarks: #{analysis.benchmarks.length}
 ul.rounded
 	- each benchmark in analysis.benchmarks
 		li Name: #{benchmark.name}
 		li Type: #{benchmark.type}
 		li Results: 
 			a(href="#{analysis.results.links.segmentsTreeRootNodeQuery.href}") segmentsTreeRootNodeQuery
-h2 Classifiers:
+h2.elegant Classifiers:
 - if (analysis.classifiers.classifier1)
 	ul.rounded
 		li Classifier1: #{analysis.classifiers.classifier1.name}
@@ -21,7 +21,7 @@ h2 Classifiers:
 	ul.rounded
 		li No classifier available.
 
-h2 Time Periods: #{analysis.results.length}
+h2.elegant Time Periods: #{analysis.results.length}
 ul.rounded
 	- each timePeriod in analysis.results.timePeriods
 		li Start Date: #{timePeriod.startDate}

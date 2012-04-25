@@ -10,7 +10,7 @@ $("#tabbar li").css("width", pourcent + "%");
 
 var clickEventType=((document.ontouchstart!==null)?'click':'touchstart');
 
-$("#tabbar a").bind(clickEventType, function() {
-	$("#tabbar a").addClass("current").not(this).removeClass("current");
-    $("#tabbar div").addClass("current").not(this).removeClass("current");
-});
+//$("#tabbar a").bind(clickEventType, function() {
+//	$("#tabbar a").addClass("current").not(this).removeClass("current");
+//    $("#tabbar div").addClass("current").not(this).removeClass("current");
+//});

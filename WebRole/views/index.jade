@@ -1,20 +1,21 @@
 #page
 	#jqt
-		#dashboard
+		#dashboard // TODO: Change the name in #home
 			.toolbar
-				h1 Dashboard
+				#toolbar_logo
+				// h1 Dashboard
 				// a#portfoliosButton.button(href='#') Portfolios
 			#wrapper
 				#scroller
 					ul.rounded
 						li.arrow 
-							a#portfoliosButton(href='#') Portfolios
+							a#portfoliosButton.slide(href='#portfolios') Portfolios
 						li.arrow 
-							a#eulaButton(href='#') View EULA
+							a#eulaButton.slide(href='#eula') View EULA
 						li.arrow 
-							a#testButton(href='login.htm?url=') Test
+							a#testButton(href='/test.htm', rel='external') Test
 		
-					#dashboard_body
+					#dashboard_partial
 
 		#portfolios
 			.toolbar
@@ -22,7 +23,7 @@
 				a.back(href='#') Back
 			#wrapper
 				#scroller
-					#portfolios_body // change it in #portfolios_partialview
+					#portfolios_partial
 		
 		#portfolioAnalysis
 			.toolbar
@@ -30,15 +31,23 @@
 				a.back(href='#') Back
 			#wrapper
 				#scroller
-					#portfolioAnalysis_body // change it in #portfolios_partialview		
+					#portfolioAnalysis_partial
 		
+		#analysis
+			.toolbar
+				h1 Analysis
+				a.back(href='#') Back
+			#wrapper
+				#scroller
+					#analysis_partial
+
 		#eula
 			.toolbar
 				h1 EULA
 				a.back(href='#') Back
 			#wrapper
 				#scroller
-					#eula_body
+					#eula_partial
 
 		#test
 			.toolbar
@@ -46,7 +55,7 @@
 				a.back(href='login.htm') Back
 			#wrapper
 				#scroller
-					#test_body
+					#test_partial
 
 	#loading
 		p
@@ -55,23 +64,32 @@
 	nav#tabbar
 		ul
 			li
-				a.current.flip(href='#login')
-					strong Revolution
-					.home
+				a#dashboard_tabbar.current.flip(href='#dashboard')
+					strong Home
+					.dashboard
 			li
-				a.flip(href='#dashboard')
-					strong Cloud
-					.rss
-			li
-				a.flip(href='#portfolios')
+				//a#portfolios_tabbar(href="#", onclick="openOneSlot()) // (href="#portfolios")
+				a(onclick="MobileApp.showPortfoliosSlot()")
 					small#badge_portfolios.badge.right(style="display: none;") 99+
 					strong Portfolios
-					.twitter
+					.portfolio
 			li
-				a.flip(href='#flickrlist')
-					strong Trends
-					.flickr
+				//a#analysis_tabbar.flip(href='#')
+				a(onclick="MobileApp.showAnalysisSlot()")
+					strong Analysis
+					.analysis
 			li
-				a.flip(href='#search')
-					strong Search
-					.search2
+				a#about_tabbar.flip(href='#')
+					strong Infos
+					.infos
+			//
+				li
+					select#lol
+						optgroup(label="Swedish Cars")
+							option(value="volvo") Volvo
+							option(value="saab") Saab
+						optgroup(label="German Cars")
+							option(value="mercedes") Mercedes
+							option(value="audi") Audi
+#myloading
+	img(src='img/loading.gif' )

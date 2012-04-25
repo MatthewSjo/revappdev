@@ -12,6 +12,25 @@ var express = require('express'),
 var app = module.exports = express.createServer(),
     port = process.env.port || 1337;
 
+// Create a dynamic manifest
+//var lib = require("./manifest.js");
+
+//lib.mkmanifest({
+//    filename: "cache",
+//    path: "./public",
+//    version: "01",
+//    exclude: [
+//        '/.DS_Store',
+//        '/.htaccess',
+//        '/cache.manifest',
+//        '/themes/scss/.sass-cache/*'
+//        ]
+//    /*
+//    ,network : ['/connect.php','/read.php']
+//    ,fallback : ['/offline.html']
+//    */
+//});
+
 // Server Configuration
 app.configure(function () {
     app.set('views', __dirname + '/views');

@@ -60,13 +60,21 @@ exports.portfolios = function (req, res) {
         top: ''
     };
 
-    webApi.getPortfolios(oData, function (resource) {
-        var viewModel;
+    var datatype = req.query.datatype || '';
 
+    webApi.getPortfolios(oData, datatype, function (resource, datatype) {
+        var viewModel;
         viewModel = resource.data || {};
         viewModel.layout = false;
 
-        res.render('portfolios', viewModel);
+        switch (datatype) {
+            case 'json':
+                res.json(viewModel);
+                break;
+            default:
+                res.render('portfolios', viewModel);
+                break;
+        }
     });
 };
 

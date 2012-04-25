@@ -1,4 +1,4 @@
-$base-color: #D9D9D9;
+$base-color: #363C3F;
 $page-background-color: #ffffff;
 $highlight-color: #3366CC;
 
@@ -27,10 +27,12 @@ $toolbar-button-color: saturate(darken($toolbar-background-color, 10), 20);
     ul {
         li {
             border-top: 1px solid darken($base-color, 5);
-            @include background-gradient(rgba($base-color, .2), matte);
+			background-color: #ffffff;  
+            //@include background-gradient(rgba($base-color, .2), matte);
 
             a {
-                @include color-by-background($base-color);
+				color: #000;
+                // @include color-by-background($base-color);
             }
         
             .toggle input[type="checkbox"] {

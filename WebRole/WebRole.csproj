@@ -311,17 +311,25 @@
     <None Include="node_modules\socket.io\node_modules\socket.io-client\lib\vendor\web-socket-js\flash-src\WebSocketMain.as" />
     <None Include="node_modules\socket.io\node_modules\socket.io-client\lib\vendor\web-socket-js\flash-src\WebSocketMainInsecure.as" />
     <None Include="node_modules\socket.io\node_modules\socket.io-client\lib\vendor\web-socket-js\README.md" />
+    <Content Include="manifest.js" />
+    <Content Include="public\images\btn_asset.png" />
+    <Content Include="public\images\btn_attribution.png" />
+    <Content Include="public\images\btn_balanced.png" />
+    <Content Include="public\images\btn_contribution.png" />
+    <Content Include="public\images\btn_fixed-income.png" />
     <Content Include="public\images\btn_logo.png" />
     <Content Include="public\images\btn_logo2.png" />
+    <Content Include="public\images\btn_performance.png" />
+    <Content Include="public\images\btn_risk.png" />
     <Content Include="public\images\Calendar-Week.png" />
-    <Content Include="public\images\Cloud.png" />
-    <Content Include="public\images\login_background.png" />
-    <Content Include="public\images\login_r.png" />
+    <Content Include="public\images\cloud.png" />
     <Content Include="public\images\splash-landscape-retina.gif" />
     <Content Include="public\images\splash-landscape.gif" />
     <Content Include="public\images\splash-portrait.gif" />
+    <Content Include="public\images\test_chart.png" />
+    <Content Include="public\images\toolbar_logo.png" />
     <Content Include="public\images\trend.png" />
-    <Content Include="public\images\Wallet.png" />
+    <Content Include="public\images\wallet.png" />
     <Content Include="public\img\backButton.png" />
     <Content Include="public\img\iPhoneBackButton.png" />
     <Content Include="public\img\istartup-2.png" />
@@ -350,6 +358,7 @@
     <Content Include="public\img\UIBack.png" />
     <Content Include="public\img\UIBackPressed.png" />
     <Content Include="public\javascripts\chart.js" />
+    <Content Include="public\src\zepto.js" />
     <Content Include="public\src\add2home.js" />
     <Content Include="public\src\add2home.min.js" />
     <Content Include="public\src\ender.js" />
@@ -357,14 +366,28 @@
     <Content Include="public\src\iscroll.js" />
     <Content Include="public\src\itabbar.js" />
     <Content Include="public\src\jqt.autotitles.min.js" />
+    <Content Include="public\src\jquery.tappable.js" />
+    <Content Include="public\src\spinningwheel-min.js" />
+    <Content Include="public\src\spinningwheel.js" />
     <Content Include="public\src\zepto.min.js" />
     <Content Include="public\stylesheets\add2home.css" />
     <Content Include="public\stylesheets\apple.css" />
     <Content Include="public\stylesheets\jqtouch.css" />
     <Content Include="public\stylesheets\login.css" />
     <Content Include="public\stylesheets\itabbar.css" />
+    <Content Include="public\stylesheets\spinningwheel.css" />
     <Content Include="public\stylesheets\style.css" />
+    <Content Include="public\stylesheets\sw-alpha.png" />
+    <Content Include="public\stylesheets\sw-button-cancel.png" />
+    <Content Include="public\stylesheets\sw-button-done.png" />
+    <Content Include="public\stylesheets\sw-header.png" />
+    <Content Include="public\stylesheets\sw-slot-border.png" />
+    <Content Include="public\test.htm" />
+    <Content Include="public\themes\css\login.css" />
     <Content Include="public\themes\css\mobile.css" />
+    <Content Include="public\themes\scss\mobile-dark.css">
+      <DependentUpon>mobile-dark.scss</DependentUpon>
+    </Content>
     <Content Include="routes\web-methods.js" />
     <Content Include="web-api.js" />
     <Content Include="node_modules\socket.io\node_modules\socket.io-client\lib\vendor\web-socket-js\WebSocketMainInsecure.zip" />
@@ -428,6 +451,8 @@
     <None Include="node_modules\socket.io\support\node-websocket-client\Makefile" />
     <None Include="node_modules\socket.io\support\node-websocket-client\package.json" />
     <None Include="node_modules\socket.io\support\node-websocket-client\README.md" />
+    <None Include="public\cache.manifest" />
+    <None Include="public\no_cache.manifest" />
     <None Include="public\themes\compass-recipes\compass-recipes.gemspec" />
     <None Include="public\themes\compass-recipes\config.rb" />
     <None Include="public\themes\compass-recipes\fonts\heydings\heydings_icons.ttf" />
@@ -824,6 +849,13 @@
       <DebugInfo>False</DebugInfo>
     </None>
     <None Include="public\themes\scss\config.rb" />
+    <None Include="public\themes\scss\mobile-dark.scss" />
+    <None Include="public\themes\scss\login.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
     <None Include="public\themes\scss\mobile.scss">
       <Compile>False</Compile>
       <Minify>True</Minify>
@@ -1442,10 +1474,6 @@
     <Content Include="public\src\jqtouch-jquery.min.js" />
     <Content Include="public\src\jqtouch.js" />
     <Content Include="public\src\jqtouch.min.js" />
-    <Content Include="public\src\lib\jquery-1.7.js" />
-    <Content Include="public\src\lib\jquery-1.7.min.js" />
-    <Content Include="public\src\lib\zepto.js" />
-    <Content Include="public\src\lib\zepto.min.js" />
     <Content Include="public\themes\compass-recipes\fonts\iconic\demo.html" />
     <Content Include="public\themes\compass-recipes\fonts\iconic\iconic.css" />
     <Content Include="public\themes\compass-recipes\fonts\iconic\iconic_stroke.svg" />

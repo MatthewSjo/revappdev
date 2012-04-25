@@ -64,7 +64,7 @@ div#jqt #about a
     color: #fff;
     font-weight: bold;
     text-decoration: none;
-} 
+}
 
 /************************************************
  * WRAPPER
@@ -96,6 +96,16 @@ div#jqt #about a
     left: 0;
 }
 
+#toolbar_logo
+{
+    width: 30px;
+    height: 30px;
+    background-image: url('../images/toolbar_logo.png');
+    background-repeat: no-repeat;
+    margin: 0 auto;
+    margin-top: -4px;
+}
+
 /************************************************
  * CUSTOMIZED THEME
  ***********************************************/
@@ -118,3 +128,105 @@ div#jqt #about a
     color: #fff;
 }
 */
+
+#myloading
+{
+    width: 100%;
+    height: 100%; /*-webkit-border-radius: 10px;*/
+    background-color: rgba(0,0,0,.6);
+    position: absolute; /*margin: auto;*/
+    padding: 0px;
+    position: absolute;
+    left: 0;
+    top: 0; /*margin:-16px 0 0 -16px;*/
+    display: none;
+}
+
+#myloading img
+{
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -16px 0 0 -16px;
+}
+
+.float
+{
+    float: left;
+}
+
+.toolbox
+{
+    width: 665px;
+    height: 85px;
+    margin: 0 auto;
+    padding-top: 5px;
+}
+.gray_button
+{
+    width: 80px;
+    height: 80px;
+    background-repeat: no-repeat;
+    float: left;
+    padding-left: 10px;
+    padding-top: 5px;
+}
+
+#btn_asset
+{
+    background-image: url('../images/btn_asset.png');
+}
+#btn_attribution
+{
+    background-image: url('../images/btn_attribution.png');
+}
+#btn_balanced
+{
+    background-image: url('../images/btn_balanced.png');
+}
+#btn_contribution
+{
+    background-image: url('../images/btn_contribution.png');
+}
+#btn_fixed-income
+{
+    background-image: url('../images/btn_fixed-income.png');
+}
+#btn_performance
+{
+    background-image: url('../images/btn_performance.png');
+}
+#btn_risk
+{
+    background-image: url('../images/btn_risk.png');
+}
+.dark-box
+{
+    border-radius: 10px;
+    background-color: #3f3f3f; /*     background-image: -webkit-gradient(linear, center top, center bottom, from(#3f3f3f), to(#3f3f3f));     background-image: -webkit-linear-gradient(top, #3f3f3f, #3f3f3f);     */
+    -webkit-box-shadow: 0 1px 0 white, inset 0 1px 7px rgba(0,0,0,0.4);
+    margin: 10px;
+}
+
+.light-box
+{
+    border-radius: 10px;
+    background-color: #fff; /*     background-image: -webkit-gradient(linear, center top, center bottom, from(#3f3f3f), to(#3f3f3f));     background-image: -webkit-linear-gradient(top, #3f3f3f, #3f3f3f);     */
+    -webkit-box-shadow: 0 1px 0 black, inset 0 1px 7px rgba(0,0,0,0.4);
+    margin: 10px;
+}
+
+.small-list {
+	font-size: 12px;
+}
+
+#jqt .elegant
+{
+    color: #ffffff !important;
+    text-shadow: #000 0 1px 0 !important;
+    font-weight: normal;
+    font-size: 24px;
+    font-family: "BodoniSvtyTwoITCTT-Book" !important;
+}

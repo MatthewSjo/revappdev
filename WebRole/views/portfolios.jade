@@ -1,7 +1,15 @@
-// .scroll
-h1 Portfolios Page
+// h1.elegant(style="padding-top: 10px;") Portfolios
+.dark-box(style="height:85px; padding: 10px;")
+	.toolbox
+		#btn_performance.gray_button
+		#btn_risk.gray_button
+		#btn_asset.gray_button
+		#btn_contribution.gray_button
+		#btn_attribution.gray_button
+		#btn_fixed-income.gray_button
+		#btn_balanced.gray_button
 ul.rounded
 	- each item in items
-		li.arrow 
-			a.defaultAnalysisLink(href="#{item.links.defaultAnalysis.href}") #{item.name}
+		li.arrow
+			a.defaultAnalysisLink(data-link="#{item.links.defaultAnalysis.href}")(href="#portfolioAnalysis") #{item.name}
 			//#{item.links.defaultAnalysis.href}

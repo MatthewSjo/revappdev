@@ -180,7 +180,7 @@ exports.initService = function (email, token, uri, callback) {
 //                may be null, and an error property, which will either be boolean false 
 //                (indicating that the request was successful), a boolean true, or a 
 //                complete error object (both indicating that the request failed).
-exports.getPortfolios = function (oData, callback) {
+exports.getPortfolios = function (oData, datatype, callback) {
     var options, portfoliosQuery;
 
     // Format a portfolio querystring based on the oData and the portfolio resource link.
@@ -191,7 +191,7 @@ exports.getPortfolios = function (oData, callback) {
 
     // Attempt to get a list of the user's portfolios, filtered by the query.
     getResource('portfolios', options, function (resource) {
-        callback(resource);
+        callback(resource, datatype);
     });
 };
 

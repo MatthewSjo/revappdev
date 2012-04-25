@@ -1,7 +1,8 @@
 !!! strict
 html(xmlns='http://www.w3.org/1999/xhtml')
-	
+	//, manifest="no_cache.manifest" 
 	head
+		title Revolution
 		// itabbar metatags.
 		meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
 		meta(name='viewport', content='width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0')
@@ -18,19 +19,23 @@ html(xmlns='http://www.w3.org/1999/xhtml')
 		// Styles
 		style(type='text/css', media='screen')
 		style(type='text/css', media='screen')
-			@import "/themes/css/mobile.css";
+			@import "/themes/css/mobile-dark.css";
+		style(type='text/css', media='screen')
+			@import "/themes/css/login.css";
 
 		// itabbar stuffs.
 		link(rel='stylesheet', href='stylesheets/itabbar.css')
 		link(rel='stylesheet', href='stylesheets/style.css')
 		link(rel='stylesheet', href='stylesheets/add2home.css')
-
+		link(rel='stylesheet', href='stylesheets/spinningwheel.css')
 		link(rel='stylesheet', href='stylesheets/login.css')
 
 		// Scripts
 		script(src='/src/iscroll.js', type='text/javascript', charset='utf-8')
-		script(src='/src/lib/zepto.js', type='text/javascript', charset='utf-8')
+		script(src='/src/zepto.js', type='text/javascript', charset='utf-8')
 		script(src='/src/jqtouch.js', type='text/javascript', charset='utf-8')
+		script(src='/src/jquery.tappable.js', type='text/javascript', charset='utf-8')
+		script(src='/src/spinningwheel.js', type='text/javascript', charset='utf-8')
 
 		script(type='text/javascript', src='src/jqt.autotitles.min.js')
 		script(type='text/javascript', src='src/add2home.js', charset='utf-8')
