@@ -42,6 +42,7 @@ MobileApp = (function () {
         autenticate: '/authenticate',
         index: '/index',
         portfolioAnalysis: '/portfolioAnalysis',
+        analysis: '/analysis',
         eula: '/eula'
     };
 
@@ -111,7 +112,7 @@ MobileApp = (function () {
         // Portfolios
         $(document).on('pageAnimationEnd', appPages.portfolios, onPortfolioEnd);
 
-        // Portfolios Analysis
+        // Analysis
         $(document).on('click', appElements.portfolioAnalysisLink, onPortfolioAnalysisClick);
 
         // EULA
@@ -223,9 +224,9 @@ MobileApp = (function () {
 
     function onPortfolioAnalysisClick(e) {
         var uri = $(this).attr("data-link");
-        $.post(siteUrls.portfolioAnalysis, { uri: uri }, function (data) {
-            mobileApp.scroll.rebuild('portfolioAnalysis');
-            $(partial(appPages.portfolioAnalysis)).html(data);
+        $.post(siteUrls.analysis, { uri: uri }, function (data) {
+            mobileApp.scroll.rebuild('analysis');
+            $(partial(appPages.analysis)).html(data);
         });
         return false;
     }
@@ -351,9 +352,9 @@ MobileApp = (function () {
     mobileApp.scroll = (function () {
         var myScroll, scroll = {};
 
-        function rebuildScroll(id) {
+        function rebuildScroll(id, optionConfig) {
             var wrapper = 'div#' + id + ' #wrapper',
-                options = {}; // { hScrollbar: false, vScrollbar: true }
+                options = optionConfig || {}; // { hScrollbar: false, vScrollbar: true }
 
             if (myScroll) {
                 myScroll.destroy();

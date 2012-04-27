@@ -1,0 +1,49 @@
+#analysisSummaryTitle
+	.summaryTitle
+		- if (name.indexOf(' ') === -1)
+			h2(style='word-break: break-all;') #{name}
+		- else
+			h2 #{name}
+		- each benchmark in analysis.benchmarks
+			h3 vs #{benchmark.name}
+
+	.summaryReturn
+		.summaryReturn
+			h2 +17.084%
+			h3 Return (#{analysis.currency})
+		.summaryReturn
+			h2 2.613%
+			h3 Value at Risk
+
+.analysisSummarySection
+	h2 Performance
+	.analysisComponentContainer
+		#performance_line
+
+.analysisSummarySection
+	h2 Absolute Monthly Returns (#{analysis.currency})
+	.analysisComponentContainer
+		#absolute_performance
+
+.analysisSummarySection
+	h2 Performance Summary Statistics
+	.analysisComponentContainer
+		#performance_grid
+
+.analysisSummarySection
+	h2 Risk vs Return
+	.analysisComponentContainer
+		#performance_bubble
+
+.analysisSummarySection
+	h2 Portfolio Weight vs Portfolio Return
+	.analysisComponentContainer
+		#performance_heatmap
+
+// .analysisSummarySection
+	h2 % Value at Risk
+	.analysisComponentContainer
+		#risk_gauge
+
+script(type='text/javascript')
+	$(document).trigger('chartContainerReady');

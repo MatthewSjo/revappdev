@@ -78,6 +78,7 @@ app.get('/eula', routes.eula);
 
 // Site Routes (POST):
 app.post('/authenticate', routes.authenticate);
+app.post('/analysis', routes.analysis);
 app.post('/portfolioAnalysis', routes.portfolioAnalysis);
 
 // Web Methods:

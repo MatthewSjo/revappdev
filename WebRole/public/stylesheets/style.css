@@ -67,6 +67,56 @@ div#jqt #about a
 }
 
 /************************************************
+ * ANALYSIS
+ ***********************************************/
+
+#analysisSummaryTitle, .analysisSummarySection { margin: 0 30px; padding: 30px 0; border-bottom: 1px solid #000000; }
+.analysisSummarySection { border-top: 1px solid #999999; }
+
+.summaryTitle, .summaryReturn { display: inline-block; width: 50% !important; vertical-align: top; }
+.summaryReturn { text-align: right; }
+ 
+#analysis_partial h2, #analysis_partial h3 {
+    font-family: Futura-CondensedExtraBold !important;
+    font-weight: bold !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-transform: uppercase;
+    -webkit-margin-before: 0 !important;
+    -webkit-margin-after: 0 !important; 
+    text-shadow: none !important;
+    line-height: 0.9 !important;
+    font-size: 20pt;
+}
+ 
+.summaryTitle h2 { font-size: 40pt !important; color: #ffffff !important; }
+.summaryReturn h2 { font-size: 40pt !important; color: #18c900 !important; letter-spacing: -2pt; }
+.summaryTitle h3 { font-size: 20pt !important; color: #000000 !important; }
+.summaryReturn h3 { font-size: 20pt !important; color: #000000 !important; } 
+
+.analysisComponentContainer {
+    margin: 15px 0 0 0;
+    padding: 15px;
+    border: 1px solid #000000;
+    background-color: #ffffff;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
+
+#absolute_performance {
+    height: 500px;
+}
+
+#performance_bubble, #performance_heatmap, #performance_line {
+    height: 500px;
+}
+
+.headerRow { font-family: Futura-CondensedExtraBold !important; font-size: 20pt; }
+.tableRow, .oddTableRow { font-family: Futura-Medium !important; }
+.oddTableRow { background-color: #dddddd; }
+
+/************************************************
  * WRAPPER
  ***********************************************/
 #wrapper
