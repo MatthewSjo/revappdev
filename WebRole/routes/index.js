@@ -20,11 +20,6 @@ exports.index = function (req, res) {
     res.render('index');
 };
 
-// Login Page
-exports.login = function (req, res) {
-    res.render('login');
-};
-
 // Authentication
 exports.authenticate = function (req, res, next) {
     var email, token;

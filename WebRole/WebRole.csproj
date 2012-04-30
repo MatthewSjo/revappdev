@@ -322,7 +322,10 @@
     <Content Include="public\images\btn_performance.png" />
     <Content Include="public\images\btn_risk.png" />
     <Content Include="public\images\Calendar-Week.png" />
+    <Content Include="public\images\calendar.png" />
     <Content Include="public\images\cloud.png" />
+    <Content Include="public\images\info.png" />
+    <Content Include="public\images\more.png" />
     <Content Include="public\images\splash-landscape-retina.gif" />
     <Content Include="public\images\splash-landscape.gif" />
     <Content Include="public\images\splash-portrait.gif" />
@@ -905,7 +908,6 @@
     <None Include="views\eula.jade" />
     <None Include="views\portfolioAnalysis.jade" />
     <None Include="views\dashboard.jade" />
-    <None Include="views\login.jade" />
     <None Include="views\portfolios.jade" />
     <None Include="views\index.jade" />
     <None Include="views\layout.jade" />

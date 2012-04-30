@@ -1,8 +1,23 @@
 #page
 	#jqt
+		#login.login_background
+			#login_content
+				.login_r
+				ul.rounded.login_style
+					li.login_style
+						div
+							input#userNameTextbox.login_style(type='email', placeholder='User Name', name='user[username]', value='asa.fama@statpro.com')
+					li.login_style
+						div
+							input#passwordTextbox.login_style(type='password', placeholder='Password', name='user[password]', value='StatPro123')
+				ul.rounded
+					li.login_button
+						a#loginButton(href='#') Login
+				p.login_style Sign Up | Support
 		#home
 			.toolbar
 				#toolbar_logo
+				a.back(href='#') Log out
 				// h1 Revolution
 				// a#portfoliosButton.button(href='#') Portfolios
 			#wrapper
@@ -57,37 +72,9 @@
 				#scroller
 					#test_partial
 
-	nav#tabbar
+	// nav#tabbar(style="display: none")
+	nav#tabbar(style="opacity: 0; -webkit-transition: opacity 0.25s linear 0.25s;")
 		ul
-			li
-				a#tabbar_btnHome
-					strong Home
-					.home
-			li
-				a#tabbar_btnPortfolios
-					small#badge_portfolios.badge.right(style="display: none;") 99+
-					strong Portfolios
-					.portfolios
-			li
-				a#tabbar_btnAnalysis
-					strong Analysis
-					.analysis
-			li
-				a#tabbar_btnTimePeriods
-					strong Time Periods
-					.timeperiods
-			li
-				a#tabbar_btnInfos
-					strong Infos
-					.infos
-			//
-				li
-					select#lol
-						optgroup(label="Swedish Cars")
-							option(value="volvo") Volvo
-							option(value="saab") Saab
-						optgroup(label="German Cars")
-							option(value="mercedes") Mercedes
-							option(value="audi") Audi
+
 #myloading
 	img(src='img/loading.gif' )

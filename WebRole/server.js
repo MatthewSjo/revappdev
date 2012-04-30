@@ -70,7 +70,7 @@ debugger;   // Using debugger here doesn't stop the execution but it's necessary
 // ------------------------------------------
 
 // Site Routes (GET):
-app.get('/', routes.login);
+app.get('/', routes.index);
 app.get('/index', routes.index);
 app.get('/dashboard', isAuthenticated, routes.dashboard);
 app.get('/eula', routes.eula);

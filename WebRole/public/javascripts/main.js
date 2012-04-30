@@ -404,9 +404,9 @@ MobileApp = (function () {
     mobileApp.scroll = (function () {
         var myScroll, scroll = {};
 
-        function rebuildScroll(id) {
+        function rebuildScroll(id, optionConfig) {
             var wrapper = 'div#' + id + ' #wrapper',
-                options = {}; // { hScrollbar: false, vScrollbar: true }
+                options = optionConfig || {}; // { hScrollbar: false, vScrollbar: true }
 
             if (myScroll) {
                 myScroll.destroy();
@@ -438,46 +438,124 @@ MobileApp = (function () {
     // TAB BAR
     // ------------------------------------------
 
-    
-
     mobileApp.tabbar = (function () {
-        var tabbar          = {},
-            btnHome         = '#tabbar_btnHome',
-            btnPortfolios   = '#tabbar_btnPortfolios',
-            btnAnalysis     = '#tabbar_btnAnalysis',
-            btnTimePeriods  = '#tabbar_btnTimePeriods',
-            btnInfos        = '#tabbar_btnInfos';
+        var tabbar = {},
+            tabbarId = '',
+            buttons = [],
+            buttonIndices = {},
+            visible = true;
 
         // Add event handlers to the object.
         eventManager.init(this);
 
-        $(document).on('tap', btnHome, function () { raiseEvent('onHomeTap'); });
-        $(document).on('tap', btnPortfolios, function () { raiseEvent('onPortfoliosTap'); });
-        $(document).on('tap', btnAnalysis, function () { raiseEvent('onAnalysisTap'); });
-        $(document).on('tap', btnTimePeriods, function () { raiseEvent('onTimePeriodsTap'); });
-        $(document).on('tap', btnInfos, function () { raiseEvent('onInfosTap'); });
+        function capitaliseFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        function hide() {
+            $(tabbarId).hide();
+        }
+
+        function show() {
+            // $(tabbarId).show();
+            // $(tabbarId).css({ transition: 'visibility 1s ease-in-out' }); //show();
+            $(tabbarId).css({ opacity: 1 }); 
+        }
+
+        function getButton(index) {
+            if (typeof index == 'string') {
+                index = buttonIndices[index];
+            }
+
+            return buttons[index];
+        }
+
+        function create(tabbarConfig) {
+            var buttonPrefix = tabbarConfig.buttonPrefix || 'tabbar_btn',
+                badgePrefix = 'tabbar_badge';
+
+            tabbarId = tabbarConfig.tabbarId || 'nav#tabbar';
+            visible = (typeof tabbarConfig.visible == 'boolean')
+                ? tabbarConfig.visible
+                : true;
+
+            $.each(tabbarConfig.items, function (i, val) {
+                var id = capitaliseFirstLetter(val.id),
+                    itemsCount = tabbarConfig.items.length || 1,
+                    buttonWidth = 100 / itemsCount;
+
+                buttonIndices[val.id] = i;
+                buttons[i] = {
+                    id: val.id,
+                    linkId: buttonPrefix + id,
+                    badgeId: badgePrefix + id,
+                    title: val.title,
+                    class: val.class,
+                    eventHandler: 'on' + id + 'Tap',
+                    isDisabled: false,
+                    setDisabled: function (disabled) {
+                        var opacity = (disabled) ? 0.20 : 1,
+                            badgeBackColor = (disabled) ? '#333' : '#f00';
+
+                        this.isDisabled = disabled;
+                        $('#' + this.linkId).css({ opacity: opacity });
+                        $('#' + this.badgeId).css({ backgroundColor: badgeBackColor });
+
+                    },
+                    setBadgeText: function (text) {
+                        var badge = $('#' + this.badgeId),
+                            displayBadge = true;
+
+                        if (text) {
+                            badge.html(text);
+                            badge.show();
+                        } else {
+                            badge.hide();
+                        }
+                    }
+                };
+
+                $(tabbarId + ' ul').append(
+                    $('<li>').css('width', buttonWidth + '%').append(
+                        $('<a>').attr('id', buttons[i].linkId).append(
+                            $('<small>').attr({
+                                id: buttons[i].badgeId,
+                                class: 'badge right',
+                                style: 'display: none;'
+                            })).append(
+                            $('<strong>').append(buttons[i].title)).append(
+                            $('<div>').attr('class', buttons[i].class)
+                        )));
+            });
+
+            $(tabbarId + ' ul li a').each(function (i) {
+                $(this).on('tap', function () {
+                    if (!buttons[i].isDisabled) {
+                        raiseEvent(buttons[i].eventHandler);
+                    } else {
+                        log(buttons[i].title + ' is disabled');
+                    }
+                });
+            });
+
+            if (!visible) {
+                // $(tabbarId).hide();
+                $(tabbarId).css({ opacity: 0 }); 
+            } else {
+                // $(tabbarId).show();
+                $(tabbarId).css({ opacity: 1 }); 
+            }
+        }
 
         tabbar.on = on;
+        tabbar.create = create;
+        tabbar.hide = hide;
+        tabbar.show = show;
+        tabbar.buttons = buttons;
+        tabbar.getButton = getButton;
 
         return tabbar;
     })();
-
-    mobileApp.tabbar.on('onPortfoliosTap', function () {
-        mobileApp.slot.showPortfolios();
-    });
-
-    mobileApp.tabbar.on('onPortfoliosTap', function () {
-        mobileApp.slot.showPortfolios();
-    });
-
-    mobileApp.tabbar.on('onAnalysisTap', function () {
-        mobileApp.slot.showAnalysis();
-    });
-
-    mobileApp.tabbar.on('onTimePeriodsTap', function () {
-        mobileApp.slot.showTimePeriods();
-    });
-
 
     // ------------------------------------------
     // HELPER FUNCTIONS
@@ -581,7 +659,19 @@ MobileApp = (function () {
             // If our response indicates that the user has been authenticated...
             if (response.authenticated) {
                 // ...redirect to the default page.
-                navigateTo(siteUrls.index);
+                // navigateTo(siteUrls.index);
+                // goToPage('#home');
+                //jQT.goTo($('#home')); //, 'fade'
+                /*
+                slideupSelector: '.slideup'
+                dissolveSelector: '.dissolve'
+                fadeSelector: '.fade'
+                flipSelector: '.flip'
+                popSelector: '.pop'
+                swapSelector: '.swap'
+                */
+                mobileApp.tabbar.show();
+                jQT.goTo($('#home'), 'dissolve');
             }
         }, 'json');
 
@@ -639,12 +729,21 @@ MobileApp = (function () {
 
     function onPortfolioAnalysisClick(e) {
         var uri = $(this).attr("data-link");
-        $.post(siteUrls.portfolioAnalysis, { uri: uri }, function (data) {
-            mobileApp.scroll.rebuild('portfolioAnalysis');
-            $(partial(appPages.portfolioAnalysis)).html(data);
+        $.post(siteUrls.analysis, { uri: uri }, function (data) {
+            mobileApp.scroll.rebuild('analysis');
+            $(partial(appPages.analysis)).html(data);
         });
         return false;
     }
+
+    //    function onPortfolioAnalysisClick(e) {
+    //        var uri = $(this).attr("data-link");
+    //        $.post(siteUrls.portfolioAnalysis, { uri: uri }, function (data) {
+    //            mobileApp.scroll.rebuild('portfolioAnalysis');
+    //            $(partial(appPages.portfolioAnalysis)).html(data);
+    //        });
+    //        return false;
+    //    }
 
     // ------------------------------------------
     // EULA PAGE
@@ -770,6 +869,56 @@ Zepto(function ($) {
     console.log('Hello from zepto');
     MobileApp.onDocumentReady();
 
+    var tabbarConfig = {
+        tabbarId: 'nav#tabbar',
+        buttonPrefix: 'tabbar_btn',
+        visible: false,
+        items: [
+            { id: 'home', title: 'Home', class: 'home' },
+            { id: 'portfolios', title: 'Portfolios', class: 'portfolios' },
+            { id: 'analysis', title: 'Analysis', class: 'analysis' },
+            { id: 'timePeriods', title: 'Time Periods', class: 'timeperiods' },
+            { id: 'infos', title: 'Infos', class: 'infos' },
+            { id: 'more', title: 'More', class: 'more' }
+        ]
+    };
+
+    MobileApp.tabbar.create(tabbarConfig);
+
+    MobileApp.tabbar.on('onHomeTap', function () {
+        // MobileApp.tabbar.hide();
+        // MobileApp.tabbar.buttons[0].setDisabled(true);
+        MobileApp.tabbar.getButton(0).setDisabled(true);
+        MobileApp.tabbar.getButton(1).setBadgeText('99');
+        MobileApp.tabbar.getButton(1).setDisabled(true);
+        MobileApp.tabbar.getButton('infos').setDisabled(false);
+    });
+
+    MobileApp.tabbar.on('onPortfoliosTap', function () {
+        MobileApp.slot.showPortfolios();
+    });
+
+    MobileApp.tabbar.on('onAnalysisTap', function () {
+        MobileApp.slot.showAnalysis();
+    });
+
+    MobileApp.tabbar.on('onTimePeriodsTap', function () {
+        MobileApp.slot.showTimePeriods();
+    });
+
+    MobileApp.tabbar.on('onInfosTap', function () {
+//        MobileApp.tabbar.getButton('home').setDisabled(false);
+//        MobileApp.tabbar.getButton(1).setDisabled(false);
+        //        MobileApp.tabbar.getButton(1).setBadgeText('!');
+
+        jQT.goTo($('#portfolios'), 'pop');
+    });
+
+    MobileApp.tabbar.on('onMoreTap', function () {
+        location.reload();
+        // jQT.goTo($('#login'), 'cube');
+    });
+
     MobileApp.slot.on('onPortfoliosSlotDone', function (data) {
         alert(data);
         MobileApp.updateTabBar(data);
@@ -779,6 +928,8 @@ Zepto(function ($) {
         alert(data);
         // MobileApp.updateTabBar(data);
     });
+
+
 
     function selectTabbarItem(item) {
         var tabbarItem = $('#' + item + '_tabbar');
