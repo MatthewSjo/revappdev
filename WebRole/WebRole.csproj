@@ -357,11 +357,17 @@
     <Content Include="public\img\transparent button\stars.png" />
     <Content Include="public\img\UIBack.png" />
     <Content Include="public\img\UIBackPressed.png" />
-    <Content Include="public\javascripts\chart.js" />
+    <Content Include="public\javascripts\charts\performanceLineChart.js" />
+    <Content Include="public\javascripts\charts\performanceHeatmapChart.js" />
+    <Content Include="public\javascripts\charts\riskGaugeChart.js" />
+    <Content Include="public\javascripts\charts\performanceBubbleChart.js" />
+    <Content Include="public\javascripts\charts\performanceSummaryGrid.js" />
+    <Content Include="public\javascripts\charts\performanceColumnChart.js" />
     <Content Include="public\src\zepto.js" />
     <Content Include="public\src\add2home.js" />
     <Content Include="public\src\add2home.min.js" />
     <Content Include="public\src\ender.js" />
+    <Content Include="public\src\gesture.js" />
     <Content Include="public\src\iscroll-lite.js" />
     <Content Include="public\src\iscroll.js" />
     <Content Include="public\src\itabbar.js" />
@@ -895,6 +901,7 @@
       <CompileStyle>Nested</CompileStyle>
       <DebugInfo>False</DebugInfo>
     </None>
+    <None Include="views\analysis.jade" />
     <None Include="views\eula.jade" />
     <None Include="views\portfolioAnalysis.jade" />
     <None Include="views\dashboard.jade" />

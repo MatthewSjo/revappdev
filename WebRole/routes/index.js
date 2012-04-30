@@ -38,16 +38,22 @@ exports.authenticate = function (req, res, next) {
 
     // Attempt to consume the service.
     webApi.initService(email, token, webApiUri, function (resource) {
+        var obj;
+
+        // Create an object to pass down as JSON to the calling function.
+        obj = { authenticated: !resource.error };
 
         // If the authentication was successful...
         if (!resource.error) {
             // Persist our authorization token in a session variable.
             req.session.token = token;
+            // Also pass down the number of portfolios available to the user.
+            obj.portfolioTotal = resource.data.portfolios.total;
         }
 
         // Respond with a confirmation object, indicating whether the
         // user's credentials have been accepted by the service.
-        res.json({ authenticated: !resource.error });
+        res.json(obj);
     });
 };
 
@@ -93,6 +99,16 @@ exports.portfolioAnalysis = function (req, res) {
                 res.render('portfolioAnalysis', viewModel);
                 break;
         }
+    });
+};
+
+// Analysis
+exports.analysis = function (req, res) {
+    webApi.getPortfolioAnalysis(req.body.uri, function (analysis) {
+        var viewModel = {};
+        viewModel = analysis.data || {};
+        viewModel.layout = false;
+        res.render('analysis', viewModel);
     });
 };
 

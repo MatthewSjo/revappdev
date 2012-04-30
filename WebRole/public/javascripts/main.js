@@ -41,6 +41,7 @@ MobileApp = (function () {
         autenticate: '/authenticate',
         index: '/index',
         portfolioAnalysis: '/portfolioAnalysis',
+        analysis: '/analysis',
         eula: '/eula'
     };
 
