@@ -384,10 +384,8 @@
     <Content Include="public\stylesheets\sw-slot-border.png" />
     <Content Include="public\test.htm" />
     <Content Include="public\themes\css\login.css" />
+    <Content Include="public\themes\css\mobile-dark.css" />
     <Content Include="public\themes\css\mobile.css" />
-    <Content Include="public\themes\scss\mobile-dark.css">
-      <DependentUpon>mobile-dark.scss</DependentUpon>
-    </Content>
     <Content Include="routes\web-methods.js" />
     <Content Include="web-api.js" />
     <Content Include="node_modules\socket.io\node_modules\socket.io-client\lib\vendor\web-socket-js\WebSocketMainInsecure.zip" />
@@ -849,7 +847,12 @@
       <DebugInfo>False</DebugInfo>
     </None>
     <None Include="public\themes\scss\config.rb" />
-    <None Include="public\themes\scss\mobile-dark.scss" />
+    <None Include="public\themes\scss\mobile-dark.scss">
+      <Compile>False</Compile>
+      <Minify>True</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </None>
     <None Include="public\themes\scss\login.scss">
       <Compile>False</Compile>
       <Minify>True</Minify>

@@ -73,11 +73,11 @@ debugger;   // Using debugger here doesn't stop the execution but it's necessary
 app.get('/', routes.login);
 app.get('/index', routes.index);
 app.get('/dashboard', isAuthenticated, routes.dashboard);
-app.get('/portfolios', routes.portfolios);
 app.get('/eula', routes.eula);
 
 // Site Routes (POST):
 app.post('/authenticate', routes.authenticate);
+app.post('/portfolios', routes.portfolios);
 app.post('/portfolioAnalysis', routes.portfolioAnalysis);
 
 // Web Methods:

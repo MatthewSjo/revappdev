@@ -53,25 +53,24 @@ exports.authenticate = function (req, res, next) {
 
 // Portfolios List
 exports.portfolios = function (req, res) {
-    var oData = {
-        filter: '', // 'Code eq "EQUITY5"',
-        orderby: '',
-        skip: '',
-        top: ''
-    };
-
-    var datatype = req.query.datatype || '';
+    var datatype = req.body.datatype || '',
+        oData = req.body.oData || {
+            filter: '', // 'Code eq "EQUITY5"',
+            orderby: '',
+            skip: '',
+            top: ''
+        };
 
     webApi.getPortfolios(oData, datatype, function (resource, datatype) {
         var viewModel;
         viewModel = resource.data || {};
-        viewModel.layout = false;
 
         switch (datatype) {
             case 'json':
                 res.json(viewModel);
                 break;
             default:
+                viewModel.layout = false;
                 res.render('portfolios', viewModel);
                 break;
         }
@@ -80,11 +79,20 @@ exports.portfolios = function (req, res) {
 
 // Portfolio Analysis
 exports.portfolioAnalysis = function (req, res) {
+    var datatype = req.body.datatype || '';
     webApi.getPortfolioAnalysis(req.body.uri, function (analysis) {
         var viewModel = {};
         viewModel = analysis.data || {};
-        viewModel.layout = false;
-        res.render('portfolioAnalysis', viewModel);
+        
+        switch (datatype) {
+            case 'json':
+                res.json(viewModel);
+                break;
+            default:
+                viewModel.layout = false;
+                res.render('portfolioAnalysis', viewModel);
+                break;
+        }
     });
 };
 

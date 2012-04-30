@@ -1,9 +1,9 @@
 #page
 	#jqt
-		#dashboard // TODO: Change the name in #home
+		#home
 			.toolbar
 				#toolbar_logo
-				// h1 Dashboard
+				// h1 Revolution
 				// a#portfoliosButton.button(href='#') Portfolios
 			#wrapper
 				#scroller
@@ -15,7 +15,7 @@
 						li.arrow 
 							a#testButton(href='/test.htm', rel='external') Test
 		
-					#dashboard_partial
+					#home_partial
 
 		#portfolios
 			.toolbar
@@ -57,29 +57,27 @@
 				#scroller
 					#test_partial
 
-	#loading
-		p
-			img(src='img/loading.gif')
-
 	nav#tabbar
 		ul
 			li
-				a#dashboard_tabbar.current.flip(href='#dashboard')
+				a#tabbar_btnHome
 					strong Home
-					.dashboard
+					.home
 			li
-				//a#portfolios_tabbar(href="#", onclick="openOneSlot()) // (href="#portfolios")
-				a(onclick="MobileApp.showPortfoliosSlot()")
+				a#tabbar_btnPortfolios
 					small#badge_portfolios.badge.right(style="display: none;") 99+
 					strong Portfolios
-					.portfolio
+					.portfolios
 			li
-				//a#analysis_tabbar.flip(href='#')
-				a(onclick="MobileApp.showAnalysisSlot()")
+				a#tabbar_btnAnalysis
 					strong Analysis
 					.analysis
 			li
-				a#about_tabbar.flip(href='#')
+				a#tabbar_btnTimePeriods
+					strong Time Periods
+					.timeperiods
+			li
+				a#tabbar_btnInfos
 					strong Infos
 					.infos
 			//
