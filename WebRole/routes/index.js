@@ -6,7 +6,11 @@ var host = 'revapidev.statpro.com',
     url = '/v1/',
     webApiUri = 'https://revapidev.statpro.com/v1/',
     http = require('http'),
-    webApi = require('../web-api');
+    webApi = require('../web-api'),
+    lang = require('../languages');
+
+var currentLanguage = {},
+    defaultLanguage = 'en_US';
 
 // ------------------------------------------
 // VIEW ROUTING
@@ -17,7 +21,12 @@ var host = 'revapidev.statpro.com',
 
 // Homepage
 exports.index = function (req, res) {
-    res.render('index');
+    var viewModel = {};
+
+    currentLanguage = lang[req.query.lang] || lang[defaultLanguage];
+    viewModel.lang = currentLanguage;
+    var a = viewModel.lang.loginText;
+    res.render('index', viewModel);
 };
 
 // Authentication

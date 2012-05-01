@@ -435,7 +435,7 @@ MobileApp = (function () {
     })();
 
     // ------------------------------------------
-    // TAB BAR
+    // TABBAR
     // ------------------------------------------
 
     mobileApp.tabbar = (function () {
@@ -459,7 +459,7 @@ MobileApp = (function () {
         function show() {
             // $(tabbarId).show();
             // $(tabbarId).css({ transition: 'visibility 1s ease-in-out' }); //show();
-            $(tabbarId).css({ opacity: 1 }); 
+            $(tabbarId).css({ opacity: 1 });
         }
 
         function getButton(index) {
@@ -540,10 +540,10 @@ MobileApp = (function () {
 
             if (!visible) {
                 // $(tabbarId).hide();
-                $(tabbarId).css({ opacity: 0 }); 
+                $(tabbarId).css({ opacity: 0 });
             } else {
                 // $(tabbarId).show();
-                $(tabbarId).css({ opacity: 1 }); 
+                $(tabbarId).css({ opacity: 1 });
             }
         }
 
@@ -555,6 +555,29 @@ MobileApp = (function () {
         tabbar.getButton = getButton;
 
         return tabbar;
+    })();
+
+    // ------------------------------------------
+    // NAVIGATION
+    // ------------------------------------------
+
+    mobileApp.nav = (function () {
+        var auth = {};
+
+        // Navigate to an external page.
+        function navigateTo(url) {
+            window.location = url;
+        }
+
+        // Future uses.
+        function goToPage(idPage, animation) {
+            jQT.goTo($(idPage), 'fade');
+        }
+
+        auth.goToPage = goToPage;
+
+        return auth;
+
     })();
 
     // ------------------------------------------
@@ -588,7 +611,7 @@ MobileApp = (function () {
         $(document).on('ajaxComplete', onAjaxComplete);
 
         // Login
-        $(appElements.loginButton).tappable(onLoginButtonClick);
+        // $(appElements.loginButton).tappable(onLoginButtonClick);
 
         // Blank Page
         $(document).on('pageAnimationEnd', appPages.blank, onBlankEnd);
@@ -640,6 +663,39 @@ MobileApp = (function () {
     // ------------------------------------------
     // LOGIN
     // ------------------------------------------
+
+    // Require helper.js
+    mobileApp.auth = (function () {
+        var auth = {};
+
+        // Add event handlers to the object.
+        eventManager.init(this);
+
+        function doLogin(username, password) {
+            var token;
+
+            // Create a Base64 encoded token from the credentials.
+            token = 'Basic ' + helper.Base64.encode(username + ':' + password);
+
+            // Post the created token and the user's email to the authenticate action.
+            $.post(siteUrls.autenticate, { email: username, token: token }, function (response) {
+                // If our response indicates that the user has been authenticated...
+                if (response.authenticated) {
+                    raiseEvent('onLoginSuccess');
+                    // mobileApp.tabbar.show();
+                    // jQT.goTo($('#home'), 'dissolve');
+                } else {
+                    raiseEvent('onLoginFailed');
+                }
+            }, 'json');
+        }
+
+        auth.on = on;
+        auth.doLogin = doLogin;
+
+        return auth;
+
+    })();
 
     function onLoginButtonClick() {
         log('onLoginButtonClick');
@@ -860,12 +916,36 @@ MobileApp = (function () {
 
     mobileApp.updateTabBar = updateTabBar;
     mobileApp.timePeriodsSlot = appRepositories.timePeriodsSlot;
+    mobileApp.pages = appPages;
+
     // Returns the mobile app.
     return mobileApp;
 })();
 
 // Main functions:
 Zepto(function ($) {
+    // App pages.
+    var appPages = {
+        blank: '#blank_page',
+        dashboard: '#dashboard',
+        home: '#home',
+        portfolios: '#portfolios',
+        portfolioAnalysis: '#portfolioAnalysis',
+        analysis: '#analysis',
+        eula: '#eula'
+    };
+
+    // Elements.
+    var appElements = {
+        portfolioAnalysisLink: '.defaultAnalysisLink',
+        toolbar: '.toolbar',
+        loginButton: '#loginButton',
+        loadingMask: '#myloading',
+        userNameTextbox: '#userNameTextbox',
+        passwordTextbox: '#passwordTextbox'
+    };
+
+
     console.log('Hello from zepto');
     MobileApp.onDocumentReady();
 
@@ -907,8 +987,8 @@ Zepto(function ($) {
     });
 
     MobileApp.tabbar.on('onInfosTap', function () {
-//        MobileApp.tabbar.getButton('home').setDisabled(false);
-//        MobileApp.tabbar.getButton(1).setDisabled(false);
+        //        MobileApp.tabbar.getButton('home').setDisabled(false);
+        //        MobileApp.tabbar.getButton(1).setDisabled(false);
         //        MobileApp.tabbar.getButton(1).setBadgeText('!');
 
         jQT.goTo($('#portfolios'), 'pop');
@@ -918,6 +998,23 @@ Zepto(function ($) {
         location.reload();
         // jQT.goTo($('#login'), 'cube');
     });
+
+    // Login
+    $(appElements.loginButton).on('tap', function () {
+        var username, password;
+
+        // Obtain the username and password from the form.
+        username = $(appElements.userNameTextbox).val();
+        password = $(appElements.passwordTextbox).val();
+
+        MobileApp.auth.doLogin(username, password);
+    });
+
+    MobileApp.auth.on('onLoginSuccess', function () {
+        MobileApp.nav.goToPage($(appPages.home), 'dissolve');
+        MobileApp.tabbar.show();
+    });
+    
 
     MobileApp.slot.on('onPortfoliosSlotDone', function (data) {
         alert(data);

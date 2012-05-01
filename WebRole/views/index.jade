@@ -6,60 +6,58 @@
 				ul.rounded.login_style
 					li.login_style
 						div
-							input#userNameTextbox.login_style(type='email', placeholder='User Name', name='user[username]', value='asa.fama@statpro.com')
+							input#userNameTextbox.login_style(type='email', placeholder=#{lang.loginPage.userNamePlaceholderText}, name='user[username]', value='asa.fama@statpro.com')
 					li.login_style
 						div
-							input#passwordTextbox.login_style(type='password', placeholder='Password', name='user[password]', value='StatPro123')
+							input#passwordTextbox.login_style(type='password', placeholder=#{lang.loginPage.passwordPlaceholderText}, name='user[password]', value='StatPro123')
 				ul.rounded
 					li.login_button
-						a#loginButton(href='#') Login
-				p.login_style Sign Up | Support
+						a#loginButton(href='#')  #{lang.loginPage.loginText}
+				p.login_style #{lang.loginPage.signUpText} | #{lang.loginPage.supportText}
+		
 		#home
 			.toolbar
 				#toolbar_logo
-				a.back(href='#') Log out
-				// h1 Revolution
-				// a#portfoliosButton.button(href='#') Portfolios
+				a.back(href='#') #{lang.homePage.logOutText}
 			#wrapper
 				#scroller
 					ul.rounded
 						li.arrow 
-							a#portfoliosButton.slide(href='#portfolios') Portfolios
+							a#portfoliosButton.slide(href='#portfolios') #{lang.homePage.portfoliosText}
 						li.arrow 
-							a#eulaButton.slide(href='#eula') View EULA
+							a#eulaButton.slide(href='#eula') #{lang.homePage.viewEulaText}
 						li.arrow 
-							a#testButton(href='/test.htm', rel='external') Test
-		
+							a#testButton(href='/test.htm', rel='external') #{lang.homePage.testText}
 					#home_partial
 
 		#portfolios
 			.toolbar
-				h1 Portfolios
-				a.back(href='#') Back
+				h1 #{lang.portfoliosPage.portfoliosText}
+				a.back(href='#') #{lang.portfoliosPage.backText}
 			#wrapper
 				#scroller
 					#portfolios_partial
 		
 		#portfolioAnalysis
 			.toolbar
-				h1 Portfolio Analysis
-				a.back(href='#') Back
+				h1 #{lang.portfoliosAnalysisPage.portfoliosAnalysisText}
+				a.back(href='#') #{lang.portfoliosAnalysisPage.backText}
 			#wrapper
 				#scroller
 					#portfolioAnalysis_partial
 		
 		#analysis
 			.toolbar
-				h1 Analysis
-				a.back(href='#') Back
+				h1 #{lang.analysisPage.analysisText}
+				a.back(href='#') #{lang.analysisPage.backText}
 			#wrapper
 				#scroller
 					#analysis_partial					
 
 		#eula
 			.toolbar
-				h1 EULA
-				a.back(href='#') Back
+				h1 #{lang.eulaPage.eulaText}
+				a.back(href='#') #{lang.eulaPage.backText}
 			#wrapper
 				#scroller
 					#eula_partial
