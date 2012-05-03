@@ -361,12 +361,19 @@
     <Content Include="public\img\transparent button\stars.png" />
     <Content Include="public\img\UIBack.png" />
     <Content Include="public\img\UIBackPressed.png" />
+    <Content Include="public\javascripts\webapp.base64.js" />
+    <Content Include="public\javascripts\webapp.loader.js" />
     <Content Include="public\javascripts\charts\performanceLineChart.js" />
     <Content Include="public\javascripts\charts\performanceHeatmapChart.js" />
     <Content Include="public\javascripts\charts\riskGaugeChart.js" />
     <Content Include="public\javascripts\charts\performanceBubbleChart.js" />
     <Content Include="public\javascripts\charts\performanceSummaryGrid.js" />
     <Content Include="public\javascripts\charts\performanceColumnChart.js" />
+    <Content Include="public\javascripts\webapp.test.js" />
+    <Content Include="public\javascripts\webapp.scroll.js" />
+    <Content Include="public\javascripts\webapp.settings.js" />
+    <Content Include="public\javascripts\webapp.spinningwheel.js" />
+    <Content Include="public\javascripts\webapp.tabbar.js" />
     <Content Include="public\src\zepto.js" />
     <Content Include="public\src\add2home.js" />
     <Content Include="public\src\add2home.min.js" />
@@ -460,6 +467,7 @@
     <None Include="node_modules\socket.io\support\node-websocket-client\package.json" />
     <None Include="node_modules\socket.io\support\node-websocket-client\README.md" />
     <None Include="public\cache.manifest" />
+    <Content Include="public\javascripts\webapp.auth.js" />
     <None Include="public\no_cache.manifest" />
     <None Include="public\themes\compass-recipes\compass-recipes.gemspec" />
     <None Include="public\themes\compass-recipes\config.rb" />

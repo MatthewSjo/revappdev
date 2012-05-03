@@ -3,7 +3,8 @@
 // ------------------------------------------
 
 // Main variables.
-var MobileApp = {};   // Main app namespace
+var MobileApp = {}, // Main app namespace
+    webApp = WebAppLoader; // Alias   
 
 // Initialize jQTouch.
 var jQT = new $.jQTouch({
@@ -259,303 +260,22 @@ MobileApp = (function () {
     // SPINNING WHEEL SLOT
     // ------------------------------------------
 
-    mobileApp.slot = (function (repository) {
-        var lastSlotPortfolioSelected, lastSlotAnalysisSelected, lastSlotTimePeriodSelected,
-            slot = {};
-
-        // Add event handlers to the object.
-        eventManager.init(this);
-
-        function onSlotCancel() {
-            SpinningWheel.close();
-            raiseEvent('onSlotCancel');
-        }
-
-        function onPortfoliosSlotDone() {
-            var key, results;
-
-            results = SpinningWheel.getSelectedValues();
-            key = results.keys[0] || '';
-
-            setPortfolio(key);
-            SpinningWheel.close();
-            raiseEvent('onPortfoliosSlotDone', key);
-        }
-
-        function onAnalysisSlotDone() {
-            var key, results;
-
-            results = SpinningWheel.getSelectedValues();
-            key = results.keys[0] || '';
-
-            setAnalysis(key);
-            SpinningWheel.close();
-            raiseEvent('onAnalysisSlotDone', key);
-        }
-
-        function onTimePeriodsSlotDone() {
-            var key, results;
-
-            results = SpinningWheel.getSelectedValues();
-            key = results.keys[0] || '';
-
-            setTimePeriod(key);
-            raiseEvent('onTimePeriodsSlotDone', key);
-            SpinningWheel.close();
-        }
-
-        // PUBLIC
-        function showPortfolios() {
-            //var slotItems = {},
-            var defaultItem = getPortfolio();
-
-            function initSlot(slotItems) {
-                SpinningWheel.addSlot(slotItems, '', defaultItem);
-                SpinningWheel.setCancelAction(onSlotCancel);
-                SpinningWheel.setDoneAction(onPortfoliosSlotDone);
-                SpinningWheel.open();
-            }
-
-            repository.portfolios.getData(initSlot);
-        }
-
-        // PUBLIC
-        function showAnalysis() {
-            var defaultItem = getAnalysis();
-
-            function initSlot(slotItems) {
-                SpinningWheel.addSlot(slotItems, '', defaultItem);
-                SpinningWheel.setCancelAction(onSlotCancel);
-                SpinningWheel.setDoneAction(onAnalysisSlotDone);
-                SpinningWheel.open();
-            }
-
-            repository.analysis.getData(initSlot);
-        }
-
-        // PUBLIC
-        function showTimePeriods() {
-            var defaultItem = getTimePeriod();
-
-            function initSlot(slotItems) {
-                SpinningWheel.addSlot(slotItems, '', defaultItem);
-                SpinningWheel.setCancelAction(onSlotCancel);
-                SpinningWheel.setDoneAction(onTimePeriodsSlotDone);
-                SpinningWheel.open();
-            }
-
-            repository.timePeriods.getData(initSlot);
-        }
-
-        // PUBLIC
-        function getPortfolio() {
-            return lastSlotPortfolioSelected || '';
-        }
-
-        // PUBLIC
-        function setPortfolio(portfolioCode) {
-            lastSlotPortfolioSelected = portfolioCode;
-        }
-
-        // PUBLIC
-        function getAnalysis() {
-            return lastSlotAnalysisSelected || '';
-        }
-
-        // PUBLIC
-        function setAnalysis(analysisCode) {
-            lastSlotAnalysisSelected = analysisCode;
-        }
-
-        // PUBLIC
-        function getTimePeriod() {
-            return lastSlotTimePeriodSelected || '';
-        }
-
-        // PUBLIC
-        function setTimePeriod(timePeriodCode) {
-            lastSlotTimePeriodSelected = timePeriodCode;
-        }
-
-        slot.showPortfolios = showPortfolios;
-        slot.showAnalysis = showAnalysis;
-        slot.showTimePeriods = showTimePeriods;
-        slot.getPortfolio = getPortfolio;
-        slot.setPortfolio = setPortfolio;
-        slot.getAnalysis = getAnalysis;
-        slot.setAnalysis = setAnalysis;
-        slot.getTimePeriod = getTimePeriod;
-        slot.setTimePeriod = setTimePeriod;
-        slot.on = on;
-
-        return slot;
-    })({
-        portfolios: appRepositories.portfoliosSlot,
-        analysis: appRepositories.analysisSlot,
-        timePeriods: appRepositories.timePeriodsSlot
-    });
-
-    //mobileApp.slot.on('onPortfoliosSlotDone', function (data) { alert(data); });
+    mobileApp.spinningWheel = WebAppLoader.loadModule('spinningWheel');
+    WebAppLoader.unloadModule('spinningWheel');
 
     // ------------------------------------------
     // ISCROLL
     // ------------------------------------------
 
-    mobileApp.scroll = (function () {
-        var myScroll, scroll = {};
-
-        function rebuildScroll(id, optionConfig) {
-            var wrapper = 'div#' + id + ' #wrapper',
-                options = optionConfig || {}; // { hScrollbar: false, vScrollbar: true }
-
-            if (myScroll) {
-                myScroll.destroy();
-                myScroll = null;
-            }
-
-            if ($(wrapper).get(0)) {
-                setTimeout(function () {
-                    myScroll = new iScroll($(wrapper).get(0), options);
-                }, 0);
-            }
-        }
-
-        function goUp() {
-            try {
-                myScroll.scrollTo(0, 0, 200);
-            } catch (e) {
-
-            }
-        }
-
-        scroll.rebuild = rebuildScroll;
-        scroll.goUp = goUp;
-
-        return scroll;
-    })();
+    mobileApp.scroll = WebAppLoader.loadModule('scroll');
+    WebAppLoader.unloadModule('scroll');
 
     // ------------------------------------------
     // TABBAR
     // ------------------------------------------
 
-    mobileApp.tabbar = (function () {
-        var tabbar = {},
-            tabbarId = '',
-            buttons = [],
-            buttonIndices = {},
-            visible = true;
-
-        // Add event handlers to the object.
-        eventManager.init(this);
-
-        function capitaliseFirstLetter(string) {
-            return string.charAt(0).toUpperCase() + string.slice(1);
-        }
-
-        function hide() {
-            $(tabbarId).hide();
-        }
-
-        function show() {
-            // $(tabbarId).show();
-            // $(tabbarId).css({ transition: 'visibility 1s ease-in-out' }); //show();
-            $(tabbarId).css({ opacity: 1 });
-        }
-
-        function getButton(index) {
-            if (typeof index == 'string') {
-                index = buttonIndices[index];
-            }
-
-            return buttons[index];
-        }
-
-        function create(tabbarConfig) {
-            var buttonPrefix = tabbarConfig.buttonPrefix || 'tabbar_btn',
-                badgePrefix = 'tabbar_badge';
-
-            tabbarId = tabbarConfig.tabbarId || 'nav#tabbar';
-            visible = (typeof tabbarConfig.visible == 'boolean')
-                ? tabbarConfig.visible
-                : true;
-
-            $.each(tabbarConfig.items, function (i, val) {
-                var id = capitaliseFirstLetter(val.id),
-                    itemsCount = tabbarConfig.items.length || 1,
-                    buttonWidth = 100 / itemsCount;
-
-                buttonIndices[val.id] = i;
-                buttons[i] = {
-                    id: val.id,
-                    linkId: buttonPrefix + id,
-                    badgeId: badgePrefix + id,
-                    title: val.title,
-                    class: val.class,
-                    eventHandler: 'on' + id + 'Tap',
-                    isDisabled: false,
-                    setDisabled: function (disabled) {
-                        var opacity = (disabled) ? 0.20 : 1,
-                            badgeBackColor = (disabled) ? '#333' : '#f00';
-
-                        this.isDisabled = disabled;
-                        $('#' + this.linkId).css({ opacity: opacity });
-                        $('#' + this.badgeId).css({ backgroundColor: badgeBackColor });
-
-                    },
-                    setBadgeText: function (text) {
-                        var badge = $('#' + this.badgeId),
-                            displayBadge = true;
-
-                        if (text) {
-                            badge.html(text);
-                            badge.show();
-                        } else {
-                            badge.hide();
-                        }
-                    }
-                };
-
-                $(tabbarId + ' ul').append(
-                    $('<li>').css('width', buttonWidth + '%').append(
-                        $('<a>').attr('id', buttons[i].linkId).append(
-                            $('<small>').attr({
-                                id: buttons[i].badgeId,
-                                class: 'badge right',
-                                style: 'display: none;'
-                            })).append(
-                            $('<strong>').append(buttons[i].title)).append(
-                            $('<div>').attr('class', buttons[i].class)
-                        )));
-            });
-
-            $(tabbarId + ' ul li a').each(function (i) {
-                $(this).on('tap', function () {
-                    if (!buttons[i].isDisabled) {
-                        raiseEvent(buttons[i].eventHandler);
-                    } else {
-                        log(buttons[i].title + ' is disabled');
-                    }
-                });
-            });
-
-            if (!visible) {
-                // $(tabbarId).hide();
-                $(tabbarId).css({ opacity: 0 });
-            } else {
-                // $(tabbarId).show();
-                $(tabbarId).css({ opacity: 1 });
-            }
-        }
-
-        tabbar.on = on;
-        tabbar.create = create;
-        tabbar.hide = hide;
-        tabbar.show = show;
-        tabbar.buttons = buttons;
-        tabbar.getButton = getButton;
-
-        return tabbar;
-    })();
+    mobileApp.tabbar = WebAppLoader.loadModule('tabbar');
+    WebAppLoader.unloadModule('tabbar');
 
     // ------------------------------------------
     // NAVIGATION
@@ -577,7 +297,6 @@ MobileApp = (function () {
         auth.goToPage = goToPage;
 
         return auth;
-
     })();
 
     // ------------------------------------------
@@ -631,11 +350,6 @@ MobileApp = (function () {
 
         // Toolbar
         $(appElements.toolbar).click(onToolbarClick);
-
-        // Load defaults when the index page is loaded.
-        if (window.location.pathname === siteUrls.index) {
-            updateTabBar();
-        }
     };
 
     // ------------------------------------------
@@ -665,74 +379,7 @@ MobileApp = (function () {
     // ------------------------------------------
 
     // Require helper.js
-    mobileApp.auth = (function () {
-        var auth = {};
-
-        // Add event handlers to the object.
-        eventManager.init(this);
-
-        function doLogin(username, password) {
-            var token;
-
-            // Create a Base64 encoded token from the credentials.
-            token = 'Basic ' + helper.Base64.encode(username + ':' + password);
-
-            // Post the created token and the user's email to the authenticate action.
-            $.post(siteUrls.autenticate, { email: username, token: token }, function (response) {
-                // If our response indicates that the user has been authenticated...
-                if (response.authenticated) {
-                    raiseEvent('onLoginSuccess');
-                    // mobileApp.tabbar.show();
-                    // jQT.goTo($('#home'), 'dissolve');
-                } else {
-                    raiseEvent('onLoginFailed');
-                }
-            }, 'json');
-        }
-
-        auth.on = on;
-        auth.doLogin = doLogin;
-
-        return auth;
-
-    })();
-
-    function onLoginButtonClick() {
-        log('onLoginButtonClick');
-
-        var username, password, token;
-
-        // Obtain the username and password from the form.
-        username = $(appElements.userNameTextbox).val();
-        password = $(appElements.passwordTextbox).val();
-
-        // Create a Base64 encoded token from the credentials.
-        token = 'Basic ' + helper.Base64.encode(username + ':' + password);
-        //token = 'Basic YXNhLmZhbWFAc3RhdHByby5jb206U3RhdFBybzEyMw==';
-
-        // Post the created token and the user's email to the authenticate action.
-        $.post(siteUrls.autenticate, { email: username, token: token }, function (response) {
-            // If our response indicates that the user has been authenticated...
-            if (response.authenticated) {
-                // ...redirect to the default page.
-                // navigateTo(siteUrls.index);
-                // goToPage('#home');
-                //jQT.goTo($('#home')); //, 'fade'
-                /*
-                slideupSelector: '.slideup'
-                dissolveSelector: '.dissolve'
-                fadeSelector: '.fade'
-                flipSelector: '.flip'
-                popSelector: '.pop'
-                swapSelector: '.swap'
-                */
-                mobileApp.tabbar.show();
-                jQT.goTo($('#home'), 'dissolve');
-            }
-        }, 'json');
-
-        return false;
-    }
+    mobileApp.auth = WebAppLoader.loadModule('auth');
 
     // ------------------------------------------
     // BLANK PAGE
@@ -792,15 +439,6 @@ MobileApp = (function () {
         return false;
     }
 
-    //    function onPortfolioAnalysisClick(e) {
-    //        var uri = $(this).attr("data-link");
-    //        $.post(siteUrls.portfolioAnalysis, { uri: uri }, function (data) {
-    //            mobileApp.scroll.rebuild('portfolioAnalysis');
-    //            $(partial(appPages.portfolioAnalysis)).html(data);
-    //        });
-    //        return false;
-    //    }
-
     // ------------------------------------------
     // EULA PAGE
     // ------------------------------------------
@@ -826,6 +464,12 @@ MobileApp = (function () {
     // LOGIC
     // ------------------------------------------
 
+    mobileApp.portfoliosManager = (function () {
+        var manager = {};
+
+        return manager;
+    })();
+
     function updateTabBar(portfolioCode) {
         var defaultPortfolioCode,
             portfolio = {
@@ -847,7 +491,7 @@ MobileApp = (function () {
             if (portfolioCode) {
                 return portfolioCode;
             } else {
-                return null; // null; //'ASA_EQ01' // 'advisor'
+                return 'advisor'; // null; //'ASA_EQ01' // 'advisor'
             }
         }
 
@@ -865,10 +509,9 @@ MobileApp = (function () {
                 oData.top = 1;
             }
 
-            log(oData.filter);
             $.post(siteUrls.portfolios, { oData: oData, datatype: 'json' }, function (data) {
                 if (data && data.items[0]) {
-                    log('loadPortfolio', data);
+                    log('loadPortfolioData', data);
                     portfolio.code = data.items[0].code;
                     defaultAnalysisLink = data.items[0].links.defaultAnalysis.href;
                 }
@@ -918,6 +561,13 @@ MobileApp = (function () {
     mobileApp.timePeriodsSlot = appRepositories.timePeriodsSlot;
     mobileApp.pages = appPages;
 
+    // Repositories
+    mobileApp.repositories = {
+        portfoliosSlot: appRepositories.portfoliosSlot,
+        analysisSlot: appRepositories.analysisSlot,
+        timePeriodsSlot: appRepositories.timePeriodsSlot
+    };
+
     // Returns the mobile app.
     return mobileApp;
 })();
@@ -945,9 +595,22 @@ Zepto(function ($) {
         passwordTextbox: '#passwordTextbox'
     };
 
+    // URLs.
+    var siteUrls = {
+        portfolios: '/portfolios',
+        autenticate: '/authenticate',
+        index: '/index',
+        portfolioAnalysis: '/portfolioAnalysis',
+        analysis: '/analysis',
+        eula: '/eula'
+    };
 
     console.log('Hello from zepto');
     MobileApp.onDocumentReady();
+
+    // ------------------------------------------
+    // TABBAR
+    // ------------------------------------------
 
     var tabbarConfig = {
         tabbarId: 'nav#tabbar',
@@ -965,6 +628,25 @@ Zepto(function ($) {
 
     MobileApp.tabbar.create(tabbarConfig);
 
+    // ------------------------------------------
+    // SPINNING WHEEL
+    // ------------------------------------------
+
+    var slotConfig = {
+        items: [
+            { id: 'portfolios', repository: MobileApp.repositories.portfoliosSlot },
+            { id: 'analysis', repository: MobileApp.repositories.analysisSlot },
+            { id: 'timePeriods', repository: MobileApp.repositories.timePeriodsSlot }
+        // { id: 'test', repository: { getData: function (callback) { callback({ a: 'a', b: 'b' }); } }}
+        ]
+    };
+
+    MobileApp.spinningWheel.create(slotConfig);
+
+    // ------------------------------------------
+    // EVENTS
+    // ------------------------------------------
+
     MobileApp.tabbar.on('onHomeTap', function () {
         // MobileApp.tabbar.hide();
         // MobileApp.tabbar.buttons[0].setDisabled(true);
@@ -972,24 +654,32 @@ Zepto(function ($) {
         MobileApp.tabbar.getButton(1).setBadgeText('99');
         MobileApp.tabbar.getButton(1).setDisabled(true);
         MobileApp.tabbar.getButton('infos').setDisabled(false);
+        // WebAppLoader.loadModule('output').disableLogging(true);
+        // WebAppLoader.unloadModule('output');
+        // WebAppLoader.output.log("STATIC!!!");
+        webApp.settings.set('test', 'test');
     });
 
     MobileApp.tabbar.on('onPortfoliosTap', function () {
-        MobileApp.slot.showPortfolios();
+        //MobileApp.slot.showPortfolios();
+        MobileApp.spinningWheel.getSlot('portfolios').show('ADVISOR');
     });
 
     MobileApp.tabbar.on('onAnalysisTap', function () {
-        MobileApp.slot.showAnalysis();
+        // MobileApp.slot.showAnalysis();
+        MobileApp.spinningWheel.getSlot('analysis').show();
     });
 
     MobileApp.tabbar.on('onTimePeriodsTap', function () {
-        MobileApp.slot.showTimePeriods();
+        // MobileApp.slot.showTimePeriods();
+        MobileApp.spinningWheel.getSlot('timePeriods').show();
     });
 
     MobileApp.tabbar.on('onInfosTap', function () {
         //        MobileApp.tabbar.getButton('home').setDisabled(false);
         //        MobileApp.tabbar.getButton(1).setDisabled(false);
         //        MobileApp.tabbar.getButton(1).setBadgeText('!');
+        console.log(webApp.settings.get('test'));
 
         jQT.goTo($('#portfolios'), 'pop');
     });
@@ -997,6 +687,10 @@ Zepto(function ($) {
     MobileApp.tabbar.on('onMoreTap', function () {
         location.reload();
         // jQT.goTo($('#login'), 'cube');
+    });
+
+    MobileApp.spinningWheel.on('onPortfoliosDone', function (key) {
+        MobileApp.updateTabBar(key);
     });
 
     // Login
@@ -1007,26 +701,14 @@ Zepto(function ($) {
         username = $(appElements.userNameTextbox).val();
         password = $(appElements.passwordTextbox).val();
 
-        MobileApp.auth.doLogin(username, password);
+        MobileApp.auth.doLogin(username, password, siteUrls.autenticate);
     });
 
     MobileApp.auth.on('onLoginSuccess', function () {
         MobileApp.nav.goToPage($(appPages.home), 'dissolve');
         MobileApp.tabbar.show();
+        MobileApp.updateTabBar();
     });
-    
-
-    MobileApp.slot.on('onPortfoliosSlotDone', function (data) {
-        alert(data);
-        MobileApp.updateTabBar(data);
-    });
-
-    MobileApp.slot.on('onTimePeriodsSlotDone', function (data) {
-        alert(data);
-        // MobileApp.updateTabBar(data);
-    });
-
-
 
     function selectTabbarItem(item) {
         var tabbarItem = $('#' + item + '_tabbar');
