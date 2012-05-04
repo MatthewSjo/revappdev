@@ -1,6 +1,6 @@
 #page
 	#jqt
-		#login.login_background
+		#login.login_background(data-pageEvents="both")
 			#login_content
 				.login_r
 				ul.rounded.login_style
@@ -15,7 +15,7 @@
 						a#loginButton(href='#')  #{lang.loginPage.loginText}
 				p.login_style #{lang.loginPage.signUpText} | #{lang.loginPage.supportText}
 		
-		#home
+		#home(data-pageEvents="both")
 			.toolbar
 				#toolbar_logo
 				a.back(href='#') #{lang.homePage.logOutText}
@@ -30,7 +30,7 @@
 							a#testButton(href='/test.htm', rel='external') #{lang.homePage.testText}
 					#home_partial
 
-		#portfolios
+		#portfolios(data-pageEvents="both")
 			.toolbar
 				h1 #{lang.portfoliosPage.portfoliosText}
 				a.back(href='#') #{lang.portfoliosPage.backText}
@@ -38,7 +38,7 @@
 				#scroller
 					#portfolios_partial
 		
-		#portfolioAnalysis
+		#portfolioAnalysis(data-pageEvents="both")
 			.toolbar
 				h1 #{lang.portfoliosAnalysisPage.portfoliosAnalysisText}
 				a.back(href='#') #{lang.portfoliosAnalysisPage.backText}
@@ -46,7 +46,7 @@
 				#scroller
 					#portfolioAnalysis_partial
 		
-		#analysis
+		#analysis(data-pageEvents="both")
 			.toolbar
 				h1 #{lang.analysisPage.analysisText}
 				a.back(href='#') #{lang.analysisPage.backText}
@@ -54,7 +54,7 @@
 				#scroller
 					#analysis_partial					
 
-		#eula
+		#eula(data-pageEvents="both", class='pageWithEvents')
 			.toolbar
 				h1 #{lang.eulaPage.eulaText}
 				a.back(href='#') #{lang.eulaPage.backText}

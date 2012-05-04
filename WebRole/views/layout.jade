@@ -41,22 +41,43 @@ html(xmlns='http://www.w3.org/1999/xhtml')
 		script(type='text/javascript', src='src/jqt.autotitles.min.js')
 		script(type='text/javascript', src='src/add2home.js', charset='utf-8')
 
-		script(src='/javascripts/helper.js', type='text/javascript', charset='utf-8')
+		// Loader
 		script(src='/javascripts/webapp.loader.js', type='text/javascript', charset='utf-8')
-		script(src='/javascripts/webapp.tabbar.js', type='text/javascript', charset='utf-8')
-		script(src='/javascripts/webapp.spinningwheel.js', type='text/javascript', charset='utf-8')
-		script(src='/javascripts/webapp.scroll.js', type='text/javascript', charset='utf-8')
-		script(src='/javascripts/webapp.base64.js', type='text/javascript', charset='utf-8')
-		script(src='/javascripts/webapp.auth.js', type='text/javascript', charset='utf-8')
-		script(src='/javascripts/webapp.settings.js', type='text/javascript', charset='utf-8')
-		script(src='/javascripts/webapp.test.js', type='text/javascript', charset='utf-8')
-		script(src='/javascripts/main.js', type='text/javascript', charset='utf-8')
+		
+		// Plugins (add plugins immediately after the loader)
+		script(src='/javascripts/plugins/webapp.base64.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/plugins/webapp.helper.js', type='text/javascript', charset='utf-8')
+
+		// Shared (order is important)
+		script(src='/javascripts/shared/webapp.settings.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/shared/webapp.pageElements.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/shared/webapp.lang.it-it.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/shared/webapp.lang.en-us.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/shared/webapp.localizationManager.js', type='text/javascript', charset='utf-8')
+		
+		// Modules
+		script(src='/javascripts/modules/webapp.tabbar.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/modules/webapp.spinningWheel.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/modules/webapp.scroll.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/modules/webapp.auth.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/modules/webapp.test.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/modules/webapp.repositories.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/modules/webapp.pageEventsManager.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/modules/webapp.nav.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/modules/webapp.toolbar.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/modules/webapp.portfoliosList.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/modules/webapp.portfolioManager.js', type='text/javascript', charset='utf-8')
+
+		script(src='/javascripts/webapp.main.js', type='text/javascript', charset='utf-8')
 
 	body!= body
 
 	// Load Google Visualization packages
 	script(type='text/javascript')
 		google.load('visualization', '1', { packages: ['corechart', 'table', 'gauge', 'treemap'] });
+
+	// script(type='text/javascript')
+	//		WebAppLoader.init();
 
 	script(type='text/javascript', src='src/itabbar.js')	
 	script(src='/javascripts/charts/performanceColumnChart.js', type='text/javascript', charset='utf-8')

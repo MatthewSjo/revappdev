@@ -2,29 +2,26 @@
 // TABBAR
 // ------------------------------------------
 
-WebAppLoader.addModule({ name: 'tabbar', plugins: ['base64'], hasEvents: true }, function () {
-    var tabbar = {},
-        tabbarId = '',
-        buttons = [],
-        buttonIndices = {},
-        visible = true,
-        eventManager = this.plugins.eventManager || {},
-        base64 = this.plugins.base64 || {},
-        output = this.plugins.output || {};
-
-    function capitaliseFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }
+WebAppLoader.addModule({ name: 'tabbar', plugins: ['helper'], hasEvents: true }, function () {
+    var tabbar          = {},
+        eventManager    = this.loader.eventManager || {},
+        output          = this.loader.output || {},
+        helper          = this.loader.plugins.helper || {},
+        tabbarId        = '',
+        buttons         = [],
+        buttonIndices   = {},
+        visible         = true;
 
     function hide() {
-        $(tabbarId).hide();
+        // $(tabbarId).hide();
+        $(tabbarId).css({ opacity: 0 });
     }
 
     function show() {
         // $(tabbarId).show();
         // $(tabbarId).css({ transition: 'visibility 1s ease-in-out' }); //show();
         $(tabbarId).css({ opacity: 1 });
-        output.log('ENCODE BY BASE64: ', base64.encode('This is a test'));
+        output.log('tabbar.show()');
     }
 
     function getButton(index) {
@@ -46,7 +43,7 @@ WebAppLoader.addModule({ name: 'tabbar', plugins: ['base64'], hasEvents: true },
                 : true;
 
         $.each(config.items, function (i, val) {
-            var id = capitaliseFirstLetter(val.id),
+            var id = helper.capitaliseFirstLetter(val.id),
                     itemsCount = config.items.length || 1,
                     buttonWidth = 100 / itemsCount;
 

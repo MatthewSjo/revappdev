@@ -2,15 +2,12 @@
 // SPINNING WHEEL SLOT
 // ------------------------------------------
 
-WebAppLoader.addModule({ name: 'spinningWheel', hasEvents: true }, function () {
-    var spinningWheel = {},
-            slots = [],
-            slotIndices = {},
-            eventManager = this.plugins.eventManager || {};
-
-    function capitaliseFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }
+WebAppLoader.addModule({ name: 'spinningWheel', plugins: ['helper'], hasEvents: true }, function () {
+    var spinningWheel   = {},
+        slots           = [],
+        slotIndices     = {},
+        eventManager    = this.loader.eventManager || {},
+        helper          = this.loader.plugins.helper || {};
 
     function getSlot(index) {
         if (typeof index == 'string') {
@@ -22,7 +19,7 @@ WebAppLoader.addModule({ name: 'spinningWheel', hasEvents: true }, function () {
 
     function create(config) {
         $.each(config.items, function (i, val) {
-            var id = capitaliseFirstLetter(val.id);
+            var id = helper.capitaliseFirstLetter(val.id);
 
             slotIndices[val.id] = i;
             slots[i] = {

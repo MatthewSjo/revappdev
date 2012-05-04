@@ -3,7 +3,8 @@
 // ------------------------------------------
 
 WebAppLoader.addModule({ name: 'scroll' }, function () {
-    var myScroll, scroll = {};
+    var scroll      = {},
+        myScroll; // Please don't initialize myScroll.
 
     function rebuildScroll(id, optionConfig) {
         var wrapper = 'div#' + id + ' #wrapper',

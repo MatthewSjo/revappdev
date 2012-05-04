@@ -1,12 +1,11 @@
 ﻿// ------------------------------------------
-// AUTH
+// AUTHENTICATION
 // ------------------------------------------
 
-// Require helper.js
 WebAppLoader.addModule({ name: 'auth', plugins: ['base64'], hasEvents: true }, function () {
-    var auth = {},
-        eventManager = this.plugins.eventManager || {},
-        base64 = this.plugins.base64 || {};
+    var auth            = {},
+        eventManager    = this.loader.eventManager || {},
+        base64          = this.loader.plugins.base64 || {};
 
     function doLogin(username, password, url) {
         var token;
@@ -24,7 +23,6 @@ WebAppLoader.addModule({ name: 'auth', plugins: ['base64'], hasEvents: true }, f
         }, 'json');
     }
 
-    //auth.on = on;
     auth.doLogin = doLogin;
 
     return auth;
