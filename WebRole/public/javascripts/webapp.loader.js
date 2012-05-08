@@ -20,9 +20,13 @@ var WebAppLoader = (function () {
     // ------------------------------------------
 
     function isArray(obj) {
-        return (obj && obj.constructor)
-            ? obj.constructor == Array
+        if (Array.isArray) {
+            return Array.isArray(obj);
+        } else {
+            return (obj && obj.constructor)
+            ? obj.constructor === Array
             : false;
+        }
     }
 
     function throwException(message, functionName) {
@@ -52,7 +56,7 @@ var WebAppLoader = (function () {
             var args = Array.prototype.slice.call(arguments, 1),
                 params = null;
 
-            params = (args.length == 1)
+            params = (args.length === 1)
                 ? args[0]
                 : args;
 
@@ -98,7 +102,7 @@ var WebAppLoader = (function () {
         if (isArray(resourcesToLoad)) {
             var resource, resourceName;
 
-            for (i = 0; i < resourcesToLoad.length; i++) {
+            for (i = 0; i < resourcesToLoad.length; i += 1) {
                 resourceName = resourcesToLoad[i];
                 resource = repository[resourceName] || {};
                 loadedResources[resourceName] = resource.bin;
@@ -128,7 +132,7 @@ var WebAppLoader = (function () {
             });
 
             if (plugin.hasEvents) {
-                loadedPlugin['on'] = eventManager.on;
+                loadedPlugin.on = eventManager.on;
             }
 
             plugin.loaded = true;
@@ -171,7 +175,7 @@ var WebAppLoader = (function () {
             });
 
             if (sharedModule.hasEvents) {
-                loadedSharedModule['on'] = eventManager.on;
+                loadedSharedModule.on = eventManager.on;
             }
 
             sharedModule.loaded = true;
@@ -214,7 +218,7 @@ var WebAppLoader = (function () {
             && (sharingSetting === sharingOptions.sharingDenied);
 
         if (isSharingDenied) {
-            var errorMessage = '';
+            errorMessage = '';
 
             errorMessage += '"' + name + '" is a shared module and cannot load any other shared module. ';
             errorMessage += 'Set "isShared" to false or remove "sharedModules" to solve the problem.';
@@ -264,7 +268,7 @@ var WebAppLoader = (function () {
                 }, config || {});
 
                 if (module.hasEvents) {
-                    moduleToLoad['on'] = eventManager.on;
+                    moduleToLoad.on = eventManager.on;
                 }
 
                 module.loaded = true;
@@ -312,7 +316,7 @@ var WebAppLoader = (function () {
         if (moduleToRemove) {
             unloadedModules[moduleName] = {
                 type: moduleType
-            }
+            };
             delete removeFrom[moduleName];
         }
     }
@@ -330,38 +334,40 @@ var WebAppLoader = (function () {
     }
 
     // Public
-    function getInfo(htmlOutput) {
+    function getInfo(outputAsHtml) {
         var message = '',
-            htmlOutput = htmlOutput || false,
-            breakLine = '\n';
+            htmlOutput = outputAsHtml || false,
+            breakLine = '\n',
+            module,
+            plugin;
 
         if (htmlOutput) {
             breakLine = '</br>';
         }
 
         message += 'Modules:' + breakLine;
-        for (var module in modules) {
+        for (module in modules) {
             message += 'Module: ' + module + ' loaded: ' + modules[module].loaded + breakLine;
         }
 
         message += breakLine;
 
         message += 'Plugins:' + breakLine;
-        for (var plugin in plugins) {
+        for (plugin in plugins) {
             message += 'Plugin: ' + plugin + ' loaded: ' + plugins[plugin].loaded + breakLine;
         }
 
         message += breakLine;
 
         message += 'Shared Modules:' + breakLine;
-        for (var module in sharedModules) {
+        for (module in sharedModules) {
             message += 'Module: ' + module + ' loaded: ' + sharedModules[module].loaded + breakLine;
         }
 
         message += breakLine;
 
         message += 'Unloaded Modules:' + breakLine;
-        for (var module in unloadedModules) {
+        for (module in unloadedModules) {
             message += 'Module: ' + module + ' type: ' + unloadedModules[module].type + breakLine;
         }
 
