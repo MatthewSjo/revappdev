@@ -11,7 +11,7 @@ WebAppLoader.addModule({ name: 'toolbar', plugins: [], sharedModules: ['pageElem
         manager         = this.loader.shared.localizationManager || {};
 
     $(el.toolbar).click(function () {
-        eventManager.raiseEvent('onClick');
+        eventManager.raiseEvent('onTap');
     });
 
     return toolbar;

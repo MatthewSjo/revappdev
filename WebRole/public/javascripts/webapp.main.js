@@ -60,7 +60,7 @@ Zepto(function ($) {
     // ------------------------------------------
     theApp.toolbar = loader.loadModule('toolbar');
 
-    theApp.toolbar.on('onClick', function () {
+    theApp.toolbar.on('onTap', function () {
         theApp.scroll.goUp();
     });
 
