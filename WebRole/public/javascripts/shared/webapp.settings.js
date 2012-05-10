@@ -17,7 +17,7 @@ WebAppLoader.addModule({ name: 'settings', isShared: true }, function () {
     // URLs.
     siteUrls = {
         portfolios          : '/portfolios',
-        autenticate         : '/authenticate',
+        authenticate        : '/authenticate',
         index               : '/index',
         portfolioAnalysis   : '/portfolioAnalysis',
         analysis            : '/analysis',
@@ -27,12 +27,12 @@ WebAppLoader.addModule({ name: 'settings', isShared: true }, function () {
     // Analysis types.
     analysisTypes = {
         dashboard           : 'Dashboard',
-        performances        : 'Performances',
+        performance         : 'Performance',
         risk                : 'Risk',
         assetAllocation     : 'Asset Allocation',
         contribution        : 'Contribution',
         attribution         : 'Attribution',
-        fixedIncome         : 'FixedIncome',
+        fixedIncome         : 'Fixed Income',
         balanced            : 'Balanced'
     };
 

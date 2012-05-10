@@ -362,6 +362,7 @@
     <Content Include="public\img\UIBack.png" />
     <Content Include="public\img\UIBackPressed.png" />
     <Content Include="public\javascripts\webapp.loader.js" />
+    <Content Include="public\javascripts\charts\webapp.chartManager.js" />
     <Content Include="public\javascripts\modules\webapp.nav.js" />
     <Content Include="public\javascripts\modules\webapp.pageEventsManager.js" />
     <Content Include="public\javascripts\modules\webapp.portfolioManager.js" />
@@ -370,16 +371,11 @@
     <Content Include="public\javascripts\modules\webapp.toolbar.js" />
     <Content Include="public\javascripts\plugins\webapp.base64.js" />
     <Content Include="public\javascripts\plugins\webapp.helper.js" />
+    <Content Include="public\javascripts\shared\webapp.chartDefaults.js" />
     <Content Include="public\javascripts\shared\webapp.localizationManager.js" />
     <Content Include="public\javascripts\shared\webapp.lang.it-it.js" />
     <Content Include="public\javascripts\shared\webapp.lang.en-us.js" />
     <Content Include="public\javascripts\shared\webapp.pageElements.js" />
-    <Content Include="public\javascripts\charts\performanceLineChart.js" />
-    <Content Include="public\javascripts\charts\performanceHeatmapChart.js" />
-    <Content Include="public\javascripts\charts\riskGaugeChart.js" />
-    <Content Include="public\javascripts\charts\performanceBubbleChart.js" />
-    <Content Include="public\javascripts\charts\performanceSummaryGrid.js" />
-    <Content Include="public\javascripts\charts\performanceColumnChart.js" />
     <Content Include="public\javascripts\modules\webapp.test.js" />
     <Content Include="public\javascripts\modules\webapp.scroll.js" />
     <Content Include="public\javascripts\shared\webapp.settings.js" />

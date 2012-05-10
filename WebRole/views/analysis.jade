@@ -11,9 +11,6 @@
 		.summaryReturn
 			h2 +17.084%
 			h3 Return (#{analysis.currency})
-		.summaryReturn
-			h2 2.613%
-			h3 Value at Risk
 
 .analysisSummarySection
 	h2 Performance
@@ -23,7 +20,7 @@
 .analysisSummarySection
 	h2 Absolute Monthly Returns (#{analysis.currency})
 	.analysisComponentContainer
-		#absolute_performance
+		#performance_column
 
 .analysisSummarySection
 	h2 Performance Summary Statistics
@@ -39,11 +36,3 @@
 	h2 Portfolio Weight vs Portfolio Return
 	.analysisComponentContainer
 		#performance_heatmap
-
-// .analysisSummarySection
-	h2 % Value at Risk
-	.analysisComponentContainer
-		#risk_gauge
-
-script(type='text/javascript')
-	$(document).trigger('chartContainerReady');
