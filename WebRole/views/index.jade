@@ -27,7 +27,7 @@
 						li.arrow 
 							a#eulaButton.slide(href='#eula') #{lang.homePage.viewEulaText}
 						li.arrow 
-							a#testButton(href='/test.htm', rel='external') #{lang.homePage.testText}
+							a#testButton(href='#test') #{lang.homePage.testText}
 					#home_partial
 
 		#portfolios(data-pageEvents="both")
@@ -65,9 +65,19 @@
 		#test
 			.toolbar
 				h1 test
-				a.back(href='login.htm') Back
+				a.back(href='#') #{lang.eulaPage.backText}
 			#wrapper
 				#scroller
+					form.scroll
+						ul.edit.rounded
+							li.arrow
+								select#lol(multiple="multiple")
+									optgroup(label='Line Charts')
+										option(value='c1') Chart 1
+										option(value='c2') Chart 2
+									optgroup(label='Bar Charts')
+										option(value='c3') Bar 1
+										option(value='c4') Bar 2
 					#test_partial
 
 	// nav#tabbar(style="display: none")
