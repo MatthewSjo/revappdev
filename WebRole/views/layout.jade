@@ -29,6 +29,9 @@ html(xmlns='http://www.w3.org/1999/xhtml')
 		link(rel='stylesheet', href='stylesheets/spinningwheel.css')
 		link(rel='stylesheet', href='stylesheets/login.css')
 
+		// Google Visualization API & Package
+		script(src='https://www.google.com/jsapi?autoload={"modules":[{"name":"visualization","version":"1"}]}', type='text/javascript', charset='utf-8')
+
 		// Scripts
 		script(src='/src/iscroll.js', type='text/javascript', charset='utf-8')
 		script(src='/src/zepto.js', type='text/javascript', charset='utf-8')
@@ -36,7 +39,6 @@ html(xmlns='http://www.w3.org/1999/xhtml')
 		script(src='/src/jqtouch.js', type='text/javascript', charset='utf-8')
 		script(src='/src/jquery.tappable.js', type='text/javascript', charset='utf-8')
 		script(src='/src/spinningwheel.js', type='text/javascript', charset='utf-8')		
-		script(src='https://www.google.com/jsapi', type='text/javascript', charset='utf-8')
 
 		script(type='text/javascript', src='src/jqt.autotitles.min.js')
 		script(type='text/javascript', src='src/add2home.js', charset='utf-8')
@@ -54,7 +56,10 @@ html(xmlns='http://www.w3.org/1999/xhtml')
 		script(src='/javascripts/shared/webapp.localizationManager.js', type='text/javascript', charset='utf-8')
 		script(src='/javascripts/shared/webapp.lang.it-it.js', type='text/javascript', charset='utf-8')
 		script(src='/javascripts/shared/webapp.lang.en-us.js', type='text/javascript', charset='utf-8')
-				
+		script(src='/javascripts/shared/webapp.localizationManager.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/shared/webapp.chartDefaults.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/shared/webapp.chartManager.js', type='text/javascript', charset='utf-8')
+
 		// Modules
 		script(src='/javascripts/modules/webapp.tabbar.js', type='text/javascript', charset='utf-8')
 		script(src='/javascripts/modules/webapp.spinningWheel.js', type='text/javascript', charset='utf-8')
@@ -66,25 +71,15 @@ html(xmlns='http://www.w3.org/1999/xhtml')
 		script(src='/javascripts/modules/webapp.nav.js', type='text/javascript', charset='utf-8')
 		script(src='/javascripts/modules/webapp.toolbar.js', type='text/javascript', charset='utf-8')
 		script(src='/javascripts/modules/webapp.portfoliosList.js', type='text/javascript', charset='utf-8')
-		script(src='/javascripts/modules/webapp.portfolioManager.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/modules/webapp.portfolioManager.js', type='text/javascript', charset='utf-8')		
+
+		// Pages
+		script(src='/javascripts/pages/webapp.dashboard.js', type='text/javascript', charset='utf-8')
 
 		script(src='/javascripts/webapp.main.js', type='text/javascript', charset='utf-8')
 
 	body!= body
-
-	// Load Google Visualization packages
-	script(type='text/javascript')
-		google.load('visualization', '1', { packages: ['corechart', 'table', 'gauge', 'treemap'] });
-
-	// script(type='text/javascript')
-	//		WebAppLoader.init();
-
+	
 	script(type='text/javascript', src='src/itabbar.js')	
-	script(src='/javascripts/charts/performanceColumnChart.js', type='text/javascript', charset='utf-8')
-	script(src='/javascripts/charts/performanceSummaryGrid.js', type='text/javascript', charset='utf-8')
-	script(src='/javascripts/charts/performanceBubbleChart.js', type='text/javascript', charset='utf-8')
-	script(src='/javascripts/charts/performanceHeatmapChart.js', type='text/javascript', charset='utf-8')
-	script(src='/javascripts/charts/performanceLineChart.js', type='text/javascript', charset='utf-8')
-	// script(src='/javascripts/charts/riskGaugeChart.js', type='text/javascript', charset='utf-8')
 
 	// script(type='text/javascript', src='https://getfirebug.com/firebug-lite.js#startOpened ')

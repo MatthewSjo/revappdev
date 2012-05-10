@@ -55,6 +55,7 @@ Zepto(function ($) {
     // ------------------------------------------
     // TOOLBAR
     // ------------------------------------------
+
     theApp.toolbar = loader.loadModule('toolbar');
 
     theApp.toolbar.on('onTap', function () {
@@ -212,6 +213,20 @@ Zepto(function ($) {
         output.log('onEulaEnd');
     });
 
+    theApp.pageEventsManager.on('onAnalysisEnd', function () {
+
+        if (!theApp.dashboard) {
+            theApp.dashboard = loader.loadModule('dashboard');
+        }
+
+        theApp.dashboard.on('onAnalysisLoaded', function () {
+            theApp.scroll.rebuild('analysis');
+        });
+
+        theApp.dashboard.load();        
+        output.log('onAnalysisEnd');
+    });
+
     // ------------------------------------------
     // EVENTS
     // ------------------------------------------
@@ -224,8 +239,12 @@ Zepto(function ($) {
         username = $(el.userNameTextbox).val();
         password = $(el.passwordTextbox).val();
 
-        theApp.auth.doLogin(username, password, siteUrls.autenticate);
+        theApp.auth.doLogin(username, password, siteUrls.authenticate);
     });
+
+    // ------------------------------------------
+    // TEARDOWN
+    // ------------------------------------------
 
     // Unload modules from the loader after they have been loaded by the app.
     loader.unloadModule('repositories');
