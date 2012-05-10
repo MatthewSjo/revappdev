@@ -4,9 +4,9 @@
 
 WebAppLoader.addModule({ name: 'tabbar', plugins: ['helper'], hasEvents: true }, function () {
     var tabbar          = {},
-        eventManager    = this.loader.eventManager || {},
-        output          = this.loader.output || {},
-        helper          = this.loader.plugins.helper || {},
+        output          = this.getConsole(),
+        eventManager    = this.getEventManager(),
+        helper          = this.getPlugin('helper'),
         tabbarId        = '',
         buttons         = [],
         buttonIndices   = {},

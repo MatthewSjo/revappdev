@@ -4,8 +4,8 @@
 
 WebAppLoader.addModule({ name: 'auth', plugins: ['base64'], hasEvents: true }, function () {
     var auth            = {},
-        eventManager    = this.loader.eventManager || {},
-        base64          = this.loader.plugins.base64 || {};
+        eventManager    = this.getEventManager(),
+        base64          = this.getPlugin('base64');
 
     function doLogin(username, password, url) {
         var token;

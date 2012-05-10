@@ -6,8 +6,8 @@ WebAppLoader.addModule({ name: 'spinningWheel', plugins: ['helper'], hasEvents: 
     var spinningWheel   = {},
         slots           = [],
         slotIndices     = {},
-        eventManager    = this.loader.eventManager || {},
-        helper          = this.loader.plugins.helper || {};
+        eventManager    = this.getEventManager(),
+        helper          = this.getPlugin('helper');
 
     function getSlot(index) {
         if (typeof index == 'string') {

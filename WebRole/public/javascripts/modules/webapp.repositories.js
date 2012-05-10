@@ -3,11 +3,11 @@
 // ------------------------------------------
 
 WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'localizationManager'], hasEvents: true }, function () {
-    var repositories = {},
-        eventManager = this.loader.eventManager || {},
-        output = this.loader.output || {},
-        settings = this.loader.shared.settings || {},
-        lang = this.loader.shared.localizationManager.getLanguage() || {};
+    var repositories    = {},
+        eventManager    = this.getEventManager(),
+        output          = this.getConsole(),
+        settings        = this.getSharedModule('settings'),
+        lang            = this.getSharedModule('localizationManager').getLanguage() || {};
 
     // Portfolio Slot Repository
     repositories.portfoliosSlot = (function () {
@@ -102,14 +102,14 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
         eventManager.init(this);
 
         function getTimePeriodsSlotItems() {
-            var isValidTimePeriodSlot = false;
+//            var isValidTimePeriodSlot = false;
 
-            isValidTimePeriodSlot = (timePeriodsSlotItems
-                && Array.isArray(timePeriodsSlotItems)
-                && timePeriodsSlotItems.length > 0
-                );
+//            isValidTimePeriodSlot = (timePeriodsSlotItems
+//                && Array.isArray(timePeriodsSlotItems)
+//                && timePeriodsSlotItems.length > 0
+//                );
 
-            return (isValidTimePeriodSlot)
+            return (timePeriodsSlotItems)
                 ? timePeriodsSlotItems
                 : { err: lang.noTimePeriodSlotAvailable };
         }
@@ -120,7 +120,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
         }
 
         function setData(timePeriods) {
-            var slotItems = [];
+            var slotItems = {};
 
             $.each(timePeriods, function (i, val) {
                 slotItems[val.code] = val.name;

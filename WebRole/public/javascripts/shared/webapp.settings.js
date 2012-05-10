@@ -7,7 +7,7 @@ WebAppLoader.addModule({ name: 'settings', isShared: true }, function () {
         appSettings     = {},
         siteUrls        = {},
         analysisTypes   = {},
-        output          = this.loader.output || {};
+        output          = this.getConsole();
 
     // APP SETTINGS.
     appSettings = {

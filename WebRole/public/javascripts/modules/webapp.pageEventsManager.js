@@ -4,10 +4,10 @@
 
 WebAppLoader.addModule({ name: 'pageEventsManager', plugins: ['helper'], sharedModules: ['pageElements'], hasEvents: true }, function () {
     var pageEventsManager   = {},
-        eventManager        = this.loader.eventManager || {},
-        output              = this.loader.output || {},
-        helper              = this.loader.plugins.helper || {},
-        el                  = this.loader.shared.pageElements || {};
+        eventManager        = this.getEventManager(),
+        output              = this.getConsole(),
+        helper              = this.getPlugin('helper'),
+        el                  = this.getSharedModule('pageElements');
 
     $('div[data-pageEvents]').each(function () {
         var eventHandler = '';

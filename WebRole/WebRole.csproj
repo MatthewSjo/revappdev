@@ -361,6 +361,7 @@
     <Content Include="public\img\transparent button\stars.png" />
     <Content Include="public\img\UIBack.png" />
     <Content Include="public\img\UIBackPressed.png" />
+    <Content Include="public\javascripts\webapp.loader.js" />
     <Content Include="public\javascripts\modules\webapp.nav.js" />
     <Content Include="public\javascripts\modules\webapp.pageEventsManager.js" />
     <Content Include="public\javascripts\modules\webapp.portfolioManager.js" />
@@ -373,7 +374,6 @@
     <Content Include="public\javascripts\shared\webapp.lang.it-it.js" />
     <Content Include="public\javascripts\shared\webapp.lang.en-us.js" />
     <Content Include="public\javascripts\shared\webapp.pageElements.js" />
-    <Content Include="public\javascripts\webapp.loader.js" />
     <Content Include="public\javascripts\charts\performanceLineChart.js" />
     <Content Include="public\javascripts\charts\performanceHeatmapChart.js" />
     <Content Include="public\javascripts\charts\riskGaugeChart.js" />

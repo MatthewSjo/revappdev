@@ -3,10 +3,10 @@
 // ------------------------------------------
 
 WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: ['settings'], hasEvents: true }, function () {
-    var portfolioManager = {},
-        output = this.loader.output || {},
-        eventManager = this.loader.eventManager || {},
-        settings = this.loader.shared.settings || {};
+    var portfolioManager    = {},
+        output              = this.getConsole(),
+        eventManager        = this.getEventManager(),
+        settings            = this.getSharedModule('settings');
 
     function selectPortfolio(portfolioCode) {
         var defaultPortfolioCode,

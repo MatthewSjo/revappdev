@@ -4,7 +4,7 @@
 
 WebAppLoader.addModule({ name: 'it_IT', isShared: true }, function () {
     var it_IT   = {},
-        output  = this.loader.output || {};
+        output  = this.getConsole();
 
     it_IT.hello = "Ciao";
 

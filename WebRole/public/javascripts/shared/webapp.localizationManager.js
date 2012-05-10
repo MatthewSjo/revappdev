@@ -4,10 +4,10 @@
 
 WebAppLoader.addModule({ name: 'localizationManager', sharedModules: ['en_US', 'it_IT'], isShared: true }, function (config) {
     var manager             = {},
-        output              = this.loader.output || {},
+        output              = this.getConsole(),
         defaultLanguage     = 'en_US',
-        languages           = { en_US: this.loader.shared.en_US,
-                                it_IT: this.loader.shared.it_IT 
+        languages           = { en_US: this.getSharedModule('en_US'),
+                                it_IT: this.getSharedModule('it_IT')
                                 },
         language            = languages[defaultLanguage];
 

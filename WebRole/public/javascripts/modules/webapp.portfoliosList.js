@@ -4,10 +4,10 @@
 
 WebAppLoader.addModule({ name: 'portfoliosList', plugins: [], sharedModules: ['settings', 'pageElements'], hasEvents: true }, function () {
     var portfoliosList  = {},
-        output          = this.loader.output || {},
-        settings        = this.loader.shared.settings || {},
-        el              = this.loader.shared.pageElements || {},
-        eventManager    = this.loader.eventManager || {};
+        output          = this.getConsole(),
+        eventManager    = this.getEventManager(),
+        settings        = this.getSharedModule('settings'),
+        el              = this.getSharedModule('pageElements');
     
     $(document).on('click', el.portfolioAnalysisLink, onPortfolioAnalysisClick);
 

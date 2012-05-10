@@ -4,7 +4,7 @@
 
 WebAppLoader.addModule({ name: 'nav', hasEvents: true }, function () {
     var nav              = {},
-        eventManager    = this.loader.eventManager || {};
+        eventManager    = this.getEventManager();
 
     // Navigate to an external page.
     function navigateTo(url) {

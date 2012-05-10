@@ -18,15 +18,15 @@ document.addEventListener('touchmove', function (e) { e.preventDefault(); }, fal
 
 // Main functions:
 Zepto(function ($) {
-    var theApp = {},
-        loader = WebAppLoader, // Alias
-        output = loader.output,
-        eventManager = loader.eventManager,
-        siteUrls = loader.shared.settings.siteUrls,
-        el = loader.shared.pageElements,
-        lang = loader.shared.localizationManager.getLanguage() || {};
+    var theApp          = {},
+        loader          = WebAppLoader, // Alias
+        output          = loader.getConsole(),
+        eventManager    = loader.getEventManager(),
+        siteUrls        = loader.getSharedModule('settings').siteUrls,
+        el              = loader.getSharedModule('pageElements'),
+        lang            = loader.getSharedModule('localizationManager').getLanguage() || {};
 
-    // Te
+    // Test log method.
     output.log('Hello from Dan & Asa!');
 
     // ------------------------------------------
@@ -41,9 +41,6 @@ Zepto(function ($) {
 
     // Navigation
     theApp.nav = loader.loadModule('nav');
-
-    // Authentication
-    theApp.auth = loader.loadModule('auth');
 
     // ------------------------------------------
     // PORTFOLIO MANAGER
@@ -86,47 +83,55 @@ Zepto(function ($) {
     theApp.tabbar.create(tabbarConfig);
 
     theApp.tabbar.on('onHomeTap', function () {
-        // MobileApp.tabbar.hide();
-        // MobileApp.tabbar.buttons[0].setDisabled(true);
         theApp.tabbar.getButton(0).setDisabled(true);
         theApp.tabbar.getButton(1).setBadgeText('99');
         theApp.tabbar.getButton(1).setDisabled(true);
         theApp.tabbar.getButton('infos').setDisabled(false);
 
-        loader.shared.settings.set('test', 'test');
-        // loader.loadModule('settings').set('test', 'test');
-        loader.loadModule('test', { name: 'revolution' }).sayHello();
+        /* ----------------------- ON/OFF ----------------------- /
+
+        loader.unloadModule('it_IT');
+        console.log(loader.getInfo());
+
+        loader.loadModule('test').sayHello();
+        loader.loadModule('test').sayHello();
+
+        var test = loader.loadModule('test');
+        test.sayHello();
+
+        loader.unloadModule('test');
+        test.sayHello();
+        loader.loadModule('test').sayHello();
+
+        test = loader.loadModule('test');
+        test.sayHello();
+
+        test = loader.reloadModule('test');
+        test.sayHello();
+
+        // ------------------------------------------------------ */
 
     });
 
     theApp.tabbar.on('onPortfoliosTap', function () {
-        //MobileApp.slot.showPortfolios();
         theApp.spinningWheel.getSlot('portfolios').show('ADVISOR');
     });
 
     theApp.tabbar.on('onAnalysisTap', function () {
-        // MobileApp.slot.showAnalysis();
         theApp.spinningWheel.getSlot('analysis').show();
     });
 
     theApp.tabbar.on('onTimePeriodsTap', function () {
-        // MobileApp.slot.showTimePeriods();
         theApp.spinningWheel.getSlot('timePeriods').show();
     });
 
     theApp.tabbar.on('onInfosTap', function () {
-        //        MobileApp.tabbar.getButton('home').setDisabled(false);
-        //        MobileApp.tabbar.getButton(1).setDisabled(false);
-        //        MobileApp.tabbar.getButton(1).setBadgeText('!');
-        output.log(loader.shared.settings.get('test'));
-        // loader.unloadModule('base64');
         output.log(loader.getInfo());
         jQT.goTo($('#portfolios'), 'pop');
     });
 
     theApp.tabbar.on('onMoreTap', function () {
         location.reload();
-        // jQT.goTo($('#login'), 'cube');
     });
 
     // ------------------------------------------
@@ -138,7 +143,7 @@ Zepto(function ($) {
             { id: 'portfolios', repository: theApp.repositories.portfoliosSlot },
             { id: 'analysis', repository: theApp.repositories.analysisSlot },
             { id: 'timePeriods', repository: theApp.repositories.timePeriodsSlot }
-        // { id: 'test', repository: { getData: function (callback) { callback({ a: 'a', b: 'b' }); } }}
+         // { id: 'test', repository: { getData: function (callback) { callback({ a: 'a', b: 'b' }); } }}
         ]
     };
 
@@ -146,11 +151,10 @@ Zepto(function ($) {
     theApp.spinningWheel.create(slotConfig);
 
     theApp.spinningWheel.on('onPortfoliosDone', function (key) {
-        // theApp.updateTabBar(key);
         theApp.portfolioManager.selectPortfolio(key);
     });
 
-   
+
     // ------------------------------------------
     // PORTFOLIOS LIST
     // ------------------------------------------
@@ -165,6 +169,8 @@ Zepto(function ($) {
     // ------------------------------------------
     // AUTHENTICATION
     // ------------------------------------------
+
+    theApp.auth = loader.loadModule('auth');
 
     theApp.auth.on('onLoginSuccess', function () {
         theApp.nav.goToPage($(el.homePage), 'dissolve');
@@ -224,7 +230,7 @@ Zepto(function ($) {
     // Unload modules from the loader after they have been loaded by the app.
     loader.unloadModule('repositories');
     loader.unloadModule('scroll');
-    loader.unloadModule('tabbar'); // Unload the webApp tabbar.
+    loader.unloadModule('tabbar');
     loader.unloadModule('spinningWheel');
 
     //    function selectTabbarItem(item) {

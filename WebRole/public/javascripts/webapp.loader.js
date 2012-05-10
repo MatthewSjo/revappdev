@@ -1,34 +1,76 @@
-// ------------------------------------------
+﻿// ------------------------------------------
 // WEB APP LOADER
 // ------------------------------------------
 
-var WebAppLoader = (function () {
-    var webAppLoader = {},
-        modules = {},
-        sharedModules = {},
-        plugins = {},
-        unloadedModules = {},
-        sharingOptions = { sharingDenied: 0, sharingAllowed: 1 },
+var WebAppLoader = {};
+
+(function () {
+    var modules         = [],
+        module          = {},
+        sharingOptions  = { sharingDenied: 0, sharingAllowed: 1 },
 
     // Loader settings:
-        disableLog = false,
-        suppressErrors = false,
-        sharingSetting = sharingOptions.sharingAllowed;
+        disableLog      = false,
+        suppressErrors  = false,
+        sharingSetting  = sharingOptions.sharingAllowed;
+
+    // Set the default module object. This will be used as base when modules,
+    // plugins and shared modules will be created later.
+    module = {
+    
+    // Properties:
+        name                : '',
+        source              : null,
+        bin                 : null,
+        added               : false,
+        loaded              : false,
+        unloaded            : false,
+        isPlugin            : false,
+        isShared            : false,
+        hasEvents           : false,
+        plugins             : [],
+        sharedModules       : [],
+        
+    // Private methods:
+        getPlugin           : function(pluginName) {
+            var isPluginAvailable = this.plugins.some(function(m){
+                return m === pluginName;
+            });
+            
+            // If the plugin is in the list of the available plugins return it.
+            return (isPluginAvailable)
+                ? this.loader.getPlugin(pluginName)
+                : null;
+        },
+        getSharedModule     : function(sharedModuleName) {
+            var isSharedModuleAvailable = this.sharedModules.some(function(m){
+                return m === sharedModuleName;
+            });
+            
+            // If the shared module is in the list of the available modules return it.
+            return (isSharedModuleAvailable)
+                ? this.loader.getSharedModule(sharedModuleName)
+                : null;
+        },
+        getEventManager     : function (){
+            // if the module manages events return the event manager.
+            return (this.hasEvents) 
+                ? this.loader.getEventManager()
+                : null;
+        },
+        getConsole          : function () {
+            return this.loader.getConsole();
+        },
+
+    // Shared objects:
+        loader: {}
+    };
 
     // ------------------------------------------
     // HELPER FUNCTIONS
     // ------------------------------------------
 
-    function isArray(obj) {
-        if (Array.isArray) {
-            return Array.isArray(obj);
-        } else {
-            return (obj && obj.constructor)
-            ? obj.constructor === Array
-            : false;
-        }
-    }
-
+    // Private function that throws an error only if suppressErrors is false. 
     function throwException(message, functionName) {
         var messageHeader = (functionName)
             ? ' - ' + functionName + ' exception! '
@@ -39,10 +81,44 @@ var WebAppLoader = (function () {
         }
     }
 
+    // Private function
+    function getValueAs(value, type) {
+        function getValue(exp, type, defaultValue) {
+            return (typeof exp === type) ? exp : defaultValue;
+        }
+
+        function getValueAsArray(exp, defaultValue) {
+            return (Array.isArray(exp)) ? exp : defaultValue;
+        }
+
+        switch (type) {
+            case 'boolean':
+                return getValue(value, 'boolean', false);
+            case 'b':
+                return getValue(value, 'boolean', false);
+            case 'string':
+                return getValue(value, 'string', '');
+            case 's':
+                return getValue(value, 'string', '');
+            case 'object':
+                return getValue(value, 'object', {});
+            case 'o':
+                return getValue(value, 'object', {});
+            case 'array':
+                return getValueAsArray(value, []);
+            case 'a':
+                return getValueAsArray(value, []);
+            default:
+                return value;
+        }
+    }
+
+
     // ------------------------------------------
     // BUILT-IN - EVENT MANAGER
     // ------------------------------------------
 
+    // Public
     var eventManager = (function () {
         var eventObj = {},
             events = {};
@@ -78,322 +154,270 @@ var WebAppLoader = (function () {
     })();
 
     // ------------------------------------------
-    // BUILT-IN - OUTPUT
+    // BUILT-IN - CONSOLE
     // ------------------------------------------
 
-    var output = (function () {
-        var output = {},
+    // Public
+    var consoleManager = (function () {
+        var consoleManager = {},
             log = (disableLog)
                 ? function () { }
                 : function () { console.log.apply(console, arguments); };
 
-        output.log = log;
+        consoleManager.log = log;
 
-        return output;
+        return consoleManager;
     })();
 
     // ------------------------------------------
     // LOADER
     // ------------------------------------------
 
-    function loadResources(resourcesToLoad, repository) {
-        var loadedResources = {}, i;
-
-        if (isArray(resourcesToLoad)) {
-            var resource, resourceName;
-
-            for (i = 0; i < resourcesToLoad.length; i += 1) {
-                resourceName = resourcesToLoad[i];
-                resource = repository[resourceName] || {};
-                loadedResources[resourceName] = resource.bin;
-            }
-        }
-
-        return loadedResources;
+    // Private function that checks if the specified module exists.
+    function moduleExists(moduleName) {
+        modules.some(function(m) { return m.name === moduleName; });
     }
 
-    function loadPlugins(pluginsToLoad) {
-        return loadResources(pluginsToLoad, plugins);
-    }
-
-    function addPluginToLoader(pluginName) {
-        var plugin = plugins[pluginName],
-            loadedPlugin = {};
-
-        if (!plugin.loaded) {
-            // HERE!
-            loadedPlugin = plugin.source.call({
-                loader: {
-                    output: output,
-                    eventManager: (plugin.hasEvents)
-                        ? eventManager
-                        : {}
-                }
-            });
-
-            if (plugin.hasEvents) {
-                loadedPlugin.on = eventManager.on;
-            }
-
-            plugin.loaded = true;
-            webAppLoader.plugins[pluginName] = plugin.bin = loadedPlugin;
-        }
-    }
-
-    function loadSharedModules(sharedModulesToLoad) {
-        return loadResources(sharedModulesToLoad, sharedModules);
-    }
-
-    function addSharedModuleToLoader(sharedModuleName) {
-        var sharedModule = sharedModules[sharedModuleName],
-            loadedSharedModule = {},
-            sharingMethod = {};
-
-        if (!sharedModule.loaded) {
-            switch (sharingSetting) {
-                case sharingOptions.sharingDenied:
-                    sharingMethod = {};
+    // Attempt to retrieve a module.
+    //
+    // 'moduleName'     - The module name.
+    // 'moduleType'     - A string that defining the module type. 
+    //                    Can be one of: 'plugin' (search in the list of modules
+    //                    tagged as plugins), 'shared' (search in the list of
+    //                    modules tagged as shared) or empty (search in all 
+    //                    available modules).
+    // [PRIVATE]
+    function getModule(moduleName, moduleType) {
+        var module = {};
+    
+        module = modules.filter(function(m) {
+            switch(moduleType) {
+                case 'plugin':
+                    return m.name === moduleName && m.isPlugin;
                     break;
-                case sharingOptions.sharingAllowed:
-                    sharingMethod = loadSharedModules(sharedModule.sharedModulesToLoad);
+                case 'shared':
+                    return m.name === moduleName && m.isShared;
                     break;
                 default:
-                    sharingMethod = {};
-                    break;
-            }
-
-            // HERE!
-            loadedSharedModule = sharedModule.source.call({
-                loader: {
-                    output: output,
-                    eventManager: (sharedModule.hasEvents)
-                        ? eventManager
-                        : {},
-                    plugins: loadPlugins(sharedModule.pluginsToLoad),
-                    shared: sharingMethod
-                }
-            });
-
-            if (sharedModule.hasEvents) {
-                loadedSharedModule.on = eventManager.on;
-            }
-
-            sharedModule.loaded = true;
-            webAppLoader.shared[sharedModuleName] = sharedModules[sharedModuleName].bin = loadedSharedModule;
-        }
+                    return m.name === moduleName;
+            }   
+        })[0] || null;
+            
+        return module;
     }
-
+    
     // Public
     function addModule(config, source) {
-        var name = config.name || '',
-            hasEvents = config.hasEvents || false,
-            isShared = config.isShared || false,
-            isPlugin = config.isPlugin || false,
-            pluginsToLoad = (isArray(config.plugins))
-                ? config.plugins
-                : [],
-            sharedModulesToLoad = (isArray(config.sharedModules))
-                ? config.sharedModules
-                : [],
-            errorMessage = '';
+        var name                    = getValueAs(config.name, 'string'),
+            hasEvents               = getValueAs(config.hasEvents, 'boolean'),
+            isShared                = getValueAs(config.isShared, 'boolean'),
+            isPlugin                = getValueAs(config.isPlugin, 'boolean'),
+            pluginsToLoad           = getValueAs(config.plugins, 'array'),
+            sharedModulesToLoad     = getValueAs(config.sharedModules, 'array'),
+            errorMessage            = '',
+            isSharingDenied         = '';
 
-        // Check if the module already exists.
-        if (modules[name] || plugins[name] || sharedModules[name]) {
-            errorMessage = 'A module named "' + name + '" has been already loaded.';
-            throwException(errorMessage, 'addModule');
+        // If the module doesn't exist...
+        if (!moduleExists(name)) {
+
+            // ... check if sharing is allowed or denied for this module and then...
+            isSharingDenied = (
+                isShared 
+                && sharedModulesToLoad.length > 0)
+                && (sharingSetting === sharingOptions.sharingDenied
+            );
+
+            if (isSharingDenied) {
+                errorMessage += '"' + name + '" is a shared module and cannot load any other shared modules. ';
+                errorMessage += 'Set "isShared" to false or remove "sharedModules" to solve the problem.';
+                throwException(errorMessage, 'addModule');
+            }
+            
+            // ... create a new module and add it to the list of modules.
+            var moduleToAdd = Object.create(module);
+
+            moduleToAdd.source          = source;
+            moduleToAdd.isPlugin        = isPlugin;
+            moduleToAdd.name            = name;
+            moduleToAdd.isShared        = isShared;
+            moduleToAdd.hasEvents       = hasEvents;
+            moduleToAdd.plugins         = pluginsToLoad;
+            moduleToAdd.sharedModules   = sharedModulesToLoad;
+            moduleToAdd.added           = true;
+
+            modules.push(moduleToAdd);    
         }
-
-        if (isPlugin) {
-            plugins[name] = {
-                source: source,
-                hasEvents: hasEvents,
-                loaded: false
-            };
-
-            addPluginToLoader(name);
-            return;
-        }
-
-        var isSharingDenied = (isShared && sharedModulesToLoad.length > 0)
-            && (sharingSetting === sharingOptions.sharingDenied);
-
-        if (isSharingDenied) {
-            errorMessage = '';
-
-            errorMessage += '"' + name + '" is a shared module and cannot load any other shared module. ';
-            errorMessage += 'Set "isShared" to false or remove "sharedModules" to solve the problem.';
-            throwException(errorMessage, 'addModule');
-        }
-
-        if (isShared) {
-            sharedModules[name] = {
-                pluginsToLoad: pluginsToLoad,
-                sharedModulesToLoad: sharedModulesToLoad,
-                source: source,
-                hasEvents: hasEvents,
-                loaded: false
-            };
-
-            addSharedModuleToLoader(name);
-            return;
-        }
-
-        modules[name] = {
-            pluginsToLoad: pluginsToLoad,
-            sharedModulesToLoad: sharedModulesToLoad,
-            source: source,
-            hasEvents: hasEvents,
-            loaded: false
-        };
     }
 
     // Public
-    function loadModule(moduleName, config) {
-        var module = modules[moduleName],
-            moduleToLoad = {},
-            errorMessage;
+    function loadModule(moduleName, moduleType) {
+        var moduleToLoad;
 
-        if (module) {
-            if (!module.loaded) {
-                // HERE!
-                moduleToLoad = module.source.call({
-                    loader: {
-                        output: output,
-                        eventManager: (module.hasEvents)
-                            ? eventManager
-                            : {},
-                        plugins: loadPlugins(module.pluginsToLoad), // Lazy loading. 
-                        shared: loadSharedModules(module.sharedModulesToLoad)
-                    }
-                }, config || {});
-
-                if (module.hasEvents) {
-                    moduleToLoad.on = eventManager.on;
-                }
-
-                module.loaded = true;
-                webAppLoader.modules[moduleName] = module.bin = moduleToLoad;
-            } else {
-                errorMessage = '';
-                errorMessage += '"' + moduleName + '" already exists.';
-                throwException(errorMessage, 'loadModule');
-            }
+        // Get the module.
+        moduleToLoad = getModule(moduleName, moduleType);
+        
+        // Return immediately if nothing is found.
+        if (!moduleToLoad) {
+            return moduleToLoad; // moduleToLoad should be null at this point.
         }
 
-        return (module && module.bin)
-            ? module.bin
+        // If the module exists but its source is still not executed, loaded it.
+        if(!moduleToLoad.loaded) {
+            moduleToLoad.bin = moduleToLoad.source();
+            moduleToLoad.loaded = true;
+            moduleToLoad.unloaded = false;
+
+            // If the module supports events attach the 'on' method to it.
+            if (moduleToLoad.hasEvents) {
+                moduleToLoad.bin.on = eventManager.on;
+            }
+        }
+         
+        // If something goes wrong return null.
+        return (moduleToLoad.loaded)
+            ? moduleToLoad.bin
             : null;
     }
 
     // Public
     function unloadModule(moduleName) {
-        var module = modules[moduleName],
-            sharedModule = sharedModules[moduleName],
-            plugin = plugins[moduleName],
-            moduleToRemove = null,
-            removeFrom = null,
-            moduleType = '';
+        var moduleToUnload,
+            success = false;
 
-        if (module) {
-            moduleToRemove = module;
-            removeFrom = modules;
-            moduleType = 'Module';
+        // Get the module.
+        moduleToUnload = getModule(moduleName);
+        
+        if (moduleToUnload) {
+            moduleToUnload.bin = null;
+            moduleToUnload.loaded = false;
+            moduleToUnload.unloaded = true;
+            success = true;
         }
 
-        if (sharedModule) {
-            moduleToRemove = sharedModule;
-            removeFrom = sharedModules;
-            moduleType = 'Shared Module';
-        }
-
-        if (plugin) {
-            moduleToRemove = plugin;
-            removeFrom = plugins;
-            moduleType = 'Plugin';
-        }
-
-        // The module is ONLY removed from the loader.
-        if (moduleToRemove) {
-            unloadedModules[moduleName] = {
-                type: moduleType
-            };
-            delete removeFrom[moduleName];
-        }
+        return success;
     }
 
     // Public
-    function execute(moduleName, methodName, params) {
-        var tempModule;
-
-        tempModule = loadModule(moduleName);
-        if (tempModule[methodName]) {
-            return (isArray(params))
-                ? tempModule[methodName].apply(tempModule, params)
-                : tempModule[methodName].call(tempModule, params);
+    function reloadModule(moduleName) {
+        if (unloadModule(moduleName)) {
+            return loadModule(moduleName);
         }
     }
 
     // Public
     function getInfo(outputAsHtml) {
-        var message = '',
-            htmlOutput = outputAsHtml || false,
-            breakLine = '\n',
-            module,
-            plugin;
+        var modulesFound            = [],
+            pluginsFound            = [],
+            sharedModulesFound      = [];
+            unloadedModulesFound    = [];
+            message                 = '',
+            breakLine               = '\n';
 
-        if (htmlOutput) {
+        if (getValueAs(outputAsHtml, 'boolean')) {
             breakLine = '</br>';
         }
+        
+        modulesFound = modules.filter(function(m){ return (m.isPlugin == false && m.isShared == false); });
+        pluginsFound = modules.filter(function(m){ return (m.isPlugin == true); });
+        sharedModulesFound = modules.filter(function(m){ return (m.isShared == true); });
 
-        message += 'Modules:' + breakLine;
-        for (module in modules) {
-            message += 'Module: ' + module + ' loaded: ' + modules[module].loaded + breakLine;
+        function addToMessage(text) {
+            message += (getValueAs(text, 'string')) + breakLine;
         }
 
-        message += breakLine;
+        function getModulesInfo(moduleList, caption) {
+            var module  = null,
+                status  = '',
+                len     = 0;
 
-        message += 'Plugins:' + breakLine;
-        for (plugin in plugins) {
-            message += 'Plugin: ' + plugin + ' loaded: ' + plugins[plugin].loaded + breakLine;
+            len = moduleList.length;
+
+            addToMessage(caption + '(' + len + ')');
+            addToMessage(/* break line */);
+
+            for (var i = 0; i < len; i += 1) {
+                module = moduleList[i];
+                
+                if (module.loaded) { status = 'loaded'; }
+                if (module.unloaded) { status = 'unloaded'; }
+                if (module.added && (!module.loaded && !module.unloaded)) { status = 'added'; }
+
+                addToMessage ('- ' + status.toUpperCase() + ':\t' + module.name + ': ');
+            }
+            
+            addToMessage(/* break line */);
         }
 
-        message += breakLine;
+        addToMessage('TOTAL NUMBER MODULES: ' + modules.length);
+        addToMessage(/* break line */);
 
-        message += 'Shared Modules:' + breakLine;
-        for (module in sharedModules) {
-            message += 'Module: ' + module + ' loaded: ' + sharedModules[module].loaded + breakLine;
-        }
-
-        message += breakLine;
-
-        message += 'Unloaded Modules:' + breakLine;
-        for (module in unloadedModules) {
-            message += 'Module: ' + module + ' type: ' + unloadedModules[module].type + breakLine;
-        }
-
-        message += breakLine;
+        getModulesInfo(modulesFound, 'STANDARD MODULES');
+        getModulesInfo(pluginsFound, 'PLUGINS');
+        getModulesInfo(sharedModulesFound, 'SHARED MODULES');
 
         return message;
     }
 
-    function init() {
-        alert('init');
+    // Public
+    function loadSharedModule(moduleName) {
+        return loadModule(moduleName, 'shared');
     }
 
+    // Public
+    function getEventManager() {
+        return eventManager;
+    }
+
+    // Public
+    function getConsole() {
+        return consoleManager;
+    }
+
+    // Public
     function extend(name, source) {
-        webAppLoader[name] = source();
+        WebAppLoader[name] = source();
     }
 
-    webAppLoader = { modules: {}, plugins: {}, shared: {} };
-    webAppLoader.addModule = addModule;
-    webAppLoader.loadModule = loadModule;
-    webAppLoader.unloadModule = unloadModule;
-    webAppLoader.execute = execute;
-    webAppLoader.getInfo = getInfo;
-    webAppLoader.extend = extend;
-    webAppLoader.init = init;
-    webAppLoader.output = output;
-    webAppLoader.eventManager = eventManager;
+    // ------------------------------------------
+    // MODULE OBJECT
+    // ------------------------------------------
 
-    return webAppLoader;
-})();
+    module.loader = (function(){
+        var loader = {};
+        
+        function getPlugin(pluginName) {
+            return loadModule(pluginName, 'plugin');
+        }
+
+        function getSharedModule(sharedModuleName) {
+            return loadModule(sharedModuleName, 'shared');
+        }
+        
+        function getEventManager() {
+            return eventManager;
+        }
+
+        function getConsole() {
+            return consoleManager; // Don't call getConsole() from here.
+        }
+
+        loader.getPlugin = getPlugin;
+        loader.getSharedModule = getSharedModule;
+        loader.getEventManager = getEventManager;
+        loader.getConsole = getConsole;
+
+        return loader;
+                
+    })();
+    
+    //Add public methods to the loader.
+    WebAppLoader.addModule = addModule;
+    WebAppLoader.loadModule = loadModule;
+    WebAppLoader.unloadModule = unloadModule;
+    WebAppLoader.getSharedModule = loadSharedModule;
+    WebAppLoader.getEventManager = getEventManager;
+    WebAppLoader.getConsole = getConsole;
+    WebAppLoader.getInfo = getInfo;
+    WebAppLoader.reloadModule = reloadModule;
+
+}());
