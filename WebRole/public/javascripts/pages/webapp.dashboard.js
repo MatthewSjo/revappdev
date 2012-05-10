@@ -4,8 +4,8 @@
 
 WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], hasEvents: true }, function () {
     var dashboard = {},
-        chartManager = this.loader.shared.chartManager || {},
-        eventManager = this.loader.eventManager || {},
+        chartManager = this.getSharedModule('chartManager'),
+        eventManager = this.getEventManager(),
         bubbleChart = {},
         treeMapChart = {},
         columnChart = {},

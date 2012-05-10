@@ -11,7 +11,7 @@ WebAppLoader.addModule({ name: 'chartDefaults', isShared: true }, function () {
         gridChart = {},
         lineChart = {},
         treeMapChart = {},
-        output = this.loader.output || {};
+        output = this.getConsole();
 
     // COMMON CHART SETTINGS
     commonSettings = {
@@ -25,19 +25,19 @@ WebAppLoader.addModule({ name: 'chartDefaults', isShared: true }, function () {
     // BUBBLE CHART
     bubbleChart = {
         chartArea: { left: 80, top: 35, width: '70%', height: '80%' },
-        fontName: '',
-        fontSize: 12,
-        forceIFrame: false,
+        fontName: commonSettings.labelFontName,
+        fontSize: commonSettings.labelFontSize,
+        forceIFrame: commonSettings.forceIFrame,
         hAxis: {
             titleTextStyle: {
-                fontName: '',
-                fontSize: 25
+                fontName: commonSettings.titleFontName,
+                fontSize: commonSettings.titleFontSize
             }
         },
         vAxis: {
             titleTextStyle: {
-                fontName: 'Futura-CondensedExtraBold',
-                fontSize: 25
+                fontName: commonSettings.titleFontName,
+                fontSize: commonSettings.titleFontSize
             }
         }
     };
@@ -46,22 +46,22 @@ WebAppLoader.addModule({ name: 'chartDefaults', isShared: true }, function () {
     columnChart = {
         chartArea: { right: 0, width: '85%', height: '80%' },
         colors: ['#18c900', '#CC0000'],
-        fontName: 'Futura-Medium',
-        fontSize: 12,
-        forceIFrame: false,
+        fontName: commonSettings.labelFontName,
+        fontSize: commonSettings.labelFontSize,
+        forceIFrame: commonSettings.forceIFrame,
         isStacked: true,
         legend: 'none',
         vAxis: {
             titleTextStyle: {
-                fontName: 'Futura-CondensedExtraBold',
-                fontSize: 25
+                fontName: commonSettings.titleFontName,
+                fontSize: commonSettings.titleFontSize
             }
         }
     };
 
     // GAUGE CHART
     gaugeChart = {
-        forceIFrame: false,
+        forceIFrame: commonSettings.forceIFrame,
         height: 250,
         greenFrom: 0,
         greenTo: 4,
@@ -77,6 +77,7 @@ WebAppLoader.addModule({ name: 'chartDefaults', isShared: true }, function () {
     gridChart = {
         allowHtml: true,
         alternatingRowStyle: true,
+        forceIFrame: commonSettings.forceIFrame,
         cssClassNames: {
             headerRow: 'headerRow',
             tableRow: 'tableRow',
@@ -87,16 +88,16 @@ WebAppLoader.addModule({ name: 'chartDefaults', isShared: true }, function () {
     // LINE CHART
     lineChart = {
         chartArea: { left: 80, top: 35, width: '75%', height: '80%' },
-        fontName: 'Futura-Medium',
-        fontSize: 12,
-        forceIFrame: false
+        fontName: commonSettings.labelFontName,
+        fontSize: commonSettings.labelFontSize,
+        forceIFrame: commonSettings.forceIFrame
     };
 
     // TREE MAP (HEATMAP) CHART
     treeMapChart = {
-        fontFamily: 'Futura-Medium',
-        fontSize: 12,
-        forceIFrame: false,
+        fontFamily: commonSettings.labelFontName,
+        fontSize: commonSettings.labelFontSize,
+        forceIFrame: commonSettings.forceIFrame,
         headerHeight: 25,
         minColor: '#cc0000',
         midColor: '#ffffff',
@@ -117,7 +118,6 @@ WebAppLoader.addModule({ name: 'chartDefaults', isShared: true }, function () {
     chartDefaults.Table = gridChart;
     chartDefaults.TreeMap = treeMapChart;
 
-    // 
     chartDefaults.set = changeSetting; // Alias
 
     return chartDefaults;

@@ -5,7 +5,7 @@
 WebAppLoader.addModule({ name: 'chartManager', sharedModules: ['chartDefaults'], isShared: true }, function () {
     var chartBase = {},
         charts = [],
-        chartDefaults = this.loader.shared.chartDefaults || {};
+        chartDefaults = this.getSharedModule('chartDefaults');
 
     function overrideDefaults(defaults, overrides) {
         var property;
