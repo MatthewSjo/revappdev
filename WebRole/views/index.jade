@@ -61,6 +61,64 @@
 			#wrapper
 				#scroller
 					#eula_partial
+		
+		#settings(data-pageEvents="both")
+			.toolbar
+				h1 #{lang.settingsPage.settingsText}
+				a.back(href='#') #{lang.settingsPage.backText}
+			#wrapper
+				#scroller
+					// form.scroll
+					h2 Application
+					ul.edit.rounded
+						li.arrow
+							a(href="#") Themes
+						li.arrow
+							a(href="#analysisSettings") Analysis Pages
+						li 
+							span Snap
+							span.toggle
+								input(type="checkbox")
+
+					h2 User preferences
+					ul.edit.rounded
+						li.arrow
+							a(href="#") Languages
+						li Stay Logged
+							span.toggle
+								input(type="checkbox")
+						
+					a#reloadApp.grayButton(href='#') Reload App
+		
+		#analysisSettings(data-pageEvents="both")
+			.toolbar
+				h1 #{lang.analysisSettingsPage.settingsText}
+				a.back(href='#') #{lang.analysisSettingsPage.backText}
+			#wrapper
+				#scroller
+					h2 Default Pages
+					ul.edit.rounded
+						li.arrow
+							a(href="#") Performances
+						li.arrow
+							a(href="#") Risk
+						li.arrow
+							a(href="#") Asset Allocation
+						li.arrow
+							a(href="#") Contribution
+						li.arrow
+							a(href="#") Attribution
+						li.arrow
+							a(href="#") Fixed Income
+						// TODO: Add text: Swipe to delete
+					h2 User Pages
+					ul.edit.rounded
+						li.arrow
+							a(href="#") Test 1
+						li.arrow
+							a(href="#") Test 2
+					a.grayButton(href='#') Add New Page
+
 
 		#test
 			.toolbar
@@ -73,11 +131,12 @@
 							li.arrow
 								select#lol(multiple="multiple")
 									optgroup(label='Line Charts')
-										option(value='c1') Chart 1
-										option(value='c2') Chart 2
+										option(value='1') Chart 1
+										option(value='2') Chart 2
 									optgroup(label='Bar Charts')
-										option(value='c3') Bar 1
-										option(value='c4') Bar 2
+										option(value='3') Bar 1
+										option(value='4') Bar 2
+					a#showSlot.grayButton(href='#') Show Slot
 					#test_partial
 
 	// nav#tabbar(style="display: none")
@@ -86,3 +145,6 @@
 
 #myloading
 	img(src='img/loading.gif' )
+
+#myLoadingCharts
+	img(src='images/loading.gif' )

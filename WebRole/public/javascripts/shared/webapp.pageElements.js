@@ -14,12 +14,14 @@ WebAppLoader.addModule({ name: 'pageElements', isShared: true }, function () {
         portfolioAnalysisPage   : '#portfolioAnalysis',
         analysisPage            : '#analysis',
         eulaPage                : '#eula',
+        settingsPage            : '#settings',
 
         // Elements.
         portfolioAnalysisLink   : '.defaultAnalysisLink',
         toolbar                 : '.toolbar',
         loginButton             : '#loginButton',
         loadingMask             : '#myloading',
+        chartLoadingMask        : '#myLoadingCharts',
         userNameTextbox         : '#userNameTextbox',
         passwordTextbox         : '#passwordTextbox',
         tabbar                  : 'nav#tabbar'

@@ -325,7 +325,9 @@
     <Content Include="public\images\Calendar-Week.png" />
     <Content Include="public\images\calendar.png" />
     <Content Include="public\images\cloud.png" />
+    <Content Include="public\images\favourites.png" />
     <Content Include="public\images\info.png" />
+    <Content Include="public\images\loading_charts.png" />
     <Content Include="public\images\more.png" />
     <Content Include="public\images\splash-landscape-retina.gif" />
     <Content Include="public\images\splash-landscape.gif" />
@@ -363,6 +365,7 @@
     <Content Include="public\img\UIBackPressed.png" />
     <Content Include="public\javascripts\pages\webapp.dashboard.js" />
     <Content Include="public\javascripts\shared\webapp.chartManager.js" />
+    <Content Include="public\javascripts\shared\webapp.loadingMaskManager.js" />
     <Content Include="public\javascripts\webapp.loader.js" />
     <Content Include="public\javascripts\modules\webapp.nav.js" />
     <Content Include="public\javascripts\modules\webapp.pageEventsManager.js" />

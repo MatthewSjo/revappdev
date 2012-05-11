@@ -48,7 +48,7 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
             }
 
             $.post(settings.siteUrls.portfolios, { oData: oData, datatype: 'json' }, function (data) {
-                if (data && data.items[0]) {
+                if (data && data.items && data.items[0]) {
                     output.log('loadPortfolioData', data);
                     portfolio.code = data.items[0].code;
                     defaultAnalysisLink = data.items[0].links.defaultAnalysis.href;

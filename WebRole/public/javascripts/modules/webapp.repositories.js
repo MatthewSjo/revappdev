@@ -83,7 +83,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
         }
 
         function getData(callback) {
-            var items = settings.analysisTypes || lang.noAnalysisSlotAvailable;
+            var items = settings.analysisTypes || { err: lang.noAnalysisSlotAvailable };
             callback(items);
         }
 
@@ -136,6 +136,34 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
 
         repository.getData = getData;
         repository.setData = setData;
+        repository.on = on;
+
+        return repository;
+    })();
+
+        // Analysis Slot Repository.
+    repositories.favouritesSlot = (function () {
+        var repository = {},
+            favouritesSlotItems = null;
+
+        // Add event handlers to the object.
+        eventManager.init(this);
+
+        function getFavouritesSlotItems() {
+            return favouritesSlotItems;
+        }
+
+        function setFavouritesSlotItems(items) {
+            favouritesSlotItems = items;
+            eventManager.raiseEvent('onItemsChanged', items);
+        }
+
+        function getData(callback) {
+            var items = { err: lang.noFavouritesSlotAvailable };
+            callback(items);
+        }
+
+        repository.getData = getData;
         repository.on = on;
 
         return repository;

@@ -4,6 +4,7 @@
 
 WebAppLoader.addModule({ name: 'auth', plugins: ['base64'], hasEvents: true }, function () {
     var auth            = {},
+        output          = this.getConsole(),
         eventManager    = this.getEventManager(),
         base64          = this.getPlugin('base64');
 
@@ -16,9 +17,9 @@ WebAppLoader.addModule({ name: 'auth', plugins: ['base64'], hasEvents: true }, f
         $.post(url, { email: username, token: token }, function (response) {
             // If our response indicates that the user has been authenticated...
             if (response.authenticated) {
-                eventManager.raiseEvent('onLoginSuccess');
+                eventManager.raiseEvent('onLoginSuccess', response.portfolioTotal);
             } else {
-                eventManager.raiseEvent('onLoginFailed');
+                eventManager.raiseEvent('onLoginFailed', response);
             }
         }, 'json');
     }
