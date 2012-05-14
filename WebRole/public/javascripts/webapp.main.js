@@ -13,9 +13,6 @@ var jQT = new $.jQTouch({
     preloadImages           : []
 });
 
-/* Use this for high compatibility (iDevice + Android)*/
-document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-
 // Main functions:
 Zepto(function ($) {
     var theApp          = {},
@@ -257,10 +254,16 @@ Zepto(function ($) {
         output.log('onAnalysisEnd');
     });
 
+    theApp.pageEventsManager.on('onSettingsStart', function () {
+        // theApp.scroll.rebuild('settings');
+        output.log('onSettingsStart');
+    });
+
     theApp.pageEventsManager.on('onSettingsEnd', function () {
         theApp.scroll.rebuild('settings');
         output.log('onSettingsEnd');
     });
+
 
     theApp.pageEventsManager.on('onAnalysisSettingsEnd', function () {
         theApp.scroll.rebuild('analysisSettings');
@@ -272,7 +275,7 @@ Zepto(function ($) {
     // ------------------------------------------
 
     // Login
-    $(el.loginButton).on('tap', function () {
+    $(el.loginButton).on('click', function () {
         var username, password;
 
         // Obtain the username and password from the form.
@@ -283,40 +286,63 @@ Zepto(function ($) {
     });
 
         // Login
-    $('#reloadApp').on('tap', function () {
+    $('#reloadApp').on('click', function () {
         window.location = './'; // TODO: Move this code in webapp.nav.
         return false;
     });
 
-    // Test
-    $('#showSlot').on('tap', function () {
-        //theApp.tabbar.hide();
-        //theApp.tabbar.show();
-        //        //alert('click');
-        //        // $('optgroup[label="Line Charts"]').children('option:first').val()
-        //        //alert($('#lol').val('1'));
-        //        //alert($('optgroup[label="Line Charts"]').children('option:first').val());
-        //        var $selectdrop = $('#lol');
-        //        $selectdrop.change(function () {
-        //            // $('.panels>div').hide();
-        //            // $('#' + $selectdrop.val()).show();
-        //            // alert();
-        //        }).trigger('change');
+    // ------------------------------------------
+    // TEST PAGE
+    // ------------------------------------------
 
-        //        //$('#lol').tap();
-        //        //$('optgroup[label="Line Charts"]').show();
+    theApp.localStorage = loader.loadModule('localStorageManager');
+
+    $('#btnTestSaveToLS').on('click', function () {
+        var analysisPages = {
+            items: [{
+                name        : 'Contribution',
+                userDefined : false,
+                charts      : [{
+                        name: 'barChart1'
+                    },{
+                        name: 'barChart2'
+                    }] 
+            },{
+                name        : 'My Analysis',
+                userDefined : true,
+                charts      : [{
+                        name: 'lineChart1'
+                    },{
+                        name: 'lineChart2'
+                    }]             
+            }]
+        };
+
+        theApp.localStorage.save('analysisPages', analysisPages);
+        theApp.localStorage.save('number', 75);
+        theApp.localStorage.save('boolean', false);
+        theApp.localStorage.save('date', new Date);
     });
 
-    $('#lol').on('change', function () {
-//        theApp.tabbar.hide();
-//        //theApp.tabbar.show();
-//        function showTabbar() {
-//            theApp.tabbar.show();
-//            clearTimeout(t);
-//        }
-//        var t = setTimeout(showTabbar, 1000);
-
+    $('#btnLoadFromLS').on('click', function () {
+        output.log('Loaded:', theApp.localStorage.load('analysisPages'));
+        output.log('Loaded:', theApp.localStorage.load('number'));
+        output.log('Loaded:', theApp.localStorage.load('boolean'));
+        output.log('Loaded:', theApp.localStorage.load('date'));
     });
+
+    $('#btnItemsCountLS').on('click', function () {
+        theApp.localStorage.count();
+    });
+
+    $('#btnTestClearAllLS').on('click', function () {
+        // theApp.localStorage.clearAll();
+        theApp.localStorage.remove('analysisPages');
+        theApp.localStorage.remove('number');
+        theApp.localStorage.remove('boolean');
+        theApp.localStorage.remove('date');
+    });
+
 
     // ------------------------------------------
     // TEARDOWN

@@ -93,7 +93,7 @@ WebAppLoader.addModule({ name: 'tabbar', plugins: ['helper'], hasEvents: true },
         });
 
         $(tabbarId + ' ul li a').each(function (i) {
-            $(this).on('tap', function () {
+            $(this).on('click', function () {
                 if (!buttons[i].isDisabled) {
                     output.log(buttons[i].title + ' was tapped');
                     eventManager.raiseEvent(buttons[i].eventHandler);
