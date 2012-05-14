@@ -5,10 +5,22 @@
 WebAppLoader.addModule({ name: 'scroll' }, function () {
     var scroll      = {},
         myScroll; // Please don't initialize myScroll.
-
+    
+    /* Use this for high compatibility (iDevice + Android)*/
+    document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+    
     function rebuildScroll(id, optionConfig) {
         var wrapper = 'div#' + id + ' #wrapper',
                 options = optionConfig || {}; // { hScrollbar: false, vScrollbar: true }
+        
+        options.useTransform = false;
+		options.onBeforeScrollStart = function (e) {
+			    var target = e.target;
+			    while (target.nodeType != 1) target = target.parentNode;
+
+			    if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
+				    e.preventDefault();
+		    };
 
         if (myScroll) {
             myScroll.destroy();
@@ -18,7 +30,7 @@ WebAppLoader.addModule({ name: 'scroll' }, function () {
         if ($(wrapper).get(0)) {
             setTimeout(function () {
                 myScroll = new iScroll($(wrapper).get(0), options);
-            }, 0);
+            }, 25); // Usually timers should be set to a minimum of 25 milliseconds to work properly.
         }
     }
 
