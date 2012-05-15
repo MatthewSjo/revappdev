@@ -18,13 +18,13 @@ document.addEventListener('touchmove', function (e) { e.preventDefault(); }, fal
 
 // Main functions:
 Zepto(function ($) {
-    var theApp          = {},
-        loader          = WebAppLoader, // Alias
-        output          = loader.getConsole(),
-        eventManager    = loader.getEventManager(),
-        siteUrls        = loader.getSharedModule('settings').siteUrls,
-        el              = loader.getSharedModule('pageElements'),
-        lang            = loader.getSharedModule('localizationManager').getLanguage() || {};
+    var theApp = {},
+        loader = WebAppLoader, // Alias
+        output = loader.getConsole(),
+        eventManager = loader.getEventManager(),
+        siteUrls = loader.getSharedModule('settings').siteUrls,
+        el = loader.getSharedModule('pageElements'),
+        lang = loader.getSharedModule('localizationManager').getLanguage() || {};
 
     // Test log method.
     output.log('Hello from Dan & Asa!');
@@ -144,7 +144,7 @@ Zepto(function ($) {
             { id: 'portfolios', repository: theApp.repositories.portfoliosSlot },
             { id: 'analysis', repository: theApp.repositories.analysisSlot },
             { id: 'timePeriods', repository: theApp.repositories.timePeriodsSlot }
-         // { id: 'test', repository: { getData: function (callback) { callback({ a: 'a', b: 'b' }); } }}
+        // { id: 'test', repository: { getData: function (callback) { callback({ a: 'a', b: 'b' }); } }}
         ]
     };
 
@@ -223,7 +223,7 @@ Zepto(function ($) {
             theApp.scroll.rebuild('analysis');
         });
 
-        theApp.dashboard.load();        
+        theApp.dashboard.load();
         output.log('onAnalysisEnd');
     });
 

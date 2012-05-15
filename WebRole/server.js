@@ -81,8 +81,11 @@ app.post('/portfolios', routes.portfolios);
 app.post('/analysis', routes.analysis);
 app.post('/portfolioAnalysis', routes.portfolioAnalysis);
 
-// Web Methods:
+// Web Methods (GET):
 app.get('/isUserAuthenticated', wm.isUserAuthenticated);
+
+// Web Methods (POST):
+app.post('/segmentsTreeNode', wm.segmentsTreeNode);
 
 // ------------------------------------------
 // INITIALISATION

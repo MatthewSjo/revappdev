@@ -311,6 +311,7 @@
     <None Include="node_modules\socket.io\node_modules\socket.io-client\lib\vendor\web-socket-js\flash-src\WebSocketMain.as" />
     <None Include="node_modules\socket.io\node_modules\socket.io-client\lib\vendor\web-socket-js\flash-src\WebSocketMainInsecure.as" />
     <None Include="node_modules\socket.io\node_modules\socket.io-client\lib\vendor\web-socket-js\README.md" />
+    <Content Include="adapters.js" />
     <Content Include="languages.js" />
     <Content Include="manifest.js" />
     <Content Include="public\images\btn_asset.png" />

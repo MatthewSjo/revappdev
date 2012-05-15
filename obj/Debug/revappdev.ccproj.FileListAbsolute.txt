@@ -1,1 +1,12 @@
 C:\node\revappdev\bin\Debug\ServiceConfiguration.cscfg
+C:\node\revappdev\obj\Debug\WebRole\bin\iisnode.msi
+C:\node\revappdev\obj\Debug\WebRole\bin\Microsoft.WindowsAzure.Diagnostics.dll
+C:\node\revappdev\obj\Debug\WebRole\bin\Microsoft.WindowsAzure.Diagnostics.xml
+C:\node\revappdev\obj\Debug\WebRole\bin\Microsoft.WindowsAzure.StorageClient.dll
+C:\node\revappdev\obj\Debug\WebRole\bin\Microsoft.WindowsAzure.StorageClient.xml
+C:\node\revappdev\obj\Debug\WebRole\bin\node.exe
+C:\node\revappdev\obj\Debug\WebRole\bin\setup_web.cmd
+C:\node\revappdev\obj\Debug\WebRole\bin\System.Web.Providers.dll
+C:\node\revappdev\obj\Debug\WebRole\bin\vcredist_x64.exe
+C:\node\revappdev\obj\Debug\WebRole\bin\WebRole.dll
+C:\node\revappdev\obj\Debug\WebRole\bin\WebRole.pdb

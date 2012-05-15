@@ -21,6 +21,7 @@ WebAppLoader.addModule({ name: 'settings', isShared: true }, function () {
         index               : '/index',
         portfolioAnalysis   : '/portfolioAnalysis',
         analysis            : '/analysis',
+        segmentsTreeNode    : '/segmentsTreeNode',
         eula                : '/eula'
     };
 
