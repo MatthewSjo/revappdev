@@ -46,7 +46,7 @@ exports.authenticate = function (req, res, next) {
 
         // Create an object to pass down as JSON to the calling function.
         obj = { authenticated: !resource.error };
-
+        console.log('authenticate', resource);
         // If the authentication was successful...
         if (!resource.error) {
             // Persist our authorization token in a session variable.

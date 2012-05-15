@@ -4,13 +4,13 @@
 
 // Initialize jQTouch.
 var jQT = new $.jQTouch({
-    addGlossToIcon: true,
-    themeSelectionSelector: '#jqt #themes ul',
-    useFastTouch: true,
-    statusBar: 'default',
-    hoverDelay: 10,
-    pressDelay: 10,
-    preloadImages: []
+    addGlossToIcon          : true,
+    themeSelectionSelector  : '#jqt #themes ul',
+    useFastTouch            : true,
+    statusBar               : 'default',
+    hoverDelay              : 10,
+    pressDelay              : 10,
+    preloadImages           : []
 });
 
 /* Use this for high compatibility (iDevice + Android)*/
@@ -42,6 +42,9 @@ Zepto(function ($) {
     // Navigation
     theApp.nav = loader.loadModule('nav');
 
+    // Loading Mask Manager
+    theApp.mask = loader.loadModule('loadingMaskManager');
+
     // ------------------------------------------
     // PORTFOLIO MANAGER
     // ------------------------------------------
@@ -49,6 +52,8 @@ Zepto(function ($) {
     theApp.portfolioManager = loader.loadModule('portfolioManager');
 
     theApp.portfolioManager.on('onTimePeriodDataReceived', function (timePeriods) {
+        // $('#myLoadingCharts').hide();
+        // .css("display", "none");
         theApp.repositories.timePeriodsSlot.setData(timePeriods);
     });
 
@@ -71,12 +76,14 @@ Zepto(function ($) {
         buttonPrefix: 'tabbar_btn',
         visible: false,
         items: [
-            { id: 'home', title: lang.tabbarHomeTitle, class: 'home' },
+            // { id: 'home', title: lang.tabbarHomeTitle, class: 'home' },
+            { id: 'favourites', title: lang.tabbarFavouritesTitle, class: 'favourites' },
             { id: 'portfolios', title: lang.tabbarPortfolios, class: 'portfolios' },
             { id: 'analysis', title: lang.tabbarAnalysis, class: 'analysis' },
             { id: 'timePeriods', title: lang.tabbarTimePeriods, class: 'timeperiods' },
-            { id: 'infos', title: lang.tabbarInfos, class: 'infos' },
-            { id: 'more', title: lang.tabbarMore, class: 'more' }
+            // { id: 'infos', title: lang.tabbarInfos, class: 'infos' },
+            // {id: 'more', title: lang.tabbarMore, class: 'more' }
+            {id: 'settings', title: lang.tabbarSettings, class: 'settings' }
         ]
     };
 
@@ -84,12 +91,16 @@ Zepto(function ($) {
     theApp.tabbar.create(tabbarConfig);
 
     theApp.tabbar.on('onHomeTap', function () {
+        
+            window.location = './'; // TODO: Move this code in webapp.nav.
+            return false;
+        
+        /* ----------------------- ON/OFF ----------------------- /
+        
         theApp.tabbar.getButton(0).setDisabled(true);
         theApp.tabbar.getButton(1).setBadgeText('99');
         theApp.tabbar.getButton(1).setDisabled(true);
         theApp.tabbar.getButton('infos').setDisabled(false);
-
-        /* ----------------------- ON/OFF ----------------------- /
 
         loader.unloadModule('it_IT');
         console.log(loader.getInfo());
@@ -114,6 +125,10 @@ Zepto(function ($) {
 
     });
 
+    theApp.tabbar.on('onFavouritesTap', function () {
+        theApp.spinningWheel.getSlot('favourites').show();
+    });
+
     theApp.tabbar.on('onPortfoliosTap', function () {
         theApp.spinningWheel.getSlot('portfolios').show('ADVISOR');
     });
@@ -135,12 +150,17 @@ Zepto(function ($) {
         location.reload();
     });
 
+    theApp.tabbar.on('onSettingsTap', function () {
+        theApp.nav.goToPage($(el.settingsPage), 'dissolve');
+    });
+
     // ------------------------------------------
     // SPINNING WHEEL
     // ------------------------------------------
 
     var slotConfig = {
         items: [
+            { id: 'favourites', repository: theApp.repositories.favouritesSlot },
             { id: 'portfolios', repository: theApp.repositories.portfoliosSlot },
             { id: 'analysis', repository: theApp.repositories.analysisSlot },
             { id: 'timePeriods', repository: theApp.repositories.timePeriodsSlot }
@@ -152,6 +172,7 @@ Zepto(function ($) {
     theApp.spinningWheel.create(slotConfig);
 
     theApp.spinningWheel.on('onPortfoliosDone', function (key) {
+        $('#myLoadingCharts').show();
         theApp.portfolioManager.selectPortfolio(key);
     });
 
@@ -173,11 +194,20 @@ Zepto(function ($) {
 
     theApp.auth = loader.loadModule('auth');
 
-    theApp.auth.on('onLoginSuccess', function () {
+    theApp.auth.on('onLoginSuccess', function (portfolioTotal) {
         theApp.nav.goToPage($(el.homePage), 'dissolve');
-        // theApp.tabbar.show();
-        // theApp.updateTabBar();
+        // theApp.nav.goToPage($(el.portfolioAnalysisPage), 'dissolve');
+        // theApp.mask.show('analysis');
+
         theApp.portfolioManager.selectPortfolio();
+        
+        if (portfolioTotal) {
+            theApp.tabbar.getButton('portfolios').setBadgeText(portfolioTotal);
+        }
+    });
+
+    theApp.auth.on('onLoginFailed', function (response) {
+        output.log('onLoginFailed response: ', response);
     });
 
     // ------------------------------------------
@@ -214,17 +244,27 @@ Zepto(function ($) {
     });
 
     theApp.pageEventsManager.on('onAnalysisEnd', function () {
-
         if (!theApp.dashboard) {
             theApp.dashboard = loader.loadModule('dashboard');
         }
 
         theApp.dashboard.on('onAnalysisLoaded', function () {
+            // theApp.mask.show('analysis');
             theApp.scroll.rebuild('analysis');
         });
 
         theApp.dashboard.load();
         output.log('onAnalysisEnd');
+    });
+
+    theApp.pageEventsManager.on('onSettingsEnd', function () {
+        theApp.scroll.rebuild('settings');
+        output.log('onSettingsEnd');
+    });
+
+    theApp.pageEventsManager.on('onAnalysisSettingsEnd', function () {
+        theApp.scroll.rebuild('analysisSettings');
+        output.log('onAnalysisSettingsEnd');
     });
 
     // ------------------------------------------
@@ -240,6 +280,42 @@ Zepto(function ($) {
         password = $(el.passwordTextbox).val();
 
         theApp.auth.doLogin(username, password, siteUrls.authenticate);
+    });
+
+        // Login
+    $('#reloadApp').on('tap', function () {
+        window.location = './'; // TODO: Move this code in webapp.nav.
+        return false;
+    });
+
+    // Test
+    $('#showSlot').on('tap', function () {
+        //theApp.tabbar.hide();
+        //theApp.tabbar.show();
+        //        //alert('click');
+        //        // $('optgroup[label="Line Charts"]').children('option:first').val()
+        //        //alert($('#lol').val('1'));
+        //        //alert($('optgroup[label="Line Charts"]').children('option:first').val());
+        //        var $selectdrop = $('#lol');
+        //        $selectdrop.change(function () {
+        //            // $('.panels>div').hide();
+        //            // $('#' + $selectdrop.val()).show();
+        //            // alert();
+        //        }).trigger('change');
+
+        //        //$('#lol').tap();
+        //        //$('optgroup[label="Line Charts"]').show();
+    });
+
+    $('#lol').on('change', function () {
+//        theApp.tabbar.hide();
+//        //theApp.tabbar.show();
+//        function showTabbar() {
+//            theApp.tabbar.show();
+//            clearTimeout(t);
+//        }
+//        var t = setTimeout(showTabbar, 1000);
+
     });
 
     // ------------------------------------------

@@ -48,7 +48,20 @@ exports.en_US = {
     eulaPage: {
         eulaText                    : 'EULA',
         backText                    : 'Back'
+    },
+
+    // ---------------------------------------------------- | Settings Page |
+    settingsPage: {
+        settingsText                : 'Settings',
+        backText                    : 'Back'
+    },
+
+    // ---------------------------------------------------- | Analysis Settings Page |
+    analysisSettingsPage: {
+        settingsText                : 'Settings',
+        backText                    : 'Back'
     }
+
 };
 
 exports.it_IT = {

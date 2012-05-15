@@ -2,12 +2,13 @@
 // EVENT PAGE MANAGER
 // ------------------------------------------
 
-WebAppLoader.addModule({ name: 'pageEventsManager', plugins: ['helper'], sharedModules: ['pageElements'], hasEvents: true }, function () {
+WebAppLoader.addModule({ name: 'pageEventsManager', plugins: ['helper'], sharedModules: ['pageElements', 'loadingMaskManager'], hasEvents: true }, function () {
     var pageEventsManager   = {},
         eventManager        = this.getEventManager(),
         output              = this.getConsole(),
         helper              = this.getPlugin('helper'),
-        el                  = this.getSharedModule('pageElements');
+        el                  = this.getSharedModule('pageElements'),
+        mask                = this.getSharedModule('loadingMaskManager');
 
     $('div[data-pageEvents]').each(function () {
         var eventHandler = '';
@@ -59,12 +60,12 @@ WebAppLoader.addModule({ name: 'pageEventsManager', plugins: ['helper'], sharedM
     $(document).on('ajaxComplete', onAjaxComplete);
 
     function onAjaxStart(event, request, settings) {
-        $(el.loadingMask).show();
+        mask.show('ajax');
         output.log('ajaxStart', event, request, settings);
     }
 
     function onAjaxComplete(event, request, settings) {
-        $(el.loadingMask).css("display", "none");
+        mask.hide('ajax');
         // Return false to cancel this request.
         var obj = {};
         try {

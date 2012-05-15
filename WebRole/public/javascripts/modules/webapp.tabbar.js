@@ -14,6 +14,7 @@ WebAppLoader.addModule({ name: 'tabbar', plugins: ['helper'], hasEvents: true },
 
     function hide() {
         // $(tabbarId).hide();
+        output.log('tabbar.hide()');
         $(tabbarId).css({ opacity: 0 });
     }
 

@@ -24,6 +24,11 @@ $toolbar-button-color: saturate(darken($toolbar-background-color, 10), 20);
         );
     }
 
+	h2 {
+		color: #fff;
+		text-shadow: #666 0 1px 0;
+	}
+
     ul {
         li {
             border-top: 1px solid darken($base-color, 5);
