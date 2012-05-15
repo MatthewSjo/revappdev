@@ -34,6 +34,12 @@ WebAppLoader.addModule({ name: 'chartDefaults', isShared: true }, function () {
                 fontSize: commonSettings.titleFontSize
             }
         },
+        sizeAxis: {
+            maxSize: 100,
+            maxValue: 100,
+            minSize: 1,
+            minValue: 1
+        },
         vAxis: {
             titleTextStyle: {
                 fontName: commonSettings.titleFontName,
@@ -81,7 +87,9 @@ WebAppLoader.addModule({ name: 'chartDefaults', isShared: true }, function () {
         cssClassNames: {
             headerRow: 'headerRow',
             tableRow: 'tableRow',
-            oddTableRow: 'oddTableRow'
+            oddTableRow: 'oddTableRow',
+            selectedTableRow: 'selectedTableRow',
+            hoverTableRow: 'hoverTableRow'
         }
     };
 

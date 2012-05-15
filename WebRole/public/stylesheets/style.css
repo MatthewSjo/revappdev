@@ -113,7 +113,7 @@ div#jqt #about a
 }
 
 .headerRow { font-family: Futura-CondensedExtraBold !important; font-size: 20pt; }
-.tableRow, .oddTableRow { font-family: Futura-Medium !important; }
+.tableRow, .oddTableRow, .selectedTableRow, .hoverTableRow { font-family: Futura-Medium !important; }
 .oddTableRow { background-color: #dddddd; }
 
 /************************************************

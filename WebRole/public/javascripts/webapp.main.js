@@ -15,13 +15,13 @@ var jQT = new $.jQTouch({
 
 // Main functions:
 Zepto(function ($) {
-    var theApp          = {},
-        loader          = WebAppLoader, // Alias
-        output          = loader.getConsole(),
-        eventManager    = loader.getEventManager(),
-        siteUrls        = loader.getSharedModule('settings').siteUrls,
-        el              = loader.getSharedModule('pageElements'),
-        lang            = loader.getSharedModule('localizationManager').getLanguage() || {};
+    var theApp = {},
+        loader = WebAppLoader, // Alias
+        output = loader.getConsole(),
+        eventManager = loader.getEventManager(),
+        siteUrls = loader.getSharedModule('settings').siteUrls,
+        el = loader.getSharedModule('pageElements'),
+        lang = loader.getSharedModule('localizationManager').getLanguage() || {};
 
     // Test log method.
     output.log('Hello from Dan & Asa!');

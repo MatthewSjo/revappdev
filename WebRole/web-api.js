@@ -10,7 +10,8 @@ var http = require('http'),
 // Resource Links
 var ResourceLinks = {
     eula: '',
-    portfolios: ''
+    portfolios: '',
+    segmentsTreeNode: ''
 };
 
 // User Account
@@ -133,6 +134,25 @@ function applyODataToURI(oData, uri) {
     return uri;
 }
 
+// Replaces segments tree node placeholders in URIs.
+// Returns the given URI string with placeholders replaced with appropriate values.
+// 'params'  - An object containing parameter values to be inserted into the URI. 
+// 'uri'    - The Uniform Resource Identifier, which contains filter placeholders 
+//            to be replaced by the oData property values.
+function applySegmentParamsToURI(params, uri) {
+    var timePeriods = params.timePeriods || '',
+        include = params.include || '',
+        measures = params.measures || '',
+        includeMeasuresFor = params.includeMeasuresFor || '';
+
+    uri = uri.replace('{timePeriodsList}', timePeriods)
+             .replace('{dataToInclude}', include)
+             .replace('{measuresList}', measures)
+             .replace('{measuresFor}', includeMeasuresFor);
+
+    return uri;
+}
+
 // ------------------------------------------
 // PUBLIC METHODS
 // ------------------------------------------
@@ -210,8 +230,41 @@ exports.getPortfolioAnalysis = function (uri, callback) {
     options = getRequestOptions(uri, account.token);
 
     // Attempt to get the portfolio analysis for the requested portfolio.
-    getResource('portfolioAnalysis', options, function (analysis) {
-        callback(analysis);
+    getResource('portfolioAnalysis', options, function (resource) {
+
+        if (!resource.error && resource.data && !ResourceLinks.segmentsTreeNode) {
+            // Populate the resources object.
+            ResourceLinks.segmentsTreeNode = resource.data.analysis.results.links.segmentsTreeRootNodeQuery.href;
+        }
+
+        callback(resource);
+    });
+};
+
+// Attempts to retrieve the specified segment tree nodes for the requested portfolio.
+// 'oData'      - An object containing filtering values to be inserted into a URI. 
+// 'params'     - An object containing additional parameter values to be inserted into a URI. 
+// 'callback'   - A JavaScript function to be called when the response has arrived.
+//                Will always be called, regardless of the outcome of the request,
+//                and will receive an object containing a 'data' property, which 
+//                may be null, and an error property, which will either be boolean false 
+//                (indicating that the request was successful), a boolean true, or a 
+//                complete error object (both indicating that the request failed).
+exports.getSegmentsTreeNode = function (oData, params, callback) {
+    var options, filterQuery, segmentsTreeNodeQuery;
+
+    // Format a segments tree node querystring based on the oData and the tree node resource link.
+    filterQuery = applyODataToURI(oData, ResourceLinks.segmentsTreeNode);
+
+    // Format the querystring with filters applied to add further parameters.
+    segmentsTreeNodeQuery = applySegmentParamsToURI(params, filterQuery);
+
+    // Generate the request configuration based on the segment tree node query.
+    options = getRequestOptions(segmentsTreeNodeQuery, account.token);
+
+    // Attempt to get a list of the user's portfolios, filtered by the query.
+    getResource('segmentsTreeNode', options, function (resource) {
+        callback(resource);
     });
 };
 
