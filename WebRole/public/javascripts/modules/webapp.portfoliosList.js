@@ -20,7 +20,6 @@ WebAppLoader.addModule({ name: 'portfoliosList', plugins: [], sharedModules: ['s
         
         return false;
     }
-
-
+    
     return portfoliosList;
 });

@@ -75,6 +75,9 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
 
         function getAnalysisSlotItems() {
             return analysisSlotItems;
+            return (analysisSlotItems)
+                ? analysisSlotItems
+                : { err: lang.noAnalysisSlotAvailable };
         }
 
         function setAnalysisSlotItems(items) {
@@ -82,12 +85,23 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
             eventManager.raiseEvent('onItemsChanged', items);
         }
 
+        function setData(analysisPages) {
+            var slotItems = {};
+
+            $.each(analysisPages, function (i, val) {
+                slotItems[val.code] = val.name;
+            });
+
+            setAnalysisSlotItems(slotItems);
+        }
+
         function getData(callback) {
-            var items = settings.analysisTypes || { err: lang.noAnalysisSlotAvailable };
+            var items = getAnalysisSlotItems();
             callback(items);
         }
 
         repository.getData = getData;
+        repository.setData = setData;
         repository.on = on;
 
         return repository;

@@ -13,6 +13,7 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
             portfolio = {
                 code: '',
                 type: '',
+                analysisLink: '',
                 currency: '',
                 version: '',
                 timeStamp: '',
@@ -61,6 +62,7 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
 
         function onLoadPortfolioDataCompleted(data) {
             if (data.defaultAnalysisLink) {
+                portfolio.analysisLink = data.defaultAnalysisLink;
                 // mobileApp.setLastSlotPortfolioSelected(data.portfolioCode);
                 loadPortfolioAnalysis(data.defaultAnalysisLink, onLoadPortfolioAnalysisCompleted);
             }
@@ -84,10 +86,21 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
 
         function onLoadPortfolioAnalysisCompleted() {
             // repositories.timePeriodsSlot.setData(portfolio.timePeriods);
+            eventManager.raiseEvent('onPortfolioLoaded', portfolio);
             eventManager.raiseEvent('onTimePeriodDataReceived', portfolio.timePeriods);
         }
     }
+    
+    // Public
+    function getAnalysis(uri) {
+        $.post(settings.siteUrls.analysis, { uri: uri }, function (data) {
+            eventManager.raiseEvent('onAnalysisReceived', data);
+        });
+    
+    }
+
     portfolioManager.selectPortfolio = selectPortfolio;
+    portfolioManager.getAnalysis = getAnalysis;
 
     return portfolioManager;
 });

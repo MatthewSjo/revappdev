@@ -54,6 +54,21 @@ Zepto(function ($) {
         theApp.repositories.timePeriodsSlot.setData(timePeriods);
     });
 
+    theApp.portfolioManager.on('onPortfolioLoaded', function (portfolio) {
+        // $('#myLoadingCharts').hide();
+        // .css("display", "none");
+        // theApp.repositories.timePeriodsSlot.setData(timePeriods);
+        // theApp.nav.goToPage($(el.analysisPage), 'dissolve');
+        theApp.portfolioManager.getAnalysis(portfolio.analysisLink);
+        output.log('Loaded portfolio:', portfolio);
+    });
+
+    theApp.portfolioManager.on('onAnalysisReceived', function (data) {
+        theApp.scroll.rebuild('analysis');
+        $(el.analysisPage + '_partial').html(data);
+        theApp.nav.goToPage($(el.analysisPage), 'dissolve');
+    });
+
     // ------------------------------------------
     // TOOLBAR
     // ------------------------------------------
@@ -173,7 +188,12 @@ Zepto(function ($) {
         theApp.portfolioManager.selectPortfolio(key);
     });
 
+    theApp.spinningWheel.on('onAnalysisDone', function (key) {
+        // $('#myLoadingCharts').show();
+        // theApp.portfolioManager.selectPortfolio(key);
 
+    });
+    
     // ------------------------------------------
     // PORTFOLIOS LIST
     // ------------------------------------------
@@ -218,9 +238,15 @@ Zepto(function ($) {
         output.log('onLoginStart');
     });
 
+    theApp.pageEventsManager.on('onHomeStart', function () {
+        output.log('onHomeStart');
+    });
+
     theApp.pageEventsManager.on('onHomeEnd', function () {
         theApp.tabbar.show();
+        theApp.analysisManager.update();
         theApp.scroll.rebuild('home');
+        theApp.mask.show('analysis');
         output.log('onHomeEnd');
     });
 
@@ -251,6 +277,7 @@ Zepto(function ($) {
         });
 
         theApp.dashboard.load();
+        theApp.mask.hide('analysis');
         output.log('onAnalysisEnd');
     });
 
@@ -289,6 +316,27 @@ Zepto(function ($) {
     $('#reloadApp').on('click', function () {
         window.location = './'; // TODO: Move this code in webapp.nav.
         return false;
+    });
+
+    // ------------------------------------------
+    // ANALYSIS MANAGER
+    // ------------------------------------------
+
+    theApp.analysisManager = loader.loadModule('analysisManager');
+    
+    // NOTA BENE: the analysis manager is updated the first time when the home
+    // page is loaded.
+    theApp.analysisManager.on('onUpdated', function (analysisPage) {
+        var analysisSlotItems = jLinq.from(analysisPage.items)
+            .sort('order')
+            .select(function (record) {
+                return {
+                    name: record.name,
+                    code: record.id
+                }
+            });
+        
+        theApp.repositories.analysisSlot.setData(analysisSlotItems);
     });
 
     // ------------------------------------------
