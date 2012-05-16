@@ -6,7 +6,11 @@
 // they do not attempt to render views when called; instead, they return data objects.
 
 var webApi = require('../web-api'),
-    adapters = require('../adapters');
+    adapters = require('../adapters'),
+    lang = require('../languages');
+    
+var currentLanguage = {},
+    defaultLanguage = 'en_US';
 
 // Local Authentication Confirmation
 exports.isUserAuthenticated = function (req, res) {
@@ -26,6 +30,10 @@ exports.segmentsTreeNode = function (req, res) {
             top: ''
         };
 
+    // If we had a language specified as part of the querystring,
+    // retrieve it from the language module, otherwise load the default.
+    currentLanguage = lang[req.query.lang] || lang[defaultLanguage];
+
     // Define the parameters for the segment tree node call, including 
     // defaults if the request body doesn't contain any.
     params = {
@@ -40,7 +48,8 @@ exports.segmentsTreeNode = function (req, res) {
             jsonObj = adapter.convert(
                 segments.data,
                 req.body.include,
-                req.body.measures
+                req.body.measures,
+                currentLanguage
             );
 
         res.json(jsonObj);

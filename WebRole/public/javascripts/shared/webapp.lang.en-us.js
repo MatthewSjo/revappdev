@@ -16,7 +16,7 @@ WebAppLoader.addModule({ name: 'en_US', isShared: true }, function () {
         noFavouritesSlotAvailable   : 'No favourites',
 
         // Tabbar.
-        tabbarFavouritesTitle             : 'Favourites',
+        tabbarFavouritesTitle       : 'Favourites',
         tabbarHomeTitle             : 'Home',
         tabbarPortfolios            : 'Portfolios',
         tabbarAnalysis              : 'Analysis',

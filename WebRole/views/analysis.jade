@@ -13,26 +13,79 @@
 			h3 Return (#{analysis.currency})
 
 .analysisSummarySection
-	h2 Performance
+	h2 Attribution Effects
 	.analysisComponentContainer
-		#performance_line
+		#attribution_column.chartContainer
 
 .analysisSummarySection
-	h2 Absolute Monthly Returns (#{analysis.currency})
+	h2 Interest Rates
 	.analysisComponentContainer
-		#performance_column
+		#interestRatesExposure_column.chartContainer
 
 .analysisSummarySection
-	h2 Performance Summary Statistics
+	h2 Credit Spreads
+	.analysisComponentContainer
+		#creditSpreadsExposure_column.chartContainer
+
+.analysisSummarySection
+	h2 DV01
+	.analysisComponentContainer
+		#dv01Exposure_column.chartContainer
+
+.analysisSummarySection
+	h2 Portfolio Weight
+	.analysisComponentContainer
+		#allocation_pie.chartContainer
+
+.analysisSummarySection
+	h2 Annualized Return vs Tracking Error
+	.analysisComponentContainer
+		#performance_bubble.chartContainer
+
+.analysisSummarySection
+	h2 Return vs Value at Risk
+	.analysisComponentContainer
+		#risk_bubble.chartContainer
+
+.analysisSummarySection
+	h2 Segment Return
+	.analysisComponentContainer
+		#performance_bar.chartContainer
+
+.analysisSummarySection
+	h2 Relative Weight
+	.analysisComponentContainer
+		#allocation_bar.chartContainer
+
+.analysisSummarySection
+	h2 Weight vs. Contribution to VaR
+	.analysisComponentContainer
+		#risk_bar.chartContainer
+
+.analysisSummarySection
+	h2 Security Contribution
+	.analysisComponentContainer
+		#contribution_bar
+
+.analysisSummarySection
+	h2 Relative Weight vs. Total Attribution Effect
+	.analysisComponentContainer
+		#attribution_bar.chartContainer
+
+.analysisSummarySection
+	h2 Fixed Income Contributions
+	.analysisComponentContainer
+		#fixedIncomeContribution_bar
+		#carryContribution_bar
+		#yieldCurveContribution_bar
+		#riskNumbers_bar
+
+.analysisSummarySection
+	h2 Portfolio Contribution vs. Benchmark Contribution
+	.analysisComponentContainer
+		#contribution_column.chartContainer
+
+.analysisSummarySection
+	h2 Performance Statistics
 	.analysisComponentContainer
 		#performance_grid
-
-.analysisSummarySection
-	h2 Risk vs Return
-	.analysisComponentContainer
-		#performance_bubble
-
-.analysisSummarySection
-	h2 Portfolio Weight vs Portfolio Return
-	.analysisComponentContainer
-		#performance_heatmap

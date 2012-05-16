@@ -104,15 +104,18 @@ div#jqt #about a
     border-radius: 15px;
 }
 
-#performance_column {
+.chartContainer {
     height: 500px;
 }
 
-#performance_bubble, #performance_heatmap, #performance_line {
-    height: 500px;
-}
+#contribution_bar { height: 1000px; }
 
-.headerRow { font-family: Futura-CondensedExtraBold !important; font-size: 20pt; }
+#fixedIncomeContribution_bar,
+#carryContribution_bar,
+#yieldCurveContribution_bar,
+#riskNumbers_bar { display: inline-block; width: 50%; }
+
+.headerRow { font-family: Futura-CondensedExtraBold !important; }
 .tableRow, .oddTableRow, .selectedTableRow, .hoverTableRow { font-family: Futura-Medium !important; }
 .oddTableRow { background-color: #dddddd; }
 

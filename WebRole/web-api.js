@@ -231,10 +231,26 @@ exports.getPortfolioAnalysis = function (uri, callback) {
 
     // Attempt to get the portfolio analysis for the requested portfolio.
     getResource('portfolioAnalysis', options, function (resource) {
+        var status;
 
-        if (!resource.error && resource.data && !ResourceLinks.segmentsTreeNode) {
-            // Populate the resources object.
-            ResourceLinks.segmentsTreeNode = resource.data.analysis.results.links.segmentsTreeRootNodeQuery.href;
+        if (!resource.error && resource.data) {
+            
+            // Determine the current status of the analysis.
+            status = resource.data.analysis.status;
+
+            // If the current analysis is still calculating or there were errors...
+            if (status === 'InProgress' || status === 'FailedWithErrors') {
+                // ...attempt to get the last successful analysis.
+                uri = uri.replace('lastSuccessful=false', 'lastSuccessful=true');
+                // Use the modified URI with this function.
+                exports.getPortfolioAnalysis(uri, callback);
+                return;
+            }
+
+            if (!ResourceLinks.segmentsTreeNode) {
+                // Populate the resources object.
+                ResourceLinks.segmentsTreeNode = resource.data.analysis.results.links.segmentsTreeRootNodeQuery.href;
+            }
         }
 
         callback(resource);
