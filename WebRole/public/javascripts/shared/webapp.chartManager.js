@@ -5,24 +5,24 @@
 WebAppLoader.addModule({ name: 'chartManager', sharedModules: ['settings', 'chartDefaults'], isShared: true }, function () {
     var chartBase = {},
         charts = [],
+        eventManager = this.getEventManager(),
         chartDefaults = this.getSharedModule('chartDefaults'),
         siteUrls = this.getSharedModule('settings').siteUrls,
-        output = this.getConsole();
+        output = this.getConsole(),
+        chartCount = 0,
+        chartTotal = 0;
 
-    function overrideDefaults(defaults, overrides) {
-        var property;
-
-        if (defaults) {
-            for (property in overrides) {
-                if (defaults[property] === undefined) {
-                    defaults[property] = overrides[property];
-                }
-            }
+    // Function to be called when the chart has successfully loaded and drawn itself.
+    function onChartReady() {
+        // If all of the charts created have been loaded...
+        if (++chartCount === chartTotal) {
+            // ...fire the onAnalysisLoaded event.
+            eventManager.raiseEvent('onAnalysisLoaded');
         }
-
-        return defaults;
     }
 
+    // Function to create a new chart.
+    // 'config' - An object containing configuration properties for the chart to be created.
     function create(config) {
         var id = config.chartId,
             type = config.chartType,
@@ -41,8 +41,8 @@ WebAppLoader.addModule({ name: 'chartManager', sharedModules: ['settings', 'char
             ? chartDefaults[type]
             : {};
 
-        // Apply our overrides if any were specified.
-        options = overrideDefaults(defaults, options);
+        // Apply defaults then any overrides to a new object.
+        options = $.extend({}, defaults, options);
 
         // Create a new visualization wrapper instance, using the type, options and ID.
         chart = new google.visualization.ChartWrapper({
@@ -58,10 +58,18 @@ WebAppLoader.addModule({ name: 'chartManager', sharedModules: ['settings', 'char
         chart.measures = config.measures;
         chart.includeMeasuresFor = config.includeMeasuresFor;
 
-        // Return our chart.
+        // Increase the running chart total.
+        chartTotal++;
+
+        // Register the chart with the ready event listener.
+        google.visualization.events.addListener(chart, 'ready', onChartReady);
+
+        // Return the chart.
         return chart;
     }
 
+    // Function to load the given chart with data.
+    // 'chart'  - The instance of the Google Visualization API chart object to load.
     function load(chart) {
         var type, params;
 
@@ -92,35 +100,16 @@ WebAppLoader.addModule({ name: 'chartManager', sharedModules: ['settings', 'char
 
             // Draw the chart.
             chart.draw();
+
+            // Set up the chart to be redrawn on change of orientation.
+            $(document).on('orientationchange', function (event) {
+                chart.draw();
+            });
         });
-    }
-
-    function registerChart(chart) {
-        // Store a reference to this chart in our charts array.
-        charts.push(chart);
-    }
-
-    function unregisterChart(chartObj) {
-        var index;
-
-        // Attempt to find the requested chart in our array.
-        index = $.inArray(chart, charts);
-
-        // If present, remove it from the collection.
-        if (index && index !== -1) {
-            charts.splice(index, 1);
-        }
-    }
-
-    function clearRegisteredCharts() {
-        charts.length = 0;
     }
 
     chartBase.create = create;
     chartBase.load = load;
-    chartBase.registerChart = registerChart;
-    chartBase.unregisterChart = unregisterChart;
-    chartBase.clearRegisteredCharts = clearRegisteredCharts;
 
     return chartBase;
 });

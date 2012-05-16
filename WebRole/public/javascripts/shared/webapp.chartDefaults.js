@@ -5,11 +5,13 @@
 WebAppLoader.addModule({ name: 'chartDefaults', isShared: true }, function () {
     var chartDefaults = {},
         commonSettings = {},
+        barChart = {},
         bubbleChart = {},
         columnChart = {},
         gaugeChart = {},
         gridChart = {},
         lineChart = {},
+        pieChart = {},
         treeMapChart = {},
         output = this.getConsole();
 
@@ -48,15 +50,26 @@ WebAppLoader.addModule({ name: 'chartDefaults', isShared: true }, function () {
         }
     };
 
-    // COLUMN CHART
-    columnChart = {
-        chartArea: { right: 0, width: '85%', height: '80%' },
-        colors: ['#18c900', '#CC0000'],
+    // BAR CHART
+    barChart = {
+        chartArea: { left: '20%', width: '60%', height: '80%' },
         fontName: commonSettings.labelFontName,
         fontSize: commonSettings.labelFontSize,
         forceIFrame: commonSettings.forceIFrame,
-        isStacked: true,
-        legend: 'none',
+        vAxis: {
+            titleTextStyle: {
+                fontName: commonSettings.titleFontName,
+                fontSize: commonSettings.titleFontSize
+            }
+        }
+    };
+
+    // COLUMN CHART
+    columnChart = {
+        chartArea: { left: '10%', width: '70%', height: '75%' },
+        fontName: commonSettings.labelFontName,
+        fontSize: commonSettings.labelFontSize,
+        forceIFrame: commonSettings.forceIFrame,
         vAxis: {
             titleTextStyle: {
                 fontName: commonSettings.titleFontName,
@@ -101,6 +114,15 @@ WebAppLoader.addModule({ name: 'chartDefaults', isShared: true }, function () {
         forceIFrame: commonSettings.forceIFrame
     };
 
+    // PIE CHART
+    pieChart = {
+        chartArea: { left: 80, width: '75%', height: '80%' },
+        fontName: commonSettings.labelFontName,
+        fontSize: commonSettings.labelFontSize,
+        forceIFrame: commonSettings.forceIFrame,
+        is3D: true
+    };
+
     // TREE MAP (HEATMAP) CHART
     treeMapChart = {
         fontFamily: commonSettings.labelFontName,
@@ -119,10 +141,12 @@ WebAppLoader.addModule({ name: 'chartDefaults', isShared: true }, function () {
     }
 
     // Assign the specific chart defaults to the container object.
+    chartDefaults.BarChart = barChart;
     chartDefaults.BubbleChart = bubbleChart;
     chartDefaults.ColumnChart = columnChart;
     chartDefaults.Gauge = gaugeChart;
     chartDefaults.LineChart = lineChart;
+    chartDefaults.PieChart = pieChart;
     chartDefaults.Table = gridChart;
     chartDefaults.TreeMap = treeMapChart;
 
