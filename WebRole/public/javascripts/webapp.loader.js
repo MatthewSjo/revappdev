@@ -7,12 +7,15 @@ var WebAppLoader = {};
 (function () {
     var modules         = [],
         module          = {},
+        extensions      = {}, // List of extensions.
         sharingOptions  = { sharingDenied: 0, sharingAllowed: 1 },
 
     // Loader settings:
         disableLog      = false,
         suppressErrors  = false,
         sharingSetting  = sharingOptions.sharingAllowed;
+
+    // TODO: Make loader settings available to all extensions.
 
     // Set the default module object. This will be used as base when modules,
     // plugins and shared modules will be created later.
@@ -100,6 +103,10 @@ var WebAppLoader = {};
                 return getValue(value, 'string', '');
             case 's':
                 return getValue(value, 'string', '');
+            case 'number':
+                return getValue(value, 'number', 0);
+            case 'n':
+                return getValue(value, 'number', 0);
             case 'object':
                 return getValue(value, 'object', {});
             case 'o':
@@ -112,8 +119,7 @@ var WebAppLoader = {};
                 return value;
         }
     }
-
-
+    
     // ------------------------------------------
     // BUILT-IN - EVENT MANAGER
     // ------------------------------------------
@@ -198,6 +204,9 @@ var WebAppLoader = {};
                 case 'shared':
                     return m.name === moduleName && m.isShared;
                     break;
+                case 'extension':
+                    return m.name === moduleName && m.isExtension;
+                    break;
                 default:
                     return m.name === moduleName;
             }   
@@ -244,6 +253,14 @@ var WebAppLoader = {};
             moduleToAdd.plugins         = pluginsToLoad;
             moduleToAdd.sharedModules   = sharedModulesToLoad;
             moduleToAdd.added           = true;
+            
+            if (moduleToAdd.isPlugin) {
+                moduleToAdd.getConsole = getConsole();
+                moduleToAdd.getEventManager = getEventManager();
+            } else {
+                extendAddModule(config, moduleToAdd);
+            }
+            
 
             modules.push(moduleToAdd);    
         }
@@ -263,7 +280,13 @@ var WebAppLoader = {};
 
         // If the module exists but its source is still not executed, loaded it.
         if(!moduleToLoad.loaded) {
-            moduleToLoad.bin = moduleToLoad.source();
+            if (moduleToLoad.isExtension){
+                moduleToLoad.bin = moduleToLoad.source(module);
+                extensions[moduleName] = moduleToLoad.bin; //source.call(this, module)
+            } else {
+                moduleToLoad.bin = moduleToLoad.source();
+            }
+
             moduleToLoad.loaded = true;
             moduleToLoad.unloaded = false;
 
@@ -272,7 +295,9 @@ var WebAppLoader = {};
                 moduleToLoad.bin.on = eventManager.on;
             }
         }
-         
+        
+        extendLoadModule(moduleToLoad);
+
         // If something goes wrong return null.
         return (moduleToLoad.loaded)
             ? moduleToLoad.bin
@@ -308,8 +333,8 @@ var WebAppLoader = {};
     function getInfo(outputAsHtml) {
         var modulesFound            = [],
             pluginsFound            = [],
-            sharedModulesFound      = [];
-            unloadedModulesFound    = [];
+            sharedModulesFound      = [],
+            unloadedModulesFound    = [],
             message                 = '',
             breakLine               = '\n';
 
@@ -378,6 +403,62 @@ var WebAppLoader = {};
         WebAppLoader[name] = source();
     }
 
+    function init(){
+        alert('INIT!');
+    }
+
+    // ------------------------------------------
+    // EXTENSIONS
+    // ------------------------------------------
+    
+    // Public
+    function addExtension(config, source) {
+        var name                    = getValueAs(config.name, 'string'),
+            hasEvents               = getValueAs(config.hasEvents, 'boolean'),
+            pluginsToLoad           = getValueAs(config.plugins, 'array'),
+            sharedModulesToLoad     = getValueAs(config.sharedModules, 'array');
+
+        // If the module doesn't exist...
+        if (!moduleExists(name)) {
+
+            // ... create a new module and add it to the list of modules.
+            var moduleToAdd = Object.create(module);
+
+            moduleToAdd.source          = source;
+            moduleToAdd.name            = name;
+            moduleToAdd.isExtension     = true;           
+            moduleToAdd.plugins         = pluginsToLoad;
+            moduleToAdd.sharedModules   = sharedModulesToLoad;
+            moduleToAdd.added           = true;
+            moduleToAdd.hasEvents       = hasEvents;
+
+            modules.push(moduleToAdd);   
+            loadModule(name, 'extension');
+        }
+    }
+
+    // Private
+    function extendAddModule(config, moduleToAdd) {
+        var moduleToExtend = moduleToAdd;
+
+        for(ext in extensions) {
+            if (extensions[ext].extendAddModule) {
+                extensions[ext].extendAddModule(config, moduleToAdd);
+            }
+        } 
+    }
+
+    // Private
+    function extendLoadModule(moduleToLoad) {
+        var moduleToExtend = moduleToLoad;
+
+        for(ext in extensions) {
+            if (extensions[ext].extendLoadModule) {
+                extensions[ext].extendLoadModule(moduleToLoad);
+            }
+        } 
+    }
+    
     // ------------------------------------------
     // MODULE OBJECT
     // ------------------------------------------
@@ -419,5 +500,7 @@ var WebAppLoader = {};
     WebAppLoader.getConsole = getConsole;
     WebAppLoader.getInfo = getInfo;
     WebAppLoader.reloadModule = reloadModule;
+    WebAppLoader.addExtension = addExtension;
+    WebAppLoader.init = init;
 
-}());
+})();

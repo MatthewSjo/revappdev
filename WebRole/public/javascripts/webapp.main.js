@@ -26,6 +26,10 @@ Zepto(function ($) {
     // Test log method.
     output.log('Hello from Dan & Asa!');
 
+    /* ----------------------- ON/OFF ----------------------- /
+       'Switch comments off changing /* in //* and viceversa'
+    // ------------------------------------------------------ */
+    
     // ------------------------------------------
     // COMPONENTS CREATION
     // ------------------------------------------
@@ -43,22 +47,31 @@ Zepto(function ($) {
     theApp.mask = loader.loadModule('loadingMaskManager');
 
     // ------------------------------------------
+    // THE MAIN ENTRY POINT (AFTER LOGIN)
+    // ------------------------------------------
+
+    theApp.startHere = function () {
+        theApp.nav.goToPage($(el.homePage), 'dissolve');
+        // theApp.nav.goToPage($(el.portfolioAnalysisPage), 'dissolve');
+        // theApp.mask.show('analysis');
+
+        theApp.portfolioManager.selectPortfolio();
+        
+//        if (portfolioTotal) {
+//            theApp.tabbar.getButton('portfolios').setBadgeText(portfolioTotal);
+//        }        
+    
+    }
+
+    // ------------------------------------------
     // PORTFOLIO MANAGER
     // ------------------------------------------
 
     theApp.portfolioManager = loader.loadModule('portfolioManager');
 
-    theApp.portfolioManager.on('onTimePeriodDataReceived', function (timePeriods) {
-        // $('#myLoadingCharts').hide();
-        // .css("display", "none");
-        theApp.repositories.timePeriodsSlot.setData(timePeriods);
-    });
-
     theApp.portfolioManager.on('onPortfolioLoaded', function (portfolio) {
-        // $('#myLoadingCharts').hide();
-        // .css("display", "none");
-        // theApp.repositories.timePeriodsSlot.setData(timePeriods);
-        // theApp.nav.goToPage($(el.analysisPage), 'dissolve');
+        // When a new portfolio is loaded update timeperiods and analysis slots.
+        theApp.repositories.timePeriodsSlot.setData(portfolio.timePeriods);
         theApp.portfolioManager.getAnalysis(portfolio.analysisLink);
         output.log('Loaded portfolio:', portfolio);
     });
@@ -88,54 +101,19 @@ Zepto(function ($) {
         buttonPrefix: 'tabbar_btn',
         visible: false,
         items: [
-            // { id: 'home', title: lang.tabbarHomeTitle, class: 'home' },
+         // { id: 'home', title: lang.tabbarHomeTitle, class: 'home' },
             { id: 'favourites', title: lang.tabbarFavouritesTitle, class: 'favourites' },
             { id: 'portfolios', title: lang.tabbarPortfolios, class: 'portfolios' },
             { id: 'analysis', title: lang.tabbarAnalysis, class: 'analysis' },
             { id: 'timePeriods', title: lang.tabbarTimePeriods, class: 'timeperiods' },
-            // { id: 'infos', title: lang.tabbarInfos, class: 'infos' },
-            // {id: 'more', title: lang.tabbarMore, class: 'more' }
-            {id: 'settings', title: lang.tabbarSettings, class: 'settings' }
+         // { id: 'infos', title: lang.tabbarInfos, class: 'infos' },
+         // { id: 'more', title: lang.tabbarMore, class: 'more' }
+            { id: 'settings', title: lang.tabbarSettings, class: 'settings' }
         ]
     };
 
     theApp.tabbar = loader.loadModule('tabbar');
     theApp.tabbar.create(tabbarConfig);
-
-    theApp.tabbar.on('onHomeTap', function () {
-        
-            window.location = './'; // TODO: Move this code in webapp.nav.
-            return false;
-        
-        /* ----------------------- ON/OFF ----------------------- /
-        
-        theApp.tabbar.getButton(0).setDisabled(true);
-        theApp.tabbar.getButton(1).setBadgeText('99');
-        theApp.tabbar.getButton(1).setDisabled(true);
-        theApp.tabbar.getButton('infos').setDisabled(false);
-
-        loader.unloadModule('it_IT');
-        console.log(loader.getInfo());
-
-        loader.loadModule('test').sayHello();
-        loader.loadModule('test').sayHello();
-
-        var test = loader.loadModule('test');
-        test.sayHello();
-
-        loader.unloadModule('test');
-        test.sayHello();
-        loader.loadModule('test').sayHello();
-
-        test = loader.loadModule('test');
-        test.sayHello();
-
-        test = loader.reloadModule('test');
-        test.sayHello();
-
-        // ------------------------------------------------------ */
-
-    });
 
     theApp.tabbar.on('onFavouritesTap', function () {
         theApp.spinningWheel.getSlot('favourites').show();
@@ -153,15 +131,6 @@ Zepto(function ($) {
         theApp.spinningWheel.getSlot('timePeriods').show();
     });
 
-    theApp.tabbar.on('onInfosTap', function () {
-        output.log(loader.getInfo());
-        jQT.goTo($('#portfolios'), 'pop');
-    });
-
-    theApp.tabbar.on('onMoreTap', function () {
-        location.reload();
-    });
-
     theApp.tabbar.on('onSettingsTap', function () {
         theApp.nav.goToPage($(el.settingsPage), 'dissolve');
     });
@@ -176,7 +145,7 @@ Zepto(function ($) {
             { id: 'portfolios', repository: theApp.repositories.portfoliosSlot },
             { id: 'analysis', repository: theApp.repositories.analysisSlot },
             { id: 'timePeriods', repository: theApp.repositories.timePeriodsSlot }
-        // { id: 'test', repository: { getData: function (callback) { callback({ a: 'a', b: 'b' }); } }}
+         // { id: 'test', repository: { getData: function (callback) { callback({ a: 'a', b: 'b' }); } }}
         ]
     };
 
@@ -191,39 +160,31 @@ Zepto(function ($) {
     theApp.spinningWheel.on('onAnalysisDone', function (key) {
         // $('#myLoadingCharts').show();
         // theApp.portfolioManager.selectPortfolio(key);
-
     });
     
-    // ------------------------------------------
-    // PORTFOLIOS LIST
-    // ------------------------------------------
-
-    theApp.portfoliosList = loader.loadModule('portfoliosList');
-
-    theApp.portfoliosList.on('onDataReceived', function (data) {
-        theApp.scroll.rebuild('analysis');
-        $(el.analysisPage + '_partial').html(data);
-    });
-
     // ------------------------------------------
     // AUTHENTICATION
     // ------------------------------------------
 
     theApp.auth = loader.loadModule('auth');
 
-    theApp.auth.on('onLoginSuccess', function (portfolioTotal) {
-        theApp.nav.goToPage($(el.homePage), 'dissolve');
-        // theApp.nav.goToPage($(el.portfolioAnalysisPage), 'dissolve');
-        // theApp.mask.show('analysis');
+    // Login
+    $(el.loginButton).on('click', function () {
+        var username, password;
 
-        theApp.portfolioManager.selectPortfolio();
-        
-        if (portfolioTotal) {
-            theApp.tabbar.getButton('portfolios').setBadgeText(portfolioTotal);
-        }
+        // Obtain the username and password from the form.
+        username = $(el.userNameTextbox).val();
+        password = $(el.passwordTextbox).val();
+
+        theApp.auth.doLogin(username, password, siteUrls.authenticate);
+    });
+
+    theApp.auth.on('onLoginSuccess', function (portfolioTotal) {
+        theApp.startHere();
     });
 
     theApp.auth.on('onLoginFailed', function (response) {
+        theApp.startHere();
         output.log('onLoginFailed response: ', response);
     });
 
@@ -301,21 +262,8 @@ Zepto(function ($) {
     // EVENTS
     // ------------------------------------------
 
-    // Login
-    $(el.loginButton).on('click', function () {
-        var username, password;
-
-        // Obtain the username and password from the form.
-        username = $(el.userNameTextbox).val();
-        password = $(el.passwordTextbox).val();
-
-        theApp.auth.doLogin(username, password, siteUrls.authenticate);
-    });
-
-        // Login
     $('#reloadApp').on('click', function () {
-        window.location = './'; // TODO: Move this code in webapp.nav.
-        return false;
+        theApp.nav.reloadApp();
     });
 
     // ------------------------------------------
@@ -327,6 +275,8 @@ Zepto(function ($) {
     // NOTA BENE: the analysis manager is updated the first time when the home
     // page is loaded.
     theApp.analysisManager.on('onUpdated', function (analysisPage) {
+        theApp.localStorage.save('analysisPages', analysisPages);
+
         var analysisSlotItems = jLinq.from(analysisPage.items)
             .sort('order')
             .select(function (record) {
@@ -337,6 +287,21 @@ Zepto(function ($) {
             });
         
         theApp.repositories.analysisSlot.setData(analysisSlotItems);
+    });
+
+    // ------------------------------------------
+    // PORTFOLIOS LIST
+    // ------------------------------------------
+    //
+    // NOTA BENE:
+    // PortfoliosList has been removed from the app but the code is still here
+    // for testing purpose.
+
+    theApp.portfoliosList = loader.loadModule('portfoliosList');
+
+    theApp.portfoliosList.on('onDataReceived', function (data) {
+        theApp.scroll.rebuild('analysis');
+        $(el.analysisPage + '_partial').html(data);
     });
 
     // ------------------------------------------
@@ -390,8 +355,7 @@ Zepto(function ($) {
         theApp.localStorage.remove('boolean');
         theApp.localStorage.remove('date');
     });
-
-
+    
     // ------------------------------------------
     // TEARDOWN
     // ------------------------------------------

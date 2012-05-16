@@ -4,7 +4,7 @@
 
 WebAppLoader.addModule({ name: 'helper', isPlugin: true }, function () {
     var helper = {};
-
+    // var output = this.getConsole();
     // ------------------------------------------
     // STRING FUNCTIONS
     // ------------------------------------------

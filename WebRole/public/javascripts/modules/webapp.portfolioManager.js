@@ -2,11 +2,13 @@
 // PORTFOLIO MANAGER
 // ------------------------------------------
 
-WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: ['settings'], hasEvents: true }, function () {
+WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: ['settings'], dataObjects: ['portfolio', 'test'], hasEvents: true }, function () {
     var portfolioManager    = {},
         output              = this.getConsole(),
         eventManager        = this.getEventManager(),
-        settings            = this.getSharedModule('settings');
+        settings            = this.getSharedModule('settings'),
+        portfolioData       = this.getDataObject('portfolio'),
+        testData            = this.getDataObject('test');
 
     function selectPortfolio(portfolioCode) {
         var defaultPortfolioCode,

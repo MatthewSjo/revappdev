@@ -7,14 +7,14 @@ WebAppLoader.addModule({ name: 'localStorageManager', sharedModules: [], plugins
         output              = this.getConsole(),
         eventManager        = this.getEventManager(),
         helper              = this.getPlugin('helper'),
-        namespace           = 'Revolution';
+        revolutionNamespace = 'Revolution';
 
     // Private
-    function getNamespacedName(itemName) {
+    function getNamespacedName(itemName, namespace) {
         var namespacedName = null;
 
         if (itemName && (typeof itemName === 'string')) {
-            namespacedName = namespace + helper.capitaliseFirstLetter(itemName);
+            namespacedName = (namespace || revolutionNamespace) + helper.capitaliseFirstLetter(itemName);
         }
 
         return namespacedName
@@ -32,8 +32,8 @@ WebAppLoader.addModule({ name: 'localStorageManager', sharedModules: [], plugins
     }
 
     // Public
-    function load(itemName) {
-        var name        = getNamespacedName(itemName),
+    function load(itemName, namespace) {
+        var name        = getNamespacedName(itemName, namespace),
             storedItem  = getItem(name),
             value       = null;
         
@@ -55,8 +55,8 @@ WebAppLoader.addModule({ name: 'localStorageManager', sharedModules: [], plugins
     }
 
     // Public
-    function save(itemName, itemValue) {
-        var name = getNamespacedName(itemName),
+    function save(itemName, itemValue, namespace) {
+        var name = getNamespacedName(itemName, namespace),
             value = ''; //stringifiedValue = '';
 
         if (name && helper.hasValue(itemValue)) {
@@ -72,8 +72,8 @@ WebAppLoader.addModule({ name: 'localStorageManager', sharedModules: [], plugins
     }
 
     // Public
-    function remove(itemName) {
-        var name = getNamespacedName(itemName);
+    function remove(itemName, namespace) {
+        var name = getNamespacedName(itemName, namespace);
 
         if (name) {
             localStorage.removeItem(name);

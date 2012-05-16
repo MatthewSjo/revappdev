@@ -3,14 +3,13 @@
 // ------------------------------------------
 
 WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'], 
-    sharedModules: ['chartsManager', 'localStorageManager'], hasEvents: true }, function () {
+    sharedModules: ['chartsManager'], hasEvents: true }, function () {
 
     var analysisManager     = {},
         output              = this.getConsole(),
         eventManager        = this.getEventManager(),
         helper              = this.getPlugin('helper')
         chartsManager       = this.getSharedModule('chartsManager'),
-        localStorageManager = this.getSharedModule('localStorageManager'),
         charts              = [],
         analysisPages       = {};
 
@@ -102,7 +101,6 @@ WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'],
 
     // Private
     function saveAnalysisPages() {
-        localStorageManager.save('analysisPages', analysisPages);
         analysisUpdated();
     }
 

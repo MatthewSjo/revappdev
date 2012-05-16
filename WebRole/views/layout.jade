@@ -46,10 +46,15 @@ html(xmlns='http://www.w3.org/1999/xhtml')
 
 		// Loader
 		script(src='/javascripts/webapp.loader.js', type='text/javascript', charset='utf-8')
-
+		
 		// Plugins
 		script(src='/javascripts/plugins/webapp.base64.js', type='text/javascript', charset='utf-8')
 		script(src='/javascripts/plugins/webapp.helper.js', type='text/javascript', charset='utf-8')
+
+		// Loader Extensions (extensions must be added after the plugins and before the other modules)
+		// script(src='/javascripts/extensions/webapp.eventManager.js', type='text/javascript', charset='utf-8')
+		// script(src='/javascripts/extensions/webapp.consoleManager.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/extensions/webapp.dataObject.js', type='text/javascript', charset='utf-8')
 
 		// Shared
 		script(src='/javascripts/shared/webapp.settings.js', type='text/javascript', charset='utf-8')
@@ -86,5 +91,6 @@ html(xmlns='http://www.w3.org/1999/xhtml')
 	body!= body
 	
 	script(type='text/javascript', src='src/itabbar.js')	
-
+	
+	// script WebAppLoader.init();
 	// script(type='text/javascript', src='https://getfirebug.com/firebug-lite.js#startOpened ')

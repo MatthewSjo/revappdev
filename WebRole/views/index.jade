@@ -6,7 +6,7 @@
 				ul.rounded.login_style
 					li.login_style
 						div
-							input#userNameTextbox.login_style(type='email', placeholder=#{lang.loginPage.userNamePlaceholderText}, name='user[username]', value='daniel.attfield@statpro.com')
+							input#userNameTextbox.login_style(type='email', placeholder=#{lang.loginPage.userNamePlaceholderText}, name='user[username]', value='asa.fama@statpro.com')
 					li.login_style
 						div
 							input#passwordTextbox.login_style(type='password', placeholder=#{lang.loginPage.passwordPlaceholderText}, name='user[password]', value='StatPro123')
@@ -21,15 +21,14 @@
 				a.back(href='#') #{lang.homePage.logOutText}
 			#wrapper
 				#scroller
-					//
-						ul.rounded
-							li.arrow 
-								a#portfoliosButton.slide(href='#portfolios') #{lang.homePage.portfoliosText}
-							li.arrow 
-								a#eulaButton.slide(href='#eula') #{lang.homePage.viewEulaText}
-							li.arrow 
-								a#testButton(href='#test') #{lang.homePage.testText}
-						#home_partial
+					ul.rounded
+						li.arrow 
+							a#portfoliosButton.slide(href='#portfolios') #{lang.homePage.portfoliosText}
+						li.arrow 
+							a#eulaButton.slide(href='#eula') #{lang.homePage.viewEulaText}
+						li.arrow 
+							a#testButton(href='#test') #{lang.homePage.testText}
+					#home_partial
 
 		#portfolios(data-pageEvents="both")
 			.toolbar
