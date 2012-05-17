@@ -2,13 +2,26 @@
 // SETTINGS
 // ------------------------------------------
 
-WebAppLoader.addModule({ name: 'settings', isShared: true }, function () {
-    var settings        = {},
-        appSettings     = {},
-        siteUrls        = {},
-        analysisTypes   = {},
-        output          = this.getConsole();
+WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSettings'], isShared: true }, function () {
+    var settings            = {},
+        appSettings         = {},
+        siteUrls            = {},
+        analysisTypes       = {},
+        output              = this.getConsole(),
+        userSettingsData    = this.getDataObject('userSettings')
+        appSettingsData     = this.getDataObject('appSettings');
 
+    userSettingsData.define({
+        automaticLogin  : false,
+        username        : 'asa.fama@statpro.com',
+        password        : 'StatPro123',
+        language        : 'en-US'
+    });
+
+    appSettingsData.define({
+        lastLoggedOnUser    : 'asa.fama@statpro.com'
+    });
+    
     // APP SETTINGS.
     appSettings = {
         loadPortfoliosSlotDataOnce: true
@@ -57,6 +70,10 @@ WebAppLoader.addModule({ name: 'settings', isShared: true }, function () {
     settings.appSettings = appSettings;
     settings.siteUrls = siteUrls;
     settings.analysisTypes = analysisTypes;
+
+    // Data Objects
+    settings.appSettingsData = appSettingsData;
+    settings.userSettingsData = userSettingsData;
 
     return settings;
 });

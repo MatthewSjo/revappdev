@@ -15,6 +15,7 @@ var jQT = new $.jQTouch({
 
 // Main functions:
 Zepto(function ($) {
+
     var theApp = {},
         loader = WebAppLoader, // Alias
         output = loader.getConsole(),
@@ -46,13 +47,27 @@ Zepto(function ($) {
     // Loading Mask Manager
     theApp.mask = loader.loadModule('loadingMaskManager');
 
+    // Loading Settings
+    theApp.settings = loader.loadModule('settings');
+
     // ------------------------------------------
-    // THE MAIN ENTRY POINT (AFTER LOGIN)
+    // THE MAIN ENTRY POINT
     // ------------------------------------------
 
     theApp.startHere = function () {
-        theApp.nav.goToPage($(el.homePage), 'dissolve');
-        // theApp.nav.goToPage($(el.portfolioAnalysisPage), 'dissolve');
+        var appSettings = theApp.settings.getData('appSettingsData');
+        var userSettings = theApp.settings.getData('userSettingsData');
+        // var userSettingsDataObject = theApp.settings.getDataObject('userSettingsData');
+        // var appSettingsDataObject = theApp.settings.getDataObject('appSettingsData');
+        var lastLoggedOnUser = appSettings.lastLoggedOnUser;
+        
+        // userSettingsDataObject.set('username', 'daniel.attfield@statpro.com');
+        theApp.settings.saveData('userSettingsData', lastLoggedOnUser);
+        theApp.settings.loadData('userSettingsData', lastLoggedOnUser);
+        
+        theApp.settings.saveData('appSettingsData');
+        // theApp.nav.goToPage($(el.homePage), 'dissolve');
+        theApp.nav.goToPage($(el.portfolioAnalysisPage), 'dissolve');
         // theApp.mask.show('analysis');
 
         theApp.portfolioManager.selectPortfolio();
@@ -180,11 +195,11 @@ Zepto(function ($) {
     });
 
     theApp.auth.on('onLoginSuccess', function (portfolioTotal) {
-        theApp.startHere();
+        // theApp.startHere();
     });
 
     theApp.auth.on('onLoginFailed', function (response) {
-        theApp.startHere();
+        // theApp.startHere();
         output.log('onLoginFailed response: ', response);
     });
 
@@ -193,6 +208,11 @@ Zepto(function ($) {
     // ------------------------------------------
 
     theApp.pageEventsManager = loader.loadModule('pageEventsManager');
+    
+    theApp.pageEventsManager.on('onStartupStart', function () {
+        //theApp.startHere();
+        output.log('onStartupEnd');
+    });
 
     theApp.pageEventsManager.on('onLoginStart', function () {
         theApp.tabbar.hide();
@@ -207,7 +227,7 @@ Zepto(function ($) {
         theApp.tabbar.show();
         theApp.analysisManager.update();
         theApp.scroll.rebuild('home');
-        theApp.mask.show('analysis');
+        // theApp.mask.show('analysis');
         output.log('onHomeEnd');
     });
 
@@ -238,7 +258,7 @@ Zepto(function ($) {
         });
 
         theApp.dashboard.load();
-        theApp.mask.hide('analysis');
+        // theApp.mask.hide('analysis');
         output.log('onAnalysisEnd');
     });
 
@@ -371,5 +391,6 @@ Zepto(function ($) {
     //        $("#tabbar a").addClass("current").not(tabbarItem).removeClass("current");
     //        $("#tabbar div").addClass("current").not(tabbarItem).removeClass("current");
     //    }
-
+    
+    theApp.startHere();
 });

@@ -368,11 +368,11 @@
     <Content Include="public\javascripts\extensions\webapp.eventManager.js" />
     <Content Include="public\javascripts\modules\webapp.analysisManager.js" />
     <Content Include="public\javascripts\pages\webapp.dashboard.js" />
+    <Content Include="public\javascripts\plugins\webapp.storage.js" />
     <Content Include="public\javascripts\shared\webapp.chartManager.js" />
     <Content Include="public\javascripts\shared\webapp.chartsManager.js" />
     <Content Include="public\javascripts\shared\webapp.loadingMaskManager.js" />
     <Content Include="public\javascripts\shared\webapp.localStorageManager.js" />
-    <Content Include="public\javascripts\webapp.extensions.js" />
     <Content Include="public\javascripts\webapp.loader.js" />
     <Content Include="public\javascripts\modules\webapp.nav.js" />
     <Content Include="public\javascripts\modules\webapp.pageEventsManager.js" />

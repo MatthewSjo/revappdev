@@ -32,7 +32,7 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
             if (portfolioCode) {
                 return portfolioCode;
             } else {
-                return 'EXFIF'; // null; //'ASA_EQ01' // 'advisor'
+                return 'advisor'; //'EXFIF'; // null; //'ASA_EQ01' // 'advisor'
             }
         }
 
