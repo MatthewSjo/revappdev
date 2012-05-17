@@ -67,7 +67,7 @@ Zepto(function ($) {
         
         theApp.settings.saveData('appSettingsData');
         // theApp.nav.goToPage($(el.homePage), 'dissolve');
-        theApp.nav.goToPage($(el.portfolioAnalysisPage), 'dissolve');
+        // theApp.nav.goToPage($(el.portfolioAnalysisPage), 'dissolve');
         // theApp.mask.show('analysis');
 
         theApp.portfolioManager.selectPortfolio();
