@@ -473,7 +473,6 @@ Zepto(function ($) {
         output.log('onSettingsEnd');
     });
 
-
     theApp.pageEventsManager.on('onAnalysisSettingsEnd', function () {
         theApp.scroll.rebuild('analysisSettings');
         output.log('onAnalysisSettingsEnd');

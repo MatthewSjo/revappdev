@@ -7,12 +7,19 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
         chartManager = this.getSharedModule('chartManager'),
 
         performanceBarChart = {},
+        performanceTreeMap = {},
         riskBarChart = {},
         attributionBarChart = {},
         attributionColumnChart = {},
         contributionBarChart = {},
+        contributionPieChart = {},
+        riskTreeMap = {},
+        riskPieChart = {},
         allocationBarChart = {},
         fixedIncomeContributionBarChart = {},
+        fixedIncomeGrid = {},
+        fixedIncomeContributionGrid = {},
+        fixedIncomeExposureGrid = {},
         carryContributionBarChart = {},
         yieldCurveContributionBarChart = {},
         riskNumbersBarChart = {},
@@ -135,7 +142,8 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
         measures: ['ctpyc', 'ctpspread', 'ctpcur'],
         includeMeasuresFor: ['segment'],
         options: {
-            chartArea: { left: 15, width: '50%', height: '80%' }
+            chartArea: { left: 10, width: '60%', height: '80%' },
+            colors: ['#FF6600', '#CC0000', '#FFCC00']
         }
     });
 
@@ -147,7 +155,8 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
         measures: ['ctpsystcarry', 'ctpspeccarry'],
         includeMeasuresFor: ['segment'],
         options: {
-            chartArea: { left: 15, width: '50%', height: '80%' }
+            chartArea: { left: 10, width: '60%', height: '80%' },
+            colors: ['#336600', '#990000']
         }
     });
 
@@ -159,7 +168,8 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
         measures: ['ctpshift', 'ctptwist', 'ctpbutterfly', 'ctprolldown'],
         includeMeasuresFor: ['segment'],
         options: {
-            chartArea: { left: 15, width: '50%', height: '80%' }
+            chartArea: { left: 10, width: '60%', height: '80%' },
+            colors: ['#CD66CD', '#339900', '#FF9900', '#660000']
         }
     });
 
@@ -171,7 +181,8 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
         measures: ['ytmpend', 'mdpend'],
         includeMeasuresFor: ['segment'],
         options: {
-            chartArea: { left: 15, width: '50%', height: '80%' }
+            chartArea: { left: 10, width: '60%', height: '80%' },
+            colors: ['#336699', '#530066']
         }
     });
 
@@ -230,7 +241,8 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
         measures: ['interestratesdown100percent', 'interestratesdown50percent', 'interestratesup50percent', 'interestratesup100percent'],
         includeMeasuresFor: ['segment', 'childSegments'],
         options: {
-            vAxis: { title: 'Exposure %' }
+            vAxis: { title: 'Exposure %' },
+            colors: ['#CC0000', '#CD66CD', '#FFCC00', '#3399CC']
         }
     });
 
@@ -242,7 +254,8 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
         measures: ['creditspreadsdown100percent', 'creditspreadsdown50percent', 'creditspreadsup50percent', 'creditspreadsup100percent'],
         includeMeasuresFor: ['segment', 'childSegments'],
         options: {
-            vAxis: { title: 'Exposure %' }
+            vAxis: { title: 'Exposure %' },
+            colors: ['#CC0000', '#CD66CD', '#FFCC00', '#3399CC']
         }
     });
 
@@ -254,7 +267,8 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
         measures: ['interestratesdv01percent', 'creditspreadsdv01percent', 'inflationratesdv01percent'],
         includeMeasuresFor: ['segment', 'childSegments'],
         options: {
-            vAxis: { title: 'Exposure %' }
+            vAxis: { title: 'Exposure %' },
+            colors: ['#3399CC', '#336699', '#003366']
         }
     });
 
@@ -283,6 +297,28 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
         includeMeasuresFor: ['segment', 'childSegments']
     });
 
+    contributionPieChart = chartManager.create({
+        chartId: 'contribution_pie',
+        chartType: 'PieChart',
+        timePeriods: 'Earliest',
+        include: 'childSegments',
+        isHeatMap: true,
+        isGradientReversed: false,
+        measures: ['wpabsoluteend', 'ctp'],
+        includeMeasuresFor: ['segment', 'childSegments']
+    });
+
+    riskPieChart = chartManager.create({
+        chartId: 'risk_pie',
+        chartType: 'PieChart',
+        timePeriods: 'Earliest',
+        include: 'childSegments',
+        isHeatMap: true,
+        isGradientReversed: true,
+        measures: ['wpabsoluteend', 'contributionvar'],
+        includeMeasuresFor: ['segment', 'childSegments']
+    });
+
     // ------------------------------------------
     // GRIDS
     // ------------------------------------------
@@ -300,6 +336,72 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
             'treynorratio', 'inforatioxs'
         ],
         includeMeasuresFor: ['segment']
+    });
+
+    attributionGrid = chartManager.create({
+        chartId: 'attribution_grid',
+        chartType: 'Table',
+        timePeriods: 'Earliest',
+        include: 'childSegments',
+        measures: [
+            'ctp', 'ctb', 'ealloclocal', 'eselecinterlocal', 'etotalc', 'etotalmca'
+        ],
+        includeMeasuresFor: ['segment', 'childSegments']
+    });
+
+    fixedIncomeGrid = chartManager.create({
+        chartId: 'fixedIncome_grid',
+        chartType: 'Table',
+        timePeriods: 'Earliest',
+        include: 'childSegments',
+        measures: [
+            'ttmpend', 'ytmpend', 'mdpend', 'durwpend', 'spreadpend'
+        ],
+        includeMeasuresFor: ['segment', 'childSegments']
+    });
+
+    fixedIncomeContributionGrid = chartManager.create({
+        chartId: 'fixedIncomeContribution_grid',
+        chartType: 'Table',
+        timePeriods: 'Earliest',
+        include: 'childSegments',
+        measures: [
+            'ctp', 'ctpyc', 'ctpcarry', 'ctpspread', 'ctpcur', 'ctpother', 'ctpresidual'
+        ],
+        includeMeasuresFor: ['segment', 'childSegments']
+    });
+
+    fixedIncomeExposureGrid = chartManager.create({
+        chartId: 'fixedIncomeExposure_grid',
+        chartType: 'Table',
+        timePeriods: 'Earliest',
+        include: 'childSegments',
+        measures: [
+            'wpend', 'interestratesdv01percent', 'creditspreadsdv01percent', 'inflationratesdv01percent'
+        ],
+        includeMeasuresFor: ['segment', 'childSegments']
+    });
+
+    // ------------------------------------------
+    // TREE MAP CHARTS
+    // ------------------------------------------
+
+    performanceTreeMap = chartManager.create({
+        chartId: 'performance_treemap',
+        chartType: 'TreeMap',
+        timePeriods: 'Earliest',
+        include: 'securities',
+        measures: ['wpabsoluteend', 'rp'],
+        includeMeasuresFor: ['segment', 'securities']
+    });
+
+    riskTreeMap = chartManager.create({
+        chartId: 'risk_treemap',
+        chartType: 'TreeMap',
+        timePeriods: 'Earliest',
+        include: 'childSegments',
+        measures: ['wpabsoluteend', 'contributionvar'],
+        includeMeasuresFor: ['segment', 'childSegments']
     });
 
     dashboard.load = load;

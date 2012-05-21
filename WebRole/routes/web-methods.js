@@ -23,6 +23,7 @@ exports.isUserAuthenticated = function (req, res) {
 exports.segmentsTreeNode = function (req, res) {
     var params,
         columnDefs,
+        adapter,
         oData = req.body.oData || {
             filter: '', // 'Code eq "EQUITY5"',
             orderby: '',
@@ -34,6 +35,9 @@ exports.segmentsTreeNode = function (req, res) {
     // retrieve it from the language module, otherwise load the default.
     currentLanguage = lang[req.query.lang] || lang[defaultLanguage];
 
+    // Get the correct adapter dependent on the chart type.
+    adapter = adapters[req.body.type];
+
     // Define the parameters for the segment tree node call, including 
     // defaults if the request body doesn't contain any.
     params = {
@@ -44,13 +48,12 @@ exports.segmentsTreeNode = function (req, res) {
     };
 
     webApi.getSegmentsTreeNode(oData, params, function (segments) {
-        var adapter = adapters[req.body.type],
-            jsonObj = adapter.convert(
-                segments.data,
-                req.body.include,
-                req.body.measures,
-                currentLanguage
-            );
+        var jsonObj = adapter.convert(
+            segments.data,
+            req.body.include,
+            req.body.measures,
+            currentLanguage
+        );
 
         res.json(jsonObj);
     });

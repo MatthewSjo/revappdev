@@ -4,47 +4,22 @@
 
 // Object definitions and functions to assist in the transformation of service data
 // into a JSON-formatted shape for consumption by various application components.
-var convert = function (node, dataToInclude, measures, language) {
-    var i,
-        len,
-        child,
-        children,
-        measureId,
-        columnArray = [],
-        rowArray = [];
 
-    // If we're dealing with the top level segment...
-    if (dataToInclude === 'none') {
+// ------------------------------------------
+// DATA COLUMN FUNCTIONS
+// ------------------------------------------
 
-        // ...just add the row for the total level.
-        if (node.segment) {
-            this.addRow(rowArray, node.segment);
-        }
+function addColumn(columnArray, name) {
+    columnArray.push({ label: name, type: 'number' });
+}
 
-    } else {
+function addMeasureColumns(columnArray, measures, language) {
+    var i, len, measureId;
 
-        // Retrieve the segments or securities from the relevant 'included data' property.
-        if (dataToInclude === 'childSegments') {
-            children = node[dataToInclude].segments;
-        } else {
-            children = node[dataToInclude].securities;
-        }
+    // If we're adding measures...
+    if (measures) {
 
-        len = children.length;
-
-        // Loop around the segments or securities, adding rows if they are defined.
-        for (i = 0; i < len; i++) {
-            child = children[i];
-            if (child) {
-                this.addRow(rowArray, child);
-            }
-        }
-    }
-
-    // If this adapter has an addColumn function and measures to add...
-    if (this.addColumn && measures) {
-
-        // ...create a column for each measure.
+        // ...create a column for each one.
         len = measures.length;
 
         for (i = 0; i < len; i++) {
@@ -55,6 +30,112 @@ var convert = function (node, dataToInclude, measures, language) {
             this.addColumn(columnArray, language.measures[measureId]);
         }
     }
+}
+
+// ------------------------------------------
+// DATA ROW FUNCTIONS
+// ------------------------------------------
+
+function addRow(rowArray, segment) {
+    var i,
+        measures = segment.measures[0].measures,
+        len = measures.length,
+        cells = [{ v: segment.name}];
+
+    for (i = 0; i < len; i++) {
+        cells.push({ v: measures[i].val });
+    }
+
+    rowArray.push({ c: cells });
+}
+
+function addBubbleChartRow(rowArray, segment) {
+    rowArray.push({
+        c: [
+		    { v: '' }, // Empty string to prevent label displaying over bubble.
+		    { v: segment.measures[0].measures[0].val },
+		    { v: segment.measures[0].measures[1].val },
+		    { v: segment.name },
+		    { v: segment.measures[0].measures[2].val }
+	    ]
+    });
+}
+
+function addTreeMapRow(rowArray, nodeName, parentName, sizeValue, colorValue) {
+    rowArray.push({
+        c: [
+		    { v: nodeName },
+		    { v: parentName },
+            { v: sizeValue },
+		    { v: colorValue }		    
+	    ]
+    });
+}
+
+function addSegmentRows(rowArray, segments) {
+    var i,
+        len = segments.length,
+        segment;
+
+    // Loop around the segments or securities, adding rows if they are defined.
+    for (i = 0; i < len; i++) {
+        segment = segments[i];
+        if (segment) {
+            this.addRow(rowArray, segment);
+        }
+    }
+}
+
+function addMeasureRows(rowArray, measures, language) {
+
+    // ...create a column for each measure.
+    len = measures.length;
+
+    for (i = 0; i < len; i++) {
+        // Obtain the measure ID.
+        measure = measures[i];
+        // Retrieve the localized measure name from the language module.
+        // TODO: Replace currency and subperiod placeholders.
+        rowArray.push({
+            c: [{ v: language.measures[measure.id] }, { v:  measure.val }]
+        });
+    }
+}
+
+// ------------------------------------------
+// DATA CONVERSION FUNCTIONS
+// ------------------------------------------
+
+function convert(node, dataToInclude, measures, language) {
+    var columnArray = [],
+        rowArray = [],
+        children;
+
+    // Switch on the dataToInclude parameter.
+    if (dataToInclude === 'none') {
+
+        if (this.addMeasureRows) {
+            this.addColumn(columnArray, node.segment.name);
+            this.addMeasureRows(rowArray, node.segment.measures[0].measures, language);
+        } else {
+            if (this.addMeasureColumns) {
+                this.addMeasureColumns(columnArray, measures, language);
+            }
+            this.addRow(rowArray, node.segment);
+        }
+
+    } else {
+
+        // Retrieve the segments or securities from the relevant 'included data' property.
+        children = (dataToInclude === 'childSegments') ? 
+            node[dataToInclude].segments :
+            node[dataToInclude].securities;
+
+        if (this.addMeasureColumns) {
+            this.addMeasureColumns(columnArray, measures, language);
+        }
+        this.addSegmentRows(rowArray, children);
+    }
 
     // Return the object required by the Google Visualization API.
     return {
@@ -63,157 +144,93 @@ var convert = function (node, dataToInclude, measures, language) {
     };
 };
 
-// Bubble Chart
-exports.BubbleChart = {
+function treeMapConvert(node, dataToInclude) {
+    var i, 
+        len,
+        parent,
+        children,
+        child,
+        measures, 
+        rowArray = [];
+    
+    // Get the parent segment.
+    parent = node.segment;
+    
+    // Add the root node.
+    this.addRow(rowArray, parent.name, null, 0, 0);
 
-    columns: [
-	    { label: 'ID', type: 'string' },
-	    { label: 'X Coordinate', type: 'number' },
-	    { label: 'Y Coordinate', type: 'number' },
-	    { label: 'Name', type: 'string' },
-	    { label: 'Size', type: 'number' }
-    ],
+    // Retrieve the segments or securities from the relevant 'included data' property.
+    children = (dataToInclude === 'childSegments') ?
+        node[dataToInclude].segments :
+        node[dataToInclude].securities;
 
-    convert: convert,
+    // Determine the number of child segments.
+    len = children.length;    
 
-    addRow: function (rowArray, segment) {
-        rowArray.push({
-            c: [
-		        { v: '' }, // Empty string to prevent label displaying over bubble.
-		        { v: segment.measures[0].measures[0].val },
-		        { v: segment.measures[0].measures[1].val },
-		        { v: segment.name },
-		        { v: segment.measures[0].measures[2].val }
-	        ]
-        });
+    // Loop around the segments, extracting names and measures for each row.
+    for (i = 0; i < len; i++) {
+        child = children[i];
+        measures = child.measures[0].measures;
+        this.addRow(rowArray, child.name, parent.name, measures[0].val, measures[1].val);
     }
+
+    // Return the object required by the Google Visualization API.
+    return {
+        cols: this.columns,
+        rows: rowArray
+    };
 };
 
-// Bar / Column Chart
-exports.BarChart = 
-exports.ColumnChart = {
+// ------------------------------------------
+// COMMON ADAPTER OBJECTS
+// ------------------------------------------
 
-    columns: [
-	    { label: 'X Value', type: 'string' },
-    ],
+var i,
+    charts = [
+        'AreaChart',
+        'BarChart',
+        'BubbleChart',
+        'ColumnChart',
+        'LineChart',        
+        'PieChart',
+        'Table',
+        'TreeMap'
+    ];
 
-    convert: convert,
+for (i = 0; i < charts.length; i++) {
+    exports[charts[i]] = {
+        addColumn: addColumn,
+        addMeasureColumns: addMeasureColumns,
+        addRow: addRow,
+        addSegmentRows: addSegmentRows,
+        convert: convert,
+        columns: [{ label: '', type: 'string'}]
+    };
+}
 
-    addColumn: function (columnArray, name) {
-        columnArray.push({ label: name, type: 'number' });
-    },
-
-    addRow: function (rowArray, segment) {
-        var i,
-            measures = segment.measures[0].measures,
-            len = measures.length,
-            cells = [{ v: segment.name}];
-
-        for (i = 0; i < len; i++) {
-            cells.push({ v: measures[i].val });
-        }
-
-        rowArray.push({ c: cells });
-    }
-};
-
-// Line / Area Chart
-exports.LineChart =
-exports.AreaChart = {
-
-    columns: [
-	    { label: 'X Value', type: 'string' },
-    ],
-
-    convert: convert,
-
-    addColumn: function (columnArray, name) {
-        columnArray.push({ label: name, type: 'number' });
-    },
-
-    addRow: function (rowArray, segment) {
-        var i,
-            measures = segment.measures[0].measures,
-            len = measures.length,
-            cells = [{ v: segment.name }];
-
-        for (i = 0; i < len; i++) {
-            cells.push({ v: measures[i].val });
-        }
-
-        rowArray.push({ c: cells });
-    }
-};
-
-// Pie Chart
-exports.PieChart = {
-
-    columns: [
-	    { label: 'Name', type: 'string' },
-        { label: 'Value', type: 'number' }
-    ],
-
-    convert: convert,
-
-    addRow: function (rowArray, segment) {
-        rowArray.push({ 
-            c: [
-                { v: segment.name },
-                { v: segment.measures[0].measures[0].val }
-            ]
-        });
-    }
-};
+// ------------------------------------------
+// SPECIALIST ADAPTER OVERRIDES
+// ------------------------------------------
 
 // Table
-exports.Table = {
+exports.Table.addMeasureRows = addMeasureRows;
 
-    columns: [
-	    { label: '', type: 'string' }
-    ],
+// Bubble Chart
+exports.BubbleChart.addRow = addBubbleChartRow;
+exports.BubbleChart.columns = [
+    { label: 'ID', type: 'string' },
+	{ label: 'X Coordinate', type: 'number' },
+	{ label: 'Y Coordinate', type: 'number' },
+	{ label: 'Name', type: 'string' },
+	{ label: 'Size', type: 'number' }
+];
 
-    convert: convert,
-
-    addColumn: function (columnArray, name) {
-        columnArray.push({ label: name, type: 'number' });
-    },
-
-    addRow: function (rowArray, segment) {
-        var i,
-            measures = segment.measures[0].measures,
-            len = measures.length,
-            cells = [{ v: segment.name }];
-
-        for (i = 0; i < len; i++) {
-            cells.push({ v: measures[i].val });
-        }
-
-        rowArray.push({ c: cells });
-    }
-};
-
-// Tree Map Chart
-exports.TreeMap = {
-
-    columns: [
-	    { label: 'Name', type: 'string' },
-	    { label: 'Parent Name', type: 'string' },
-	    { label: 'Size', type: 'number' },
-	    { label: 'Color', type: 'number' }
-    ],
-
-    convert: convert,
-
-    addRow: function (rowArray, segment) {
-        var measures = segment.measures[0].measures;
-
-        rowArray.push({
-            c: [
-		        { v: segment },
-		        { v: segment },
-		        { v: measures[0].val },
-		        { v: measures[1].val }
-	        ]
-        });
-    }
-};
+// Tree Map
+exports.TreeMap.addRow = addTreeMapRow;
+exports.TreeMap.convert = treeMapConvert;
+exports.TreeMap.columns = [
+	{ label: 'Name', type: 'string' },
+	{ label: 'Parent Name', type: 'string' },
+	{ label: 'Size', type: 'number' },
+	{ label: 'Color', type: 'number' }
+];
