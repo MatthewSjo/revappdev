@@ -8,9 +8,47 @@
 			h3 vs #{benchmark.name}
 
 	.summaryReturn
-		.summaryReturn
-			h2 +17.084%
-			h3 Return (#{analysis.currency})
+		h2 +17.084%
+		h3 Return (#{analysis.currency})
+
+	.summaryReturn
+		h2 +4.02%
+		h3 VaR
+
+.analysisSummarySection
+	h2 Fixed Income Exposure
+	.analysisComponentContainer
+		#fixedIncomeExposure_grid
+
+.analysisSummarySection
+	h2 Fixed Income Summary
+	.analysisComponentContainer
+		#fixedIncome_grid
+
+.analysisSummarySection
+	h2 Fixed Income Contribution
+	.analysisComponentContainer
+		#fixedIncomeContribution_grid
+
+.analysisSummarySection
+	h2 Weight vs. Contribution to VaR
+	.analysisComponentContainer
+		#risk_pie.chartContainer
+
+.analysisSummarySection
+	h2 Weight vs. Contribution to Return
+	.analysisComponentContainer
+		#contribution_pie.chartContainer
+
+.analysisSummarySection
+	h2 Security Weight vs. Contribution to VaR
+	.analysisComponentContainer
+		#risk_treemap.chartContainer
+
+.analysisSummarySection
+	h2 Portfolio Weight vs. Return
+	.analysisComponentContainer
+		#performance_treemap.chartContainer
 
 .analysisSummarySection
 	h2 Attribution Effects

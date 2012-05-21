@@ -8,3 +8,4 @@ C:\node\revappdev\WebRole\bin\Microsoft.WindowsAzure.StorageClient.xml
 C:\node\revappdev\WebRole\obj\Debug\ResolveAssemblyReference.cache
 C:\node\revappdev\WebRole\obj\Debug\WebRole.dll
 C:\node\revappdev\WebRole\obj\Debug\WebRole.pdb
+C:\node\revappdev\WebRole\bin\views\analysis.jade

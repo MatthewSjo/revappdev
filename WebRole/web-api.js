@@ -270,7 +270,7 @@ exports.getSegmentsTreeNode = function (oData, params, callback) {
     var options, filterQuery, segmentsTreeNodeQuery;
 
     // Format a segments tree node querystring based on the oData and the tree node resource link.
-    filterQuery = applyODataToURI(oData, ResourceLinks.segmentsTreeNode);
+    filterQuery = applyODataToURI(oData, params.url || ResourceLinks.segmentsTreeNode);
 
     // Format the querystring with filters applied to add further parameters.
     segmentsTreeNodeQuery = applySegmentParamsToURI(params, filterQuery);

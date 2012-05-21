@@ -56,6 +56,7 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
                     portfolio.code = data.items[0].code;
                     defaultAnalysisLink = data.items[0].links.defaultAnalysis.href;
                 }
+                // TODO: If no portfolio is returned, alert the user.
                 callback({
                     defaultAnalysisLink: defaultAnalysisLink
                 });

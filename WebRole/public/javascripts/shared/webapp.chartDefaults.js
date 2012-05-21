@@ -18,9 +18,9 @@ WebAppLoader.addModule({ name: 'chartDefaults', isShared: true }, function () {
     // COMMON CHART SETTINGS
     commonSettings = {
         forceIFrame: false,
-        labelFontName: 'Futura-Medium',
+        labelFontName: 'GillSans-Light',
         labelFontSize: 12,
-        titleFontName: 'Futura-CondensedExtraBold',
+        titleFontName: 'GillSans-Bold',
         titleFontSize: 25
     };
 

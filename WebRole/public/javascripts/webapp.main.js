@@ -232,12 +232,10 @@ Zepto(function ($) {
             theApp.dashboard = loader.loadModule('dashboard');
         }
 
-        theApp.dashboard.on('onAnalysisLoaded', function () {
-            // theApp.mask.show('analysis');
+        theApp.dashboard.load(function () {
             theApp.scroll.rebuild('analysis');
         });
 
-        theApp.dashboard.load();
         theApp.mask.hide('analysis');
         output.log('onAnalysisEnd');
     });

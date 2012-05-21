@@ -2,12 +2,13 @@
 // CHART MANAGER
 // ------------------------------------------
 
-WebAppLoader.addModule({ name: 'chartManager', sharedModules: ['settings', 'chartDefaults'], isShared: true }, function () {
+WebAppLoader.addModule({ name: 'chartManager', sharedModules: ['settings', 'chartDefaults', 'colorManager'], isShared: true, hasEvents: true }, function () {
     var chartBase = {},
         charts = [],
         eventManager = this.getEventManager(),
         chartDefaults = this.getSharedModule('chartDefaults'),
         siteUrls = this.getSharedModule('settings').siteUrls,
+        colorManager = this.getSharedModule('colorManager'),
         output = this.getConsole(),
         chartCount = 0,
         chartTotal = 0;
@@ -57,6 +58,8 @@ WebAppLoader.addModule({ name: 'chartManager', sharedModules: ['settings', 'char
         chart.include = config.include;
         chart.measures = config.measures;
         chart.includeMeasuresFor = config.includeMeasuresFor;
+        chart.isHeatMap = config.isHeatMap;
+        chart.isGradientReversed = config.isGradientReversed;
 
         // Increase the running chart total.
         chartTotal++;
@@ -78,9 +81,12 @@ WebAppLoader.addModule({ name: 'chartManager', sharedModules: ['settings', 'char
             return;
         }
 
+        // Get the current chart type.
+        type = chart.getChartType();
+
         // Define our basic parameters.
         params = {
-            type: chart.getChartType(),
+            type: type,
             timePeriods: chart.timePeriods,
             include: chart.include,
             measures: chart.measures,
@@ -88,7 +94,7 @@ WebAppLoader.addModule({ name: 'chartManager', sharedModules: ['settings', 'char
         };
 
         $.post(siteUrls.segmentsTreeNode, params, function (data) {
-            var dataTable;
+            var dataTable, i, min, max, values = [], sliceOptions = [];
 
             output.log(data);
 
@@ -97,6 +103,38 @@ WebAppLoader.addModule({ name: 'chartManager', sharedModules: ['settings', 'char
 
             // Set the data table for the chart.
             chart.setDataTable(dataTable);
+
+            // If our chart is a pie chart and we're displaying it as a heatmap...
+            if (type === 'PieChart' && chart.isHeatMap) {
+
+                // ...collate the heatmap measure from the datatable.
+                for (i = 0; i < dataTable.getNumberOfRows(); i++) {
+                    values.push(dataTable.getValue(i, 2));
+                }
+
+                // Get the highest and lowest values from the heatmap measure values.
+                min = Math.min.apply(Math, values);
+                max = Math.max.apply(Math, values);
+
+                // Generate absolute minmax values.
+                if (Math.abs(min) > Math.abs(max)) {
+                    max = Math.abs(min);
+                    min = -(Math.abs(min));
+                } else {
+                    max = Math.abs(max);
+                    min = -(Math.abs(max));
+                }
+
+                // Loop round the values, and use the colorManager to generate 
+                // a colour in the gradient range for that measure value.
+                for (i = 0; i < values.length; i++) {
+                    sliceOptions.push({
+                        color: colorManager.getColorInRange(values[i], min, max, chart.isGradientReversed)
+                    });
+                }
+
+                chart.setOption('slices', sliceOptions);
+            }
 
             // Draw the chart.
             chart.draw();
