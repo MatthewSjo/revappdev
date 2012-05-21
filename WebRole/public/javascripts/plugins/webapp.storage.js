@@ -8,6 +8,12 @@ WebAppLoader.addModule({ name: 'storage', plugins: ['helper'], hasEvents: true, 
         eventManager        = this.getEventManager(),
         helper              = this.getPlugin('helper'),
         revolutionNamespace = 'Revolution';
+        usedSpace           = 0;
+
+    // Public
+    function getUsedSpace() {
+        return JSON.stringify(localStorage).length;
+    }
 
     // Private
     function getNamespacedName(itemName, namespace) {
@@ -96,6 +102,7 @@ WebAppLoader.addModule({ name: 'storage', plugins: ['helper'], hasEvents: true, 
     storage.remove = remove;
     storage.count = count;
     storage.clearAll = clearAll;
-    
+    storage.getUsedSpace = getUsedSpace;
+
     return storage;
 });

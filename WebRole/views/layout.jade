@@ -28,6 +28,7 @@ html(xmlns='http://www.w3.org/1999/xhtml')
 		link(rel='stylesheet', href='stylesheets/add2home.css')
 		link(rel='stylesheet', href='stylesheets/spinningwheel.css')
 		link(rel='stylesheet', href='stylesheets/login.css')
+		// link(rel='stylesheet', href='stylesheets/swipeview.css')
 
 		// Google Visualization API & Package
 		script(src='https://www.google.com/jsapi?autoload={"modules":[{"name":"visualization","version":"1"}]}', type='text/javascript', charset='utf-8')
@@ -39,7 +40,8 @@ html(xmlns='http://www.w3.org/1999/xhtml')
 		script(src='/src/jqtouch.js', type='text/javascript', charset='utf-8')
 		// script(src='/src/jquery.tappable.js', type='text/javascript', charset='utf-8')
 		script(src='/src/spinningwheel.js', type='text/javascript', charset='utf-8')		
-		script(src='/src/jlinq.js', type='text/javascript', charset='utf-8')		
+		script(src='/src/jlinq.js', type='text/javascript', charset='utf-8')	
+		// script(src='/src/swipeview.js', type='text/javascript', charset='utf-8')
 
 		// script(type='text/javascript', src='src/jqt.autotitles.min.js')
 		script(type='text/javascript', src='src/add2home.js', charset='utf-8')
@@ -57,6 +59,14 @@ html(xmlns='http://www.w3.org/1999/xhtml')
 		// script(src='/javascripts/extensions/webapp.consoleManager.js', type='text/javascript', charset='utf-8')
 		script(src='/javascripts/extensions/webapp.dataObject.js', type='text/javascript', charset='utf-8')
 
+		// Controls
+		script(src='/javascripts/controls/webapp.toolbar.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/controls/webapp.portfoliosList.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/controls/webapp.tabbar.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/controls/webapp.spinningWheel.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/controls/webapp.scroll.js', type='text/javascript', charset='utf-8')
+		// script(src='/javascripts/controls/webapp.swipeview.js', type='text/javascript', charset='utf-8')
+
 		// Shared
 		script(src='/javascripts/shared/webapp.settings.js', type='text/javascript', charset='utf-8')
 		script(src='/javascripts/shared/webapp.pageElements.js', type='text/javascript', charset='utf-8')
@@ -71,21 +81,17 @@ html(xmlns='http://www.w3.org/1999/xhtml')
 		script(src='/javascripts/shared/webapp.chartsManager.js', type='text/javascript', charset='utf-8')
 
 		// Modules
-		script(src='/javascripts/modules/webapp.tabbar.js', type='text/javascript', charset='utf-8')
-		script(src='/javascripts/modules/webapp.spinningWheel.js', type='text/javascript', charset='utf-8')
-		script(src='/javascripts/modules/webapp.scroll.js', type='text/javascript', charset='utf-8')
 		script(src='/javascripts/modules/webapp.auth.js', type='text/javascript', charset='utf-8')
 		script(src='/javascripts/modules/webapp.test.js', type='text/javascript', charset='utf-8')
 		script(src='/javascripts/modules/webapp.repositories.js', type='text/javascript', charset='utf-8')
 		script(src='/javascripts/modules/webapp.pageEventsManager.js', type='text/javascript', charset='utf-8')
 		script(src='/javascripts/modules/webapp.nav.js', type='text/javascript', charset='utf-8')
-		script(src='/javascripts/modules/webapp.toolbar.js', type='text/javascript', charset='utf-8')
-		script(src='/javascripts/modules/webapp.portfoliosList.js', type='text/javascript', charset='utf-8')
 		script(src='/javascripts/modules/webapp.portfolioManager.js', type='text/javascript', charset='utf-8')		
 		script(src='/javascripts/modules/webapp.analysisManager.js', type='text/javascript', charset='utf-8')		
 
 		// Pages
 		script(src='/javascripts/pages/webapp.dashboard.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/pages/webapp.analysisSettingsPage.js', type='text/javascript', charset='utf-8')
 
 		script(src='/javascripts/webapp.main.js', type='text/javascript', charset='utf-8')
 

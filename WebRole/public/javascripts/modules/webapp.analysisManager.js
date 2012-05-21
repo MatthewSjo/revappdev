@@ -3,98 +3,101 @@
 // ------------------------------------------
 
 WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'], 
-    sharedModules: ['chartsManager'], hasEvents: true }, function () {
+    sharedModules: ['chartsManager'], dataObjects: ['analysisPages'], hasEvents: true }, function () {
 
-    var analysisManager     = {},
-        output              = this.getConsole(),
-        eventManager        = this.getEventManager(),
-        helper              = this.getPlugin('helper')
-        chartsManager       = this.getSharedModule('chartsManager'),
-        charts              = [],
-        analysisPages       = {};
+    var analysisManager         = {},
+        output                  = this.getConsole(),
+        eventManager            = this.getEventManager(),
+        helper                  = this.getPlugin('helper')
+        chartsManager           = this.getSharedModule('chartsManager'),
+        analysisPagesDataObj    = this.getDataObject('analysisPages');
+        charts                  = [],
+        analysisPages           = {};
 
     // TODO: Add a method called changeChartPosition or changeChartOrder...
+
+    analysisPagesDataObj.define({
+        items: [{
+            name        : 'Performances',
+            id          : 'performances',
+            order       : 1,
+            userDefined : false,
+            charts      : [{
+                    title   : '',
+                    chartId : 'performance_bar',
+                    order   : 1
+                },{
+                    title   : '',
+                    chartId : 'performance_bubble',
+                    order   : 2
+                }] 
+        },{
+            name        : 'Risk',
+            id          : 'risk',
+            order       : 6,
+            userDefined : false,
+            charts      : [{
+                    chartId: 'performance_column',
+                    order   : 1
+                },{
+                    chartId: 'performance_grid',
+                    order   : 2
+                }]             
+        },{
+            name        : 'Asset Allocation',
+            id          : 'assetAllocation',
+            order       : 5,
+            userDefined : false,
+            charts      : [{
+                    chartId: 'performance_line',
+                    order   : 1
+                },{
+                    chartId: 'performance_grid',
+                    order   : 2
+                }]             
+        },{
+            name        : 'Contribution',
+            id          : 'contribution',
+            order       : 4,
+            userDefined : false,
+            charts      : [{
+                    chartId: 'performance_column',
+                    order   : 1
+                },{
+                    chartId: 'performance_heatmap',
+                    order   : 2
+                }]             
+        },{
+            name        : 'Attribution',
+            id          : 'attribution',
+            order       : 3,
+            userDefined : false,
+            charts      : [{
+                    chartId: 'performance_bubble',
+                    order   : 1
+                },{
+                    chartId: 'performance_grid',
+                    order   : 2
+                }]             
+        },{
+            name        : 'Fixed Income',
+            id          : 'fixedIncome',
+            order       : 2,
+            userDefined : false,
+            charts      : [{
+                    chartId: 'performance_column',
+                    order   : 1
+                },{
+                    chartId: 'performance_heatmap',
+                    order   : 2
+                }]             
+        }]
+    });
 
     // Public
     function restoreDefaults() {
         // Delete any previous analysis pages.
-        analysisPages = {};
-
-        analysisPages = {
-            items: [{
-                name        : 'Performances',
-                id          : 'performances',
-                order       : 1,
-                userDefined : false,
-                charts      : [{
-                        chartId : 'performance_bubble',
-                        order   : 1
-                    },{
-                        chartId: 'performance_heatmap',
-                        order   : 2
-                    }] 
-            },{
-                name        : 'Risk',
-                id          : 'risk',
-                order       : 6,
-                userDefined : false,
-                charts      : [{
-                        chartId: 'performance_column',
-                        order   : 1
-                    },{
-                        chartId: 'performance_grid',
-                        order   : 2
-                    }]             
-            },{
-                name        : 'Asset Allocation',
-                id          : 'assetAllocation',
-                order       : 5,
-                userDefined : false,
-                charts      : [{
-                        chartId: 'performance_line',
-                        order   : 1
-                    },{
-                        chartId: 'performance_grid',
-                        order   : 2
-                    }]             
-            },{
-                name        : 'Contribution',
-                id          : 'contribution',
-                order       : 4,
-                userDefined : false,
-                charts      : [{
-                        chartId: 'performance_column',
-                        order   : 1
-                    },{
-                        chartId: 'performance_heatmap',
-                        order   : 2
-                    }]             
-            },{
-                name        : 'Attribution',
-                id          : 'attribution',
-                order       : 3,
-                userDefined : false,
-                charts      : [{
-                        chartId: 'performance_bubble',
-                        order   : 1
-                    },{
-                        chartId: 'performance_grid',
-                        order   : 2
-                    }]             
-            },{
-                name        : 'Fixed Income',
-                id          : 'fixedIncome',
-                order       : 2,
-                userDefined : false,
-                charts      : [{
-                        chartId: 'performance_column',
-                        order   : 1
-                    },{
-                        chartId: 'performance_heatmap',
-                        order   : 2
-                    }]             
-            }]
-        };
+        analysisPages = analysisPagesDataObj.getData();
 
         saveAnalysisPages();
     }

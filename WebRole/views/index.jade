@@ -1,16 +1,16 @@
 #page
 	#jqt
 		#startup.login_background(data-pageEvents="both")
-		#login.login_background(data-pageEvents="both")
+		#revolutionLogin.login_background(data-pageEvents="both")
 			#login_content
 				.login_r
 				ul.rounded.login_style
 					li.login_style
 						div
-							input#userNameTextbox.login_style(type='email', placeholder=#{lang.loginPage.userNamePlaceholderText}, name='user[username]', value='asa.fama@statpro.com')
+							input#userNameTextbox.login_style(type='email', placeholder='#{lang.loginPage.userNamePlaceholderText}', name='user[username]', value='')
 					li.login_style
 						div
-							input#passwordTextbox.login_style(type='password', placeholder=#{lang.loginPage.passwordPlaceholderText}, name='user[password]', value='StatPro123')
+							input#passwordTextbox.login_style(type='password', placeholder='#{lang.loginPage.passwordPlaceholderText}', name='user[password]', value='StatPro123')
 				ul.rounded
 					li.login_button
 						a#loginButton(href='#')  #{lang.loginPage.loginText}
@@ -53,7 +53,18 @@
 				a.back(href='#') #{lang.analysisPage.backText}
 			#wrapper
 				#scroller
-					#analysis_partial					
+					#analysis_partial
+			//
+				#swipeview-wrapper
+					ul#swipeview-nav
+						li#prev(onclick='gallery.prev()') -
+						li.selected(onclick='gallery.goToPage(0)')
+						li(onclick='gallery.goToPage(1)')
+						li(onclick='gallery.goToPage(2)')
+						li(onclick='gallery.goToPage(3)')
+						li(onclick='gallery.goToPage(4)')
+						li(onclick='gallery.goToPage(5)')
+						li#next(onclick='gallery.next()') +					
 
 		#eula(data-pageEvents="both", class='pageWithEvents')
 			.toolbar
@@ -98,26 +109,9 @@
 			#wrapper
 				#scroller
 					h2 Default Pages
-					ul.edit.rounded
-						li.arrow
-							a(href="#") Performances
-						li.arrow
-							a(href="#") Risk
-						li.arrow
-							a(href="#") Asset Allocation
-						li.arrow
-							a(href="#") Contribution
-						li.arrow
-							a(href="#") Attribution
-						li.arrow
-							a(href="#") Fixed Income
-						// TODO: Add text: Swipe to delete
+					ul#listAnalysisSettingsDefaultPages.edit.rounded
 					h2 User Pages
-					ul.edit.rounded
-						li.arrow
-							a(href="#") Test 1
-						li.arrow
-							a(href="#") Test 2
+					ul#listAnalysisSettingsUserPages.edit.rounded
 					a.grayButton(href='#') Add New Page
 
 

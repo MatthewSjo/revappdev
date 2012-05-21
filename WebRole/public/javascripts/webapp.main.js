@@ -10,7 +10,13 @@ var jQT = new $.jQTouch({
     statusBar               : 'default',
     hoverDelay              : 10,
     pressDelay              : 10,
-    preloadImages           : []
+    preloadImages           : [
+        'stylesheets/sw-slot-border.png',
+        'stylesheets/sw-alpha.png',
+        'stylesheets/sw-button-cancel.png',
+        'stylesheets/sw-button-done.png',
+        'stylesheets/sw-header.png'
+    ]
 });
 
 // Main functions:
@@ -26,6 +32,24 @@ Zepto(function ($) {
 
     // Test log method.
     output.log('Hello from Dan & Asa!');
+
+    theApp.lastUsernameUsed = '';
+    theApp.lastPasswordUsed = '';
+    theApp.lastAnalysisObjectUsed = {
+        portfolioId: '',
+        analysisId: '',
+        timePeriodId: '',
+        chartId : '',
+        
+        // Time Stamp getter/setter
+        _timeStamp: '',
+        get timeStamp() {
+            return this._timeStamp
+        },
+        set timeStamp(value) {
+            this._timeStamp = value;
+        } 
+    };
 
     /* ----------------------- ON/OFF ----------------------- /
        'Switch comments off changing /* in //* and viceversa'
@@ -50,32 +74,217 @@ Zepto(function ($) {
     // Loading Settings
     theApp.settings = loader.loadModule('settings');
 
+    // Swipe View
+    theApp.swipeView = loader.loadModule('swipeView');
+
     // ------------------------------------------
     // THE MAIN ENTRY POINT
     // ------------------------------------------
 
     theApp.startHere = function () {
-        var appSettings = theApp.settings.getData('appSettingsData');
-        var userSettings = theApp.settings.getData('userSettingsData');
-        // var userSettingsDataObject = theApp.settings.getDataObject('userSettingsData');
-        // var appSettingsDataObject = theApp.settings.getDataObject('appSettingsData');
-        var lastLoggedOnUser = appSettings.lastLoggedOnUser;
+        var appSettingsData     = theApp.settings.loadData('appSettings'),
+            userSettingsData    = {}, 
+            lastLoggedOnUser    = '',
+            username            = '',
+            password            = '';
+            
+        // Try to get the last logged on user.
+        lastLoggedOnUser = (appSettingsData && appSettingsData.lastLoggedOnUser)
+            ? appSettingsData.lastLoggedOnUser.toLowerCase()
+            : null;
         
-        // userSettingsDataObject.set('username', 'daniel.attfield@statpro.com');
-        theApp.settings.saveData('userSettingsData', lastLoggedOnUser);
-        theApp.settings.loadData('userSettingsData', lastLoggedOnUser);
-        
-        theApp.settings.saveData('appSettingsData');
-        // theApp.nav.goToPage($(el.homePage), 'dissolve');
-        // theApp.nav.goToPage($(el.portfolioAnalysisPage), 'dissolve');
-        // theApp.mask.show('analysis');
+        if (lastLoggedOnUser) {
+            theApp.settings.loadData('userSettings', lastLoggedOnUser);    
+            userSettingsData = theApp.settings.getData('userSettings');
+            
+            // Try to get username and password.
+            username = userSettingsData.username || '';
+            password = userSettingsData.password || '';
+            
+            if (userSettingsData.automaticLogin) {
+                // If username and password fields are available...
 
-        theApp.portfolioManager.selectPortfolio();
+                if (username && password) {
+                    // .. try to login or...
+                    theApp.doLogin(username, password);
+                } else {
+                    // ... go to the login page using the last logged on user.
+                    theApp.goToLoginPage(username || lastLoggedOnUser);
+                }
+            } else {
+                theApp.goToLoginPage(username || lastLoggedOnUser);
+            }
+        } else {
+            theApp.goToLoginPage();
+        }
+
+        // theApp.tabbar.show();
+        // theApp.nav.goToPage($(el.portfolioAnalysisPage), 'dissolve');
+    }
+
+    theApp.doLogin = function(username, password) {
+        theApp.lastUsernameUsed = username.toLowerCase();
+        theApp.lastPasswordUsed = password;
+        theApp.auth.doLogin(username, password, siteUrls.authenticate);
+    };
+
+    theApp.goToLoginPage = function (username) {
+        theApp.tabbar.hide();
+
+        // Set the fields value.
+        $(el.userNameTextbox).val(username || '');
+        //$(el.passwordTextbox).val('');
+
+        // Show the login page
+        setTimeout(function (){
+            theApp.nav.goToPage($(el.loginPage), 'dissolve');
+        }, 1000);
+    }
+
+    //
+    // function init()
+    // ------------------------------------------------------------------------
+    //
+    theApp.init = function () {
+        var lastLoggedOnUser = '',
+            analysisDataObject = {};
+
+        theApp.nav.goToPage($(el.startupPage), 'dissolve');
+
+        //    - Update  with the current username [and password] the user settings data object
+        //      and the lastLoggedOnUser property of app settings.
+
+        var appSettingsData     = theApp.settings.loadData('appSettings'),
+            userSettingsData    = theApp.settings.loadData('userSettings', theApp.lastUsernameUsed);
         
-//        if (portfolioTotal) {
-//            theApp.tabbar.getButton('portfolios').setBadgeText(portfolioTotal);
-//        }        
-    
+        lastLoggedOnUser = (appSettingsData && appSettingsData.lastLoggedOnUser)
+            ? appSettingsData.lastLoggedOnUser.toLowerCase()
+            : null;
+        
+        appSettingsData.lastLoggedOnUser =  theApp.lastUsernameUsed;
+        theApp.settings.saveData('appSettings');
+
+        userSettingsData.username = theApp.lastUsernameUsed;
+        userSettingsData.password = theApp.lastPasswordUsed;
+        theApp.settings.saveData('userSettings', theApp.lastUsernameUsed);
+
+        //  TODO:
+        //    - If the current user and the last logged on user are different clear
+        //      the revolution shared space in the local storage.
+        //
+        //    - Init the localizationManager using the user language (or the default one).
+        //    - Init the themeManager using the last theme used (or the default one).        
+        //
+        //    - Load the favourites and fill the favourites slot.
+        //    - Load the analysis settings (page and charts) and fill the analysis slot. 
+        //      NB: storing the analysis settings is important because we reuse them later!
+        //
+        //    - Try to retrieve the last analysisDataObject used. This should contain:
+        //          - id analysis page
+        //          - id portfolio
+        //          - id time periods
+        //          - ?!? id last chart viewed ?!? or the first available.
+        //    - If this information is not available try to retrieve it from
+        //          - the favourites
+        //            OR
+        //          - the default or the last or the most viewed portfolio code
+        //          - the default analysis page code
+        //          - the default time periods code
+        //
+        //    - When this information is available call updateAnalysisPage({analysisDataObject})
+        theApp.analysisManager.update();
+
+        // NOTA BENE:
+        // Hardcoded values used for testing purpose.
+        analysisDataObject = {
+            analysisId      : 'performances',
+            chartId         : 'performance_bubble',
+            portfolioId     : 'EXFIF',
+            timeStamp       : '2012-05-15T07:29:42.243Z',
+            timePeriodId    : 'Earliest'
+        }
+
+        theApp.updateAnalysisPage(analysisDataObject);
+        
+    };
+
+    theApp.updateAnalysisPage = function(analysisDataObject) {
+        // theApp.portfolioManager.loadPortfolio(analysisDataObject.portfolioId);
+        
+        function renderAnalysisPage () {
+            var chartsToLoad = [], 
+                analysisPages = {},
+                analysisPage = {};
+
+            if (!theApp.dashboard) {
+                theApp.dashboard = loader.loadModule('dashboard');
+            }
+
+            theApp.dashboard.on('onAnalysisLoaded', function () {
+                // theApp.mask.show('analysis');
+                theApp.scroll.rebuild('analysis');
+            });
+
+            analysisPages = theApp.analysisManager.getData('analysisPages');
+
+            analysisPage = jLinq.from(analysisPages.items)
+                .equals('id', analysisDataObject.analysisId)
+                .select();
+
+            chartsToLoad = jLinq.from(analysisPage[0].charts)
+                .sort('order')
+                .select();
+            
+            for (var i = 0; i < chartsToLoad.length; i++) {
+                $('#analysis_partial').append(
+                    $(
+                        '<div class="analysisSummarySection">' + 
+                        '   <h2> title </h2>' +
+                        '   <div class="analysisComponentContainer">' +
+                        '       <div id="' + chartsToLoad[i].chartId + '" class="chartContainer"></div>' +
+                        '   </div>' + 
+                        '</div>'
+                    ));
+            }
+            theApp.dashboard.load(chartsToLoad);
+            // theApp.mask.hide('analysis');
+        }
+
+        function onLoadPortfolioAnalysisCompleted() {
+            // alert('completed');
+            renderAnalysisPage();
+        }
+
+        theApp.portfolioManager.loadPortfolioAnalysis(
+            analysisDataObject.portfolioId, 
+            onLoadPortfolioAnalysisCompleted
+        );
+    };
+
+    theApp.showAnalysisSettingsPage = function () {
+        if (!theApp.analysisSettingsPage) {
+            theApp.analysisSettingsPage = loader.loadModule('analysisSettingsPage');
+        }
+        
+        var analysisPages = {};
+            
+
+        if (!theApp.dashboard) {
+            theApp.dashboard = loader.loadModule('dashboard');
+        }
+
+        theApp.dashboard.on('onAnalysisLoaded', function () {
+            // theApp.mask.show('analysis');
+            theApp.scroll.rebuild('analysis');
+        });
+
+        analysisPages = theApp.analysisManager.getData('analysisPages');
+
+        analysisPage = jLinq.from(analysisPages.items)
+            .equals('id', analysisDataObject.analysisId)
+            .select();
+
+        theApp.analysisSettingsPage.create()
     }
 
     // ------------------------------------------
@@ -87,14 +296,17 @@ Zepto(function ($) {
     theApp.portfolioManager.on('onPortfolioLoaded', function (portfolio) {
         // When a new portfolio is loaded update timeperiods and analysis slots.
         theApp.repositories.timePeriodsSlot.setData(portfolio.timePeriods);
-        theApp.portfolioManager.getAnalysis(portfolio.analysisLink);
+        // theApp.portfolioManager.getAnalysis(portfolio.analysisLink);
         output.log('Loaded portfolio:', portfolio);
     });
 
     theApp.portfolioManager.on('onAnalysisReceived', function (data) {
         theApp.scroll.rebuild('analysis');
         $(el.analysisPage + '_partial').html(data);
+        // $('#swipeview-wrapper').html(data);
+        
         theApp.nav.goToPage($(el.analysisPage), 'dissolve');
+        theApp.tabbar.show();
     });
 
     // ------------------------------------------
@@ -169,12 +381,11 @@ Zepto(function ($) {
 
     theApp.spinningWheel.on('onPortfoliosDone', function (key) {
         $('#myLoadingCharts').show();
-        theApp.portfolioManager.selectPortfolio(key);
+        theApp.portfolioManager.loadPortfolio(key);
     });
 
     theApp.spinningWheel.on('onAnalysisDone', function (key) {
         // $('#myLoadingCharts').show();
-        // theApp.portfolioManager.selectPortfolio(key);
     });
     
     // ------------------------------------------
@@ -191,11 +402,11 @@ Zepto(function ($) {
         username = $(el.userNameTextbox).val();
         password = $(el.passwordTextbox).val();
 
-        theApp.auth.doLogin(username, password, siteUrls.authenticate);
+        theApp.doLogin(username, password);
     });
 
     theApp.auth.on('onLoginSuccess', function (portfolioTotal) {
-        // theApp.startHere();
+        theApp.init();
     });
 
     theApp.auth.on('onLoginFailed', function (response) {
@@ -225,7 +436,7 @@ Zepto(function ($) {
 
     theApp.pageEventsManager.on('onHomeEnd', function () {
         theApp.tabbar.show();
-        theApp.analysisManager.update();
+
         theApp.scroll.rebuild('home');
         // theApp.mask.show('analysis');
         output.log('onHomeEnd');
@@ -248,17 +459,7 @@ Zepto(function ($) {
     });
 
     theApp.pageEventsManager.on('onAnalysisEnd', function () {
-        if (!theApp.dashboard) {
-            theApp.dashboard = loader.loadModule('dashboard');
-        }
-
-        theApp.dashboard.on('onAnalysisLoaded', function () {
-            // theApp.mask.show('analysis');
-            theApp.scroll.rebuild('analysis');
-        });
-
-        theApp.dashboard.load();
-        // theApp.mask.hide('analysis');
+        // theApp.renderAnalysisPage();
         output.log('onAnalysisEnd');
     });
 
@@ -276,6 +477,11 @@ Zepto(function ($) {
     theApp.pageEventsManager.on('onAnalysisSettingsEnd', function () {
         theApp.scroll.rebuild('analysisSettings');
         output.log('onAnalysisSettingsEnd');
+    });
+
+    theApp.pageEventsManager.on('onAnalysisSettingsStart', function () {
+        theApp.showAnalysisSettingsPage();
+        output.log('onAnalysisSettingsStart');
     });
 
     // ------------------------------------------
@@ -320,7 +526,7 @@ Zepto(function ($) {
     theApp.portfoliosList = loader.loadModule('portfoliosList');
 
     theApp.portfoliosList.on('onDataReceived', function (data) {
-        theApp.scroll.rebuild('analysis');
+        // theApp.scroll.rebuild('analysis');
         $(el.analysisPage + '_partial').html(data);
     });
 

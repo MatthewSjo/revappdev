@@ -8,17 +8,17 @@ WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSet
         siteUrls            = {},
         analysisTypes       = {},
         output              = this.getConsole(),
-        userSettingsData    = this.getDataObject('userSettings')
-        appSettingsData     = this.getDataObject('appSettings');
+        userSettingsDataObj = this.getDataObject('userSettings')
+        appSettingsDataObj  = this.getDataObject('appSettings');
 
-    userSettingsData.define({
+    userSettingsDataObj.define({
         automaticLogin  : false,
         username        : 'asa.fama@statpro.com',
         password        : 'StatPro123',
         language        : 'en-US'
     });
 
-    appSettingsData.define({
+    appSettingsDataObj.define({
         lastLoggedOnUser    : 'asa.fama@statpro.com'
     });
     
@@ -72,8 +72,8 @@ WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSet
     settings.analysisTypes = analysisTypes;
 
     // Data Objects
-    settings.appSettingsData = appSettingsData;
-    settings.userSettingsData = userSettingsData;
+    // settings.appSettingsData = appSettingsData;
+    // settings.userSettingsData = userSettingsData;
 
     return settings;
 });

@@ -2,15 +2,38 @@
 // PORTFOLIO MANAGER
 // ------------------------------------------
 
-WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: ['settings'], dataObjects: ['portfolio', 'test'], hasEvents: true }, function () {
+WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: ['settings'], dataObjects: ['portfolio'], hasEvents: true }, function () {
     var portfolioManager    = {},
         output              = this.getConsole(),
         eventManager        = this.getEventManager(),
         settings            = this.getSharedModule('settings'),
-        portfolioData       = this.getDataObject('portfolio'),
-        testData            = this.getDataObject('test');
+        portfolioDataObj    = this.getDataObject('portfolio');
 
-    function selectPortfolio(portfolioCode) {
+    portfolioDataObj.define({
+        code: '',
+        type: '',
+        analysisLink: '',
+        currency: '',
+        version: '',
+        timeStamp: '',
+        timePeriods: []
+    });
+
+    function loadPortfolioAnalysis(portfolioCode, callback) {
+        
+        function onGetAnalysisCompleted() {
+            callback();
+        }
+
+        function onLoadPortfolioCompleted (defaultAnalysisLink) {
+            getAnalysis(defaultAnalysisLink, onGetAnalysisCompleted);
+        }
+
+        loadPortfolio(portfolioCode, onLoadPortfolioCompleted );
+
+    }
+
+    function loadPortfolio(portfolioCode, callback) {
         var defaultPortfolioCode,
             portfolio = {
                 code: '',
@@ -32,7 +55,7 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
             if (portfolioCode) {
                 return portfolioCode;
             } else {
-                return 'advisor'; //'EXFIF'; // null; //'ASA_EQ01' // 'advisor'
+                return 'ASA_EQ01'; //'EXFIF'; // null; //'ASA_EQ01' // 'advisor'
             }
         }
 
@@ -88,21 +111,25 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
 
         function onLoadPortfolioAnalysisCompleted() {
             // repositories.timePeriodsSlot.setData(portfolio.timePeriods);
+            portfolioDataObj.setData(portfolio);
             eventManager.raiseEvent('onPortfolioLoaded', portfolio);
             eventManager.raiseEvent('onTimePeriodDataReceived', portfolio.timePeriods);
+            callback(portfolio.analysisLink);
         }
     }
     
     // Public
-    function getAnalysis(uri) {
+    function getAnalysis(uri, callback) {
         $.post(settings.siteUrls.analysis, { uri: uri }, function (data) {
             eventManager.raiseEvent('onAnalysisReceived', data);
+            callback();
         });
     
     }
 
-    portfolioManager.selectPortfolio = selectPortfolio;
+    portfolioManager.loadPortfolio = loadPortfolio;
     portfolioManager.getAnalysis = getAnalysis;
+    portfolioManager.loadPortfolioAnalysis = loadPortfolioAnalysis;
 
     return portfolioManager;
 });

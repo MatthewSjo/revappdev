@@ -2,12 +2,12 @@
 // ROUTING
 // ------------------------------------------
 
-var host = 'revapidev.statpro.com',
-    url = '/v1/',
+var host      = 'revapidev.statpro.com',
+    url       = '/v1/',
     webApiUri = 'https://revapidev.statpro.com/v1/',
-    http = require('http'),
-    webApi = require('../web-api'),
-    lang = require('../languages');
+    http      = require('http'),
+    webApi    = require('../web-api'),
+    lang      = require('../languages');
 
 var currentLanguage = {},
     defaultLanguage = 'en_US';

@@ -9,6 +9,7 @@ WebAppLoader.addExtension({ name: 'dataObject', plugins: ['helper', 'storage'], 
         eventManager    = this.getEventManager(),
         storage         = this.getPlugin('storage'),
         helper          = this.getPlugin('helper');
+        dataObjects     = {};
 
     var dataObject = (function() {
         var dataObject  = {};
@@ -55,18 +56,24 @@ WebAppLoader.addExtension({ name: 'dataObject', plugins: ['helper', 'storage'], 
 
         // Public
         function loadData(username) {
-            this.data = storage.load(this.privateId, username);
+            return this.data = storage.load(this.privateId, username) || {};
         }
 
         // Public
         function getData() {
-            return this.data;
+            return this.data || {};
+        }
+
+        // Public
+        function setData(value) {
+            return this.data = value;
         }
 
         dataObject.define = define;
         dataObject.get = get;
         dataObject.set = set;
         dataObject.getData = getData;
+        dataObject.setData = setData;
         dataObject.saveData = saveData;
         dataObject.loadData = loadData;
 
@@ -82,26 +89,29 @@ WebAppLoader.addExtension({ name: 'dataObject', plugins: ['helper', 'storage'], 
         
         moduleToAdd.dataObjects = dataObjects;
     }
-
+    
+    // TODO: Add properties to store lowercase and uppuercase values.
     // Invoked when a module is loaded.
     function extendLoadModule(moduleToLoad) {
         if (moduleToLoad.dataObjects && moduleToLoad.dataObjects.length > 0) {
             moduleToLoad.bin.getData = function (dataObjectName) {
-                return this[dataObjectName].getData();
+                // return this[dataObjectName].getData();
+                return dataObjects[dataObjectName].getData();
             };
             
             moduleToLoad.bin.saveData = function (dataObjectName, username) {
-                return this[dataObjectName].saveData(username);
+                // return this[dataObjectName].saveData(username);
+                return dataObjects[dataObjectName].saveData(username);
             };
             
             moduleToLoad.bin.loadData = function (dataObjectName, username) {
-                return this[dataObjectName].loadData(username);
+                // return this[dataObjectName].loadData(username);
+                return dataObjects[dataObjectName].loadData(username);
             };
 
             moduleToLoad.bin.getDataObject = function (dataObjectName) {
                 return this[dataObjectName];
             }
-
         }
     }
 
@@ -118,8 +128,13 @@ WebAppLoader.addExtension({ name: 'dataObject', plugins: ['helper', 'storage'], 
            
         // If the shared module is in the list of the available modules return it.
         if (isDataObjectAvailable) {
-            newDataObject = Object.create(dataObject);
-            newDataObject.privateId = objectlName;
+            if (!dataObjects[objectlName]) {
+                newDataObject = Object.create(dataObject);
+                newDataObject.privateId = objectlName;
+                dataObjects[objectlName] = newDataObject;
+            } else {
+                throw ('Data object "' + objectlName + '" already exists.');
+            }
         }
 
         return newDataObject;

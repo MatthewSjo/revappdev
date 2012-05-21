@@ -3,24 +3,26 @@
 // ------------------------------------------
 
 WebAppLoader.addModule({ name: 'scroll' }, function () {
-    var scroll      = {},
+    var scroll = {},
         myScroll; // Please don't initialize myScroll.
-    
+
     /* Use this for high compatibility (iDevice + Android)*/
     document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-    
+
     function rebuildScroll(id, optionConfig) {
         var wrapper = 'div#' + id + ' #wrapper',
-                options = optionConfig || {}; // { hScrollbar: false, vScrollbar: true }
-        
-        options.useTransform = false;
-		options.onBeforeScrollStart = function (e) {
-			    var target = e.target;
-			    while (target.nodeType != 1) target = target.parentNode;
+            options = optionConfig || {}; // { hScrollbar: false, vScrollbar: true }
 
-			    if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
-				    e.preventDefault();
-		    };
+        options.useTransform = false;
+        options.onBeforeScrollStart = function (e) {
+            var target = e.target;
+            while (target.nodeType != 1) target = target.parentNode;
+
+            if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
+                e.preventDefault();
+        };
+        // options.snap = 'hr';
+        // options.momentum = true;
 
         if (myScroll) {
             myScroll.destroy();

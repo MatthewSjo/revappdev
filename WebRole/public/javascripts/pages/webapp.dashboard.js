@@ -25,45 +25,50 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
         performanceGrid = {},
         allocationPieChart = {};
 
-    function load() {
+    var charts = {};
 
-        // Performance
-        chartManager.load(performanceBarChart);
-        chartManager.load(performanceBubbleChart);
-        chartManager.load(performanceGrid);
+    function load(chartsToLoad) {
 
-        // Allocation
-        chartManager.load(allocationBarChart);
-        chartManager.load(allocationPieChart);
+        for (var i = 0; i < chartsToLoad.length; i++) {
+            chartManager.load(charts[chartsToLoad[i].chartId]);
+        }
+//        // Performance
+//        chartManager.load(performanceBarChart);
+//        chartManager.load(performanceBubbleChart);
+//        chartManager.load(performanceGrid);
 
-        // Risk
-        chartManager.load(riskBarChart);
-        chartManager.load(riskBubbleChart);
+//        // Allocation
+//        chartManager.load(allocationBarChart);
+//        chartManager.load(allocationPieChart);
 
-        // Attribution
-        chartManager.load(attributionBarChart);
-        chartManager.load(attributionColumnChart);
+//        // Risk
+//        chartManager.load(riskBarChart);
+//        chartManager.load(riskBubbleChart);
 
-        // Contribution
-        chartManager.load(contributionColumnChart);
-        chartManager.load(contributionBarChart);
+//        // Attribution
+//        chartManager.load(attributionBarChart);
+//        chartManager.load(attributionColumnChart);
 
-        // Fixed Income
-        chartManager.load(fixedIncomeContributionBarChart);
-        chartManager.load(carryContributionBarChart);
-        chartManager.load(yieldCurveContributionBarChart);
-        chartManager.load(riskNumbersBarChart);
+//        // Contribution
+//        chartManager.load(contributionColumnChart);
+//        chartManager.load(contributionBarChart);
 
-        // Fixed Income Exposure
-        chartManager.load(interestRatesExposureColumnChart);
-        chartManager.load(creditSpreadsExposureColumnChart);
-        chartManager.load(dv01ExposureColumnChart);
+//        // Fixed Income
+//        chartManager.load(fixedIncomeContributionBarChart);
+//        chartManager.load(carryContributionBarChart);
+//        chartManager.load(yieldCurveContributionBarChart);
+//        chartManager.load(riskNumbersBarChart);
+
+//        // Fixed Income Exposure
+//        chartManager.load(interestRatesExposureColumnChart);
+//        chartManager.load(creditSpreadsExposureColumnChart);
+//        chartManager.load(dv01ExposureColumnChart);
     }
 
     // ------------------------------------------
     // BAR CHARTS
     // ------------------------------------------
-
+    
     performanceBarChart = chartManager.create({
         chartId: 'performance_bar',
         chartType: 'BarChart',
@@ -75,6 +80,7 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
             hAxis: { title: 'Return' }
         }
     });
+    charts.performance_bar = performanceBarChart;
 
     riskBarChart = chartManager.create({
         chartId: 'risk_bar',
@@ -172,7 +178,7 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
     // ------------------------------------------
     // BUBBLE CHARTS
     // ------------------------------------------
-
+    
     performanceBubbleChart = chartManager.create({
         chartId: 'performance_bubble',
         chartType: 'BubbleChart',
@@ -185,6 +191,7 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
             vAxis: { title: 'Annualized Return' }
         }
     });
+    charts.performance_bubble = performanceBubbleChart;
 
     riskBubbleChart = chartManager.create({
         chartId: 'risk_bubble',

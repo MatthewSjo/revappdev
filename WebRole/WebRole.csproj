@@ -367,6 +367,7 @@
     <Content Include="public\javascripts\extensions\webapp.emptyExtension.js" />
     <Content Include="public\javascripts\extensions\webapp.eventManager.js" />
     <Content Include="public\javascripts\modules\webapp.analysisManager.js" />
+    <Content Include="public\javascripts\pages\webapp.analysisSettingsPage.js" />
     <Content Include="public\javascripts\pages\webapp.dashboard.js" />
     <Content Include="public\javascripts\plugins\webapp.storage.js" />
     <Content Include="public\javascripts\shared\webapp.chartManager.js" />
@@ -377,9 +378,9 @@
     <Content Include="public\javascripts\modules\webapp.nav.js" />
     <Content Include="public\javascripts\modules\webapp.pageEventsManager.js" />
     <Content Include="public\javascripts\modules\webapp.portfolioManager.js" />
-    <Content Include="public\javascripts\modules\webapp.portfoliosList.js" />
+    <Content Include="public\javascripts\controls\webapp.portfoliosList.js" />
     <Content Include="public\javascripts\modules\webapp.repositories.js" />
-    <Content Include="public\javascripts\modules\webapp.toolbar.js" />
+    <Content Include="public\javascripts\controls\webapp.toolbar.js" />
     <Content Include="public\javascripts\plugins\webapp.base64.js" />
     <Content Include="public\javascripts\plugins\webapp.helper.js" />
     <Content Include="public\javascripts\shared\webapp.chartDefaults.js" />
@@ -388,10 +389,10 @@
     <Content Include="public\javascripts\shared\webapp.lang.en-us.js" />
     <Content Include="public\javascripts\shared\webapp.pageElements.js" />
     <Content Include="public\javascripts\modules\webapp.test.js" />
-    <Content Include="public\javascripts\modules\webapp.scroll.js" />
+    <Content Include="public\javascripts\controls\webapp.scroll.js" />
     <Content Include="public\javascripts\shared\webapp.settings.js" />
-    <Content Include="public\javascripts\modules\webapp.spinningWheel.js" />
-    <Content Include="public\javascripts\modules\webapp.tabbar.js" />
+    <Content Include="public\javascripts\controls\webapp.spinningWheel.js" />
+    <Content Include="public\javascripts\controls\webapp.tabbar.js" />
     <Content Include="public\src\jlinq.js" />
     <Content Include="public\src\zepto.js" />
     <Content Include="public\src\add2home.js" />
@@ -932,13 +933,15 @@
       <CompileStyle>Nested</CompileStyle>
       <DebugInfo>False</DebugInfo>
     </None>
-    <None Include="views\analysis.jade" />
-    <None Include="views\eula.jade" />
-    <None Include="views\portfolioAnalysis.jade" />
-    <None Include="views\dashboard.jade" />
-    <None Include="views\portfolios.jade" />
-    <None Include="views\index.jade" />
-    <None Include="views\layout.jade" />
+    <Content Include="views\analysis.jade" />
+    <Content Include="views\eula.jade" />
+    <Content Include="views\portfolioAnalysis.jade" />
+    <Content Include="views\dashboard.jade">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="views\portfolios.jade" />
+    <Content Include="views\index.jade" />
+    <Content Include="views\layout.jade" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\iisnode.msi" />
