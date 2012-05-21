@@ -255,8 +255,8 @@ var WebAppLoader = {};
             moduleToAdd.added           = true;
             
             if (moduleToAdd.isPlugin) {
-                moduleToAdd.getConsole = getConsole();
-                moduleToAdd.getEventManager = getEventManager();
+                moduleToAdd.getConsole = getConsole;
+                moduleToAdd.getEventManager = getEventManager;
             } else {
                 extendAddModule(config, moduleToAdd);
             }

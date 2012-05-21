@@ -366,6 +366,7 @@
     <Content Include="public\javascripts\modules\webapp.analysisManager.js" />
     <Content Include="public\javascripts\pages\webapp.dashboard.js" />
     <Content Include="public\javascripts\shared\webapp.colorManager.js" />
+    <Content Include="public\javascripts\plugins\webapp.storage.js" />
     <Content Include="public\javascripts\shared\webapp.chartManager.js" />
     <Content Include="public\javascripts\shared\webapp.chartsManager.js" />
     <Content Include="public\javascripts\shared\webapp.loadingMaskManager.js" />
