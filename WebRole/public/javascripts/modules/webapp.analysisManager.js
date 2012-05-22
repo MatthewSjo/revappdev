@@ -8,9 +8,9 @@ WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'],
     var analysisManager         = {},
         output                  = this.getConsole(),
         eventManager            = this.getEventManager(),
-        helper                  = this.getPlugin('helper')
+        helper                  = this.getPlugin('helper'),
         chartsManager           = this.getSharedModule('chartsManager'),
-        analysisPagesDataObj    = this.getDataObject('analysisPages');
+        analysisPagesDataObj    = this.getDataObject('analysisPages'),
         charts                  = [],
         analysisPages           = {};
 
@@ -34,7 +34,7 @@ WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'],
         },{
             name        : 'Risk',
             id          : 'risk',
-            order       : 6,
+            order       : 2,
             userDefined : false,
             charts      : [{
                     chartId: 'performance_column',
@@ -46,7 +46,7 @@ WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'],
         },{
             name        : 'Asset Allocation',
             id          : 'assetAllocation',
-            order       : 5,
+            order       : 3,
             userDefined : false,
             charts      : [{
                     chartId: 'performance_line',
@@ -70,7 +70,7 @@ WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'],
         },{
             name        : 'Attribution',
             id          : 'attribution',
-            order       : 3,
+            order       : 5,
             userDefined : false,
             charts      : [{
                     chartId: 'performance_bubble',
@@ -82,8 +82,32 @@ WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'],
         },{
             name        : 'Fixed Income',
             id          : 'fixedIncome',
-            order       : 2,
+            order       : 6,
             userDefined : false,
+            charts      : [{
+                    chartId: 'performance_column',
+                    order   : 1
+                },{
+                    chartId: 'performance_heatmap',
+                    order   : 2
+                }]             
+        },{
+            name        : 'Test One',
+            id          : 'test1',
+            order       : 1,
+            userDefined : true,
+            charts      : [{
+                    chartId: 'performance_column',
+                    order   : 1
+                },{
+                    chartId: 'performance_heatmap',
+                    order   : 2
+                }]             
+        },{
+            name        : 'Test Two',
+            id          : 'test2',
+            order       : 2,
+            userDefined : true,
             charts      : [{
                     chartId: 'performance_column',
                     order   : 1

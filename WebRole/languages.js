@@ -56,9 +56,15 @@ exports.en_US = {
         backText                    : 'Back'
     },
 
+    // ---------------------------------------------------- | Analysis Settings Pages |
+    analysisSettingsPages: {
+        settingsText                : 'Analysis Pages',
+        backText                    : 'Back'
+    },
+
     // ---------------------------------------------------- | Analysis Settings Page |
     analysisSettingsPage: {
-        settingsText                : 'Settings',
+        settingsText                : 'Analysis Page',
         backText                    : 'Back'
     },
 

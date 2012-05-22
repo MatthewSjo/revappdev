@@ -86,7 +86,7 @@
 						li.arrow
 							a(href="#") Themes
 						li.arrow
-							a(href="#analysisSettings") Analysis Pages
+							a(href="#analysisPagesSettings") Analysis Pages
 						li 
 							span Snap
 							span.toggle
@@ -102,10 +102,10 @@
 						
 					a#reloadApp.grayButton(href='#') Reload App
 		
-		#analysisSettings(data-pageEvents="both")
+		#analysisPagesSettings(data-pageEvents="both")
 			.toolbar
-				h1 #{lang.analysisSettingsPage.settingsText}
-				a.back(href='#') #{lang.analysisSettingsPage.backText}
+				h1 #{lang.analysisSettingsPages.settingsText}
+				a.back(href='#') #{lang.analysisSettingsPages.backText}
 			#wrapper
 				#scroller
 					h2 Default Pages
@@ -114,6 +114,27 @@
 					ul#listAnalysisSettingsUserPages.edit.rounded
 					a.grayButton(href='#') Add New Page
 
+		// TODO: Change server localization file. analysisSettingsPage -> chartSettingsPage
+		#chartSettings(data-pageEvents="both")
+			.toolbar
+				h1 #{lang.analysisSettingsPage.settingsText}
+				a.back(href='#') #{lang.analysisSettingsPage.backText}
+			#wrapper
+				#scroller
+					h2 User Page
+					form.scroll
+						ul.edit.rounded
+							li
+								input#analysisPageNameTextbox(type='text', placeholder='Page Name', value='')						
+							li.arrow
+								select#lol(multiple="multiple")
+									optgroup(label='Line Charts')
+										option(value='1') Chart 1
+										option(value='2') Chart 2
+									optgroup(label='Bar Charts')
+										option(value='3') Bar 1
+										option(value='4') Bar 2
+					// a#showSlot.grayButton(href='#') Show Slot
 
 		#test
 			.toolbar

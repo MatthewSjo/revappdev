@@ -364,6 +364,7 @@
     <Content Include="public\javascripts\extensions\webapp.emptyExtension.js" />
     <Content Include="public\javascripts\extensions\webapp.eventManager.js" />
     <Content Include="public\javascripts\modules\webapp.analysisManager.js" />
+    <Content Include="public\javascripts\pages\webapp.chartSettingsPage.js" />
     <Content Include="public\javascripts\pages\webapp.analysisSettingsPage.js" />
     <Content Include="public\javascripts\pages\webapp.dashboard.js" />
     <Content Include="public\javascripts\shared\webapp.colorManager.js" />

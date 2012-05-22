@@ -2,7 +2,9 @@
 // CHARTS MANAGER
 // ------------------------------------------
 
-WebAppLoader.addModule({ name: 'chartsManager', plugins: ['helper'], hasEvents: true, isShared: true }, function () {
+WebAppLoader.addModule({ name: 'chartsManager', plugins: ['helper'], sharedModules: ['chartManager'],
+    dataObjects: ['charts'], hasEvents: true, isShared: true }, function () {
+    
     var chartsManager = {},
         output          = this.getConsole(),
         eventManager    = this.getEventManager(),
