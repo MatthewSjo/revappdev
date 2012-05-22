@@ -62,6 +62,13 @@ exports.en_US = {
         backText                    : 'Back'
     },
 
+    // ---------------------------------------------------- | Shared |
+    shared: {
+        Monthly                     : 'Monthly',
+        Weekly                      : 'Weekly',
+        Quarterly                   : 'Quarterly'
+    },
+
     // ---------------------------------------------------- | Measures |
     measures: {
         adjustedsharpe              : 'Adjusted Sharpe',

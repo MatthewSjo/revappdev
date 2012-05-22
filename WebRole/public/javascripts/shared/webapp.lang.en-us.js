@@ -9,6 +9,10 @@ WebAppLoader.addModule({ name: 'en_US', isShared: true }, function () {
     en_US = {
         hello: 'hello',
 
+        // Shared
+        decimalSymbol               : '.',
+        groupingSymbol              : ',',
+
         // Spinning wheel.
         noPortfolioSlotAvailable    : 'No portfolio available',
         noAnalysisSlotAvailable     : 'No analysis available',

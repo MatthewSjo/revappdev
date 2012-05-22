@@ -6,6 +6,31 @@
 // into a JSON-formatted shape for consumption by various application components.
 
 // ------------------------------------------
+// MEASURE PLACEHOLDER REPLACEMENT FUNCTION
+// ------------------------------------------
+
+function getMeasureName(measureId, analysis, language) {
+    var name, 
+        frequency,
+        subPeriodPlaceholder    = '[SUBPERIOD]',
+        subPeriodsPlaceholder   = '[SUBPERIODS]', 
+        currencyPlaceholder     = '[CUR]';
+    
+    // Get the localised version of the statistics frequency.
+    frequency = language.shared[analysis.statisticsFrequency];
+
+    // Get the localised version of the measure name.
+    name = language.measures[measureId];
+
+    // Replace any placeholders.
+    name = name.replace(subPeriodPlaceholder, frequency)
+               .replace(subPeriodsPlaceholder, frequency)
+               .replace(currencyPlaceholder, analysis.currency);
+
+    return name;
+}
+
+// ------------------------------------------
 // DATA COLUMN FUNCTIONS
 // ------------------------------------------
 
@@ -13,8 +38,8 @@ function addColumn(columnArray, name) {
     columnArray.push({ label: name, type: 'number' });
 }
 
-function addMeasureColumns(columnArray, measures, language) {
-    var i, len, measureId;
+function addMeasureColumns(columnArray, measures, analysis, language) {
+    var i, len, measureId, measureName;
 
     // If we're adding measures...
     if (measures) {
@@ -25,9 +50,10 @@ function addMeasureColumns(columnArray, measures, language) {
         for (i = 0; i < len; i++) {
             // Obtain the measure ID.
             measureId = measures[i];
-            // Retrieve the localized measure name from the language module.
-            // TODO: Replace currency and subperiod placeholders.
-            this.addColumn(columnArray, language.measures[measureId]);
+            // Get the localised measure name.
+            measureName = getMeasureName(measureId, analysis, language);
+            // Add the column.
+            this.addColumn(columnArray, measureName);
         }
     }
 }
@@ -86,18 +112,21 @@ function addSegmentRows(rowArray, segments) {
     }
 }
 
-function addMeasureRows(rowArray, measures, language) {
+function addMeasureRows(rowArray, measures, analysis, language) {
+    var i, len, measure;
 
     // ...create a column for each measure.
     len = measures.length;
 
     for (i = 0; i < len; i++) {
-        // Obtain the measure ID.
+        // Obtain the measure.
         measure = measures[i];
-        // Retrieve the localized measure name from the language module.
-        // TODO: Replace currency and subperiod placeholders.
+        // Add the row to the array.        
         rowArray.push({
-            c: [{ v: language.measures[measure.id] }, { v:  measure.val }]
+            c: [
+                { v: getMeasureName(measure.id, analysis, language) },
+                { v: measure.val }
+            ]
         });
     }
 }
@@ -106,7 +135,7 @@ function addMeasureRows(rowArray, measures, language) {
 // DATA CONVERSION FUNCTIONS
 // ------------------------------------------
 
-function convert(node, dataToInclude, measures, language) {
+function convert(node, dataToInclude, analysis, measures, language) {
     var columnArray = [],
         rowArray = [],
         children;
@@ -116,10 +145,10 @@ function convert(node, dataToInclude, measures, language) {
 
         if (this.addMeasureRows) {
             this.addColumn(columnArray, node.segment.name);
-            this.addMeasureRows(rowArray, node.segment.measures[0].measures, language);
+            this.addMeasureRows(rowArray, node.segment.measures[0].measures, analysis, language);
         } else {
             if (this.addMeasureColumns) {
-                this.addMeasureColumns(columnArray, measures, language);
+                this.addMeasureColumns(columnArray, measures, analysis, language);
             }
             this.addRow(rowArray, node.segment);
         }
@@ -132,7 +161,7 @@ function convert(node, dataToInclude, measures, language) {
             node[dataToInclude].securities;
 
         if (this.addMeasureColumns) {
-            this.addMeasureColumns(columnArray, measures, language);
+            this.addMeasureColumns(columnArray, measures, analysis, language);
         }
         this.addSegmentRows(rowArray, children);
     }
@@ -144,7 +173,7 @@ function convert(node, dataToInclude, measures, language) {
     };
 };
 
-function treeMapConvert(node, dataToInclude) {
+function treeMapConvert(node, dataToInclude, analysis) {
     var i, 
         len,
         parent,
@@ -191,8 +220,10 @@ var i,
         'BarChart',
         'BubbleChart',
         'ColumnChart',
-        'LineChart',        
+        'LineChart',
         'PieChart',
+        'ScatterChart',
+        'SteppedAreaChart',
         'Table',
         'TreeMap'
     ];

@@ -2,13 +2,16 @@
 // CHART MANAGER
 // ------------------------------------------
 
-WebAppLoader.addModule({ name: 'chartManager', sharedModules: ['settings', 'chartDefaults', 'colorManager'], isShared: true, hasEvents: true }, function () {
+WebAppLoader.addModule({ name: 'chartManager',
+                         sharedModules: ['settings', 'chartDefaults', 'colorManager', 'localizationManager'], 
+                         isShared: true, hasEvents: true }, function () {
     var chartBase = {},
         charts = [],
         eventManager = this.getEventManager(),
         chartDefaults = this.getSharedModule('chartDefaults'),
         siteUrls = this.getSharedModule('settings').siteUrls,
         colorManager = this.getSharedModule('colorManager'),
+        lang = this.getSharedModule('localizationManager').getLanguage() || {};
         output = this.getConsole(),
         chartCount = 0,
         chartTotal = 0;
@@ -58,6 +61,7 @@ WebAppLoader.addModule({ name: 'chartManager', sharedModules: ['settings', 'char
         chart.include = config.include;
         chart.measures = config.measures;
         chart.includeMeasuresFor = config.includeMeasuresFor;
+        chart.oData = config.oData;
         chart.isHeatMap = config.isHeatMap;
         chart.isGradientReversed = config.isGradientReversed;
 
@@ -90,16 +94,33 @@ WebAppLoader.addModule({ name: 'chartManager', sharedModules: ['settings', 'char
             timePeriods: chart.timePeriods,
             include: chart.include,
             measures: chart.measures,
-            includeMeasuresFor: chart.includeMeasuresFor
+            includeMeasuresFor: chart.includeMeasuresFor,
+            oData: chart.oData
         };
 
         $.post(siteUrls.segmentsTreeNode, params, function (data) {
-            var dataTable, i, min, max, values = [], sliceOptions = [];
+            var dataTable, formatter, i, min, max, values = [], sliceOptions = [];
 
             output.log(data);
 
             // Create a new visualization DataTable instance based on the data.
             dataTable = new google.visualization.DataTable(data);
+
+            // Create a new number formatter.
+            formatter = new google.visualization.NumberFormat({
+                decimalSymbol: lang.decimalSymbol,
+                fractionDigits: 3,
+                groupingSymbol: lang.groupingSymbol,
+                negativeColor: '#cc0000',
+                negativeParens: false
+            });
+
+            // Loop round the columns, applying the formatter to 'number' columns.
+            for (i = 0; i < dataTable.getNumberOfColumns(); i++) {
+                if (dataTable.getColumnType(i) === 'number') {
+                    formatter.format(dataTable, i);
+                }
+            }
 
             // Set the data table for the chart.
             chart.setDataTable(dataTable);
