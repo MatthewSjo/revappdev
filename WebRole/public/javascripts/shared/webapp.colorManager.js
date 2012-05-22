@@ -13,15 +13,21 @@ WebAppLoader.addModule({ name: 'colorManager', isShared: true }, function () {
 
     // Returns a hex value for the given number.
     function toHex(n) {
+        var hexValues = '0123456789ABCDEF';
+
+        // Test that we've got a number.
         n = parseInt(n, 10);
 
+        // If not, return a default value.
         if (isNaN(n)) {
             return "00";
         }
 
+        // Ensure our value is within range (0 - 255).
         n = Math.max(0, Math.min(n, 255));
 
-        return "0123456789ABCDEF".charAt((n - n % 16) / 16) + "0123456789ABCDEF".charAt(n % 16);
+        // Return the appropriate characters from the hex values string.
+        return hexValues.charAt((n - n % 16) / 16) + hexValues.charAt(n % 16);
     }
 
     // Returns a hex value for the given RGB value.
@@ -60,7 +66,7 @@ WebAppLoader.addModule({ name: 'colorManager', isShared: true }, function () {
             yellow = '#ffff00',
             green = '#339900',
             key, color, previousKey, previousColor, storedColor,
-            i, p, pr, cr, pg, cg, pb, cb;
+            i, p;
 
         // Range check. If the value is out of range, return the most extreme colour. This shouldn't occur, but for
         // hard-coded absolute ranges where the actual values may not always fit, it's better to return a colour.
@@ -92,29 +98,34 @@ WebAppLoader.addModule({ name: 'colorManager', isShared: true }, function () {
             }
         }
 
+        // Store our middle colour.
         storedColor = [0, yellow];
 
         for (i = 0; i < colors.length; i++) {
+            
             key = colors[i][0];
-            color = colors[i][1];
-            previousKey = storedColor[0];
-            previousColor = storedColor[1];
-
+            
             if (key >= value) {
-                p = ((value - previousKey) / (key - previousKey));
-                pr = hexToR(previousColor);
-                cr = hexToR(color);
-                pg = hexToG(previousColor);
-                cg = hexToG(color);
-                pb = hexToB(previousColor);
-                cb = hexToB(color);
 
-                return rgbToHex(interpolate(pr, cr, p), interpolate(pg, cg, p), interpolate(pb, cb, p));
+                color = colors[i][1];
+                previousKey = storedColor[0];
+                previousColor = storedColor[1];
+                p = ((value - previousKey) / (key - previousKey));
+
+                // Generate a new hex colour by interpolating between the 
+                // R, G and B values of the current and previous colours.
+                return rgbToHex(
+                    interpolate(hexToR(previousColor), hexToR(color), p), 
+                    interpolate(hexToG(previousColor), hexToG(color), p), 
+                    interpolate(hexToB(previousColor), hexToB(color), p)
+                );
             }
 
             storedColor = colors[i];
         }
 
+        // If the dictionary was empty, the value was 
+        // exactly zero, so return the middle value.
         return yellow;
     }
 

@@ -4,137 +4,79 @@
 
 WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], hasEvents: true }, function () {
     var dashboard = {},
-        chartManager = this.getSharedModule('chartManager'),
-
-        performanceBarChart = {},
-        performanceTreeMap = {},
-        riskBarChart = {},
-        attributionBarChart = {},
-        attributionColumnChart = {},
-        contributionBarChart = {},
-        contributionPieChart = {},
-        riskTreeMap = {},
-        riskPieChart = {},
-        allocationBarChart = {},
-        fixedIncomeContributionBarChart = {},
-        fixedIncomeGrid = {},
-        fixedIncomeContributionGrid = {},
-        fixedIncomeExposureGrid = {},
-        carryContributionBarChart = {},
-        yieldCurveContributionBarChart = {},
-        riskNumbersBarChart = {},
-        performanceBubbleChart = {},
-        riskBubbleChart = {},
-        contributionColumnChart = {},
-        interestRatesExposureColumnChart = {},
-        creditSpreadsExposureColumnChart = {},
-        dv01ExposureColumnChart = {},
-        performanceGrid = {},
-        allocationPieChart = {};
+        chartManager = this.getSharedModule('chartManager');
 
     var charts = {};
 
     function load(chartsToLoad) {
-
         for (var i = 0; i < chartsToLoad.length; i++) {
             chartManager.load(charts[chartsToLoad[i].chartId]);
         }
-//        // Performance
-//        chartManager.load(performanceBarChart);
-//        chartManager.load(performanceBubbleChart);
-//        chartManager.load(performanceGrid);
-
-//        // Allocation
-//        chartManager.load(allocationBarChart);
-//        chartManager.load(allocationPieChart);
-
-//        // Risk
-//        chartManager.load(riskBarChart);
-//        chartManager.load(riskBubbleChart);
-
-//        // Attribution
-//        chartManager.load(attributionBarChart);
-//        chartManager.load(attributionColumnChart);
-
-//        // Contribution
-//        chartManager.load(contributionColumnChart);
-//        chartManager.load(contributionBarChart);
-
-//        // Fixed Income
-//        chartManager.load(fixedIncomeContributionBarChart);
-//        chartManager.load(carryContributionBarChart);
-//        chartManager.load(yieldCurveContributionBarChart);
-//        chartManager.load(riskNumbersBarChart);
-
-//        // Fixed Income Exposure
-//        chartManager.load(interestRatesExposureColumnChart);
-//        chartManager.load(creditSpreadsExposureColumnChart);
-//        chartManager.load(dv01ExposureColumnChart);
     }
 
     // ------------------------------------------
     // BAR CHARTS
     // ------------------------------------------
     
-    performanceBarChart = chartManager.create({
+    var performanceBarChart = chartManager.create({
         chartId: 'performance_bar',
         chartType: 'BarChart',
         timePeriods: 'Earliest',
         include: 'childSegments',
         measures: ['rp'],
-        includeMeasuresFor: ['segment', 'childSegments'],
+        includeMeasuresFor: ['childSegments'],
         options: {
             hAxis: { title: 'Return' }
         }
     });
     charts.performance_bar = performanceBarChart;
 
-    riskBarChart = chartManager.create({
+    var riskBarChart = chartManager.create({
         chartId: 'risk_bar',
         chartType: 'BarChart',
         timePeriods: 'Earliest',
         include: 'childSegments',
         measures: ['wp', 'contributionvar'],
-        includeMeasuresFor: ['segment', 'childSegments'],
+        includeMeasuresFor: ['childSegments'],
         options: {
             hAxis: { title: 'Return' }
         }
     });
 
-    allocationBarChart = chartManager.create({
+    var allocationBarChart = chartManager.create({
         chartId: 'allocation_bar',
         chartType: 'BarChart',
         timePeriods: 'Earliest',
         include: 'childSegments',
         measures: ['wover'],
-        includeMeasuresFor: ['segment', 'childSegments'],
+        includeMeasuresFor: ['childSegments'],
         options: {
             hAxis: { title: 'Excess Weight %' }
         }
     });
 
-    contributionBarChart = chartManager.create({
+    var contributionBarChart = chartManager.create({
         chartId: 'contribution_bar',
         chartType: 'BarChart',
         timePeriods: 'Earliest',
         include: 'securities',
         measures: ['ctp'],
-        includeMeasuresFor: ['segment', 'securities'],
+        includeMeasuresFor: ['securities'],
         options: {
             hAxis: { title: 'Contribution' }
         }
     });
 
-    attributionBarChart = chartManager.create({
+    var attributionBarChart = chartManager.create({
         chartId: 'attribution_bar',
         chartType: 'BarChart',
         timePeriods: 'Earliest',
         include: 'childSegments',
         measures: ['wendover', 'etotal'],
-        includeMeasuresFor: ['segment', 'childSegments']
+        includeMeasuresFor: ['childSegments']
     });
 
-    fixedIncomeContributionBarChart = chartManager.create({
+    var fixedIncomeContributionBarChart = chartManager.create({
         chartId: 'fixedIncomeContribution_bar',
         chartType: 'BarChart',
         timePeriods: 'Earliest',
@@ -147,7 +89,7 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
         }
     });
 
-    carryContributionBarChart = chartManager.create({
+    var carryContributionBarChart = chartManager.create({
         chartId: 'carryContribution_bar',
         chartType: 'BarChart',
         timePeriods: 'Earliest',
@@ -160,7 +102,7 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
         }
     });
 
-    yieldCurveContributionBarChart = chartManager.create({
+    var yieldCurveContributionBarChart = chartManager.create({
         chartId: 'yieldCurveContribution_bar',
         chartType: 'BarChart',
         timePeriods: 'Earliest',
@@ -173,7 +115,7 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
         }
     });
 
-    riskNumbersBarChart = chartManager.create({
+    var riskNumbersBarChart = chartManager.create({
         chartId: 'riskNumbers_bar',
         chartType: 'BarChart',
         timePeriods: 'Earliest',
@@ -189,14 +131,14 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
     // ------------------------------------------
     // BUBBLE CHARTS
     // ------------------------------------------
-    
-    performanceBubbleChart = chartManager.create({
+
+    var performanceBubbleChart = chartManager.create({
         chartId: 'performance_bubble',
         chartType: 'BubbleChart',
         timePeriods: 'Earliest',
         include: 'childSegments',
         measures: ['stddevann', 'returnannifgtyr', 'wpabsolute'],
-        includeMeasuresFor: ['segment', 'childSegments'],
+        includeMeasuresFor: ['childSegments'],
         options: {
             hAxis: { title: 'Annualized Volatility' },
             vAxis: { title: 'Annualized Return' }
@@ -204,13 +146,13 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
     });
     charts.performance_bubble = performanceBubbleChart;
 
-    riskBubbleChart = chartManager.create({
+    var riskBubbleChart = chartManager.create({
         chartId: 'risk_bubble',
         chartType: 'BubbleChart',
         timePeriods: 'Earliest',
         include: 'childSegments',
         measures: ['valueatriskpercent', 'rp', 'wpabsolute'],
-        includeMeasuresFor: ['segment', 'childSegments'],
+        includeMeasuresFor: ['childSegments'],
         options: {
             hAxis: { title: '% Value at Risk' },
             vAxis: { title: 'Return' }
@@ -221,64 +163,64 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
     // COLUMN CHARTS
     // ------------------------------------------
 
-    contributionColumnChart = chartManager.create({
+    var contributionColumnChart = chartManager.create({
         chartId: 'contribution_column',
         chartType: 'ColumnChart',
         timePeriods: 'Earliest',
         include: 'childSegments',
         measures: ['ctp', 'ctb'],
-        includeMeasuresFor: ['segment', 'childSegments'],
+        includeMeasuresFor: ['childSegments'],
         options: {
             vAxis: { title: 'Return %' }
         }
     });
 
-    interestRatesExposureColumnChart = chartManager.create({
+    var interestRatesExposureColumnChart = chartManager.create({
         chartId: 'interestRatesExposure_column',
         chartType: 'ColumnChart',
         timePeriods: 'Earliest',
         include: 'childSegments',
         measures: ['interestratesdown100percent', 'interestratesdown50percent', 'interestratesup50percent', 'interestratesup100percent'],
-        includeMeasuresFor: ['segment', 'childSegments'],
+        includeMeasuresFor: ['childSegments'],
         options: {
             vAxis: { title: 'Exposure %' },
             colors: ['#CC0000', '#CD66CD', '#FFCC00', '#3399CC']
         }
     });
 
-    creditSpreadsExposureColumnChart = chartManager.create({
+    var creditSpreadsExposureColumnChart = chartManager.create({
         chartId: 'creditSpreadsExposure_column',
         chartType: 'ColumnChart',
         timePeriods: 'Earliest',
         include: 'childSegments',
         measures: ['creditspreadsdown100percent', 'creditspreadsdown50percent', 'creditspreadsup50percent', 'creditspreadsup100percent'],
-        includeMeasuresFor: ['segment', 'childSegments'],
+        includeMeasuresFor: ['childSegments'],
         options: {
             vAxis: { title: 'Exposure %' },
             colors: ['#CC0000', '#CD66CD', '#FFCC00', '#3399CC']
         }
     });
 
-    dv01ExposureColumnChart = chartManager.create({
+    var dv01ExposureColumnChart = chartManager.create({
         chartId: 'dv01Exposure_column',
         chartType: 'ColumnChart',
         timePeriods: 'Earliest',
         include: 'childSegments',
         measures: ['interestratesdv01percent', 'creditspreadsdv01percent', 'inflationratesdv01percent'],
-        includeMeasuresFor: ['segment', 'childSegments'],
+        includeMeasuresFor: ['childSegments'],
         options: {
             vAxis: { title: 'Exposure %' },
             colors: ['#3399CC', '#336699', '#003366']
         }
     });
 
-    attributionColumnChart = chartManager.create({
+    var attributionColumnChart = chartManager.create({
         chartId: 'attribution_column',
         chartType: 'ColumnChart',
         timePeriods: 'Earliest',
         include: 'childSegments',
         measures: ['etotal', 'ealloc', 'eselecinter'],
-        includeMeasuresFor: ['segment', 'childSegments'],
+        includeMeasuresFor: ['childSegments'],
         options: {
             colors: ['#003366', '#FF6600', '#990066']
         }
@@ -288,16 +230,16 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
     // PIE CHARTS
     // ------------------------------------------
 
-    allocationPieChart = chartManager.create({
+    var allocationPieChart = chartManager.create({
         chartId: 'allocation_pie',
         chartType: 'PieChart',
         timePeriods: 'Earliest',
         include: 'childSegments',
         measures: ['wpabsoluteend'],
-        includeMeasuresFor: ['segment', 'childSegments']
+        includeMeasuresFor: ['childSegments']
     });
 
-    contributionPieChart = chartManager.create({
+    var contributionPieChart = chartManager.create({
         chartId: 'contribution_pie',
         chartType: 'PieChart',
         timePeriods: 'Earliest',
@@ -305,10 +247,10 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
         isHeatMap: true,
         isGradientReversed: false,
         measures: ['wpabsoluteend', 'ctp'],
-        includeMeasuresFor: ['segment', 'childSegments']
+        includeMeasuresFor: ['childSegments']
     });
 
-    riskPieChart = chartManager.create({
+    var riskPieChart = chartManager.create({
         chartId: 'risk_pie',
         chartType: 'PieChart',
         timePeriods: 'Earliest',
@@ -316,14 +258,14 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
         isHeatMap: true,
         isGradientReversed: true,
         measures: ['wpabsoluteend', 'contributionvar'],
-        includeMeasuresFor: ['segment', 'childSegments']
+        includeMeasuresFor: ['childSegments']
     });
 
     // ------------------------------------------
     // GRIDS
     // ------------------------------------------
 
-    performanceGrid = chartManager.create({
+    var performanceGrid = chartManager.create({
         chartId: 'performance_grid',
         chartType: 'Table',
         timePeriods: 'Earliest',
@@ -338,7 +280,7 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
         includeMeasuresFor: ['segment']
     });
 
-    attributionGrid = chartManager.create({
+    var attributionGrid = chartManager.create({
         chartId: 'attribution_grid',
         chartType: 'Table',
         timePeriods: 'Earliest',
@@ -349,7 +291,7 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
         includeMeasuresFor: ['segment', 'childSegments']
     });
 
-    fixedIncomeGrid = chartManager.create({
+    var fixedIncomeGrid = chartManager.create({
         chartId: 'fixedIncome_grid',
         chartType: 'Table',
         timePeriods: 'Earliest',
@@ -360,7 +302,7 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
         includeMeasuresFor: ['segment', 'childSegments']
     });
 
-    fixedIncomeContributionGrid = chartManager.create({
+    var fixedIncomeContributionGrid = chartManager.create({
         chartId: 'fixedIncomeContribution_grid',
         chartType: 'Table',
         timePeriods: 'Earliest',
@@ -371,7 +313,7 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
         includeMeasuresFor: ['segment', 'childSegments']
     });
 
-    fixedIncomeExposureGrid = chartManager.create({
+    var fixedIncomeExposureGrid = chartManager.create({
         chartId: 'fixedIncomeExposure_grid',
         chartType: 'Table',
         timePeriods: 'Earliest',
@@ -382,11 +324,44 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
         includeMeasuresFor: ['segment', 'childSegments']
     });
 
+    var performanceTopTenGrid = chartManager.create({
+        chartId: 'performanceTopTen_grid',
+        chartType: 'Table',
+        timePeriods: 'Earliest',
+        include: 'securities',
+        measures: ['wpend', 'rp', 'ctp'],
+        oData: { orderby: 'wpend-Earliest desc', top: 10 },
+        includeMeasuresFor: ['securities']
+    });
+    charts.performanceTopTen_grid = performanceTopTenGrid;
+
+    var contributionTopTenGrid = chartManager.create({
+        chartId: 'contributionTopTen_grid',
+        chartType: 'Table',
+        timePeriods: 'Earliest',
+        include: 'securities',
+        measures: ['wpend', 'rp', 'ctp'],
+        oData: { orderby: 'ctp-Earliest desc', top: 10 },
+        includeMeasuresFor: ['securities']
+    });
+    charts.contributionTopTen_grid = contributionTopTenGrid;
+
+    var riskTopTenGrid = chartManager.create({
+        chartId: 'riskTopTen_grid',
+        chartType: 'Table',
+        timePeriods: 'Earliest',
+        include: 'securities',
+        measures: ['wpend', 'expectedshortfallpercent', 'valueatriskpercent', 'expectedvolatilitypercent'],
+        oData: { orderby: 'valueatriskpercent-Earliest desc', top: 10 },
+        includeMeasuresFor: ['securities']
+    });
+    charts.riskTopTen_grid = riskTopTenGrid;
+
     // ------------------------------------------
     // TREE MAP CHARTS
     // ------------------------------------------
 
-    performanceTreeMap = chartManager.create({
+    var performanceTreeMap = chartManager.create({
         chartId: 'performance_treemap',
         chartType: 'TreeMap',
         timePeriods: 'Earliest',
@@ -395,7 +370,7 @@ WebAppLoader.addModule({ name: 'dashboard', sharedModules: ['chartManager'], has
         includeMeasuresFor: ['segment', 'securities']
     });
 
-    riskTreeMap = chartManager.create({
+    var riskTreeMap = chartManager.create({
         chartId: 'risk_treemap',
         chartType: 'TreeMap',
         timePeriods: 'Earliest',

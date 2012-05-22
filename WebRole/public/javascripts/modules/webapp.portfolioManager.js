@@ -55,7 +55,7 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
             if (portfolioCode) {
                 return portfolioCode;
             } else {
-                return 'ASA_EQ01'; //'EXFIF'; // null; //'ASA_EQ01' // 'advisor'
+                return 'EXFIF'; // null; //'ASA_EQ01' // 'advisor'
             }
         }
 
@@ -67,7 +67,7 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
                 defaultAnalysisLink = null;
 
             if (portfolio.code) {
-                oData.filter = escape("Code eq '" + portfolio.code + "'");
+                oData.filter = "Code eq '" + portfolio.code + "'";
             } else {
                 oData.start = 0;
                 oData.top = 1;

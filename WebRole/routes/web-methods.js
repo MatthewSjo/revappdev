@@ -47,12 +47,13 @@ exports.segmentsTreeNode = function (req, res) {
         includeMeasuresFor: req.body.includeMeasuresFor
     };
 
-    webApi.getSegmentsTreeNode(oData, params, function (segments) {
+    webApi.getSegmentsTreeNode(oData, params, function (segments, analysis) {
         var jsonObj = adapter.convert(
             segments.data,
             req.body.include,
+            analysis,
             req.body.measures,
-            currentLanguage
+            currentLanguage            
         );
 
         res.json(jsonObj);

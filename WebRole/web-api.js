@@ -14,6 +14,12 @@ var ResourceLinks = {
     segmentsTreeNode: ''
 };
 
+// Current Analysis
+var currentAnalysis = {
+    currency: '',
+    statisticsFrequency: ''
+};
+
 // User Account
 var account = {
     email: '',
@@ -126,8 +132,10 @@ function applyODataToURI(oData, uri) {
         skip = oData.skip || '',
         top = oData.top || '';
 
-    uri = uri.replace('{filter}', filter)
-             .replace('{orderby}', orderby)
+    // Replace the placeholders, ensuring that the filter and orderby strings are suitably 
+    // escaped, since their syntax can require the use of whitespace and special characters.
+    uri = uri.replace('{filter}', escape(filter))
+             .replace('{orderby}', escape(orderby))
              .replace('{skip}', skip)
              .replace('{top}', top);
 
@@ -234,7 +242,7 @@ exports.getPortfolioAnalysis = function (uri, callback) {
         var status;
 
         if (!resource.error && resource.data) {
-            
+
             // Determine the current status of the analysis.
             status = resource.data.analysis.status;
 
@@ -251,6 +259,10 @@ exports.getPortfolioAnalysis = function (uri, callback) {
                 // Populate the resources object.
                 ResourceLinks.segmentsTreeNode = resource.data.analysis.results.links.segmentsTreeRootNodeQuery.href;
             }
+
+            // Persist the current analysis' currency and stats frequency for other API calls.
+            currentAnalysis.currency = resource.data.analysis.currency;
+            currentAnalysis.statisticsFrequency = resource.data.analysis.statisticsFrequency;
         }
 
         callback(resource);
@@ -280,7 +292,7 @@ exports.getSegmentsTreeNode = function (oData, params, callback) {
 
     // Attempt to get a list of the user's portfolios, filtered by the query.
     getResource('segmentsTreeNode', options, function (resource) {
-        callback(resource);
+        callback(resource, currentAnalysis);
     });
 };
 
