@@ -23,7 +23,7 @@ WebAppLoader.addModule({ name: 'storage', plugins: ['helper'], hasEvents: true, 
             namespacedName = (namespace || revolutionNamespace) + helper.capitaliseFirstLetter(itemName);
         }
 
-        return namespacedName
+        return namespacedName;
     }
 
     // Private
@@ -34,7 +34,7 @@ WebAppLoader.addModule({ name: 'storage', plugins: ['helper'], hasEvents: true, 
 
     // Private
     function getItem(key) {
-        return localStorage.getItem(key)
+        return localStorage.getItem(key);
     }
 
     // Public

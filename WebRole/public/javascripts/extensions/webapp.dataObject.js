@@ -56,7 +56,9 @@ WebAppLoader.addExtension({ name: 'dataObject', plugins: ['helper', 'storage'], 
 
         // Public
         function loadData(username) {
-            return this.data = storage.load(this.privateId, username) || {};
+            return this.data = storage.load(this.privateId, username) 
+                || this.defaults // If no data try to get defaults
+                || null;         // or null
         }
 
         // Public

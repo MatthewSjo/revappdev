@@ -40,15 +40,15 @@ Zepto(function ($) {
         analysisId: '',
         timePeriodId: '',
         chartId : '',
-        
+        timeStamp: ''
         // Time Stamp getter/setter
-        _timeStamp: '',
-        get timeStamp() {
-            return this._timeStamp
-        },
-        set timeStamp(value) {
-            this._timeStamp = value;
-        } 
+//        _timeStamp: '',
+//        get timeStamp() {
+//            return this._timeStamp;
+//        },
+//        set timeStamp(value) {
+//            this._timeStamp = value;
+//        } 
     };
 
     /* ----------------------- ON/OFF ----------------------- /
@@ -82,6 +82,10 @@ Zepto(function ($) {
 
     // Chart Settings Page
     theApp.chartSettingsPage = loader.loadModule('chartSettingsPage');
+
+    // TODO: Include charts manager in chartsDefault
+    // Charts Manager
+    theApp.chartComponents = loader.loadModule('chartComponents');
 
     // ------------------------------------------
     // THE MAIN ENTRY POINT
@@ -198,15 +202,15 @@ Zepto(function ($) {
         //          - the default time periods code
         //
         //    - When this information is available call updateAnalysisPage({analysisDataObject})
-        theApp.analysisManager.update();
+        theApp.analysisManager.update(theApp.lastUsernameUsed);
 
         // NOTA BENE:
         // Hardcoded values used for testing purpose.
         analysisDataObject = {
             analysisId      : 'performances',
-            chartId         : 'performance_bubble',
-            portfolioId     : 'EXFIF',
-            timeStamp       : '2012-05-15T07:29:42.243Z',
+            chartId         : 'performance_bar',
+            portfolioId     : 'ADVISOR',
+            timeStamp       : '', //'2012-05-15T07:29:42.243Z',
             timePeriodId    : 'Earliest'
         }
 
@@ -214,22 +218,14 @@ Zepto(function ($) {
         
     };
 
-    theApp.updateAnalysisPage = function(analysisDataObject) {
+    theApp.updateAnalysisPage = function(analysisDataObjectValue) {
         // theApp.portfolioManager.loadPortfolio(analysisDataObject.portfolioId);
-        
-        function renderAnalysisPage () {
+        var analysisDataObject = analysisDataObjectValue || theApp.lastAnalysisObjectUsed;
+
+        function renderAnalysisPage (portfolioId) {
             var chartsToLoad        = [], 
                 analysisPagesData   = {},
                 analysisPage        = {};
-
-            if (!theApp.dashboard) {
-                theApp.dashboard = loader.loadModule('dashboard');
-            }
-
-            theApp.dashboard.on('onAnalysisLoaded', function () {
-                // theApp.mask.show('analysis');
-                theApp.scroll.rebuild('analysis');
-            });
 
             analysisPagesData = theApp.analysisManager.getData('analysisPages');
 
@@ -252,19 +248,25 @@ Zepto(function ($) {
                         '</div>'
                     ));
             }
-            theApp.dashboard.load(chartsToLoad);
-            // theApp.mask.hide('analysis');
+
+            theApp.lastAnalysisObjectUsed = analysisDataObject;
+            theApp.lastAnalysisObjectUsed.portfolioId = portfolioId;
+            theApp.saveLastAnalysisObjectUsed();
+            theApp.chartComponents.load(chartsToLoad);
         }
 
-        function onLoadPortfolioAnalysisCompleted() {
-            // alert('completed');
-            renderAnalysisPage();
+        function onLoadPortfolioAnalysisCompleted(portfolioId) {
+            renderAnalysisPage(portfolioId);
         }
 
         theApp.portfolioManager.loadPortfolioAnalysis(
             analysisDataObject.portfolioId, 
             onLoadPortfolioAnalysisCompleted
         );
+    };
+
+    theApp.saveLastAnalysisObjectUsed = function () {
+        // TODO: Add code here to save in the user space the last analysis object used.
     };
 
     theApp.showAnalysisSettingsPage = function () {
@@ -291,9 +293,15 @@ Zepto(function ($) {
     });
 
     theApp.showChartSettingsPage = function (analysisId) {
-        var analysisPagesData = {}, analysisPage;
-       
+        var analysisPagesData    = {}, 
+            chartComponentsData  = {},
+            analysisPage         = {},
+            charts               = theApp.showChartSettingsPage.charts;
+        
+        if (!analysisId) return; // TODO: Add a message error.
+               
         analysisPagesData = theApp.analysisManager.getData('analysisPages');
+        chartComponentsData = theApp.chartComponents.getData('charts');
 
         analysisPage = jLinq.from(analysisPagesData.items)
             .equals('id', analysisId)
@@ -303,11 +311,52 @@ Zepto(function ($) {
                     id: record.id,
                     charts: record.charts
                 }
-            });        
+            })[0] || null; 
         
-        theApp.chartSettingsPage.create(analysisPage);
+        if (!analysisPage) {   
+            analysisPage = {
+                name: '',
+                id: analysisId,
+                charts: []
+            };
+        }
 
+        // TODO: Add comments...
+        if(charts.length === 0){
+            for (var chart in chartComponentsData) {
+                charts.push({
+                    chartId: chartComponentsData[chart].chartId,
+                    chartType: chartComponentsData[chart].chartType,
+                    chartTitle: chartComponentsData[chart].chartId
+                });
+            }
+
+            theApp.chartSettingsPage.create(charts);
+        }
+        
+        theApp.chartSettingsPage.update(analysisPage);
     };
+
+    theApp.chartSettingsPage.on('onSettingsChanged', function(updatedAnalysisPage){
+        var analysisPage, analysisPagesData;
+
+        analysisPagesData = theApp.analysisManager.getData('analysisPages');
+        analysisPage = jLinq.from(analysisPagesData.items)
+            .equals('id', updatedAnalysisPage.id)
+            .select()[0] || null;
+
+        if (analysisPage) {
+            $.extend(analysisPage, updatedAnalysisPage);
+        } else {
+            analysisPagesData.items.push(updatedAnalysisPage);
+        }
+
+        theApp.analysisManager.saveData('analysisPages', theApp.lastUsernameUsed);
+        theApp.updateAnalysisSlot(analysisPagesData);
+    });
+
+    // Memoization pattern.
+    theApp.showChartSettingsPage.charts = [];
 
     // ------------------------------------------
     // PORTFOLIO MANAGER
@@ -401,13 +450,26 @@ Zepto(function ($) {
     theApp.spinningWheel = loader.loadModule('spinningWheel');
     theApp.spinningWheel.create(slotConfig);
 
+    /*
+        analysisDataObject.analysisId   = 'performances';
+        analysisDataObject.chartId      = 'performance_bar';
+        analysisDataObject.portfolioId  = 'EXFIF';
+        analysisDataObject.timeStamp    = ''; //'2012-05-15T07:29:42.243Z';
+        analysisDataObject.timePeriodId = 'Earliest';
+    */
+
     theApp.spinningWheel.on('onPortfoliosDone', function (key) {
-        $('#myLoadingCharts').show();
-        theApp.portfolioManager.loadPortfolio(key);
+        // $('#myLoadingCharts').show();
+        // theApp.portfolioManager.loadPortfolio(key);
+        theApp.lastAnalysisObjectUsed.portfolioId = key;
+        theApp.updateAnalysisPage();
     });
 
     theApp.spinningWheel.on('onAnalysisDone', function (key) {
         // $('#myLoadingCharts').show();
+        theApp.lastAnalysisObjectUsed.analysisId = key;
+        theApp.updateAnalysisPage();
+
     });
     
     // ------------------------------------------
@@ -482,6 +544,7 @@ Zepto(function ($) {
 
     theApp.pageEventsManager.on('onAnalysisEnd', function () {
         // theApp.renderAnalysisPage();
+        theApp.scroll.rebuild('analysis');
         output.log('onAnalysisEnd');
     });
 
@@ -523,8 +586,10 @@ Zepto(function ($) {
     // NOTA BENE: the analysis manager is updated the first time when the home
     // page is loaded.
     theApp.analysisManager.on('onUpdated', function (analysisPages) {
-        theApp.localStorage.save('analysisPages', analysisPages);
+        theApp.updateAnalysisSlot(analysisPages);
+    });
 
+    theApp.updateAnalysisSlot = function (analysisPages) {
         var analysisSlotItems = jLinq.from(analysisPages.items)
             .sort('order')
             .select(function (record) {
@@ -533,9 +598,9 @@ Zepto(function ($) {
                     code: record.id
                 }
             });
-        
+            
         theApp.repositories.analysisSlot.setData(analysisSlotItems);
-    });
+    };
 
     // ------------------------------------------
     // PORTFOLIOS LIST

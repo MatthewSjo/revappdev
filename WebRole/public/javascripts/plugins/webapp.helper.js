@@ -77,7 +77,7 @@ WebAppLoader.addModule({ name: 'helper', isPlugin: true }, function () {
 
         function type(o) {
             return TYPES[typeof o] || TYPES[TOSTRING.call(o)] || (o ? 'object' : 'null');
-        }; 
+        } 
         
         return type(value);      
     }

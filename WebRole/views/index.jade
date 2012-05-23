@@ -112,7 +112,7 @@
 					ul#listAnalysisSettingsDefaultPages.edit.rounded
 					h2 User Pages
 					ul#listAnalysisSettingsUserPages.edit.rounded
-					a.grayButton(href='#') Add New Page
+					a#addNewAnalysisPage.grayButton(href='#') Add New Page
 
 		// TODO: Change server localization file. analysisSettingsPage -> chartSettingsPage
 		#chartSettings(data-pageEvents="both")
@@ -127,14 +127,14 @@
 							li
 								input#analysisPageNameTextbox(type='text', placeholder='Page Name', value='')						
 							li.arrow
-								select#lol(multiple="multiple")
-									optgroup(label='Line Charts')
-										option(value='1') Chart 1
-										option(value='2') Chart 2
-									optgroup(label='Bar Charts')
-										option(value='3') Bar 1
-										option(value='4') Bar 2
-					// a#showSlot.grayButton(href='#') Show Slot
+								select#chartsSelectbox(multiple="multiple")
+									// optgroup(label='Line Charts')
+									// 	option(value='1') Chart 1
+									// 	option(value='2') Chart 2
+									// optgroup(label='Bar Charts')
+									// 	option(value='3') Bar 1
+									// 	option(value='4') Bar 2
+					a#saveChartSettings.grayButton(href='#') Save
 
 		#test
 			.toolbar

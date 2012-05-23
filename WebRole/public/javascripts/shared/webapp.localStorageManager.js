@@ -17,7 +17,7 @@ WebAppLoader.addModule({ name: 'localStorageManager', sharedModules: [], plugins
             namespacedName = (namespace || revolutionNamespace) + helper.capitaliseFirstLetter(itemName);
         }
 
-        return namespacedName
+        return namespacedName;
     }
 
     // Private
@@ -28,7 +28,7 @@ WebAppLoader.addModule({ name: 'localStorageManager', sharedModules: [], plugins
 
     // Private
     function getItem(key) {
-        return localStorage.getItem(key)
+        return localStorage.getItem(key);
     }
 
     // Public

@@ -29,7 +29,11 @@ WebAppLoader.addModule({ name: 'pageElements', isShared: true }, function () {
         passwordTextbox                     : '#passwordTextbox',
         tabbar                              : 'nav#tabbar',
         listAnalysisSettingsDefaultPages    : '#listAnalysisSettingsDefaultPages',
-        listAnalysisSettingsUserPages       : '#listAnalysisSettingsUserPages'
+        listAnalysisSettingsUserPages       : '#listAnalysisSettingsUserPages',
+        chartsSelectbox                     : '#chartsSelectbox',
+        analysisPageNameTextbox             : '#analysisPageNameTextbox',
+        saveChartSettings                   : '#saveChartSettings',
+        addNewAnalysisPage                  : '#addNewAnalysisPage'
     };
 
     return pageElements;

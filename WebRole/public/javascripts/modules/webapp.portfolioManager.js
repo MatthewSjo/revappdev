@@ -7,7 +7,19 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
         output              = this.getConsole(),
         eventManager        = this.getEventManager(),
         settings            = this.getSharedModule('settings'),
-        portfolioDataObj    = this.getDataObject('portfolio');
+        portfolioDataObj    = this.getDataObject('portfolio'),
+        portfolio           = {};
+
+
+    portfolio = {
+        code: '',
+        type: '',
+        analysisLink: '',
+        currency: '',
+        version: '',
+        timeStamp: '',
+        timePeriods: []
+    };
 
     portfolioDataObj.define({
         code: '',
@@ -22,7 +34,7 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
     function loadPortfolioAnalysis(portfolioCode, callback) {
         
         function onGetAnalysisCompleted() {
-            callback();
+            callback(portfolio.code);
         }
 
         function onLoadPortfolioCompleted (defaultAnalysisLink) {
@@ -34,16 +46,8 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
     }
 
     function loadPortfolio(portfolioCode, callback) {
-        var defaultPortfolioCode,
-            portfolio = {
-                code: '',
-                type: '',
-                analysisLink: '',
-                currency: '',
-                version: '',
-                timeStamp: '',
-                timePeriods: []
-            };
+        var defaultPortfolioCode;
+
         // Load default portfolio.
 
         function getPortfolioCode() {
@@ -55,7 +59,8 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
             if (portfolioCode) {
                 return portfolioCode;
             } else {
-                return 'EXFIF'; // null; //'ASA_EQ01' // 'advisor'
+                // Return the first available portfolio...
+                return ''; //'EXFIF'; // null; //'ASA_EQ01' // 'advisor'
             }
         }
 

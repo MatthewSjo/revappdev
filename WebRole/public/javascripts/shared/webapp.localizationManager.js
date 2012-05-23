@@ -24,7 +24,7 @@ WebAppLoader.addModule({ name: 'localizationManager', sharedModules: ['en_US', '
     function get(text) {
         var localizedString = language[text] || '';
 
-        return localizedString
+        return localizedString;
     }
 
     // Public

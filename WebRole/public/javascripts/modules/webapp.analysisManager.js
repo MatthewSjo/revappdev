@@ -3,13 +3,12 @@
 // ------------------------------------------
 
 WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'], 
-    sharedModules: ['chartsManager'], dataObjects: ['analysisPages'], hasEvents: true }, function () {
+    sharedModules: [], dataObjects: ['analysisPages'], hasEvents: true }, function () {
 
     var analysisManager         = {},
         output                  = this.getConsole(),
         eventManager            = this.getEventManager(),
         helper                  = this.getPlugin('helper'),
-        chartsManager           = this.getSharedModule('chartsManager'),
         analysisPagesDataObj    = this.getDataObject('analysisPages'),
         charts                  = [],
         analysisPages           = {};
@@ -26,7 +25,7 @@ WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'],
                     title   : '',
                     chartId : 'performance_bar',
                     order   : 5
-                },{
+                }/*,{
                     title   : '',
                     chartId : 'performance_bubble',
                     order   : 4
@@ -42,7 +41,7 @@ WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'],
                     title: '',
                     chartId: 'riskTopTen_grid',
                     order: 1
-                }] 
+                }*/] 
         },{
             name        : 'Risk',
             id          : 'risk',
@@ -103,28 +102,16 @@ WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'],
                     chartId: 'performance_heatmap',
                     order   : 2
                 }]             
-        },{
-            name        : 'Test One',
+        } ,{
+            name        : 'Test',
             id          : 'test1',
             order       : 1,
             userDefined : true,
             charts      : [{
-                    chartId: 'performance_column',
+                    chartId: 'performance_bar',
                     order   : 1
                 },{
-                    chartId: 'performance_heatmap',
-                    order   : 2
-                }]             
-        },{
-            name        : 'Test Two',
-            id          : 'test2',
-            order       : 2,
-            userDefined : true,
-            charts      : [{
-                    chartId: 'performance_column',
-                    order   : 1
-                },{
-                    chartId: 'performance_heatmap',
+                    chartId: 'risk_bar',
                     order   : 2
                 }]             
         }]
@@ -132,32 +119,26 @@ WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'],
 
     // Public
     function restoreDefaults() {
-        // Delete any previous analysis pages.
         analysisPages = analysisPagesDataObj.getData();
-
-        saveAnalysisPages();
-    }
-
-    // Private
-    function saveAnalysisPages() {
-        analysisUpdated();
     }
 
     function analysisUpdated() {
-        eventManager.raiseEvent('onUpdated', analysisPages);
+        // eventManager.raiseEvent('onUpdated', analysisPages);
+        eventManager.raiseEvent('onUpdated', analysisPagesDataObj.getData());
     }
 
-    function init() {
-        restoreDefaults();
-    }
-    
-    function getPages() {
-        return analysisPages.items;
+    function init(lastUsernameUsed) {
+        var userAnalysisPages;
+        
+        if (lastUsernameUsed) {
+            analysisPagesDataObj.loadData(lastUsernameUsed);
+        } 
+
+        analysisUpdated();
     }
         
     analysisManager.init = init;
     analysisManager.update = init; // Alias
-    analysisManager.getPages = getPages;
 
     return analysisManager;
 });

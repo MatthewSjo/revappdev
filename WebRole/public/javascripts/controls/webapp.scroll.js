@@ -18,8 +18,9 @@ WebAppLoader.addModule({ name: 'scroll' }, function () {
             var target = e.target;
             while (target.nodeType != 1) target = target.parentNode;
 
-            if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
+            if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA') {
                 e.preventDefault();
+            }
         };
         // options.snap = 'hr';
         // options.momentum = true;

@@ -366,11 +366,10 @@
     <Content Include="public\javascripts\modules\webapp.analysisManager.js" />
     <Content Include="public\javascripts\pages\webapp.chartSettingsPage.js" />
     <Content Include="public\javascripts\pages\webapp.analysisSettingsPage.js" />
-    <Content Include="public\javascripts\pages\webapp.dashboard.js" />
+    <Content Include="public\javascripts\shared\webapp.chartComponents.js" />
     <Content Include="public\javascripts\shared\webapp.colorManager.js" />
     <Content Include="public\javascripts\plugins\webapp.storage.js" />
     <Content Include="public\javascripts\shared\webapp.chartManager.js" />
-    <Content Include="public\javascripts\shared\webapp.chartsManager.js" />
     <Content Include="public\javascripts\shared\webapp.loadingMaskManager.js" />
     <Content Include="public\javascripts\shared\webapp.localStorageManager.js" />
     <Content Include="public\javascripts\webapp.loader.js" />
@@ -393,6 +392,7 @@
     <Content Include="public\javascripts\controls\webapp.spinningWheel.js" />
     <Content Include="public\javascripts\controls\webapp.tabbar.js" />
     <Content Include="public\src\jlinq.js" />
+    <Content Include="public\src\selector.js" />
     <Content Include="public\src\zepto.js" />
     <Content Include="public\src\add2home.js" />
     <Content Include="public\src\add2home.min.js" />

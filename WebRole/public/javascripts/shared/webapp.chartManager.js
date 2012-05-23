@@ -12,8 +12,8 @@ WebAppLoader.addModule({ name: 'chartManager',
         siteUrls = this.getSharedModule('settings').siteUrls,
         colorManager = this.getSharedModule('colorManager'),
         lang = this.getSharedModule('localizationManager').getLanguage() || {};
-        output = this.getConsole(),
-        chartCount = 0,
+        output = this.getConsole();
+        chartCount = 0;
         chartTotal = 0;
 
     // Function to be called when the chart has successfully loaded and drawn itself.

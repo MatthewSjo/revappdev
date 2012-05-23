@@ -51,7 +51,7 @@ WebAppLoader.addExtension({ name: 'consoleManager', plugins: ['helper'] }, funct
     // Module methods:
     module.getConsole = function () {
         return this.loader.getConsole();
-    },
+    };
 
     // Shared module loader methods:
     loader.getConsole = getConsole;

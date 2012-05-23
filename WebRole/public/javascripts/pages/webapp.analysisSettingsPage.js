@@ -18,6 +18,14 @@ WebAppLoader.addModule({ name: 'analysisSettingsPage', plugins: ['helper'], shar
         return false;
     }
 
+    function onNewAnalysisPageClick() {
+        var pageId = helper.createUUID();
+        
+        eventManager.raiseEvent('onClick', pageId);
+
+        return false;
+    }
+
     function create(analysisPages) {
         var analysisPage, isUserDefined, pageName, pageId, appendTo;
 
@@ -53,6 +61,8 @@ WebAppLoader.addModule({ name: 'analysisSettingsPage', plugins: ['helper'], shar
             }
         }
     }
+
+    $(el.addNewAnalysisPage).on('click', onNewAnalysisPageClick);
 
     analysisSettingsPage.create = create;
 

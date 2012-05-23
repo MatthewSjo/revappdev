@@ -29,7 +29,7 @@ WebAppLoader.addModule({ name: 'en_US', isShared: true }, function () {
         tabbarMore                  : 'More',
         tabbarSettings              : 'Settings'
 
-    }
+    };
 
     return en_US;
 });
