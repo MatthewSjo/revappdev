@@ -3,8 +3,9 @@
 // ------------------------------------------
 
 WebAppLoader.addModule({ name: 'chartManager',
-                         sharedModules: ['settings', 'chartDefaults', 'colorManager', 'localizationManager'], 
-                         isShared: true, hasEvents: true }, function () {
+    sharedModules: ['settings', 'chartDefaults', 'colorManager', 'localizationManager'],
+    isShared: true, hasEvents: true
+}, function () {
     var chartBase = {},
         charts = [],
         eventManager = this.getEventManager(),
@@ -57,13 +58,16 @@ WebAppLoader.addModule({ name: 'chartManager',
 
         // Although it's not part of the Google API, store 
         // the parameters for this chart in the object.
-        chart.timePeriods = config.timePeriods;
+        chart.endDate = config.endDate;
         chart.include = config.include;
-        chart.measures = config.measures;
         chart.includeMeasuresFor = config.includeMeasuresFor;
-        chart.oData = config.oData;
-        chart.isHeatMap = config.isHeatMap;
         chart.isGradientReversed = config.isGradientReversed;
+        chart.isHeatMap = config.isHeatMap;
+        chart.measures = config.measures;
+        chart.oData = config.oData;
+        chart.seriesType = config.seriesType;
+        chart.startDate = config.startDate;
+        chart.timePeriods = config.timePeriods;
 
         // Increase the running chart total.
         chartTotal++;
@@ -78,7 +82,7 @@ WebAppLoader.addModule({ name: 'chartManager',
     // Function to load the given chart with data.
     // 'chart'  - The instance of the Google Visualization API chart object to load.
     function load(chart) {
-        var type, params;
+        var type, params, url, formatter;
 
         // Don't attempt to load the chart if it doesn't exist yet.
         if (chart === null) {
@@ -88,32 +92,41 @@ WebAppLoader.addModule({ name: 'chartManager',
         // Get the current chart type.
         type = chart.getChartType();
 
+        // Create a new number formatter.
+        formatter = new google.visualization.NumberFormat({
+            decimalSymbol: lang.decimalSymbol,
+            fractionDigits: 3,
+            groupingSymbol: lang.groupingSymbol,
+            negativeColor: '#cc0000',
+            negativeParens: false
+        });
+
         // Define our basic parameters.
         params = {
-            type: type,
-            timePeriods: chart.timePeriods,
-            include: chart.include,
-            measures: chart.measures,
-            includeMeasuresFor: chart.includeMeasuresFor,
-            oData: chart.oData
+            type: type
         };
 
-        $.post(siteUrls.segmentsTreeNode, params, function (data) {
-            var dataTable, formatter, i, min, max, values = [], sliceOptions = [];
+        // Only include parameters in the object if they exist.
+        if (chart.endDate) { params.endDate = chart.endDate; }
+        if (chart.include) { params.include = chart.include; }
+        if (chart.includeMeasuresFor) { params.includeMeasuresFor = chart.includeMeasuresFor; }
+        if (chart.measures) { params.measures = chart.measures; }
+        if (chart.oData) { params.oData = chart.oData; }
+        if (chart.startDate) { params.startDate = chart.startDate; }
+        if (chart.seriesType) { params.seriesType = chart.seriesType; }
+        if (chart.timePeriods) { params.timePeriods = chart.timePeriods; }
+
+        // Define the correct URL to use to retrieve data based on the chart type.
+        url = (type === 'LineChart') ? siteUrls.timeSeries : siteUrls.segmentsTreeNode;
+
+        // Callback function to be invoked when data is returned from the server.
+        function onDataLoaded(data) {
+            var dataTable, i, min, max, values = [], sliceOptions = [];
 
             output.log(data);
 
             // Create a new visualization DataTable instance based on the data.
             dataTable = new google.visualization.DataTable(data);
-
-            // Create a new number formatter.
-            formatter = new google.visualization.NumberFormat({
-                decimalSymbol: lang.decimalSymbol,
-                fractionDigits: 3,
-                groupingSymbol: lang.groupingSymbol,
-                negativeColor: '#cc0000',
-                negativeParens: false
-            });
 
             // Loop round the columns, applying the formatter to 'number' columns.
             for (i = 0; i < dataTable.getNumberOfColumns(); i++) {
@@ -121,9 +134,6 @@ WebAppLoader.addModule({ name: 'chartManager',
                     formatter.format(dataTable, i);
                 }
             }
-
-            // Set the data table for the chart.
-            chart.setDataTable(dataTable);
 
             // If our chart is a pie chart and we're displaying it as a heatmap...
             if (type === 'PieChart' && chart.isHeatMap) {
@@ -157,6 +167,9 @@ WebAppLoader.addModule({ name: 'chartManager',
                 chart.setOption('slices', sliceOptions);
             }
 
+            // Set the data table for the chart.
+            chart.setDataTable(dataTable);
+
             // Draw the chart.
             chart.draw();
 
@@ -164,7 +177,13 @@ WebAppLoader.addModule({ name: 'chartManager',
             $(document).on('orientationchange', function (event) {
                 chart.draw();
             });
-        });
+        }
+
+        // Attempt to load the data.
+        // NOTE: The dataType is set to 'text' rather than 'json' to stop Zepto
+        // attempting to parse dates which the Google Visualization API expects 
+        // to parse itself, causing an error.
+        $.post(url, params, onDataLoaded, 'text');
     }
 
     chartBase.create = create;

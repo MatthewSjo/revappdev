@@ -11,7 +11,8 @@ var http = require('http'),
 var ResourceLinks = {
     eula: '',
     portfolios: '',
-    segmentsTreeNode: ''
+    segmentsTreeNode: '',
+    timeSeries: ''
 };
 
 // Current Analysis
@@ -151,12 +152,18 @@ function applySegmentParamsToURI(params, uri) {
     var timePeriods = params.timePeriods || '',
         include = params.include || '',
         measures = params.measures || '',
-        includeMeasuresFor = params.includeMeasuresFor || '';
+        includeMeasuresFor = params.includeMeasuresFor || '',
+        startDate = params.startDate || '',
+        endDate = params.endDate || '',
+        seriesType = params.seriesType || '';
 
     uri = uri.replace('{timePeriodsList}', timePeriods)
              .replace('{dataToInclude}', include)
              .replace('{measuresList}', measures)
-             .replace('{measuresFor}', includeMeasuresFor);
+             .replace('{measuresFor}', includeMeasuresFor)
+             .replace('{startDate}', startDate)
+             .replace('{endDate}', endDate)
+             .replace('{seriesType}', seriesType);
 
     return uri;
 }
@@ -255,10 +262,9 @@ exports.getPortfolioAnalysis = function (uri, callback) {
                 return;
             }
 
-            if (!ResourceLinks.segmentsTreeNode) {
-                // Populate the resources object.
-                ResourceLinks.segmentsTreeNode = resource.data.analysis.results.links.segmentsTreeRootNodeQuery.href;
-            }
+            // Populate the resources object.
+            ResourceLinks.segmentsTreeNode = resource.data.analysis.results.links.segmentsTreeRootNodeQuery.href;
+            ResourceLinks.timeSeries = resource.data.analysis.results.links.timeSeriesQuery.href;
 
             // Persist the current analysis' currency and stats frequency for other API calls.
             currentAnalysis.currency = resource.data.analysis.currency;
@@ -290,8 +296,31 @@ exports.getSegmentsTreeNode = function (oData, params, callback) {
     // Generate the request configuration based on the segment tree node query.
     options = getRequestOptions(segmentsTreeNodeQuery, account.token);
 
-    // Attempt to get a list of the user's portfolios, filtered by the query.
+    // Attempt to get the specified segment tree nodes.
     getResource('segmentsTreeNode', options, function (resource) {
+        callback(resource, currentAnalysis);
+    });
+};
+
+// Attempts to retrieve the specified time series for the requested portfolio.
+// 'params'     - An object containing additional parameter values to be inserted into a URI. 
+// 'callback'   - A JavaScript function to be called when the response has arrived.
+//                Will always be called, regardless of the outcome of the request,
+//                and will receive an object containing a 'data' property, which 
+//                may be null, and an error property, which will either be boolean false 
+//                (indicating that the request was successful), a boolean true, or a 
+//                complete error object (both indicating that the request failed).
+exports.getTimeSeries = function (params, callback) {
+    var options, timeSeriesQuery;
+
+    // Format the querystring with filters applied to add further parameters.
+    timeSeriesQuery = applySegmentParamsToURI(params, params.url || ResourceLinks.timeSeries);
+
+    // Generate the request configuration based on the time series query.
+    options = getRequestOptions(timeSeriesQuery, account.token);
+
+    // Attempt to get the specified time series.
+    getResource('timeSeries', options, function (resource) {
         callback(resource, currentAnalysis);
     });
 };
