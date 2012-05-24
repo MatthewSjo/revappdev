@@ -8,18 +8,7 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
         eventManager        = this.getEventManager(),
         settings            = this.getSharedModule('settings'),
         portfolioDataObj    = this.getDataObject('portfolio'),
-        portfolio           = {};
-
-
-    portfolio = {
-        code: '',
-        type: '',
-        analysisLink: '',
-        currency: '',
-        version: '',
-        timeStamp: '',
-        timePeriods: []
-    };
+        lastPortfolioIdUsed = '';
 
     portfolioDataObj.define({
         code: '',
@@ -34,7 +23,7 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
     function loadPortfolioAnalysis(portfolioCode, callback) {
         
         function onGetAnalysisCompleted() {
-            callback(portfolio.code);
+            callback(lastPortfolioIdUsed);
         }
 
         function onLoadPortfolioCompleted (defaultAnalysisLink) {
@@ -46,7 +35,16 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
     }
 
     function loadPortfolio(portfolioCode, callback) {
-        var defaultPortfolioCode;
+        var defaultPortfolioCode, 
+            portfolio = {
+            code: '',
+            type: '',
+            analysisLink: '',
+            currency: '',
+            version: '',
+            timeStamp: '',
+            timePeriods: []
+        };
 
         // Load default portfolio.
 
@@ -64,7 +62,7 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
             }
         }
 
-        portfolio.code = getPortfolioCode();
+        lastPortfolioIdUsed = portfolio.code = getPortfolioCode();
         loadPortfolioData(onLoadPortfolioDataCompleted);
 
         function loadPortfolioData(callback) {

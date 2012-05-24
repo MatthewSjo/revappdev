@@ -35,6 +35,7 @@ Zepto(function ($) {
 
     theApp.lastUsernameUsed = '';
     theApp.lastPasswordUsed = '';
+    theApp.lastPortfolioIdUsed = '';
     theApp.lastAnalysisObjectUsed = {
         portfolioId: '',
         analysisId: '',
@@ -222,6 +223,8 @@ Zepto(function ($) {
         // theApp.portfolioManager.loadPortfolio(analysisDataObject.portfolioId);
         var analysisDataObject = analysisDataObjectValue || theApp.lastAnalysisObjectUsed;
 
+        theApp.nav.goToPage($(el.analysisPage), 'dissolve');
+
         function renderAnalysisPage (portfolioId) {
             var chartsToLoad        = [], 
                 analysisPagesData   = {},
@@ -251,6 +254,7 @@ Zepto(function ($) {
 
             theApp.lastAnalysisObjectUsed = analysisDataObject;
             theApp.lastAnalysisObjectUsed.portfolioId = portfolioId;
+            theApp.lastPortfolioIdUsed = portfolioId;
             theApp.saveLastAnalysisObjectUsed();
             theApp.chartComponents.load(chartsToLoad);
         }
@@ -418,7 +422,7 @@ Zepto(function ($) {
     });
 
     theApp.tabbar.on('onPortfoliosTap', function () {
-        theApp.spinningWheel.getSlot('portfolios').show('ADVISOR');
+        theApp.spinningWheel.getSlot('portfolios').show(theApp.lastPortfolioIdUsed); //'ADVISOR');
     });
 
     theApp.tabbar.on('onAnalysisTap', function () {
@@ -430,7 +434,7 @@ Zepto(function ($) {
     });
 
     theApp.tabbar.on('onSettingsTap', function () {
-        theApp.nav.goToPage($(el.settingsPage), 'dissolve');
+        theApp.nav.goToPage($(el.settingsPage), 'flip');
     });
 
     // ------------------------------------------

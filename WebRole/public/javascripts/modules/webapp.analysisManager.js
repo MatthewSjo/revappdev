@@ -25,11 +25,11 @@ WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'],
                     title   : '',
                     chartId : 'performance_bar',
                     order   : 5
-                }/*,{
-                    title   : '',
-                    chartId : 'performance_bubble',
-                    order   : 4
                 },{
+                    title   : '',
+                    chartId : 'risk_bar',
+                    order   : 4
+                }/*,{
                     title: '',
                     chartId: 'performanceTopTen_grid',
                     order: 3
@@ -48,10 +48,10 @@ WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'],
             order       : 2,
             userDefined : false,
             charts      : [{
-                    chartId: 'performance_column',
+                    chartId: 'risk_bubble',
                     order   : 1
                 },{
-                    chartId: 'performance_grid',
+                    chartId: 'contribution_bar',
                     order   : 2
                 }]             
         },{
@@ -105,7 +105,7 @@ WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'],
         } ,{
             name        : 'Test',
             id          : 'test1',
-            order       : 1,
+            order       : 100,
             userDefined : true,
             charts      : [{
                     chartId: 'performance_bar',
