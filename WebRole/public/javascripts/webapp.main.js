@@ -161,6 +161,7 @@ Zepto(function ($) {
             analysisDataObject = {};
 
         theApp.nav.goToPage($(el.startupPage), 'dissolve');
+        theApp.tabbar.show();
 
         //    - Update  with the current username [and password] the user settings data object
         //      and the lastLoggedOnUser property of app settings.
