@@ -35,6 +35,7 @@ WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSet
         portfolioAnalysis   : '/portfolioAnalysis',
         analysis            : '/analysis',
         segmentsTreeNode    : '/segmentsTreeNode',
+        timeSeries          : '/timeSeries',
         eula                : '/eula'
     };
 

@@ -86,6 +86,7 @@ app.get('/isUserAuthenticated', wm.isUserAuthenticated);
 
 // Web Methods (POST):
 app.post('/segmentsTreeNode', wm.segmentsTreeNode);
+app.post('/timeSeries', wm.timeSeries);
 
 // ------------------------------------------
 // INITIALISATION

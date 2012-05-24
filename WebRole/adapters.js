@@ -98,6 +98,29 @@ function addTreeMapRow(rowArray, nodeName, parentName, sizeValue, colorValue) {
     });
 }
 
+function addLineChartRow(rowArray, dataPoint, seriesType) {
+    var i,
+        dateParts, year, month, day,
+        measures = dataPoint.m,
+        len = measures.length,
+        isCumulative = (seriesType !== 'raw'),
+        cells = [];
+
+    dateParts = isCumulative ? dataPoint.d.split('-') : dataPoint.s.split('-');
+
+    year = parseInt(dateParts[0], 10);
+    month = parseInt(dateParts[1], 10) - 1;
+    day = parseInt(dateParts[2], 10);
+
+    cells.push({ v: 'Date(' + year + ', ' + month + ', ' + day + ')' });
+
+    for (i = 0; i < len; i++) {
+        cells.push({ v: measures[i] });
+    }
+
+    rowArray.push({ c: cells });
+}
+
 function addSegmentRows(rowArray, segments) {
     var i,
         len = segments.length,
@@ -108,6 +131,20 @@ function addSegmentRows(rowArray, segments) {
         segment = segments[i];
         if (segment) {
             this.addRow(rowArray, segment);
+        }
+    }
+}
+
+function addSeriesRows(rowArray, series, seriesType) {
+    var i,
+        len = series.length,
+        seriesPoint;
+
+    // Loop around the series, adding rows if they are defined.
+    for (i = 0; i < len; i++) {
+        seriesPoint = series[i];
+        if (seriesPoint) {
+            addLineChartRow(rowArray, seriesPoint, seriesType);
         }
     }
 }
@@ -165,6 +202,23 @@ function convert(node, dataToInclude, analysis, measures, language) {
         }
         this.addSegmentRows(rowArray, children);
     }
+
+    // Return the object required by the Google Visualization API.
+    return {
+        cols: this.columns.concat(columnArray),
+        rows: rowArray
+    };
+};
+
+function lineChartConvert(dataPoints, seriesType, analysis, measures, language) {
+    var columnArray = [],
+        rowArray = [],
+        children;
+
+    if (this.addMeasureColumns) {
+        this.addMeasureColumns(columnArray, measures, analysis, language);
+    }
+    addSeriesRows(rowArray, dataPoints.items, seriesType);
 
     // Return the object required by the Google Visualization API.
     return {
@@ -265,3 +319,7 @@ exports.TreeMap.columns = [
 	{ label: 'Size', type: 'number' },
 	{ label: 'Color', type: 'number' }
 ];
+
+// Line Chart
+exports.LineChart.convert = lineChartConvert;
+exports.LineChart.columns = [{ label: 'Date', type: 'date' }];
