@@ -22,6 +22,16 @@ WebAppLoader.addModule({ name: 'loadingMaskManager', sharedModules: ['pageElemen
         enabled : true,
         el      : el.chartLoadingMask
     };
+    
+    masks['default'] = masks.ajax;
+
+    $(el.loadingMask).dblclick(function(){
+        hide('ajax');
+    });
+
+    $(el.chartLoadingMask).dblclick(function(){
+        hide('analysis');
+    });
 
     /* ----------------------- ON/OFF ----------------------- /
 
@@ -44,15 +54,16 @@ WebAppLoader.addModule({ name: 'loadingMaskManager', sharedModules: ['pageElemen
     // ------------------------------------------------------ */
     
     function show(type /* TODO: fade */) {
-        var mask = masks[type] || null;
+        var mask = masks[type || 'default'] || null;
 
         if (mask && mask.enabled) {
+            $(mask.el).hide();
             $(mask.el).show();
         }
     }
 
     function hide(type /* TODO: fade */) {
-        var mask = masks[type] || null;
+        var mask = masks[type || 'default'] || null;
 
         if (mask) {
             $(mask.el).css("display", "none");

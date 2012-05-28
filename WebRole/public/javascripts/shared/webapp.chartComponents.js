@@ -361,6 +361,11 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         }
     }
 
+    // TODO: Investigate...
+    chartManager.on('onAnalysisLoaded', function(){
+        // eventManager.raiseEvent('onAnalysisLoaded');
+    });
+
     chartComponents.load = load;
 
     return chartComponents;

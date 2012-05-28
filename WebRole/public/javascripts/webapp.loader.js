@@ -135,15 +135,10 @@ var WebAppLoader = {};
         }
 
         function raiseEvent(event) {
-            var args = Array.prototype.slice.call(arguments, 1),
-                params = null;
-
-            params = (args.length === 1)
-                ? args[0]
-                : args;
+            var args = Array.prototype.slice.call(arguments, 1);
 
             if (events[event]) {
-                events[event](params);
+                events[event].apply(null, args);
             }
         }
 

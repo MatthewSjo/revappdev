@@ -33,7 +33,8 @@ WebAppLoader.addModule({ name: 'pageElements', isShared: true }, function () {
         chartsSelectbox                     : '#chartsSelectbox',
         analysisPageNameTextbox             : '#analysisPageNameTextbox',
         saveChartSettings                   : '#saveChartSettings',
-        addNewAnalysisPage                  : '#addNewAnalysisPage'
+        addNewAnalysisPage                  : '#addNewAnalysisPage',
+        analysisTitle                       : '#analysisTitle'
     };
 
     return pageElements;

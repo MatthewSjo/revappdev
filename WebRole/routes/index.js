@@ -89,8 +89,10 @@ exports.portfolios = function (req, res) {
 
 // Portfolio Analysis
 exports.portfolioAnalysis = function (req, res) {
-    var datatype = req.body.datatype || '';
-    webApi.getPortfolioAnalysis(req.body.uri, function (analysis) {
+    var datatype = req.body.datatype || '',
+        maxAttempts = 3; // TODO: We could use a const to set the maxAttempts.
+    
+    webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, function (analysis) {
         var viewModel = {};
         viewModel = analysis.data || {};
         
@@ -108,7 +110,9 @@ exports.portfolioAnalysis = function (req, res) {
 
 // Analysis
 exports.analysis = function (req, res) {
-    webApi.getPortfolioAnalysis(req.body.uri, function (analysis) {
+    var maxAttempts = 3;
+
+    webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, function (analysis) {
         var viewModel = {};
         viewModel = analysis.data || {};
         viewModel.layout = false;

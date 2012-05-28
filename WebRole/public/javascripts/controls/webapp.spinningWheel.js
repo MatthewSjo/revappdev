@@ -33,14 +33,15 @@ WebAppLoader.addModule({ name: 'spinningWheel', plugins: ['helper'], hasEvents: 
                     eventManager.raiseEvent(slots[i].onCancelHandler);
                 },
                 onSlotDone: function () {
-                    var key, results;
+                    var key, value, results;
 
                     results = SpinningWheel.getSelectedValues();
                     key = results.keys[0] || '';
+                    value = results.values[0] || '';
 
                     slots[i].lastItemSelected = key;
                     SpinningWheel.close();
-                    eventManager.raiseEvent(slots[i].onDoneHandler, key);
+                    eventManager.raiseEvent(slots[i].onDoneHandler, key, value);
                 },
                 show: function (defaultItem) {
                     function initSlot(slotItems) {

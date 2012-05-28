@@ -29,8 +29,12 @@ WebAppLoader.addModule({ name: 'chartManager',
     // Function to create a new chart.
     // 'config' - An object containing configuration properties for the chart to be created.
     function create(config) {
-        var id = config.chartId,
-            type = config.chartType,
+        if (!config) {
+            output.log('Config is not specified.');
+            return;
+        }
+        var id = config.chartId || null,
+            type = config.chartType || null,
             options = config.options || {},
             defaults = {},
             chart = null;
@@ -85,7 +89,7 @@ WebAppLoader.addModule({ name: 'chartManager',
         var type, params, url, formatter;
 
         // Don't attempt to load the chart if it doesn't exist yet.
-        if (chart === null) {
+        if (!chart) {
             return;
         }
 

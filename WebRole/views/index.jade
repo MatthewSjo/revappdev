@@ -1,6 +1,6 @@
 #page
 	#jqt
-		#startup.login_background(data-pageEvents="both")
+		#startup(data-pageEvents="both")
 		#revolutionLogin.login_background(data-pageEvents="both")
 			#login_content
 				.login_r
@@ -49,8 +49,9 @@
 		
 		#analysis(data-pageEvents="both")
 			.toolbar
-				h1 #{lang.analysisPage.analysisText}
-				a.back(href='#') #{lang.analysisPage.backText}
+				h1#analysisTitle #{lang.analysisPage.analysisText}
+				// a.back(href='#') #{lang.analysisPage.backText}
+				// #btn_favourite_off
 			#wrapper
 				#scroller
 					#analysis_partial
@@ -84,7 +85,7 @@
 					h2 Application
 					ul.edit.rounded
 						li.arrow
-							a(href="#") Themes
+							a(href="#themes") Themes
 						li.arrow
 							a(href="#analysisPagesSettings") Analysis Pages
 						li 
@@ -101,7 +102,12 @@
 								input(type="checkbox")
 						
 					a#reloadApp.grayButton(href='#') Reload App
-		
+		#themes
+			.toolbar
+				h1 Themes
+				a.back(href='#') Back
+			ul.rounded
+
 		#analysisPagesSettings(data-pageEvents="both")
 			.toolbar
 				h1 #{lang.analysisSettingsPages.settingsText}
@@ -165,8 +171,9 @@
 	nav#tabbar(style="opacity: 0; -webkit-transition: opacity 0.25s linear 0.25s;")
 		ul
 
-#myloading
+#myloading.modalBackground
 	img(src='img/loading.gif' )
 
-#myLoadingCharts
-	img(src='images/loading.gif' )
+#myLoadingCharts.modalBackground
+	img(src='img/loading.gif' )
+	// img(src='images/loading.gif' )

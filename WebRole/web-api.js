@@ -27,6 +27,8 @@ var account = {
     token: ''
 };
 
+var MAX_ATTEMPTS = 5;
+
 // ------------------------------------------
 // HELPER FUNCTIONS
 // ------------------------------------------
@@ -231,18 +233,24 @@ exports.getPortfolios = function (oData, datatype, callback) {
 };
 
 // Attempts to retrieve the default analysis for the requested portfolio.
-// 'uri'        - The Uniform Resource Identifier representing the default analysis resource.
-// 'callback'   - A JavaScript function to be called when the response has arrived.
-//                Will always be called, regardless of the outcome of the request,
-//                and will receive an object containing a 'data' property, which 
-//                may be null, and an error property, which will either be boolean false 
-//                (indicating that the request was successful), a boolean true, or a 
-//                complete error object (both indicating that the request failed).
-exports.getPortfolioAnalysis = function (uri, callback) {
+// 'uri'            - The Uniform Resource Identifier representing the default analysis resource.
+// 'attempts'       - The attempts setting specifies the maximum number of times to try 
+//                    access to the resource.
+// 'callback'       - A JavaScript function to be called when the response has arrived.
+//                    Will always be called, regardless of the outcome of the request,
+//                    and will receive an object containing a 'data' property, which 
+//                    may be null, and an error property, which will either be boolean false 
+//                    (indicating that the request was successful), a boolean true, or a 
+//                    complete error object (both indicating that the request failed).
+exports.getPortfolioAnalysis = function (uri, attempts, callback) {
     var options;
 
     // Generate the request configuration.
     options = getRequestOptions(uri, account.token);
+    
+    attempts = (attempts > MAX_ATTEMPTS)
+        ? MAX_ATTEMPTS
+        : attempts;
 
     // Attempt to get the portfolio analysis for the requested portfolio.
     getResource('portfolioAnalysis', options, function (resource) {
@@ -255,10 +263,16 @@ exports.getPortfolioAnalysis = function (uri, callback) {
 
             // If the current analysis is still calculating or there were errors...
             if (status === 'InProgress' || status === 'FailedWithErrors') {
+                if (attempts === 0) {
+                    resource.error = true;
+                    callback(resource);
+                    return;
+                }
+                attempts -= 1;
                 // ...attempt to get the last successful analysis.
                 uri = uri.replace('lastSuccessful=false', 'lastSuccessful=true');
                 // Use the modified URI with this function.
-                exports.getPortfolioAnalysis(uri, callback);
+                exports.getPortfolioAnalysis(uri, attempts, callback);
                 return;
             }
 

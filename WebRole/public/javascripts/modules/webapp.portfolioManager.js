@@ -8,7 +8,8 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
         eventManager        = this.getEventManager(),
         settings            = this.getSharedModule('settings'),
         portfolioDataObj    = this.getDataObject('portfolio'),
-        lastPortfolioIdUsed = '';
+        lastPortfolioIdUsed = '',
+        lastPortfolioUsed   = {};
 
     portfolioDataObj.define({
         code: '',
@@ -23,7 +24,7 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
     function loadPortfolioAnalysis(portfolioCode, callback) {
         
         function onGetAnalysisCompleted() {
-            callback(lastPortfolioIdUsed);
+            callback(lastPortfolioUsed);
         }
 
         function onLoadPortfolioCompleted (defaultAnalysisLink) {
@@ -31,7 +32,6 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
         }
 
         loadPortfolio(portfolioCode, onLoadPortfolioCompleted );
-
     }
 
     function loadPortfolio(portfolioCode, callback) {
@@ -116,6 +116,7 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
         function onLoadPortfolioAnalysisCompleted() {
             // repositories.timePeriodsSlot.setData(portfolio.timePeriods);
             portfolioDataObj.setData(portfolio);
+            lastPortfolioUsed = portfolio;
             eventManager.raiseEvent('onPortfolioLoaded', portfolio);
             eventManager.raiseEvent('onTimePeriodDataReceived', portfolio.timePeriods);
             callback(portfolio.analysisLink);

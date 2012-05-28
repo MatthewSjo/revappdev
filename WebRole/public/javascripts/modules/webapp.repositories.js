@@ -134,11 +134,15 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
         }
 
         function setData(timePeriods) {
-            var slotItems = {};
+            var slotItems = null;
 
-            $.each(timePeriods, function (i, val) {
-                slotItems[val.code] = val.name;
-            });
+            if (timePeriods && timePeriods.length > 0) {
+                slotItems = {};
+                
+                $.each(timePeriods, function (i, val) {
+                    slotItems[val.code] = val.name;
+                });
+            }
 
             setTimePeriodsSlotItems(slotItems);
         }
@@ -172,12 +176,27 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
             eventManager.raiseEvent('onItemsChanged', items);
         }
 
+        function setData(favourites) {
+            var slotItems = null;
+
+            if (favourites && favourites.length > 0) {
+                slotItems = {};
+                
+                $.each(favourites, function (i, val) {
+                    slotItems[val.code] = val.name;
+                });
+            }
+
+            setFavouritesSlotItems(slotItems);
+        }
+
         function getData(callback) {
             var items = { err: lang.noFavouritesSlotAvailable };
             callback(items);
         }
 
         repository.getData = getData;
+        repository.setData = setData;
         repository.on = on;
 
         return repository;

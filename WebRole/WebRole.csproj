@@ -315,6 +315,8 @@
     <Content Include="public\images\btn_attribution.png" />
     <Content Include="public\images\btn_balanced.png" />
     <Content Include="public\images\btn_contribution.png" />
+    <Content Include="public\images\btn_favourites_off.png" />
+    <Content Include="public\images\btn_favourites_on.png" />
     <Content Include="public\images\btn_fixed-income.png" />
     <Content Include="public\images\btn_logo2.png" />
     <Content Include="public\images\btn_performance.png" />
@@ -323,13 +325,17 @@
     <Content Include="public\images\cloud.png" />
     <Content Include="public\images\favourites.png" />
     <Content Include="public\images\info.png" />
+    <Content Include="public\images\loading.gif" />
     <Content Include="public\images\loading_charts.png" />
+    <Content Include="public\images\logo.png" />
     <Content Include="public\images\more.png" />
+    <Content Include="public\images\settings.png" />
     <Content Include="public\images\splash-landscape-retina.gif" />
     <Content Include="public\images\splash-landscape.gif" />
     <Content Include="public\images\splash-portrait.gif" />
     <Content Include="public\images\test_chart.png" />
     <Content Include="public\images\toolbar_logo.png" />
+    <Content Include="public\images\Tools.png" />
     <Content Include="public\images\trend.png" />
     <Content Include="public\images\wallet.png" />
     <Content Include="public\img\backButton.png" />
@@ -363,6 +369,7 @@
     <Content Include="public\javascripts\extensions\webapp.dataObject.js" />
     <Content Include="public\javascripts\extensions\webapp.emptyExtension.js" />
     <Content Include="public\javascripts\extensions\webapp.eventManager.js" />
+    <Content Include="public\javascripts\modules\webapp.favouritesManager.js" />
     <Content Include="public\javascripts\modules\webapp.analysisManager.js" />
     <Content Include="public\javascripts\pages\webapp.chartSettingsPage.js" />
     <Content Include="public\javascripts\pages\webapp.analysisSettingsPage.js" />
@@ -392,6 +399,7 @@
     <Content Include="public\javascripts\controls\webapp.spinningWheel.js" />
     <Content Include="public\javascripts\controls\webapp.tabbar.js" />
     <Content Include="public\src\jlinq.js" />
+    <Content Include="public\src\jqt.themeswitcher.js" />
     <Content Include="public\src\selector.js" />
     <Content Include="public\src\zepto.js" />
     <Content Include="public\src\add2home.js" />
