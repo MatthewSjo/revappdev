@@ -26,6 +26,14 @@ WebAppLoader.addModule({ name: 'toolbar', plugins: ['helper'], sharedModules: ['
     // Enlarge and center the title to prevet ellispsis.
     $('#jqt .toolbar > h1').width(300).css('margin', '1px 0 0 -150px');
 
+    function getButton(index) {
+        if (typeof index == 'string') {
+            index = buttonIndices[index];
+        }
+
+        return buttons[index];
+    }
+
     function create(config) {
         var buttonPrefix = config.buttonPrefix || 'toolbar_btn',
                 that = this;
@@ -40,39 +48,61 @@ WebAppLoader.addModule({ name: 'toolbar', plugins: ['helper'], sharedModules: ['
             buttonIndices[val.id] = i;
             buttons[i] = {
                 id: val.id,
-                linkId: buttonPrefix + id,
+                buttonId: buttonPrefix + id,
+                // linkId: buttonPrefix + id,
                 // badgeId: badgePrefix + id,
                 title: val.title,
                 class: val.class,
                 eventHandler: 'on' + id + 'Tap',
                 isDisabled: false,
                 isSelected: false,
-                setDisabled: function (disabled) {
-                    var opacity = (disabled) ? 0.20 : 1,
-                            badgeBackColor = (disabled) ? '#333' : '#f00';
-
-                    this.isDisabled = disabled;
-                    $('#' + this.linkId).css({ opacity: opacity });
-                    $('#' + this.badgeId).css({ backgroundColor: badgeBackColor });
-
+                select: function () {
+                    var button     = $('#' + buttons[i].buttonId),
+                        classOn    = buttons[i].class + '_on',
+                        classOff   = buttons[i].class + '_off';
+                    
+                    button.removeClass(classOff);
+                    button.addClass(classOn);
+                    this.isSelected = true;
                 },
-                setBadgeText: function (text) {
-                    var badge = $('#' + this.badgeId),
-                            displayBadge = true;
-
-                    if (text) {
-                        badge.html(text);
-                        badge.show();
-                    } else {
-                        badge.hide();
-                    }
+                deselect: function () {
+                    var button     = $('#' + buttons[i].buttonId),
+                        classOn    = buttons[i].class + '_on',
+                        classOff   = buttons[i].class + '_off';
+                    
+                    button.removeClass(classOn);
+                    button.addClass(classOff);
+                    this.isSelected = false;
                 }
+//                setDisabled: function (disabled) {
+//                    var opacity = (disabled) ? 0.20 : 1,
+//                            badgeBackColor = (disabled) ? '#333' : '#f00';
+
+//                    this.isDisabled = disabled;
+//                    $('#' + this.linkId).css({ opacity: opacity });
+//                    $('#' + this.badgeId).css({ backgroundColor: badgeBackColor });
+
+//                },
+//                setBadgeText: function (text) {
+//                    var badge = $('#' + this.badgeId),
+//                            displayBadge = true;
+
+//                    if (text) {
+//                        badge.html(text);
+//                        badge.show();
+//                    } else {
+//                        badge.hide();
+//                    }
+//                }
             };
 
             $(toolbarId).append(
                 $('<div>')
                     .addClass('toolbar_button ' + buttons[i].class + '_off')
-                    .attr({ style: 'right: ' + (buttonsCount * buttonWidth + buttonPadding) + 'px;'})
+                    .attr({ 
+                        id: buttons[i].buttonId,
+                        style: 'right: ' + (buttonsCount * buttonWidth + buttonPadding) + 'px;'
+                    })
                     .on('click', function(event){
                         var isSelected = buttons[i].isSelected,
                             classOn    = buttons[i].class + '_on',
@@ -97,31 +127,11 @@ WebAppLoader.addModule({ name: 'toolbar', plugins: ['helper'], sharedModules: ['
             );
 
             buttonsCount += 1;
-
-//                    $('<li>').css('width', buttonWidth + '%').append(
-//                        $('<a>').attr('id', buttons[i].linkId).append(
-//                            $('<small>').attr({
-//                                id: buttons[i].badgeId,
-//                                class: 'badge right',
-//                                style: 'display: none;'
-//                            })).append(
-//                            $('<strong>').append(buttons[i].title)).append(
-//                            $('<div>').attr('class', buttons[i].class)
-//                        )));
         });
     }
 
-//        $(toolbarId + ' ul li a').each(function (i) {
-//            $(this).on('click', function () {
-//                if (!buttons[i].isDisabled) {
-//                    output.log(buttons[i].title + ' was tapped');
-//                    eventManager.raiseEvent(buttons[i].eventHandler);
-//                } else {
-//                    output.log(buttons[i].title + ' is disabled');
-//                }
-//            });
-//        });
-
     toolbar.create = create;
+    toolbar.getButton = getButton;
+
     return toolbar;
 });

@@ -206,6 +206,15 @@ div#jqt #about a
     margin: -16px 0 0 -16px;
 }
 
+#loadingText {
+	width: 200px;
+	position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: 40px 0 0 -100px;
+    color: #ffffff;
+    text-align: center;
+}
 /*
 #myloading
 {

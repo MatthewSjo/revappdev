@@ -34,7 +34,8 @@ WebAppLoader.addModule({ name: 'pageElements', isShared: true }, function () {
         analysisPageNameTextbox             : '#analysisPageNameTextbox',
         saveChartSettings                   : '#saveChartSettings',
         addNewAnalysisPage                  : '#addNewAnalysisPage',
-        analysisTitle                       : '#analysisTitle'
+        analysisTitle                       : '#analysisTitle',
+        loadingText                         : '#loadingText'
     };
 
     return pageElements;

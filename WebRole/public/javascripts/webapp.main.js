@@ -85,9 +85,6 @@ Zepto(function ($) {
     // Chart Components
     theApp.chartComponents = loader.loadModule('chartComponents');
 
-    // Favourites Manager
-    theApp.favouritesManager = loader.loadModule('favouritesManager');
-
     // ------------------------------------------
     // LAST ANALYSIS DATA OBJECT
     // ------------------------------------------
@@ -232,11 +229,15 @@ Zepto(function ($) {
 
         theApp.nav.goToPage($(el.analysisPage), 'dissolve');
         // output.log(analysisDataObject.analysisName);
-        $(el.analysisTitle).html(analysisDataObject.analysisName);
+        // $(el.analysisTitle).html(analysisDataObject.analysisName);
         theApp.mask.show('analysis');
+        
+        // TODO: 
+        // Get analysis name and timeperiods name from respective ids and select 
+        // the right spinning wheel.
 
         function renderAnalysisPage (portfolio) {
-            var chartsToLoad        = [], 
+            var chartsToRender      = [], 
                 analysisPagesData   = {},
                 analysisPage        = {},
                 portfolioId         = portfolio.code,
@@ -248,30 +249,11 @@ Zepto(function ($) {
                 .equals('id', analysisDataObject.analysisId)
                 .select();
 
-            chartsToLoad = jLinq.from(analysisPage[0].charts)
+            chartsToRender = jLinq.from(analysisPage[0].charts)
                 .sort('order')
                 .select();
-            
-            for (var i = 0; i < chartsToLoad.length; i++) {
-                if (chartsToLoad[i].chartId === '') {
-                    $('#analysis_partial').append(
-                        $(
-                            '<div class="analysisSummarySection">' + 
-                            '   <h2>' + chartsToLoad[i].title + '</h2>' +
-                            '</div>'
-                        ));    
-                } else {
-                    $('#analysis_partial').append(
-                        $(
-                            '<div class="analysisSummarySection">' + 
-                            '   <h2>' + chartsToLoad[i].title + '</h2>' +
-                            '   <div class="analysisComponentContainer">' +
-                            '       <div id="' + chartsToLoad[i].chartId + '" class="chartContainer"></div>' +
-                            '   </div>' + 
-                            '</div>'
-                        ));
-                }
-            }
+
+            $(el.analysisTitle).html(analysisPage[0].name);
 
             theApp.setLastAnalysisObjectUsed(analysisDataObject);
             theApp.setLastAnalysisObjectUsed({ 
@@ -280,8 +262,10 @@ Zepto(function ($) {
                 });
             theApp.lastPortfolioIdUsed = portfolioId;
             theApp.saveLastAnalysisObjectUsed();
-            theApp.chartComponents.load(chartsToLoad);
-            theApp.mask.hide('analysis'); 
+            theApp.chartComponents.render(chartsToRender, '#analysis_partial');
+            theApp.synchronizeFavouriteButton();
+            // theApp.chartComponents.load(chartsToLoad);
+            // theApp.mask.hide('analysis'); 
         }
 
         function onLoadPortfolioAnalysisCompleted(portfolio) {
@@ -298,9 +282,15 @@ Zepto(function ($) {
         // TODO: Add code here to save in the user space the last analysis object used.
     };
 
-//    theApp.chartComponents.on('onAnalysisLoaded', function(){
-//        theApp.mask.hide('analysis');    
-//    });
+    theApp.chartComponents.on('onAllChartsLoaded', function(){
+        theApp.mask.updateAnalysisText(' ');
+        theApp.mask.hide('analysis');    
+    });
+
+    theApp.chartComponents.on('onChartsLoading', function(chartCount, chartTotal){
+        theApp.mask.updateAnalysisText('Loading ' + (chartCount) + ' of ' +  chartTotal);
+    });
+    
 
     // ------------------------------------------
     // SETTINGS PAGES
@@ -364,7 +354,7 @@ Zepto(function ($) {
                 charts.push({
                     chartId: chartComponentsData[chart].chartId,
                     chartType: chartComponentsData[chart].chartType,
-                    chartTitle: chartComponentsData[chart].chartId
+                    chartTitle: chartComponentsData[chart].chartTitle
                 });
             }
 
@@ -440,9 +430,11 @@ Zepto(function ($) {
 
     theApp.toolbar.on('onFavouriteTap', function (isSelected) {
         if(isSelected) {
-            alert('ADDED TO FAVOURITES');
+            // alert('ADDED TO FAVOURITES');
+            theApp.addToFavourites();
         } else {
-            alert('REMOVED FROM FAVOURITES');
+            // alert('REMOVED FROM FAVOURITES');
+            theApp.removeFromFavourites();
         }
     });
 
@@ -514,6 +506,15 @@ Zepto(function ($) {
     theApp.spinningWheel.on('onAnalysisDone', function (key, value) {
         theApp.setLastAnalysisObjectUsed({ analysisId: key, analysisName: value });
         theApp.updateAnalysisPage();
+    });
+
+    theApp.spinningWheel.on('onFavouritesDone', function (key, value) {
+        var analysisDataObject = theApp.favouritesManager.getAnalysisDataObjectFromFavourte(key);
+
+        if (analysisDataObject) {
+            theApp.setLastAnalysisObjectUsed(analysisDataObject);
+            theApp.updateAnalysisPage();
+        }
     });
     
     // ------------------------------------------
@@ -663,14 +664,94 @@ Zepto(function ($) {
             .sort('order')
             .select(function (record) {
                 return {
-                    name: record.name,
-                    code: record.id
+                    name: record.title,
+                    code: record.favouriteId
                 }
             });
             
         theApp.repositories.favouritesSlot.setData(favouritesSlotItems);
     };
 
+    theApp.analysisDataObjectToFavourite = function (analysisDataObject) {
+        var favourite = null;
+        
+        favourite = theApp.favouritesManager.getFavourteFromAnalysisDataObject(analysisDataObject);
+        return favourite || null;
+    };
+
+    // - favouriteId [optional]
+    theApp.favouriteExists = function (favouriteId) {
+        var favourite           = null,
+            // favouriteExists     = false,
+            favouriteToCheck    = null,
+            favouritesData      = theApp.favouritesManager.getData('favourites');
+
+        if(!favouriteId){
+            // favouriteExists = theApp.favouritesManager.favouriteExists(favouriteId);
+            // favouriteExists = theApp.favouritesManager.favouriteExists(favourite.favouriteId);        
+            favourite = theApp.analysisDataObjectToFavourite(theApp.lastAnalysisObjectUsed);
+            favouriteId = favourite.favouriteId;
+        }
+
+        favouriteToCheck = jLinq.from(favouritesData.items)
+            .equals('favouriteId', favouriteId)
+            .select()[0] || null;
+
+        return (favouriteToCheck && true);
+    };
+    
+    theApp.addToFavourites = function () {
+        // alert('ADDED TO FAVOURITES');
+        var favouriteToAdd = {},
+            favouritesData = null;
+
+        favouriteToAdd = theApp.analysisDataObjectToFavourite(theApp.lastAnalysisObjectUsed);
+        if (favouriteToAdd) {
+            if(!theApp.favouriteExists(favouriteToAdd.favouriteId)) {
+                favouritesData = theApp.favouritesManager.getData('favourites');
+                favouritesData.items.push(favouriteToAdd);
+                theApp.favouritesManager.saveData('favourites', theApp.lastUsernameUsed);
+                theApp.favouritesManager.update(theApp.lastUsernameUsed);
+            }
+        }
+    };
+
+    theApp.removeFromFavourites = function () {
+        var favouriteToRemove   = {},
+            favouritesData      = null;
+ 
+        favouriteToRemove = theApp.analysisDataObjectToFavourite(theApp.lastAnalysisObjectUsed);
+        if (favouriteToRemove) {
+            if(theApp.favouriteExists(favouriteToRemove.favouriteId)) {
+                favouritesData = theApp.favouritesManager.getData('favourites');
+                
+                for(var i = favouritesData.items.length-1; i >= 0; i--){  
+                     if(favouritesData.items[i].favouriteId === favouriteToRemove.favouriteId){                     
+                        favouritesData.items.splice(i,1);                        
+                        theApp.favouritesManager.saveData('favourites', theApp.lastUsernameUsed);
+                        theApp.favouritesManager.update(theApp.lastUsernameUsed);
+                        return;
+                    }
+                }  
+//                favouritesData = theApp.favouritesManager.getData('favourites');
+//                favouritesData.items.push(favouriteToAdd);
+
+            }
+        }
+        // alert('REMOVED FROM FAVOURITES');
+        
+    };
+    
+    // - favouriteId [optional]
+    theApp.synchronizeFavouriteButton = function(favouriteId) {
+        var favouriteButton = theApp.toolbar.getButton('favourite');
+
+        if(theApp.favouriteExists(favouriteId) && favouriteButton) {
+            favouriteButton.select();
+        } else {
+            favouriteButton.deselect();
+        }
+    };
 
     // ------------------------------------------
     // PORTFOLIOS LIST

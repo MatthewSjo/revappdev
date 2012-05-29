@@ -116,13 +116,6 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
         eventManager.init(this);
 
         function getTimePeriodsSlotItems() {
-//            var isValidTimePeriodSlot = false;
-
-//            isValidTimePeriodSlot = (timePeriodsSlotItems
-//                && Array.isArray(timePeriodsSlotItems)
-//                && timePeriodsSlotItems.length > 0
-//                );
-
             return (timePeriodsSlotItems)
                 ? timePeriodsSlotItems
                 : { err: lang.noTimePeriodSlotAvailable };
@@ -168,7 +161,9 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
         eventManager.init(this);
 
         function getFavouritesSlotItems() {
-            return favouritesSlotItems;
+            return (favouritesSlotItems)
+                ? favouritesSlotItems
+                : { err: lang.noFavouritesSlotAvailable };
         }
 
         function setFavouritesSlotItems(items) {
@@ -191,7 +186,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
         }
 
         function getData(callback) {
-            var items = { err: lang.noFavouritesSlotAvailable };
+            var items = getFavouritesSlotItems();
             callback(items);
         }
 

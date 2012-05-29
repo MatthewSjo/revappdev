@@ -24,13 +24,13 @@ WebAppLoader.addModule({ name: 'favouritesManager', plugins: ['helper'],
     };
 */
     favouritesDataObj.define({
-        items: [{
+        items: [/*{
             title: 'First Portfolio - Performances - Earliest',
             favouriteId: '@~~<first>~~@performancesEarliest', // Unusual id.
             portfolioId: '@~~<first>~~@',
             analysisId: 'performances',
             timePeriodId: 'Earliest'
-        }]
+        }*/]
     });
 
     function createIdFromAnalysisDataObject(analysisDataObject) {
@@ -44,6 +44,47 @@ WebAppLoader.addModule({ name: 'favouritesManager', plugins: ['helper'],
         return favouriteId;
     }
     
+    function getFavourteFromAnalysisDataObject(analysisDataObject) {
+        var favouriteObj = {};
+
+        favouriteObj.title        = analysisDataObject.portfolioName + ' - ' +
+                                    analysisDataObject.analysisName + ' - ' +
+                                    analysisDataObject.timePeriodName;
+        favouriteObj.favouriteId  = analysisDataObject.portfolioId +
+                                    analysisDataObject.analysisId +
+                                    analysisDataObject.timePeriodId;
+        favouriteObj.portfolioId  = analysisDataObject.portfolioId;
+        favouriteObj.analysisId   = analysisDataObject.analysisId;
+        favouriteObj.timePeriodId = analysisDataObject.timePeriodId;
+
+        return favouriteObj;
+    }
+
+    function getAnalysisDataObjectFromFavourte(favouriteId) {
+        var favourites         = favouritesDataObj.getData(),
+            analysisDataObject = null,
+            favourite          = {};
+
+        for (var i = 0; i < favourites.items.length; i++) {
+            favourite = favourites.items[i];
+            if (favourite.favouriteId === favouriteId) {
+                // Create a new analysisDataObject and populate it with
+                // values from favourite.
+                analysisDataObject = {}; 
+                analysisDataObject.portfolioId = favourite.portfolioId;
+                analysisDataObject.analysisId = favourite.analysisId;
+                analysisDataObject.timePeriodId= favourite.timePeriodId;
+                return analysisDataObject;   
+            }
+        }
+
+        return analysisDataObject;
+    }
+
+    function favouriteExists(favouriteId) {
+        var favourites = favouritesDataObj.getData();
+    }
+
     function favouritesUpdated() {
         eventManager.raiseEvent('onFavouritesUpdated', favouritesDataObj.getData());
     }
@@ -61,6 +102,9 @@ WebAppLoader.addModule({ name: 'favouritesManager', plugins: ['helper'],
     favouritesManager.init = init;
     favouritesManager.update = init; // Alias
     favouritesManager.createIdFromAnalysisDataObject = createIdFromAnalysisDataObject;
+    favouritesManager.getFavourteFromAnalysisDataObject = getFavourteFromAnalysisDataObject;
+    favouritesManager.favouriteExists = favouriteExists;
+    favouritesManager.getAnalysisDataObjectFromFavourte = getAnalysisDataObjectFromFavourte;
 
     return favouritesManager;
 });

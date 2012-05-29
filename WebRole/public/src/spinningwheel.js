@@ -214,11 +214,13 @@ var SpinningWheel = {
 	},
 	
 	close: function () {
-		this.swWrapper.style.webkitTransitionTimingFunction = 'ease-in';
-		this.swWrapper.style.webkitTransitionDuration = '400ms';
-		this.swWrapper.style.webkitTransform = 'translate3d(0, 0, 0)';
+        if(this && this.swWrapper) {
+		    this.swWrapper.style.webkitTransitionTimingFunction = 'ease-in';
+		    this.swWrapper.style.webkitTransitionDuration = '400ms';
+		    this.swWrapper.style.webkitTransform = 'translate3d(0, 0, 0)';
 		
-		this.swWrapper.addEventListener('webkitTransitionEnd', this, false);
+		    this.swWrapper.addEventListener('webkitTransitionEnd', this, false);
+        }
 	},
 
 

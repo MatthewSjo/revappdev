@@ -12,17 +12,40 @@ WebAppLoader.addModule({ name: 'chartManager',
         chartDefaults = this.getSharedModule('chartDefaults'),
         siteUrls = this.getSharedModule('settings').siteUrls,
         colorManager = this.getSharedModule('colorManager'),
-        lang = this.getSharedModule('localizationManager').getLanguage() || {};
-        output = this.getConsole();
+        lang = this.getSharedModule('localizationManager').getLanguage() || {},
+        output = this.getConsole(),
+        chartCount = 0,
+        chartTotal = 0,
+        isLoading = false;
+
+    function resetCounter() {
         chartCount = 0;
         chartTotal = 0;
+        isLoading = false;
+    }
+
+    function startCounter() {
+        resetCounter();
+        isLoading = true;
+    }
+
+    function stopCounter() {
+        resetCounter();
+    }
+
 
     // Function to be called when the chart has successfully loaded and drawn itself.
     function onChartReady() {
-        // If all of the charts created have been loaded...
-        if (++chartCount === chartTotal) {
-            // ...fire the onAnalysisLoaded event.
-            eventManager.raiseEvent('onAnalysisLoaded');
+        if (isLoading) {
+            chartCount += 1;
+            eventManager.raiseEvent('onAnalysisLoading', chartCount, chartTotal);
+            
+            // If all of the charts created have been loaded...
+            if (chartCount === chartTotal) {
+                // ...fire the onAnalysisLoaded event.
+                stopCounter();
+                eventManager.raiseEvent('onAnalysisLoaded');
+            }
         }
     }
 
@@ -33,6 +56,7 @@ WebAppLoader.addModule({ name: 'chartManager',
             output.log('Config is not specified.');
             return;
         }
+
         var id = config.chartId || null,
             type = config.chartType || null,
             options = config.options || {},
@@ -73,9 +97,6 @@ WebAppLoader.addModule({ name: 'chartManager',
         chart.startDate = config.startDate;
         chart.timePeriods = config.timePeriods;
 
-        // Increase the running chart total.
-        chartTotal++;
-
         // Register the chart with the ready event listener.
         google.visualization.events.addListener(chart, 'ready', onChartReady);
 
@@ -85,13 +106,21 @@ WebAppLoader.addModule({ name: 'chartManager',
 
     // Function to load the given chart with data.
     // 'chart'  - The instance of the Google Visualization API chart object to load.
-    function load(chart) {
+    function load(chart, newRequest) {
         var type, params, url, formatter;
 
         // Don't attempt to load the chart if it doesn't exist yet.
         if (!chart) {
             return;
         }
+
+        // Restart the counter every new request.
+        if (newRequest) {
+            startCounter();
+        }
+
+        // Increase the running chart total.
+        chartTotal++;
 
         // Get the current chart type.
         type = chart.getChartType();

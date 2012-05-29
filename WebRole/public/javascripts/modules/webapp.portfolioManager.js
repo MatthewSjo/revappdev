@@ -13,6 +13,7 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
 
     portfolioDataObj.define({
         code: '',
+        name: '',
         type: '',
         analysisLink: '',
         currency: '',
@@ -101,6 +102,7 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
             $.post(settings.siteUrls.portfolioAnalysis, { uri: defaultAnalysisLink, datatype: 'json' }, function (data) {
                 output.log('loadPortfolioAnalysis', data);
                 if (data && data.analysis) {
+                    portfolio.name = data.name || '';
                     portfolio.type = data.type || '';
                     portfolio.currency = data.analysis.currency || '';
                     portfolio.version = data.analysis.version || '';

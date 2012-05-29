@@ -14,7 +14,6 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         chartsDataObject    = this.getDataObject('charts'),
         chartsData          = null;
 
-
     chartsDataObject.define({
         // ------------------------------------------
         // BAR CHARTS
@@ -336,14 +335,28 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             include: 'childSegments',
             measures: ['wpabsoluteend', 'contributionvar'],
             includeMeasuresFor: ['segment', 'childSegments']
+        }, 
+
+    // ------------------------------------------
+    // LINE CHARTS
+    // ------------------------------------------
+
+        'performance_line': {
+            chartId: 'performance_line',
+            chartType: 'LineChart',
+            timePeriods: 'Earliest',
+            measures: ['rp', 'rb'],
+            seriesType: 'cumulativeIndexed'
         }
+
     });
 
     chartsData = chartsDataObject.getData();
 
     // Public
     function load(chartsToLoad) {
-        var chartToLoad, chartId;
+        var chartToLoad, chartId, 
+            newRequest = true;
 
         for (var i = 0; i < chartsToLoad.length; i++) {
             chartId = chartsToLoad[i].chartId;
@@ -357,16 +370,52 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
                 createdCharts[chartId] = chartToLoad;
             }
 
-            chartManager.load(chartToLoad);
+            chartManager.load(chartToLoad, newRequest);
+            
+            // Change the status of newRequest only if a valid chart has been loaded.
+            if (chartToLoad) {
+                newRequest = false;
+            }
         }
+    }
+
+    function render(chartsToRender, renderTo) {
+        // Create the chart containers according to the chart types.
+        for (var i = 0; i < chartsToRender.length; i++) {
+            if (chartsToRender[i].chartId === '') {
+                $(renderTo).append(
+                    $(
+                        '<div class="analysisSummarySection">' + 
+                        '   <h2>' + chartsToRender[i].title + '</h2>' +
+                        '</div>'
+                    ));    
+            } else {
+                $(renderTo).append(
+                    $(
+                        '<div class="analysisSummarySection">' + 
+                        '   <h2>' + chartsToRender[i].title + '</h2>' +
+                        '   <div class="analysisComponentContainer">' +
+                        '       <div id="' + chartsToRender[i].chartId + '" class="chartContainer"></div>' +
+                        '   </div>' + 
+                        '</div>'
+                    ));
+            }
+        }
+        
+        load(chartsToRender);   
     }
 
     // TODO: Investigate...
     chartManager.on('onAnalysisLoaded', function(){
-        // eventManager.raiseEvent('onAnalysisLoaded');
+        eventManager.raiseEvent('onAllChartsLoaded');
+    });
+
+    chartManager.on('onAnalysisLoading', function(chartCount, chartTotal){
+        eventManager.raiseEvent('onChartsLoading', chartCount, chartTotal);
     });
 
     chartComponents.load = load;
+    chartComponents.render = render;
 
     return chartComponents;
 });

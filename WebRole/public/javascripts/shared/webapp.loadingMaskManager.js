@@ -8,7 +8,12 @@ WebAppLoader.addModule({ name: 'loadingMaskManager', sharedModules: ['pageElemen
         eventManager        = this.getEventManager(),
         el                  = this.getSharedModule('pageElements'),
         helper              = this.getPlugin('helper'),
+        loadingText         = null,
         masks               = {};
+
+
+    // Define the loading mask text.
+    loadingText = $(el.loadingText);
 
     // Define all the available masks.
     masks.ajax = {
@@ -25,11 +30,11 @@ WebAppLoader.addModule({ name: 'loadingMaskManager', sharedModules: ['pageElemen
     
     masks['default'] = masks.ajax;
 
-    $(el.loadingMask).dblclick(function(){
+    $(el.loadingMask).click(function(){
         hide('ajax');
     });
 
-    $(el.chartLoadingMask).dblclick(function(){
+    $(el.chartLoadingMask).click(function(){
         hide('analysis');
     });
 
@@ -70,9 +75,14 @@ WebAppLoader.addModule({ name: 'loadingMaskManager', sharedModules: ['pageElemen
         }
     }
     
+    function updateAnalysisText(text) {
+        loadingText.html(text);
+    }
+
     // TODO: Add code to prevent showing of any masks and or to enable/disable them.
     loadingMaskManager.show = show;
     loadingMaskManager.hide = hide;
+    loadingMaskManager.updateAnalysisText = updateAnalysisText;
 
     return loadingMaskManager;
 });
