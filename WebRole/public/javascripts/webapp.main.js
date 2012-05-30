@@ -141,9 +141,6 @@ Zepto(function ($) {
         } else {
             theApp.goToLoginPage();
         }
-
-        // theApp.tabbar.show();
-        // theApp.nav.goToPage($(el.portfolioAnalysisPage), 'dissolve');
     }
 
     theApp.doLogin = function(username, password) {
@@ -228,8 +225,6 @@ Zepto(function ($) {
         var analysisDataObject = analysisDataObjectValue || theApp.getLastAnalysisObjectUsed();
 
         theApp.nav.goToPage($(el.analysisPage), 'dissolve');
-        // output.log(analysisDataObject.analysisName);
-        // $(el.analysisTitle).html(analysisDataObject.analysisName);
         theApp.mask.show('analysis');
         
         // TODO: 
@@ -264,8 +259,6 @@ Zepto(function ($) {
             theApp.saveLastAnalysisObjectUsed();
             theApp.synchronizeFavouriteButton();
             theApp.chartComponents.render(chartsToRender, '#analysis_partial');
-            // theApp.chartComponents.load(chartsToLoad);
-            // theApp.mask.hide('analysis'); 
         }
 
         function onLoadPortfolioAnalysisCompleted(portfolio) {
@@ -394,14 +387,12 @@ Zepto(function ($) {
     theApp.portfolioManager.on('onPortfolioLoaded', function (portfolio) {
         // When a new portfolio is loaded update timeperiods and analysis slots.
         theApp.repositories.timePeriodsSlot.setData(portfolio.timePeriods);
-        // theApp.portfolioManager.getAnalysis(portfolio.analysisLink);
         output.log('Loaded portfolio:', portfolio);
     });
 
     theApp.portfolioManager.on('onAnalysisReceived', function (data) {
         theApp.scroll.rebuild('analysis');
         $(el.analysisPage + '_partial').html(data);
-        // $('#swipeview-wrapper').html(data);
         
         theApp.nav.goToPage($(el.analysisPage), 'dissolve');
         theApp.tabbar.show();
@@ -430,10 +421,8 @@ Zepto(function ($) {
 
     theApp.toolbar.on('onFavouriteTap', function (isSelected) {
         if(isSelected) {
-            // alert('ADDED TO FAVOURITES');
             theApp.addToFavourites();
         } else {
-            // alert('REMOVED FROM FAVOURITES');
             theApp.removeFromFavourites();
         }
     });
@@ -539,7 +528,6 @@ Zepto(function ($) {
     });
 
     theApp.auth.on('onLoginFailed', function (response) {
-        // theApp.startHere();
         output.log('onLoginFailed response: ', response);
     });
 
@@ -550,7 +538,6 @@ Zepto(function ($) {
     theApp.pageEventsManager = loader.loadModule('pageEventsManager');
     
     theApp.pageEventsManager.on('onStartupStart', function () {
-        //theApp.startHere();
         output.log('onStartupEnd');
     });
 
@@ -565,9 +552,7 @@ Zepto(function ($) {
 
     theApp.pageEventsManager.on('onHomeEnd', function () {
         theApp.tabbar.show();
-
         theApp.scroll.rebuild('home');
-        // theApp.mask.show('analysis');
         output.log('onHomeEnd');
     });
 
@@ -588,7 +573,6 @@ Zepto(function ($) {
     });
 
     theApp.pageEventsManager.on('onAnalysisEnd', function () {
-        // theApp.renderAnalysisPage();
         theApp.scroll.rebuild('analysis');
         output.log('onAnalysisEnd');
     });
@@ -683,13 +667,10 @@ Zepto(function ($) {
     // - favouriteId [optional]
     theApp.favouriteExists = function (favouriteId) {
         var favourite           = null,
-            // favouriteExists     = false,
             favouriteToCheck    = null,
             favouritesData      = theApp.favouritesManager.getData('favourites');
 
         if(!favouriteId){
-            // favouriteExists = theApp.favouritesManager.favouriteExists(favouriteId);
-            // favouriteExists = theApp.favouritesManager.favouriteExists(favourite.favouriteId);        
             favourite = theApp.analysisDataObjectToFavourite(theApp.lastAnalysisObjectUsed);
             favouriteId = favourite.favouriteId;
         }
@@ -702,7 +683,6 @@ Zepto(function ($) {
     };
     
     theApp.addToFavourites = function () {
-        // alert('ADDED TO FAVOURITES');
         var favouriteToAdd = {},
             favouritesData = null;
 
@@ -729,22 +709,8 @@ Zepto(function ($) {
                     theApp.favouritesManager.saveData('favourites', theApp.lastUsernameUsed);
                     theApp.favouritesManager.update(theApp.lastUsernameUsed);
                 }
-//                for(var i = favouritesData.items.length-1; i >= 0; i--){  
-//                     if(favouritesData.items[i].favouriteId === favouriteToRemove.favouriteId){                     
-//                        favouritesData.items.splice(i,1);                        
-//                        theApp.favouritesManager.saveData('favourites', theApp.lastUsernameUsed);
-//                        theApp.favouritesManager.update(theApp.lastUsernameUsed);
-//                        return;
-//                    }
-//                }  
-
-//                favouritesData = theApp.favouritesManager.getData('favourites');
-//                favouritesData.items.push(favouriteToAdd);
-
             }
         }
-        // alert('REMOVED FROM FAVOURITES');
-        
     };
     
     // - favouriteId [optional]
