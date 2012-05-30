@@ -94,6 +94,7 @@ WebAppLoader.addModule({ name: 'storage', plugins: ['helper'], hasEvents: true, 
 
     // Public
     function clearAll() {
+        localStorage.clear();  
         output.log('clearAll()');
     }
 

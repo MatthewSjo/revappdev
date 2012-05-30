@@ -3,20 +3,20 @@
 // ------------------------------------------
 
 WebAppLoader.addModule({ name: 'toolbar', plugins: ['helper'], sharedModules: ['pageElements', 'localizationManager'], hasEvents: true }, function () {
-    var toolbar         = {},
-        output          = this.getConsole(),
-        eventManager    = this.getEventManager(),
-        settings        = this.getSharedModule('settings'),
-        el              = this.getSharedModule('pageElements'),
-        manager         = this.getSharedModule('localizationManager'),
-        helper          = this.getPlugin('helper'),
+    var toolbar          = {},
+        output           = this.getConsole(),
+        eventManager     = this.getEventManager(),
+        settings         = this.getSharedModule('settings'),
+        el               = this.getSharedModule('pageElements'),
+        manager          = this.getSharedModule('localizationManager'),
+        helper           = this.getPlugin('helper'),
         toolbarId        = '',
-        buttons         = [],
-        buttonIndices   = {},
-        visible         = true;
-        buttonWidth     = 30,
-        buttonPadding   = 5,
-        buttonsCount    = 0;
+        buttons          = [],
+        buttonIndices    = {},
+        visible          = true,
+        buttonWidth      = 30,
+        buttonPadding    = 5,
+        buttonsCount     = 0;
 
     $(el.toolbar).click(function () {
         eventManager.raiseEvent('onTap');
@@ -113,11 +113,11 @@ WebAppLoader.addModule({ name: 'toolbar', plugins: ['helper'], sharedModules: ['
                         if (isSelected) {
                             isSelected = false;
                             $(this).removeClass(classOn);
-                            $(this).addClass(classOff)
+                            $(this).addClass(classOff);
                         } else {
                             isSelected = true;
                             $(this).removeClass(classOff);
-                            $(this).addClass(classOn)
+                            $(this).addClass(classOn);
                         }
                         
                         buttons[i].isSelected = isSelected;

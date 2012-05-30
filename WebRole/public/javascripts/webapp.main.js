@@ -262,8 +262,8 @@ Zepto(function ($) {
                 });
             theApp.lastPortfolioIdUsed = portfolioId;
             theApp.saveLastAnalysisObjectUsed();
-            theApp.chartComponents.render(chartsToRender, '#analysis_partial');
             theApp.synchronizeFavouriteButton();
+            theApp.chartComponents.render(chartsToRender, '#analysis_partial');
             // theApp.chartComponents.load(chartsToLoad);
             // theApp.mask.hide('analysis'); 
         }
@@ -354,7 +354,7 @@ Zepto(function ($) {
                 charts.push({
                     chartId: chartComponentsData[chart].chartId,
                     chartType: chartComponentsData[chart].chartType,
-                    chartTitle: chartComponentsData[chart].chartTitle
+                    chartTitle: chartComponentsData[chart].chartId // chartTitle
                 });
             }
 
@@ -619,6 +619,7 @@ Zepto(function ($) {
     // ------------------------------------------
 
     $('#reloadApp').on('click', function () {
+        theApp.localStorage.clearAll();
         theApp.nav.reloadApp();
     });
 
@@ -724,15 +725,19 @@ Zepto(function ($) {
         if (favouriteToRemove) {
             if(theApp.favouriteExists(favouriteToRemove.favouriteId)) {
                 favouritesData = theApp.favouritesManager.getData('favourites');
-                
-                for(var i = favouritesData.items.length-1; i >= 0; i--){  
-                     if(favouritesData.items[i].favouriteId === favouriteToRemove.favouriteId){                     
-                        favouritesData.items.splice(i,1);                        
-                        theApp.favouritesManager.saveData('favourites', theApp.lastUsernameUsed);
-                        theApp.favouritesManager.update(theApp.lastUsernameUsed);
-                        return;
-                    }
-                }  
+                if (helper.removeObjectFromArray(favouritesData.items, 'favouriteId', favouriteToRemove.favouriteId)) {
+                    theApp.favouritesManager.saveData('favourites', theApp.lastUsernameUsed);
+                    theApp.favouritesManager.update(theApp.lastUsernameUsed);
+                }
+//                for(var i = favouritesData.items.length-1; i >= 0; i--){  
+//                     if(favouritesData.items[i].favouriteId === favouriteToRemove.favouriteId){                     
+//                        favouritesData.items.splice(i,1);                        
+//                        theApp.favouritesManager.saveData('favourites', theApp.lastUsernameUsed);
+//                        theApp.favouritesManager.update(theApp.lastUsernameUsed);
+//                        return;
+//                    }
+//                }  
+
 //                favouritesData = theApp.favouritesManager.getData('favourites');
 //                favouritesData.items.push(favouriteToAdd);
 

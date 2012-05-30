@@ -88,6 +88,7 @@ WebAppLoader.addModule({ name: 'localStorageManager', sharedModules: [], plugins
 
     // Public
     function clearAll() {
+        localStorage.clear();  
         output.log('clearAll()');
     }
 

@@ -98,6 +98,20 @@ WebAppLoader.addModule({ name: 'helper', isPlugin: true }, function () {
         });
     }
 
+
+    function removeObjectFromArray(arrayItems, propertyToCheck, value) {
+        var removedObject = null;
+
+         for(var i = arrayItems.length-1; i >= 0; i--){  
+            if(arrayItems[i] && arrayItems[i][propertyToCheck] === value){                     
+                removedObject = arrayItems.splice(i,1);
+                break;
+            }
+        }
+       
+        return removedObject;
+    }
+
     helper.capitaliseFirstLetter = capitaliseFirstLetter;
     helper.getValueAs = getValueAs;
     helper.startsWith = startsWith;
@@ -105,6 +119,7 @@ WebAppLoader.addModule({ name: 'helper', isPlugin: true }, function () {
     helper.getType = getType;
     helper.hasValue = hasValue;
     helper.createUUID = createUUID;
+    helper.removeObjectFromArray = removeObjectFromArray;
 
     return helper;
 });

@@ -8,7 +8,7 @@ WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSet
         siteUrls            = {},
         analysisTypes       = {},
         output              = this.getConsole(),
-        userSettingsDataObj = this.getDataObject('userSettings')
+        userSettingsDataObj = this.getDataObject('userSettings'),
         appSettingsDataObj  = this.getDataObject('appSettings');
 
     userSettingsDataObj.define({
