@@ -196,6 +196,9 @@ Zepto(function ($) {
         //
         //    - Init the localizationManager using the user language (or the default one).
         //    - Init the themeManager using the last theme used (or the default one).        
+        var lastThemeUsed = theApp.themesManager.loadData('theme', theApp.lastUsernameUsed);
+        theApp.themesManager.switchStyle(lastThemeUsed);
+        
         //
         //    - Load the favourites and fill the favourites slot.
         //    - Load the analysis settings (page and charts) and fill the analysis slot. 
@@ -724,6 +727,25 @@ Zepto(function ($) {
         }
     };
 
+    // ------------------------------------------
+    // THEMES MANAGER
+    // ------------------------------------------
+
+    theApp.themesManager = loader.loadModule('themesManager');
+    
+    theApp.themesManager.on('onThemeChanged', function (themeName) {
+        // theApp.scroll.rebuild('analysis');
+        // $(el.analysisPage + '_partial').html(data);
+        var themeData = theApp.themesManager.getData('theme') || null;
+
+        if (themeData) {
+            themeData.name = themeName;
+            theApp.themesManager.saveData('theme', theApp.lastUsernameUsed);
+        }
+        
+        output.log('onThemeChanged', themeName);
+    });
+    
     // ------------------------------------------
     // PORTFOLIOS LIST
     // ------------------------------------------

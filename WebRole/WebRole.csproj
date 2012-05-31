@@ -377,6 +377,7 @@
     <Content Include="public\javascripts\extensions\webapp.eventManager.js" />
     <Content Include="public\javascripts\modules\webapp.favouritesManager.js" />
     <Content Include="public\javascripts\modules\webapp.analysisManager.js" />
+    <Content Include="public\javascripts\modules\webapp.themesManager.js" />
     <Content Include="public\javascripts\pages\webapp.chartSettingsPage.js" />
     <Content Include="public\javascripts\pages\webapp.analysisSettingsPage.js" />
     <Content Include="public\javascripts\shared\webapp.chartComponents.js" />

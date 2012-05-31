@@ -18,6 +18,7 @@ WebAppLoader.addModule({ name: 'pageElements', isShared: true }, function () {
         loginPage                           : '#revolutionLogin',
         startupPage                         : '#startup',
         chartSettingsPage                   : '#chartSettings',
+        themesPage                          : '#themes',
 
         // Elements.
         portfolioAnalysisLink               : '.defaultAnalysisLink',
