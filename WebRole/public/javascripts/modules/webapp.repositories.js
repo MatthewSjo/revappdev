@@ -34,7 +34,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
                         slotItems[val.code] = val.name;
                     });
                 } else {
-                    slotItems.err = lang.noPortfolioSlotAvailable;
+                    slotItems.err = lang.spinningWheel.noPortfolioSlotAvailable;
                 }
 
                 setPortfoliosSlotItems(slotItems);
@@ -77,7 +77,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
             return analysisSlotItems;
             return (analysisSlotItems)
                 ? analysisSlotItems
-                : { err: lang.noAnalysisSlotAvailable };
+                : { err: lang.spinningWheel.noAnalysisSlotAvailable };
         }
 
         function setAnalysisSlotItems(items) {
@@ -118,7 +118,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
         function getTimePeriodsSlotItems() {
             return (timePeriodsSlotItems)
                 ? timePeriodsSlotItems
-                : { err: lang.noTimePeriodSlotAvailable };
+                : { err: lang.spinningWheel.noTimePeriodSlotAvailable };
         }
 
         function setTimePeriodsSlotItems(items) {
@@ -163,7 +163,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
         function getFavouritesSlotItems() {
             return (favouritesSlotItems)
                 ? favouritesSlotItems
-                : { err: lang.noFavouritesSlotAvailable };
+                : { err: lang.spinningWheel.noFavouritesSlotAvailable };
         }
 
         function setFavouritesSlotItems(items) {

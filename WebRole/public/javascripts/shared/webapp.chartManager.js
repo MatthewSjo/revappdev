@@ -127,9 +127,9 @@ WebAppLoader.addModule({ name: 'chartManager',
 
         // Create a new number formatter.
         formatter = new google.visualization.NumberFormat({
-            decimalSymbol: lang.decimalSymbol,
+            decimalSymbol: lang.shared.decimalSymbol,
             fractionDigits: 3,
-            groupingSymbol: lang.groupingSymbol,
+            groupingSymbol: lang.shared.groupingSymbol,
             negativeColor: '#cc0000',
             negativeParens: false
         });

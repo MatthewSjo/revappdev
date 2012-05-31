@@ -100,7 +100,7 @@ Zepto(function ($) {
             }
         }
     };
-
+    
     // ------------------------------------------
     // THE MAIN ENTRY POINT (Befor Login)
     // ------------------------------------------
@@ -407,8 +407,8 @@ Zepto(function ($) {
         buttonPrefix: 'toolbar_btn',
         visible: true,
         items: [
-            { id: 'favourite', title: lang.tabbarFavouritesTitle, class: 'favourite' }
-            // { id: 'favourite2', title: lang.tabbarFavouritesTitle, class: 'favourite' }
+            { id: 'favourite', title: lang.tabbar.favourites, class: 'favourite' }
+            // { id: 'favourite2', title: lang.tabbar.favourites, class: 'favourite' }
         ]
     };
 
@@ -436,14 +436,14 @@ Zepto(function ($) {
         buttonPrefix: 'tabbar_btn',
         visible: false,
         items: [
-         // { id: 'home', title: lang.tabbarHomeTitle, class: 'home' },
-            { id: 'favourites', title: lang.tabbarFavouritesTitle, class: 'favourites' },
-            { id: 'portfolios', title: lang.tabbarPortfolios, class: 'portfolios' },
-            { id: 'analysis', title: lang.tabbarAnalysis, class: 'analysis' },
-            { id: 'timePeriods', title: lang.tabbarTimePeriods, class: 'timeperiods' },
-         // { id: 'infos', title: lang.tabbarInfos, class: 'infos' },
-         // { id: 'more', title: lang.tabbarMore, class: 'more' }
-            { id: 'settings', title: lang.tabbarSettings, class: 'settings' }
+         // { id: 'home', title: lang.tabbar.home, class: 'home' },
+            { id: 'favourites', title: lang.tabbar.favourites, class: 'favourites' },
+            { id: 'portfolios', title: lang.tabbar.portfolios, class: 'portfolios' },
+            { id: 'analysis', title: lang.tabbar.analysis, class: 'analysis' },
+            { id: 'timePeriods', title: lang.tabbar.timePeriods, class: 'timeperiods' },
+         // { id: 'infos', title: lang.tabbar.infos, class: 'infos' },
+         // { id: 'more', title: lang.tabbar.more, class: 'more' }
+            { id: 'settings', title: lang.tabbar.settings, class: 'settings' }
         ]
     };
 

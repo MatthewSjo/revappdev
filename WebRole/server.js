@@ -4,8 +4,8 @@
 
 // Module Dependencies
 var express = require('express'),
-    routes = require('./routes'),
-    wm = require('./routes/web-methods');
+    routes  = require('./routes'),
+    wm      = require('./routes/web-methods');
 
 // Create and make global reference to new server,
 // and define which port it should be listening to.

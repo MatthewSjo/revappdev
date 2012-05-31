@@ -3,79 +3,100 @@
 // ==================================================== //
 
 // Overview:    Contains definitions for localizable text properties in all scripts.
-// Culture:     "en_US" (English, United States)
-//              "it_IT" (Italiano, Italia)
-// Notes:       ...
+// Culture:     "it_IT" (Italiano, Italiano)
 
+// ------------------------------------------
+// CLIENT SIDE DEFINITIONS
+// ------------------------------------------
 
-exports.en_US = {
-    // ---------------------------------------------------- | Login Page |
-    loginPage: {
-        loginText                   : 'Login',
-        signUpText                  : 'Sign Up',
-        supportText                 : 'Support',
-        userNamePlaceholderText     : 'User Name',
-        passwordPlaceholderText     : 'Password'
+exports.client = {
+    hello: 'Ciao',
+
+    // ------------------------------------------------------------------ | S |
+
+    shared: {
+        decimalSymbol               : ',',
+        groupingSymbol              : '.'
+    }, 
+
+    spinningWheel: {
+        noPortfolioSlotAvailable    : 'No portfolio available',
+        noAnalysisSlotAvailable     : 'No analysis available',
+        noTimePeriodSlotAvailable   : 'No time period available',
+        noFavouritesSlotAvailable   : 'No favourites'
     },
 
-    // ---------------------------------------------------- | Home Page |
-    homePage: {
-        logOutText                  : 'Log out',
-        portfoliosText              : 'Portfolios',
-        viewEulaText                : 'View EULA',
-        testText                    : 'Test'
+    // ------------------------------------------------------------------ | T |
+    
+    tabbar: {
+        favourites                  : 'Preferiti',
+        home                        : 'Home',
+        portfolios                  : 'Portfolio',
+        analysis                    : 'Analisi',
+        timePeriods                 : 'Time Periods',
+        infos                       : 'Info',
+        more                        : 'More',
+        settings                    : 'Impostazioni'
     },
 
-    // ---------------------------------------------------- | Portfolios Page |
-    portfoliosPage: {
-        portfoliosText              : 'Portfolios',
-        backText                    : 'Back'
-    },
+    // -------------------------- | END OF FILE | -------------------------- \\
+    //                     A way to avoid missing comma                      \\
 
-    // ---------------------------------------------------- | Portfolios Analysis Page |
-    portfoliosAnalysisPage: {
-        portfoliosAnalysisText      : 'Portfolios Analysis',
-        backText                    : 'Back'
-    },
+    eof                             : 'Arrivederci'
+};
 
-    // ---------------------------------------------------- | Analysis Page |
+// ------------------------------------------
+// SERVER SIDE DEFINITIONS
+// ------------------------------------------
+
+exports.server = {
+    hello: 'Ciao',
+
+    // ------------------------------------------------------------------ | A |
+    
     analysisPage: {
-        analysisText                : 'Analysis',
-        backText                    : 'Back'
+        analysisText                : 'Analisi',
+        backText                    : 'Indietro'
     },
-
-    // ---------------------------------------------------- | EULA Page |
-    eulaPage: {
-        eulaText                    : 'EULA',
-        backText                    : 'Back'
-    },
-
-    // ---------------------------------------------------- | Settings Page |
-    settingsPage: {
-        settingsText                : 'Settings',
-        backText                    : 'Back'
-    },
-
-    // ---------------------------------------------------- | Analysis Settings Pages |
-    analysisSettingsPages: {
-        settingsText                : 'Analysis Pages',
-        backText                    : 'Back'
-    },
-
-    // ---------------------------------------------------- | Analysis Settings Page |
+    
     analysisSettingsPage: {
         settingsText                : 'Analysis Page',
         backText                    : 'Back'
     },
 
-    // ---------------------------------------------------- | Shared |
-    shared: {
-        Monthly                     : 'Monthly',
-        Weekly                      : 'Weekly',
-        Quarterly                   : 'Quarterly'
+    analysisSettingsPages: {
+        settingsText                : 'Analysis Pages',
+        backText                    : 'Back'
     },
 
-    // ---------------------------------------------------- | Measures |
+    // ------------------------------------------------------------------ | E |
+
+    eulaPage: {
+        eulaText                    : 'EULA',
+        backText                    : 'Indietro'
+    },
+
+    // ------------------------------------------------------------------ | H |
+    
+    homePage: {
+        logOutText                  : 'Esci',
+        portfoliosText              : 'Portfolio',
+        viewEulaText                : 'Vedi EULA',
+        testText                    : 'Test'
+    },
+
+    // ------------------------------------------------------------------ | L |
+
+    loginPage: {
+        loginText                   : 'Accedi',
+        signUpText                  : 'Sottoscrivi',
+        supportText                 : 'Supporto',
+        userNamePlaceholderText     : 'Nome Utente',
+        passwordPlaceholderText     : 'Password'
+    },
+
+    // ------------------------------------------------------------------ | M |
+
     measures: {
         adjustedsharpe              : 'Adjusted Sharpe',
         alpha                       : 'Alpha',
@@ -346,51 +367,35 @@ exports.en_US = {
         xsreturnannifgtyr           : 'Relative Return (Annualized if > 1 Year)',
         ytmpend                     : 'Yield to Maturity End',
         ytmpstart                   : 'Yield to Maturity Start'
-    }
-};
-
-exports.it_IT = {
-    // ---------------------------------------------------- | Login Page |
-    loginPage: {
-        loginText                   : 'Accedi',
-        signUpText                  : 'Sottoscrivi',
-        supportText                 : 'Supporto',
-        userNamePlaceholderText     : 'Nome Utente',
-        passwordPlaceholderText     : 'Password'
     },
 
-    // ---------------------------------------------------- | Home Page |
-    homePage: {
-        logOutText                  : 'Esci',
-        portfoliosText              : 'Portfolio',
-        viewEulaText                : 'Vedi EULA',
-        testText                    : 'Test'
-    },
+    // ------------------------------------------------------------------ | P |
 
-    // ---------------------------------------------------- | Portfolios Page |
-    portfoliosPage: {
-        portfoliosText              : 'Portfolio',
-        backText                    : 'Indietro'
-    },
-
-    // ---------------------------------------------------- | Portfolios Analysis Page |
     portfoliosAnalysisPage: {
         portfoliosAnalysisText      : 'Analisi Portfolio',
         backText                    : 'Indietro'
     },
 
-    // ---------------------------------------------------- | Analysis Page |
-    analysisPage: {
-        analysisText                : 'Analisi',
+    portfoliosPage: {
+        portfoliosText              : 'Portfolio',
         backText                    : 'Indietro'
     },
 
-    // ---------------------------------------------------- | EULA Page |
-    eulaPage: {
-        eulaText                    : 'EULA',
-        backText                    : 'Indietro'
-    }// Login Page
-};
+    // ------------------------------------------------------------------ | S |
 
-// TODO: Create a function called 'checkLanguage(locale)'. Jade fails if a string
-// is missing. 
+    settingsPage: {
+        settingsText                : 'Settings',
+        backText                    : 'Back'
+    },
+
+    shared: {
+        Monthly                     : 'Monthly',
+        Weekly                      : 'Weekly',
+        Quarterly                   : 'Quarterly'
+    },
+
+    // -------------------------- | END OF FILE | -------------------------- \\
+    //                     A way to avoid missing comma                      \\
+
+    eof                             : 'Arrivederci'
+};

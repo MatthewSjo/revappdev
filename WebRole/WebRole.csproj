@@ -60,10 +60,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="languages\en_US\index.js" />
+    <Content Include="languages\index.js" />
+    <Content Include="languages\it_IT\index.js" />
     <Content Include="node_modules\.bin\express" />
     <Content Include="node_modules\.bin\express.cmd" />
     <Content Include="node_modules\.bin\jade" />
     <Content Include="node_modules\.bin\jade.cmd" />
+    <Content Include="node_modules\express-expose\.gitmodules" />
+    <Content Include="node_modules\express-expose\index.js" />
+    <Content Include="node_modules\express-expose\lib\express-expose.js" />
+    <Content Include="node_modules\express-expose\lib\require.js" />
     <Content Include="node_modules\express\.npmignore" />
     <Content Include="node_modules\express\bin\express" />
     <Content Include="node_modules\express\History.md" />
@@ -309,7 +316,6 @@
     <Content Include="node_modules\socket.io\node_modules\socket.io-client\lib\vendor\web-socket-js\flash-src\WebSocketMainInsecure.as" />
     <Content Include="node_modules\socket.io\node_modules\socket.io-client\lib\vendor\web-socket-js\README.md" />
     <Content Include="adapters.js" />
-    <Content Include="languages.js" />
     <Content Include="manifest.js" />
     <Content Include="public\images\btn_asset.png" />
     <Content Include="public\images\btn_attribution.png" />
@@ -390,8 +396,6 @@
     <Content Include="public\javascripts\plugins\webapp.helper.js" />
     <Content Include="public\javascripts\shared\webapp.chartDefaults.js" />
     <Content Include="public\javascripts\shared\webapp.localizationManager.js" />
-    <Content Include="public\javascripts\shared\webapp.lang.it-it.js" />
-    <Content Include="public\javascripts\shared\webapp.lang.en-us.js" />
     <Content Include="public\javascripts\shared\webapp.pageElements.js" />
     <Content Include="public\javascripts\modules\webapp.test.js" />
     <Content Include="public\javascripts\controls\webapp.scroll.js" />
@@ -749,6 +753,11 @@
     </Content>
     <Content Include="public\themes\compass-recipes\tests\_tests.scss" />
     <Content Include="public\themes\compass-recipes\VERSION" />
+    <None Include="node_modules\express-expose\.npmignore" />
+    <None Include="node_modules\express-expose\History.md" />
+    <None Include="node_modules\express-expose\Makefile" />
+    <None Include="node_modules\express-expose\package.json" />
+    <None Include="node_modules\express-expose\Readme.md" />
     <None Include="public\themes\scss\.sass-cache\003ffe4b9a31e923bea5e28a170e27d25aeaaa1a\_block-inline-block.scssc" />
     <None Include="public\themes\scss\.sass-cache\003ffe4b9a31e923bea5e28a170e27d25aeaaa1a\_clearfix.scssc" />
     <None Include="public\themes\scss\.sass-cache\003ffe4b9a31e923bea5e28a170e27d25aeaaa1a\_list-inline-block.scssc" />

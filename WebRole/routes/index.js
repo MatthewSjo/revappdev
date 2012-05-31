@@ -2,15 +2,44 @@
 // ROUTING
 // ------------------------------------------
 
-var host      = 'revapidev.statpro.com',
-    url       = '/v1/',
-    webApiUri = 'https://revapidev.statpro.com/v1/',
-    http      = require('http'),
-    webApi    = require('../web-api'),
-    lang      = require('../languages');
-
-var currentLanguage = {},
+var host            = 'revapidev.statpro.com',
+    url             = '/v1/',
+    webApiUri       = 'https://revapidev.statpro.com/v1/',
+    http            = require('http'),
+    webApi          = require('../web-api'),
+    expose          = require('../node_modules/express-expose'),
+    languages       = require('../languages'),
     defaultLanguage = 'en_US';
+
+/* ----------------------- ON/OFF ----------------------- /
+
+var serverSideObj = {
+    location: 'server side',
+    sayHello: function(){
+        return 'Hello from ' + this.location;
+    }
+}
+
+var os = require('os');
+
+var osInfo = {
+    platform: os.platform(),
+    hostname: os.hostname(),
+    type: os.type(),
+    platform: os.platform(),
+    arch: os.arch(),
+    release: os.release(),
+    uptime: os.uptime(),
+    loadavg :os.loadavg(),
+    totalmem :os.totalmem(),
+    freemem :os.freemem(),
+    cpus: os.cpus()
+};
+
+    // res.expose(serverSideObj, 'express.serverObj');
+    // res.expose(osInfo, 'express.os');
+
+// ------------------------------------------------------ */
 
 // ------------------------------------------
 // VIEW ROUTING
@@ -21,11 +50,17 @@ var currentLanguage = {},
 
 // Homepage
 exports.index = function (req, res) {
-    var viewModel = {};
+    var viewModel = {}, 
+        currentLanguage;
+    
+    // Set server side language.
+    currentLanguage = req.query.lang || defaultLanguage;
+    viewModel.lang = languages[currentLanguage].server;
 
-    currentLanguage = lang[req.query.lang] || lang[defaultLanguage];
-    viewModel.lang = currentLanguage;
-    var a = viewModel.lang.loginText;
+    // Set client side language.
+    res.exposeRequire();
+    res.expose(languages[currentLanguage].client, 'language');
+
     res.render('index', viewModel);
 };
 

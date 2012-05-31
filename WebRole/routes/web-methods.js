@@ -6,10 +6,10 @@
 // they do not attempt to render views when called; instead, they return data objects.
 
 var webApi = require('../web-api'),
-    adapters = require('../adapters'),
-    lang = require('../languages');
+    adapters = require('../adapters');
     
-var currentLanguage = {},
+var languages       = require('../languages'),
+    currentLanguage = {},
     defaultLanguage = 'en_US';
 
 // Local Authentication Confirmation
@@ -32,7 +32,7 @@ exports.segmentsTreeNode = function (req, res) {
 
     // If we had a language specified as part of the querystring,
     // retrieve it from the language module, otherwise load the default.
-    currentLanguage = lang[req.query.lang] || lang[defaultLanguage];
+    currentLanguage = languages[req.query.lang || defaultLanguage].server;
 
     // Get the correct adapter dependent on the chart type.
     adapter = adapters[req.body.type];
@@ -66,7 +66,7 @@ exports.timeSeries = function (req, res) {
 
     // If we had a language specified as part of the querystring,
     // retrieve it from the language module, otherwise load the default.
-    currentLanguage = lang[req.query.lang] || lang[defaultLanguage];
+    currentLanguage = languages[req.query.lang || defaultLanguage].server;
 
     // Get the correct adapter dependent on the chart type.
     adapter = adapters[req.body.type];

@@ -73,9 +73,6 @@ html(xmlns='http://www.w3.org/1999/xhtml')
 		script(src='/javascripts/shared/webapp.settings.js', type='text/javascript', charset='utf-8')
 		script(src='/javascripts/shared/webapp.pageElements.js', type='text/javascript', charset='utf-8')
 		script(src='/javascripts/shared/webapp.localizationManager.js', type='text/javascript', charset='utf-8')
-		script(src='/javascripts/shared/webapp.lang.it-it.js', type='text/javascript', charset='utf-8')
-		script(src='/javascripts/shared/webapp.lang.en-us.js', type='text/javascript', charset='utf-8')
-		script(src='/javascripts/shared/webapp.localizationManager.js', type='text/javascript', charset='utf-8')
 		script(src='/javascripts/shared/webapp.chartDefaults.js', type='text/javascript', charset='utf-8')
 		script(src='/javascripts/shared/webapp.chartManager.js', type='text/javascript', charset='utf-8')
 		script(src='/javascripts/shared/webapp.loadingMaskManager.js', type='text/javascript', charset='utf-8')
@@ -103,6 +100,6 @@ html(xmlns='http://www.w3.org/1999/xhtml')
 	body!= body
 	
 	script(type='text/javascript', src='src/itabbar.js')	
-	
+	script!= javascript
 	// script WebAppLoader.init();
 	// script(type='text/javascript', src='https://getfirebug.com/firebug-lite.js#startOpened ')

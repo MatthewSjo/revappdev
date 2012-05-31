@@ -2,13 +2,12 @@
 // TOOLBAR
 // ------------------------------------------
 
-WebAppLoader.addModule({ name: 'toolbar', plugins: ['helper'], sharedModules: ['pageElements', 'localizationManager'], hasEvents: true }, function () {
+WebAppLoader.addModule({ name: 'toolbar', plugins: ['helper'], sharedModules: ['pageElements'], hasEvents: true }, function () {
     var toolbar          = {},
         output           = this.getConsole(),
         eventManager     = this.getEventManager(),
         settings         = this.getSharedModule('settings'),
         el               = this.getSharedModule('pageElements'),
-        manager          = this.getSharedModule('localizationManager'),
         helper           = this.getPlugin('helper'),
         toolbarId        = '',
         buttons          = [],
