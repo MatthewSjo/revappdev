@@ -2,11 +2,13 @@
 // REPOSITORIES
 // ------------------------------------------
 
-WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'localizationManager'], hasEvents: true }, function () {
+WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'localizationManager', 'ajaxManager'],
+    hasEvents: true }, function () {
     var repositories    = {},
         eventManager    = this.getEventManager(),
         output          = this.getConsole(),
         settings        = this.getSharedModule('settings'),
+        ajaxManager     = this.getSharedModule('ajaxManager'),
         lang            = this.getSharedModule('localizationManager').getLanguage() || {};
 
     // Portfolio Slot Repository
@@ -28,7 +30,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
 
         function loadData(callback) {
             var slotItems = {};
-            $.post(settings.siteUrls.portfolios, { datatype: 'json' }, function (data) {
+            ajaxManager.post(settings.siteUrls.portfolios, { datatype: 'json' }, function (data) {
                 if (data) {
                     $.each(data.items, function (i, val) {
                         slotItems[val.code] = val.name;

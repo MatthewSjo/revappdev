@@ -85,6 +85,9 @@ Zepto(function ($) {
     // Chart Components
     theApp.chartComponents = loader.loadModule('chartComponents');
 
+    // Ajax Manager
+    theApp.ajaxManager = loader.loadModule('ajaxManager');
+
     // ------------------------------------------
     // LAST ANALYSIS DATA OBJECT
     // ------------------------------------------
@@ -526,7 +529,9 @@ Zepto(function ($) {
         theApp.doLogin(username, password);
     });
 
-    theApp.auth.on('onLoginSuccess', function (portfolioTotal) {
+    theApp.auth.on('onLoginSuccess', function (token) {
+        // If the user login successfully store the token.
+        theApp.ajaxManager.setToken(token);
         theApp.init();
     });
 
@@ -559,13 +564,13 @@ Zepto(function ($) {
         output.log('onHomeEnd');
     });
 
-    theApp.pageEventsManager.on('onPortfoliosEnd', function () {
-        $.post(siteUrls.portfolios, function (data) {
-            theApp.scroll.rebuild('portfolios');
-            $(el.portfoliosPage + '_partial').html(data);
-        });
-        output.log('onPortfoliosEnd');
-    });
+//    theApp.pageEventsManager.on('onPortfoliosEnd', function () {
+//        $.post(siteUrls.portfolios, function (data) {
+//            theApp.scroll.rebuild('portfolios');
+//            $(el.portfoliosPage + '_partial').html(data);
+//        });
+//        output.log('onPortfoliosEnd');
+//    });
 
     theApp.pageEventsManager.on('onEulaEnd', function () {
         $.get(siteUrls.eula, function (data) {

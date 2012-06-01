@@ -46,7 +46,7 @@ exports.segmentsTreeNode = function (req, res) {
         includeMeasuresFor: req.body.includeMeasuresFor
     };
 
-    webApi.getSegmentsTreeNode(oData, params, function (segments, analysis) {
+    webApi.getSegmentsTreeNode(oData, params, req.session.token, function (segments, analysis) {
         var jsonObj = adapter.convert(
             segments.data,
             req.body.include,
@@ -81,7 +81,7 @@ exports.timeSeries = function (req, res) {
         include: req.body.include
     };
 
-    webApi.getTimeSeries(params, function (series, analysis) {
+    webApi.getTimeSeries(params, req.session.token, function (series, analysis) {
         var jsonObj = adapter.convert(
             series.data.dataPoints,
             req.body.seriesType,

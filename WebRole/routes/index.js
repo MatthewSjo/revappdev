@@ -106,7 +106,7 @@ exports.portfolios = function (req, res) {
             top: ''
         };
 
-    webApi.getPortfolios(oData, datatype, function (resource, datatype) {
+    webApi.getPortfolios(oData, datatype, req.session.token, function (resource, datatype) {
         var viewModel;
         viewModel = resource.data || {};
 
@@ -127,7 +127,7 @@ exports.portfolioAnalysis = function (req, res) {
     var datatype = req.body.datatype || '',
         maxAttempts = 3; // TODO: We could use a const to set the maxAttempts.
     
-    webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, function (analysis) {
+    webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, req.session.token, function (analysis) {
         var viewModel = {};
         viewModel = analysis.data || {};
         
@@ -147,7 +147,7 @@ exports.portfolioAnalysis = function (req, res) {
 exports.analysis = function (req, res) {
     var maxAttempts = 3;
 
-    webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, function (analysis) {
+    webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, req.session.token, function (analysis) {
         var viewModel = {};
         viewModel = analysis.data || {};
         viewModel.layout = false;
@@ -157,7 +157,7 @@ exports.analysis = function (req, res) {
 
 // EULA
 exports.eula = function (req, res) {
-    webApi.getEula('fragment', function (resource) {
+    webApi.getEula('fragment', req.session.token, function (resource) {
         var viewModel = {};
 
         viewModel.eula = resource.data || {};

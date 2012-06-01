@@ -3,7 +3,7 @@
 // ------------------------------------------
 
 WebAppLoader.addModule({ name: 'chartManager',
-    sharedModules: ['settings', 'chartDefaults', 'colorManager', 'localizationManager'],
+    sharedModules: ['settings', 'chartDefaults', 'colorManager', 'localizationManager', 'ajaxManager'],
     isShared: true, hasEvents: true
 }, function () {
     var chartBase = {},
@@ -13,6 +13,7 @@ WebAppLoader.addModule({ name: 'chartManager',
         siteUrls = this.getSharedModule('settings').siteUrls,
         colorManager = this.getSharedModule('colorManager'),
         lang = this.getSharedModule('localizationManager').getLanguage() || {},
+        ajaxManager = this.getSharedModule('ajaxManager'),
         output = this.getConsole(),
         chartCount = 0,
         chartTotal = 0,
@@ -216,7 +217,7 @@ WebAppLoader.addModule({ name: 'chartManager',
         // NOTE: The dataType is set to 'text' rather than 'json' to stop Zepto
         // attempting to parse dates which the Google Visualization API expects 
         // to parse itself, causing an error.
-        $.post(url, params, onDataLoaded, 'text');
+        ajaxManager.post(url, params, onDataLoaded, 'text');
     }
 
     chartBase.create = create;

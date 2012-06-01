@@ -2,12 +2,14 @@
 // PORTFOLIO MANAGER
 // ------------------------------------------
 
-WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: ['settings'], dataObjects: ['portfolio'], hasEvents: true }, function () {
+WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: ['settings', 'ajaxManager'],
+    dataObjects: ['portfolio'], hasEvents: true }, function () {
     var portfolioManager    = {},
         output              = this.getConsole(),
         eventManager        = this.getEventManager(),
         settings            = this.getSharedModule('settings'),
         portfolioDataObj    = this.getDataObject('portfolio'),
+        ajaxManager         = this.getSharedModule('ajaxManager'),
         lastPortfolioIdUsed = '',
         lastPortfolioUsed   = {};
 
@@ -77,7 +79,7 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
                 oData.top = 1;
             }
 
-            $.post(settings.siteUrls.portfolios, { oData: oData, datatype: 'json' }, function (data) {
+            ajaxManager.post(settings.siteUrls.portfolios, { oData: oData, datatype: 'json' }, function (data) {
                 if (data && data.items && data.items[0]) {
                     output.log('loadPortfolioData', data);
                     portfolio.code = data.items[0].code;
@@ -99,7 +101,7 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
         }
 
         function loadPortfolioAnalysis(defaultAnalysisLink, callback) {
-            $.post(settings.siteUrls.portfolioAnalysis, { uri: defaultAnalysisLink, datatype: 'json' }, function (data) {
+            ajaxManager.post(settings.siteUrls.portfolioAnalysis, { uri: defaultAnalysisLink, datatype: 'json' }, function (data) {
                 output.log('loadPortfolioAnalysis', data);
                 if (data && data.analysis) {
                     portfolio.name = data.name || '';
@@ -127,7 +129,7 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
     
     // Public
     function getAnalysis(uri, callback) {
-        $.post(settings.siteUrls.analysis, { uri: uri }, function (data) {
+        ajaxManager.post(settings.siteUrls.analysis, { uri: uri }, function (data) {
             eventManager.raiseEvent('onAnalysisReceived', data);
             callback();
         });

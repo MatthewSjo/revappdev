@@ -380,6 +380,7 @@
     <Content Include="public\javascripts\modules\webapp.themesManager.js" />
     <Content Include="public\javascripts\pages\webapp.chartSettingsPage.js" />
     <Content Include="public\javascripts\pages\webapp.analysisSettingsPage.js" />
+    <Content Include="public\javascripts\shared\webapp.ajaxManager.js" />
     <Content Include="public\javascripts\shared\webapp.chartComponents.js" />
     <Content Include="public\javascripts\shared\webapp.colorManager.js" />
     <Content Include="public\javascripts\plugins\webapp.storage.js" />

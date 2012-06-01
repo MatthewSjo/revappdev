@@ -2,11 +2,12 @@
 // AUTHENTICATION
 // ------------------------------------------
 
-WebAppLoader.addModule({ name: 'auth', plugins: ['base64'], hasEvents: true }, function () {
+WebAppLoader.addModule({ name: 'auth', plugins: ['base64'], sharedModules: ['ajaxManager'], hasEvents: true }, function () {
     var auth            = {},
         output          = this.getConsole(),
         eventManager    = this.getEventManager(),
         base64          = this.getPlugin('base64'),
+        ajaxManager     = this.getSharedModule('ajaxManager'),
         hash            = '';
 
     function doLogin(username, password, url) {
@@ -17,11 +18,11 @@ WebAppLoader.addModule({ name: 'auth', plugins: ['base64'], hasEvents: true }, f
         token = 'Basic ' + tokenHash;
 
         // Post the created token and the user's email to the authenticate action.
-        $.post(url, { email: username, token: token }, function (response) {
+        ajaxManager.post(url, { email: username, token: token }, function (response) {
             // If our response indicates that the user has been authenticated...
             if (response.authenticated) {
                 hash = tokenHash;
-                eventManager.raiseEvent('onLoginSuccess', response.portfolioTotal);
+                eventManager.raiseEvent('onLoginSuccess', token); //response.portfolioTotal
             } else {
                 eventManager.raiseEvent('onLoginFailed', response);
             }

@@ -7,27 +7,43 @@ var http = require('http'),
     path = require("path"),
     url = require("url");
 
-// Resource Links
-var ResourceLinks = {
-    eula: '',
-    portfolios: '',
-    segmentsTreeNode: '',
-    timeSeries: ''
-};
+var MAX_ATTEMPTS = 1;
 
 // Current Analysis
-var currentAnalysis = {
-    currency: '',
-    statisticsFrequency: ''
-};
+var currentAnalysis = {};
 
-// User Account
-var account = {
-    email: '',
-    token: ''
-};
+function getCurrentAnalysis(token, resource){
+    if (resource) {
+        return currentAnalysis[token][resource] || null;
+    } else {
+        return currentAnalysis[token] || null;
+    }
+}
 
-var MAX_ATTEMPTS = 5;
+function setCurrentAnalysis(token, analysis, value){
+    if (!currentAnalysis[token]){
+        currentAnalysis[token] = {};
+    }
+
+    currentAnalysis[token][analysis] = value || null;
+}
+
+
+// Resource Links
+var resourceLinks = {};
+
+function getResourceLink(token, resource){
+    return resourceLinks[token][resource];
+}
+
+function setResourceLink(token, resource, link){
+    if (!resourceLinks[token]){
+        resourceLinks[token] = {};
+    }
+
+    resourceLinks[token][resource] = link;
+}
+
 
 // ------------------------------------------
 // HELPER FUNCTIONS
@@ -137,11 +153,13 @@ function applyODataToURI(oData, uri) {
 
     // Replace the placeholders, ensuring that the filter and orderby strings are suitably 
     // escaped, since their syntax can require the use of whitespace and special characters.
-    uri = uri.replace('{filter}', escape(filter))
-             .replace('{orderby}', escape(orderby))
-             .replace('{skip}', skip)
-             .replace('{top}', top);
-
+    if (uri) {
+        uri = uri.replace('{filter}', escape(filter))
+                 .replace('{orderby}', escape(orderby))
+                 .replace('{skip}', skip)
+                 .replace('{top}', top);
+    }
+    
     return uri;
 }
 
@@ -188,20 +206,16 @@ function applySegmentParamsToURI(params, uri) {
 exports.initService = function (email, token, uri, callback) {
     var options;
 
-    // Persist the user's email address and token in the user's account.
-    account.email = email;
-    account.token = token;
-
     // Generate the request configuration.
-    options = getRequestOptions(uri, account.token);
+    options = getRequestOptions(uri, token);
 
     // Attempt to get the service's entry point resource.
     getResource('service', options, function (resource) {
 
         if (!resource.error && resource.data) {
             // Populate the resources object.
-            ResourceLinks.eula = resource.data.eula.links.self.href;
-            ResourceLinks.portfolios = resource.data.portfolios.links.portfoliosQuery.href;
+            setResourceLink(token, 'eula', resource.data.eula.links.self.href);
+            setResourceLink(token, 'portfolios', resource.data.portfolios.links.portfoliosQuery.href);
         }
 
         // Invoke the callback function, passing in the resource JSON.
@@ -217,14 +231,14 @@ exports.initService = function (email, token, uri, callback) {
 //                may be null, and an error property, which will either be boolean false 
 //                (indicating that the request was successful), a boolean true, or a 
 //                complete error object (both indicating that the request failed).
-exports.getPortfolios = function (oData, datatype, callback) {
+exports.getPortfolios = function (oData, datatype, token, callback) {
     var options, portfoliosQuery;
 
     // Format a portfolio querystring based on the oData and the portfolio resource link.
-    portfoliosQuery = applyODataToURI(oData, ResourceLinks.portfolios);
+    portfoliosQuery = applyODataToURI(oData, getResourceLink(token, 'portfolios'));
 
     // Generate the request configuration based on the portfolio query.
-    options = getRequestOptions(portfoliosQuery, account.token);
+    options = getRequestOptions(portfoliosQuery, token);
 
     // Attempt to get a list of the user's portfolios, filtered by the query.
     getResource('portfolios', options, function (resource) {
@@ -242,11 +256,11 @@ exports.getPortfolios = function (oData, datatype, callback) {
 //                    may be null, and an error property, which will either be boolean false 
 //                    (indicating that the request was successful), a boolean true, or a 
 //                    complete error object (both indicating that the request failed).
-exports.getPortfolioAnalysis = function (uri, attempts, callback) {
+exports.getPortfolioAnalysis = function (uri, attempts, token, callback) {
     var options;
 
     // Generate the request configuration.
-    options = getRequestOptions(uri, account.token);
+    options = getRequestOptions(uri, token);
     
     attempts = (attempts > MAX_ATTEMPTS)
         ? MAX_ATTEMPTS
@@ -272,17 +286,17 @@ exports.getPortfolioAnalysis = function (uri, attempts, callback) {
                 // ...attempt to get the last successful analysis.
                 uri = uri.replace('lastSuccessful=false', 'lastSuccessful=true');
                 // Use the modified URI with this function.
-                exports.getPortfolioAnalysis(uri, attempts, callback);
+                exports.getPortfolioAnalysis(uri, attempts, token, callback);
                 return;
             }
 
             // Populate the resources object.
-            ResourceLinks.segmentsTreeNode = resource.data.analysis.results.links.segmentsTreeRootNodeQuery.href;
-            ResourceLinks.timeSeries = resource.data.analysis.results.links.timeSeriesQuery.href;
+            setResourceLink(token, 'segmentsTreeNode', resource.data.analysis.results.links.segmentsTreeRootNodeQuery.href);
+            setResourceLink(token, 'timeSeries', resource.data.analysis.results.links.timeSeriesQuery.href);
 
             // Persist the current analysis' currency and stats frequency for other API calls.
-            currentAnalysis.currency = resource.data.analysis.currency;
-            currentAnalysis.statisticsFrequency = resource.data.analysis.statisticsFrequency;
+            setCurrentAnalysis(token, 'currency', resource.data.analysis.currency);
+            setCurrentAnalysis(token, 'statisticsFrequency', resource.data.analysis.statisticsFrequency);
         }
 
         callback(resource);
@@ -298,22 +312,29 @@ exports.getPortfolioAnalysis = function (uri, attempts, callback) {
 //                may be null, and an error property, which will either be boolean false 
 //                (indicating that the request was successful), a boolean true, or a 
 //                complete error object (both indicating that the request failed).
-exports.getSegmentsTreeNode = function (oData, params, callback) {
-    var options, filterQuery, segmentsTreeNodeQuery;
+exports.getSegmentsTreeNode = function (oData, params, token, callback) {
+    var options, filterQuery, segmentsTreeNodeQuery, uri;
 
-    // Format a segments tree node querystring based on the oData and the tree node resource link.
-    filterQuery = applyODataToURI(oData, params.url || ResourceLinks.segmentsTreeNode);
+    uri = params.url || getResourceLink(token, 'segmentsTreeNode') || null;
+    if (uri) {
 
-    // Format the querystring with filters applied to add further parameters.
-    segmentsTreeNodeQuery = applySegmentParamsToURI(params, filterQuery);
+        // Format a segments tree node querystring based on the oData and the tree node resource link.
+        filterQuery = applyODataToURI(oData, uri);
 
-    // Generate the request configuration based on the segment tree node query.
-    options = getRequestOptions(segmentsTreeNodeQuery, account.token);
+        // Format the querystring with filters applied to add further parameters.
+        segmentsTreeNodeQuery = applySegmentParamsToURI(params, filterQuery);
 
-    // Attempt to get the specified segment tree nodes.
-    getResource('segmentsTreeNode', options, function (resource) {
-        callback(resource, currentAnalysis);
-    });
+        // Generate the request configuration based on the segment tree node query.
+        options = getRequestOptions(segmentsTreeNodeQuery, token);
+
+        // Attempt to get the specified segment tree nodes.
+        getResource('segmentsTreeNode', options, function (resource) {
+            callback(resource, getCurrentAnalysis(token));
+        });
+    } else {
+        
+        console.log('getSegmentsTreeNode - no URI');
+    }
 };
 
 // Attempts to retrieve the specified time series for the requested portfolio.
@@ -324,18 +345,18 @@ exports.getSegmentsTreeNode = function (oData, params, callback) {
 //                may be null, and an error property, which will either be boolean false 
 //                (indicating that the request was successful), a boolean true, or a 
 //                complete error object (both indicating that the request failed).
-exports.getTimeSeries = function (params, callback) {
+exports.getTimeSeries = function (params, token, callback) {
     var options, timeSeriesQuery;
 
     // Format the querystring with filters applied to add further parameters.
-    timeSeriesQuery = applySegmentParamsToURI(params, params.url || ResourceLinks.timeSeries);
+    timeSeriesQuery = applySegmentParamsToURI(params, params.url || getResourceLink(token, 'timeSeries'));
 
     // Generate the request configuration based on the time series query.
-    options = getRequestOptions(timeSeriesQuery, account.token);
+    options = getRequestOptions(timeSeriesQuery, token);
 
     // Attempt to get the specified time series.
     getResource('timeSeries', options, function (resource) {
-        callback(resource, currentAnalysis);
+        callback(resource, getCurrentAnalysis(token));
     });
 };
 
@@ -350,12 +371,12 @@ exports.getTimeSeries = function (params, callback) {
 //                may be null, and an error property, which will either be boolean false 
 //                (indicating that the request was successful), a boolean true, or a 
 //                complete error object (both indicating that the request failed).
-exports.getEula = function (eulaFormat, callback) {
+exports.getEula = function (eulaFormat, token, callback) {
     var options;
 
     function getEulaDoc(eulaUri) {
         // Generate the request configuration.
-        options = getRequestOptions(eulaUri, account.token);
+        options = getRequestOptions(eulaUri, token);
         // Attempt to get the EULA.
         getResource('', options, function (eulaDoc) {
             callback(eulaDoc);
@@ -363,7 +384,7 @@ exports.getEula = function (eulaFormat, callback) {
     }
 
     // Generate the request configuration.
-    options = getRequestOptions(ResourceLinks.eula, account.token);
+    options = getRequestOptions(getResourceLink(token, 'eula'), token);
 
     // Attempt to get the EULA link dependent on the format requested.
     getResource('eula', options, function (resource) {
