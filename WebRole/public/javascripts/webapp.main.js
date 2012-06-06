@@ -282,6 +282,7 @@ Zepto(function ($) {
     };
 
     theApp.chartComponents.on('onAllChartsLoaded', function(){
+        theApp.scroll.rebuild('analysis');
         theApp.mask.updateAnalysisText(' ');
         theApp.mask.hide('analysis');    
     });
@@ -353,7 +354,7 @@ Zepto(function ($) {
                 charts.push({
                     chartId: chartComponentsData[chart].chartId,
                     chartType: chartComponentsData[chart].chartType,
-                    chartTitle: chartComponentsData[chart].chartId // chartTitle
+                    chartTitle: chartComponentsData[chart].title // chartTitle
                 });
             }
 

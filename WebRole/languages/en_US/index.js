@@ -39,6 +39,39 @@ exports.client = {
         settings                    : 'Settings'
     },
 
+    chart: {
+        performanceBarTitle                 : 'Bar Chart Segment Return',
+        riskBarTitle                        : 'Bar Chart Weight Vs Contrib to VaR',
+        allocationbarTitle                  : 'Bar Chart of Relative Weight',
+        contributionBarTitle                : 'Bar Chart of Security Level Contribution',
+        attributionBarTitle                 : 'Bar Chart of Relative Weight Vs Total Effects',
+        fixedIncomeContributionBarTitle     : 'Fixed Income Contribution',
+        carryContributionBarTitle           : 'Carry Contribution',
+        yieldCurveContributionBarTitle      : 'Yield Curve Contribution',
+        riskNumbersBarTitle                 : 'Risk Numbers',
+        performanceBubbleTitle              : 'Scatter Chart',
+        riskBubbleTitle                     : 'Scatter of Portfolio Segment Return / VaR',
+        contributionColumnTitle             : 'Column Chart of Portfolio Contribution Vs Benchmark Contribution',
+        interestRatesExposureColumnTitle    : 'Interest Rates Exposure Column',
+        creditSpreadsExposure_columnTitle   : 'Credit Spreads Exposure',
+        dv01ExposureColumnTitle             : 'DV01 Exposure Column',
+        attributionColumnTitle              : 'Column Chart of Attribution Effects',
+        allocationPieTitle                  : 'Pie Chart of Portfolio Weight',
+        contributionPieTitle                : 'Pie Chart - Heat Map. Portfolio Weight',
+        riskPietitle                        : 'Pie Chart - Heat Map. Portfolio Absolute Weight',
+        performanceGridTitle                : 'Grid of Performance Stats',
+        attributionGridTitle                : 'Grid of Total Level Attribution Effects',
+        fixedIncomeGridTitle                : 'Fixed Income Grid',
+        fixedIncomeContributionGridTitle    : 'Fixed Income Contribution Grid',
+        fixedIncomeExposureGridTitle        : 'Fixed Income Exposure Grid',
+        performanceTopTenGridTitle          : 'Grid of Top 10 Securities by Weight',
+        contributionTopTenGridTitle         : 'Grid of Top 5 Bottom 5 Securities By Contribution',
+        riskTopTenGridTitle                 : 'Grid of Top 10 Securities by Risk Weight',
+        performanceTreemapTitle             : 'Tree Map Portfolio Weight vs Return',
+        riskTreemapTitle                    : 'Tree Map Individual Security Weight VaR',
+        performanceLineTitle                : 'Performance Line'
+    },
+
     // -------------------------- | END OF FILE | -------------------------- \\
     //                     A way to avoid missing comma                      \\
 

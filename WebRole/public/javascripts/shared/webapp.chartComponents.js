@@ -2,7 +2,7 @@
 // CHARTS MANAGER
 // ------------------------------------------
 
-WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedModules: ['chartManager'],
+WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedModules: ['chartManager', 'localizationManager'],
     dataObjects: ['charts'], hasEvents: true, isShared: true }, function () {
     
     var chartComponents     = {},
@@ -10,6 +10,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         eventManager        = this.getEventManager(),
         helper              = this.getPlugin('helper'),
         chartManager        = this.getSharedModule('chartManager'),
+        lang                = this.getSharedModule('localizationManager').getLanguage() || {};
         createdCharts       = {},
         chartsDataObject    = this.getDataObject('charts'),
         chartsData          = null;
@@ -21,6 +22,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
 
         'performance_bar': {
             chartId: 'performance_bar',
+            title: lang.chart.performanceBarTitle,
             chartType: 'BarChart',
             timePeriods: 'Earliest',
             include: 'childSegments',
@@ -31,6 +33,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             }},
         'risk_bar': {
             chartId: 'risk_bar',
+            title: lang.chart.riskBarTitle,
             chartType: 'BarChart',
             timePeriods: 'Earliest',
             include: 'childSegments',
@@ -41,6 +44,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             }},
         'allocation_bar': {
             chartId: 'allocation_bar',
+            title: lang.chart.allocationbarTitle,    
             chartType: 'BarChart',
             timePeriods: 'Earliest',
             include: 'childSegments',
@@ -51,6 +55,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             }},
         'contribution_bar': {
             chartId: 'contribution_bar',
+            title: lang.chart.contributionBarTitle,
             chartType: 'BarChart',
             timePeriods: 'Earliest',
             include: 'securities',
@@ -61,6 +66,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             }},
         'attribution_bar': {
             chartId: 'attribution_bar',
+            title: lang.chart.attributionBarTitle,
             chartType: 'BarChart',
             timePeriods: 'Earliest',
             include: 'childSegments',
@@ -69,6 +75,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         },
         'fixedIncomeContribution_bar': {
             chartId: 'fixedIncomeContribution_bar',
+            title: lang.chart.fixedIncomeContributionBarTitle,
             chartType: 'BarChart',
             timePeriods: 'Earliest',
             include: 'none',
@@ -80,6 +87,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             }},
         'carryContribution_bar': {
             chartId: 'carryContribution_bar',
+            title: lang.chart.carryContributionBarTitle,
             chartType: 'BarChart',
             timePeriods: 'Earliest',
             include: 'none',
@@ -91,6 +99,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             }},
         'yieldCurveContribution_bar': {
             chartId: 'yieldCurveContribution_bar',
+            title: lang.chart.yieldCurveContributionBarTitle,
             chartType: 'BarChart',
             timePeriods: 'Earliest',
             include: 'none',
@@ -102,6 +111,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             }},
         'riskNumbers_bar': {
             chartId: 'riskNumbers_bar',
+            title: lang.chart.riskNumbersBarTitle,
             chartType: 'BarChart',
             timePeriods: 'Earliest',
             include: 'none',
@@ -118,6 +128,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         
         'performance_bubble': {
             chartId: 'performance_bubble',
+            title: lang.chart.performanceBubbleTitle,
             chartType: 'BubbleChart',
             timePeriods: 'Earliest',
             include: 'childSegments',
@@ -129,6 +140,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             }},
         'risk_bubble': {
             chartId: 'risk_bubble',
+            title: lang.chart.riskBubbleTitle,
             chartType: 'BubbleChart',
             timePeriods: 'Earliest',
             include: 'childSegments',
@@ -145,6 +157,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         
         'contribution_column': {
             chartId: 'contribution_column',
+            title: lang.chart.contributionColumnTitle,
             chartType: 'ColumnChart',
             timePeriods: 'Earliest',
             include: 'childSegments',
@@ -155,6 +168,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             }},
         'interestRatesExposure_column': {
             chartId: 'interestRatesExposure_column',
+            title: lang.chart.interestRatesExposureColumnTitle,
             chartType: 'ColumnChart',
             timePeriods: 'Earliest',
             include: 'childSegments',
@@ -166,6 +180,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             }},
         'creditSpreadsExposure_column': {
             chartId: 'creditSpreadsExposure_column',
+            title: lang.chart.creditSpreadsExposure_columnTitle,
             chartType: 'ColumnChart',
             timePeriods: 'Earliest',
             include: 'childSegments',
@@ -177,6 +192,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             }},
         'dv01Exposure_column': {
             chartId: 'dv01Exposure_column',
+            title: lang.chart.dv01ExposureColumnTitle,
             chartType: 'ColumnChart',
             timePeriods: 'Earliest',
             include: 'childSegments',
@@ -188,6 +204,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             }},
         'attribution_column': {
             chartId: 'attribution_column',
+            title: lang.chart.attributionColumnTitle,
             chartType: 'ColumnChart',
             timePeriods: 'Earliest',
             include: 'childSegments',
@@ -203,6 +220,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         
         'allocation_pie': {
             chartId: 'allocation_pie',
+            title: lang.chart.allocationPieTitle,
             chartType: 'PieChart',
             timePeriods: 'Earliest',
             include: 'childSegments',
@@ -211,6 +229,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         },
         'contribution_pie': {
             chartId: 'contribution_pie',
+            title: lang.chart.contributionPieTitle,
             chartType: 'PieChart',
             timePeriods: 'Earliest',
             include: 'childSegments',
@@ -221,6 +240,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         },
         'risk_pie': {
             chartId: 'risk_pie',
+            title: lang.chart.riskPietitle,
             chartType: 'PieChart',
             timePeriods: 'Earliest',
             include: 'childSegments',
@@ -236,6 +256,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
 
         'performance_grid': {
             chartId: 'performance_grid',
+            title: lang.chart.performanceGridTitle,
             chartType: 'Table',
             timePeriods: 'Earliest',
             include: 'none',
@@ -250,6 +271,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         },
         'attribution_grid': {
             chartId: 'attribution_grid',
+            title: lang.chart.attributionGridTitle,
             chartType: 'Table',
             timePeriods: 'Earliest',
             include: 'childSegments',
@@ -260,6 +282,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         },
         'fixedIncome_grid': {
             chartId: 'fixedIncome_grid',
+            title: lang.chart.fixedIncomeGridTitle,
             chartType: 'Table',
             timePeriods: 'Earliest',
             include: 'childSegments',
@@ -270,6 +293,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         },
         'fixedIncomeContribution_grid': {
             chartId: 'fixedIncomeContribution_grid',
+            title: lang.chart.fixedIncomeContributionGridTitle,
             chartType: 'Table',
             timePeriods: 'Earliest',
             include: 'childSegments',
@@ -280,6 +304,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         },
         'fixedIncomeExposure_grid': {
             chartId: 'fixedIncomeExposure_grid',
+            title: lang.chart.fixedIncomeExposureGridTitle,
             chartType: 'Table',
             timePeriods: 'Earliest',
             include: 'childSegments',
@@ -290,6 +315,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         },
         'performanceTopTen_grid': {
             chartId: 'performanceTopTen_grid',
+            title: lang.chart.performanceTopTenGridTitle,
             chartType: 'Table',
             timePeriods: 'Earliest',
             include: 'securities',
@@ -299,6 +325,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         },
         'contributionTopTen_grid': {
             chartId: 'contributionTopTen_grid',
+            title: lang.chart.contributionTopTenGridTitle,
             chartType: 'Table',
             timePeriods: 'Earliest',
             include: 'securities',
@@ -308,6 +335,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         },
         'riskTopTen_grid': {
             chartId: 'riskTopTen_grid',
+            title: lang.chart.riskTopTenGridTitle,
             chartType: 'Table',
             timePeriods: 'Earliest',
             include: 'securities',
@@ -322,6 +350,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
 
         'performance_treemap': {
             chartId: 'performance_treemap',
+            title: lang.chart.performanceTreemapTitle,
             chartType: 'TreeMap',
             timePeriods: 'Earliest',
             include: 'securities',
@@ -330,6 +359,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         },
         'risk_treemap': {
             chartId: 'risk_treemap',
+            title: lang.chart.riskTreemapTitle,
             chartType: 'TreeMap',
             timePeriods: 'Earliest',
             include: 'childSegments',
@@ -343,6 +373,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
 
         'performance_line': {
             chartId: 'performance_line',
+            title: lang.chart.performanceLineTitle,
             chartType: 'LineChart',
             timePeriods: 'Earliest',
             measures: ['rp', 'rb'],
@@ -380,20 +411,29 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
     }
 
     function render(chartsToRender, renderTo) {
+        var chart = null;
+            chartTitle = '';
+
         // Create the chart containers according to the chart types.
         for (var i = 0; i < chartsToRender.length; i++) {
-            if (chartsToRender[i].chartId === '') {
+            chart = chartsData[chartsToRender[i].chartId] || null;
+            
+            chartTitle = (chart)
+                ? chart.title
+                : chartsToRender[i].title || ''; // TODO: Remove this line of code when charts layout is completed.
+
+            if (!chart) {
                 $(renderTo).append(
                     $(
                         '<div class="analysisSummarySection">' + 
-                        '   <h2>' + chartsToRender[i].title + '</h2>' +
+                        '   <h2>' + chartTitle + '</h2>' +
                         '</div>'
                     ));    
             } else {
                 $(renderTo).append(
                     $(
                         '<div class="analysisSummarySection">' + 
-                        '   <h2>' + chartsToRender[i].title + '</h2>' +
+                        '   <h2>' + chartTitle + '</h2>' +
                         '   <div class="analysisComponentContainer">' +
                         '       <div id="' + chartsToRender[i].chartId + '" class="chartContainer"></div>' +
                         '   </div>' + 
