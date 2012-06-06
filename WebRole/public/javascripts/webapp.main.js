@@ -36,7 +36,7 @@ Zepto(function ($) {
 
     theApp.lastUsernameUsed = '';
     theApp.lastPasswordUsed = '';
-    theApp.lastPortfolioIdUsed = '';
+    theApp.lastFavouriteSelected = '';
 
     // Default settings.
     theApp.lastAnalysisObjectUsed = {
@@ -207,6 +207,8 @@ Zepto(function ($) {
         //    - Load the analysis settings (page and charts) and fill the analysis slot. 
         //      NB: storing the analysis settings is important because we reuse them later!
         //
+        var lastAnalysisObjectUsed = userSettingsData.lastAnalysisObjectUsed || null;
+
         //    - Try to retrieve the last analysisDataObject used. This should contain:
         //          - id analysis page
         //          - id portfolio
@@ -223,7 +225,7 @@ Zepto(function ($) {
 
         theApp.analysisManager.update(theApp.lastUsernameUsed);
         theApp.favouritesManager.update(theApp.lastUsernameUsed);
-        theApp.updateAnalysisPage();
+        theApp.updateAnalysisPage(lastAnalysisObjectUsed);
     };
 
     theApp.updateAnalysisPage = function(analysisDataObjectValue) {
@@ -243,7 +245,7 @@ Zepto(function ($) {
                 analysisPage        = {},
                 portfolioId         = portfolio.code,
                 portfolioName       = portfolio.name;
-
+        
             analysisPagesData = theApp.analysisManager.getData('analysisPages');
 
             analysisPage = jLinq.from(analysisPagesData.items)
@@ -254,6 +256,7 @@ Zepto(function ($) {
                 .sort('order')
                 .select();
 
+            // Update the page title.
             $(el.analysisTitle).html(analysisPage[0].name);
 
             theApp.setLastAnalysisObjectUsed(analysisDataObject);
@@ -261,7 +264,7 @@ Zepto(function ($) {
                 portfolioId: portfolioId, 
                 portfolioName: portfolioName 
                 });
-            theApp.lastPortfolioIdUsed = portfolioId;
+
             theApp.saveLastAnalysisObjectUsed();
             theApp.synchronizeFavouriteButton();
             theApp.chartComponents.render(chartsToRender, '#analysis_partial');
@@ -279,6 +282,10 @@ Zepto(function ($) {
 
     theApp.saveLastAnalysisObjectUsed = function () {
         // TODO: Add code here to save in the user space the last analysis object used.
+        var userSettingsData    = theApp.settings.loadData('userSettings', theApp.lastUsernameUsed);
+
+        userSettingsData.lastAnalysisObjectUsed = theApp.getLastAnalysisObjectUsed();
+        theApp.settings.saveData('userSettings', theApp.lastUsernameUsed);
     };
 
     theApp.chartComponents.on('onAllChartsLoaded', function(){
@@ -437,7 +444,19 @@ Zepto(function ($) {
     // ------------------------------------------
     // TABBAR
     // ------------------------------------------
-
+    /* 
+    theApp.lastAnalysisObjectUsed = {
+        portfolioId: '',
+        portfolioName: '',
+        analysisId: 'performances',
+        analysisName: 'Performances',
+        timePeriodId: 'Earliest',
+        timePeriodName: 'Earliest',
+        chartId : 'performance_bar',
+        timeStamp: ''
+    };    
+    
+    */
     var tabbarConfig = {
         tabbarId: el.tabbar,
         buttonPrefix: 'tabbar_btn',
@@ -458,19 +477,19 @@ Zepto(function ($) {
     theApp.tabbar.create(tabbarConfig);
 
     theApp.tabbar.on('onFavouritesTap', function () {
-        theApp.spinningWheel.getSlot('favourites').show();
+        theApp.spinningWheel.getSlot('favourites').show(theApp.lastFavouriteSelected);
     });
 
     theApp.tabbar.on('onPortfoliosTap', function () {
-        theApp.spinningWheel.getSlot('portfolios').show(theApp.lastPortfolioIdUsed); //'ADVISOR');
+        theApp.spinningWheel.getSlot('portfolios').show(theApp.getLastAnalysisObjectUsed().portfolioId); //'ADVISOR');
     });
 
     theApp.tabbar.on('onAnalysisTap', function () {
-        theApp.spinningWheel.getSlot('analysis').show();
+        theApp.spinningWheel.getSlot('analysis').show(theApp.getLastAnalysisObjectUsed().analysisId);
     });
 
     theApp.tabbar.on('onTimePeriodsTap', function () {
-        theApp.spinningWheel.getSlot('timePeriods').show();
+        theApp.spinningWheel.getSlot('timePeriods').show(theApp.getLastAnalysisObjectUsed().timePeriodId);
     });
 
     theApp.tabbar.on('onSettingsTap', function () {
@@ -647,8 +666,6 @@ Zepto(function ($) {
 
     theApp.favouritesManager = loader.loadModule('favouritesManager');
     
-    // NOTA BENE: the analysis manager is updated the first time when the home
-    // page is loaded.
     theApp.favouritesManager.on('onFavouritesUpdated', function (favourites) {
         theApp.updateFavouritesSlot(favourites);
     });
@@ -675,6 +692,12 @@ Zepto(function ($) {
 
     // - favouriteId [optional]
     theApp.favouriteExists = function (favouriteId) {
+        var favouriteToCheck = theApp.getFavouriteById(favouriteId);
+ 
+        return (favouriteToCheck && true);
+    };
+    
+    theApp.getFavouriteById = function (favouriteId) {
         var favourite           = null,
             favouriteToCheck    = null,
             favouritesData      = theApp.favouritesManager.getData('favourites');
@@ -688,9 +711,9 @@ Zepto(function ($) {
             .equals('favouriteId', favouriteId)
             .select()[0] || null;
 
-        return (favouriteToCheck && true);
+        return (favouriteToCheck);
     };
-    
+
     theApp.addToFavourites = function () {
         var favouriteToAdd = {},
             favouritesData = null;
@@ -702,6 +725,7 @@ Zepto(function ($) {
                 favouritesData.items.push(favouriteToAdd);
                 theApp.favouritesManager.saveData('favourites', theApp.lastUsernameUsed);
                 theApp.favouritesManager.update(theApp.lastUsernameUsed);
+                theApp.setLastFavouriteSelected(favouriteToAdd.favouriteId);
             }
         }
     };
@@ -724,14 +748,20 @@ Zepto(function ($) {
     
     // - favouriteId [optional]
     theApp.synchronizeFavouriteButton = function(favouriteId) {
-        var favouriteButton = theApp.toolbar.getButton('favourite');
+        var favourite       = theApp.getFavouriteById(favouriteId), 
+            favouriteButton = theApp.toolbar.getButton('favourite');
 
-        if(theApp.favouriteExists(favouriteId) && favouriteButton) {
+        if(favourite && favouriteButton) {
+            theApp.setLastFavouriteSelected(favourite.favouriteId);
             favouriteButton.select();
         } else {
             favouriteButton.deselect();
         }
     };
+
+    theApp.setLastFavouriteSelected = function(favouriteId){
+        theApp.lastFavouriteSelected = favouriteId;
+    }
 
     // ------------------------------------------
     // THEMES MANAGER
