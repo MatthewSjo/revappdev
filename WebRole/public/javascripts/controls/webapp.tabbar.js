@@ -57,8 +57,30 @@ WebAppLoader.addModule({ name: 'tabbar', plugins: ['helper'], hasEvents: true },
                 badgeId: badgePrefix + id,
                 title: val.title,
                 class: val.class,
+                highlight: val.highlight || false,
                 eventHandler: 'on' + id + 'Tap',
+                isHighlighted: false,
                 isDisabled: false,
+                setHighlight: function (highlighted) {
+                    var tabbarItem = $('#' + this.linkId);
+
+                    if(this.highlight) {
+                        if (this.isHighlighted) {
+                            $("#tabbar a").removeClass("current");
+                            $("#tabbar div").removeClass("current");
+                            this.isHighlighted = false;    
+                        } else {
+                            $("#tabbar a").addClass("current").not(tabbarItem).removeClass("current");
+                            $("#tabbar div").addClass("current").not(tabbarItem).removeClass("current");
+                            this.isHighlighted = true;
+                        }
+                    }
+                },
+                toggleHighlighted: function () {
+                    if (this.highlight) {
+                        this.setHighlight(!this.isHighlighted);
+                    }
+                },
                 setDisabled: function (disabled) {
                     var opacity = (disabled) ? 0.20 : 1,
                             badgeBackColor = (disabled) ? '#333' : '#f00';
@@ -99,7 +121,10 @@ WebAppLoader.addModule({ name: 'tabbar', plugins: ['helper'], hasEvents: true },
                 if (visible) {
                     if (!buttons[i].isDisabled) {
                         output.log(buttons[i].title + ' was tapped');
-                        eventManager.raiseEvent(buttons[i].eventHandler);
+                        buttons[i].toggleHighlighted();
+                        eventManager.raiseEvent(buttons[i].eventHandler, buttons[i]);
+                            // ? !buttons[i].isHighlighted 
+                            // : false);
                     } else {
                         output.log(buttons[i].title + ' is disabled');
                     }
@@ -124,3 +149,4 @@ WebAppLoader.addModule({ name: 'tabbar', plugins: ['helper'], hasEvents: true },
 
     return tabbar;
 });
+

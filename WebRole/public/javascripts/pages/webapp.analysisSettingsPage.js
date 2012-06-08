@@ -11,9 +11,11 @@ WebAppLoader.addModule({ name: 'analysisSettingsPage', plugins: ['helper'], shar
         el                   = this.getSharedModule('pageElements');
 
     function onAnalysisPageClick() {
-        var pageId = $(this).attr("data-link");
-        
-        eventManager.raiseEvent('onClick', pageId);
+        var pageId = $(this).data("link");
+
+        if (pageId) {
+            eventManager.raiseEvent('onClick', pageId);
+        }
 
         return false;
     }
@@ -45,34 +47,36 @@ WebAppLoader.addModule({ name: 'analysisSettingsPage', plugins: ['helper'], shar
             if (isUserDefined) {
                 $(appendTo).append(
                     $('<li>').attr('class', 'arrow').append(
-                        $('<a>').attr({'href': '#', 'data-link' : pageId })
+                        $('<a>').attr({ 'href': '#', 'data-link': pageId, 'data-swipe': true })
                         .html(pageName)
                         .on('click', onAnalysisPageClick)
                     )
                 );
             } else {
-                $(appendTo).append(
+                $(appendTo).append( 
                     $('<li>').attr('class', '').append(
-                        $('<a>').attr({'href': '#', 'data-link' : pageId })
+                        $('<a>').attr({ 'href': '#', 'data-link' : pageId })
                         .html(pageName)
                         // .on('click', onAnalysisPageClick)
                     )
                 );  
             }
         }
+        
+        $(appendTo).append(
+            $('<li>').attr('class', 'arrow').append(
+                $('<a>').attr({ 'href': '#', 'data-link' : pageId })
+                .html('Add New Page...') // TODO: Localize string 'Add New Page...'
+                .on('click', onNewAnalysisPageClick)
+            )
+        );
+    
+        eventManager.raiseEvent('onPageLoaded');
     }
 
-    $(el.addNewAnalysisPage).on('click', onNewAnalysisPageClick);
+    // $(el.addNewAnalysisPage).on('click', onNewAnalysisPageClick);
 
     analysisSettingsPage.create = create;
 
     return analysisSettingsPage;
 });
-
-/*
-    $(
-        '<li class="arrow">' + 
-        '   <a href="#" data-link="' + link + '">' + title + '</a>' +
-        '</li>'
-    )
-*/

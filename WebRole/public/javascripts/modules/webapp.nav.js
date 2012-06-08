@@ -13,7 +13,7 @@ WebAppLoader.addModule({ name: 'nav', hasEvents: true }, function () {
 
     // Future uses.
     function goToPage(idPage, animation) {
-        jQT.goTo($(idPage), 'fade');
+        jQT.goTo($(idPage), animation || 'fade');
     }
 
     function reloadApp() {

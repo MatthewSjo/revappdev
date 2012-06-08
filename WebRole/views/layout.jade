@@ -15,7 +15,7 @@ html(xmlns='http://www.w3.org/1999/xhtml')
 		link(rel='apple-touch-startup-image', href='/images/splash-portrait.gif', media='screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)')
 		link(rel='apple-touch-startup-image', href='/images/splash-landscape.gif', media='screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape) and (-webkit-min-device-pixel-ratio: 1)')
 		link(rel='apple-touch-startup-image', href='/images/splash-landscape-retina.gif', media='screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape) and (-webkit-min-device-pixel-ratio: 2)')
-
+		
 		// Styles
 		style(type='text/css', media='screen')
 			@import "/themes/css/mobile-dark.css";
@@ -29,6 +29,7 @@ html(xmlns='http://www.w3.org/1999/xhtml')
 		link(rel='stylesheet', href='stylesheets/spinningwheel.css')
 		link(rel='stylesheet', href='stylesheets/login.css')
 		// link(rel='stylesheet', href='stylesheets/swipeview.css')
+		link(rel='stylesheet', href='stylesheets/jquery.swipeButton-1.2.css')
 
 		// Google Visualization API & Package
 		script(src='https://www.google.com/jsapi?autoload={"modules":[{"name":"visualization","version":"1"}]}', type='text/javascript', charset='utf-8')
@@ -44,6 +45,7 @@ html(xmlns='http://www.w3.org/1999/xhtml')
 		script(src='/src/spinningwheel.js', type='text/javascript', charset='utf-8')		
 		script(src='/src/jlinq.js', type='text/javascript', charset='utf-8')	
 		// script(src='/src/swipeview.js', type='text/javascript', charset='utf-8')
+		script(src='/src/jquery.swipeButton-1.2.0.js', type='text/javascript', charset='utf-8')
 
 		// script(type='text/javascript', src='src/jqt.autotitles.min.js')
 		script(type='text/javascript', src='src/add2home.js', charset='utf-8')
@@ -68,6 +70,7 @@ html(xmlns='http://www.w3.org/1999/xhtml')
 		script(src='/javascripts/controls/webapp.spinningWheel.js', type='text/javascript', charset='utf-8')
 		script(src='/javascripts/controls/webapp.scroll.js', type='text/javascript', charset='utf-8')
 		// script(src='/javascripts/controls/webapp.swipeview.js', type='text/javascript', charset='utf-8')
+		script(src='/javascripts/controls/webapp.swipeButton.js', type='text/javascript', charset='utf-8')
 
 		// Shared
 		script(src='/javascripts/shared/webapp.settings.js', type='text/javascript', charset='utf-8')

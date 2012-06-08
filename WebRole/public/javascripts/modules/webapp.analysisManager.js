@@ -161,12 +161,12 @@ WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'],
             order       : 100,
             userDefined : true,
             charts      : [{
-                    chartId: 'performance_bar',
+                    chartId: 'fi_contribution_group', //'performance_bar',
                     order   : 1
-                },{
+                }/*,{
                     chartId: 'risk_bar',
                     order   : 2
-                }]             
+                }*/]             
         }]
     });
 

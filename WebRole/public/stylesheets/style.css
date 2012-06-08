@@ -110,6 +110,13 @@ div#jqt #about a
     height: 500px;
 }
 
+.halfSizeChart 
+{
+	/*display: inline-block; */
+	float: left;
+	width: 50%;
+}
+
 #contribution_bar { height: 1000px; }
 
 #fixedIncomeContribution_bar,
@@ -214,6 +221,7 @@ div#jqt #about a
     margin: 40px 0 0 -100px;
     color: #ffffff;
     text-align: center;
+    font-family: GillSans-Bold !important;
 }
 /*
 #myloading

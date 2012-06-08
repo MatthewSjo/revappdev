@@ -11,9 +11,9 @@
 					li.login_style
 						div
 							input#passwordTextbox.login_style(type='password', placeholder='#{lang.loginPage.passwordPlaceholderText}', name='user[password]', value='StatPro123')
-				ul.rounded
-					li.login_button
-						a#loginButton(href='#')  #{lang.loginPage.loginText}
+				// ul.rounded
+				//	li.login_button
+				a#loginButton.whiteButton(href='#')  #{lang.loginPage.loginText}
 				p.login_style #{lang.loginPage.signUpText} | #{lang.loginPage.supportText}
 				p.login_style ver. 01a
 		#home(data-pageEvents="both")
@@ -78,7 +78,7 @@
 		#settings(data-pageEvents="both")
 			.toolbar
 				h1 #{lang.settingsPage.settingsText}
-				a.back(href='#') #{lang.settingsPage.backText}
+				// a.back(href='#') #{lang.settingsPage.backText}
 			#wrapper
 				#scroller
 					// form.scroll
@@ -101,8 +101,8 @@
 							span.toggle
 								input(type="checkbox")
 					h2 TODO: Memory Statistics / Consumed
-					a#reloadApp.grayButton(href='#') Reload App
-					a#resetApp.grayButton(href='#') Reset App (TODO)
+					a#reloadApp.whiteButton(href='#') Reload App
+					a#resetApp.whiteButton(href='#') Reset App (TODO)
 		#themes
 			.toolbar
 				h1 Themes
@@ -115,11 +115,11 @@
 				a.back(href='#') #{lang.analysisSettingsPages.backText}
 			#wrapper
 				#scroller
-					h2 Default Pages
-					ul#listAnalysisSettingsDefaultPages.edit.rounded
 					h2 User Pages
 					ul#listAnalysisSettingsUserPages.edit.rounded
-					a#addNewAnalysisPage.grayButton(href='#') Add New Page
+					h2 Default Pages
+					ul#listAnalysisSettingsDefaultPages.edit.rounded
+					// a#addNewAnalysisPage.whiteButton(href='#') Add New Page
 
 		// TODO: Change server localization file. analysisSettingsPage -> chartSettingsPage
 		#chartSettings(data-pageEvents="both")
@@ -141,7 +141,7 @@
 									// optgroup(label='Bar Charts')
 									// 	option(value='3') Bar 1
 									// 	option(value='4') Bar 2
-					a#saveChartSettings.grayButton(href='#') Save
+					a#saveChartSettings.whiteButton(href='#') Save
 
 		#test
 			.toolbar

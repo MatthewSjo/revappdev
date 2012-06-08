@@ -88,6 +88,9 @@ Zepto(function ($) {
     // Ajax Manager
     theApp.ajaxManager = loader.loadModule('ajaxManager');
 
+    // Swipe Button Control
+    theApp.swipeButton = loader.loadModule('swipeButton');
+
     // ------------------------------------------
     // LAST ANALYSIS DATA OBJECT
     // ------------------------------------------
@@ -244,7 +247,9 @@ Zepto(function ($) {
                 analysisPagesData   = {},
                 analysisPage        = {},
                 portfolioId         = portfolio.code,
-                portfolioName       = portfolio.name;
+                portfolioName       = portfolio.name,
+                analysisPageCharts  = null,
+                analysisPageTitle   = '';
         
             analysisPagesData = theApp.analysisManager.getData('analysisPages');
 
@@ -252,12 +257,21 @@ Zepto(function ($) {
                 .equals('id', analysisDataObject.analysisId)
                 .select();
 
-            chartsToRender = jLinq.from(analysisPage[0].charts)
+            // If no analysis page has been found load the first one.            
+            if (analysisPage[0] && analysisPage[0].charts) {
+                analysisPageCharts = analysisPage[0].charts;
+                analysisPageTitle = analysisPage[0].name;
+            } else {
+                analysisPageCharts =analysisPagesData.items[0].charts;
+                analysisPageTitle = analysisPagesData.items[0].name;
+            }
+            
+            chartsToRender = jLinq.from(analysisPageCharts)
                 .sort('order')
                 .select();
 
             // Update the page title.
-            $(el.analysisTitle).html(analysisPage[0].name);
+            $(el.analysisTitle).html(analysisPageTitle);
 
             theApp.setLastAnalysisObjectUsed(analysisDataObject);
             theApp.setLastAnalysisObjectUsed({ 
@@ -322,9 +336,26 @@ Zepto(function ($) {
     };
 
     theApp.analysisSettingsPage.on('onClick', function (analysisId) {
-        theApp.nav.goToPage(el.chartSettingsPage);
+        theApp.nav.goToPage(el.chartSettingsPage, 'slideup');
         theApp.showChartSettingsPage(analysisId);
     });
+    
+    theApp.analysisSettingsPage.on('onPageLoaded', function () {
+        // containerId, label, callback, autoRemove, buttonClass
+        theApp.swipeButton.addTo('#listAnalysisSettingsUserPages', 'Delete', theApp.onUserPageDeleted, true);
+    });
+    
+    theApp.onUserPageDeleted = function ($button) {
+        var userPageId = $button.parent().parent().data('link') || null,
+            analysisPagesData;
+
+        analysisPagesData = theApp.analysisManager.getData('analysisPages');
+        if (helper.removeObjectFromArray(analysisPagesData.items, 'id', userPageId)) {
+            theApp.analysisManager.saveData('analysisPages', theApp.lastUsernameUsed);
+            theApp.updateAnalysisSlot(analysisPagesData);
+        }
+        // alert(userPageId);
+    }
 
     theApp.showChartSettingsPage = function (analysisId) {
         var analysisPagesData    = {}, 
@@ -373,6 +404,8 @@ Zepto(function ($) {
 
     theApp.chartSettingsPage.on('onSettingsChanged', function(updatedAnalysisPage){
         var analysisPage, analysisPagesData;
+        
+        updatedAnalysisPage.name = updatedAnalysisPage.name || 'Untitled'; // TODO: Localize string 'Untitled'
 
         analysisPagesData = theApp.analysisManager.getData('analysisPages');
         analysisPage = jLinq.from(analysisPagesData.items)
@@ -387,6 +420,17 @@ Zepto(function ($) {
 
         theApp.analysisManager.saveData('analysisPages', theApp.lastUsernameUsed);
         theApp.updateAnalysisSlot(analysisPagesData);
+        
+        // Deselct Settings button.
+        theApp.tabbar.getButton('settings').setHighlight(false);
+
+        // Show the new analysis page.
+        theApp.setLastAnalysisObjectUsed({ 
+            analysisId: updatedAnalysisPage.id, 
+            analysisName: updatedAnalysisPage.name
+        });
+        theApp.updateAnalysisPage();
+
     });
 
     // Memoization pattern.
@@ -469,7 +513,7 @@ Zepto(function ($) {
             { id: 'timePeriods', title: lang.tabbar.timePeriods, class: 'timeperiods' },
          // { id: 'infos', title: lang.tabbar.infos, class: 'infos' },
          // { id: 'more', title: lang.tabbar.more, class: 'more' }
-            { id: 'settings', title: lang.tabbar.settings, class: 'settings' }
+            { id: 'settings', title: lang.tabbar.settings, class: 'settings', highlight: true }
         ]
     };
 
@@ -492,8 +536,13 @@ Zepto(function ($) {
         theApp.spinningWheel.getSlot('timePeriods').show(theApp.getLastAnalysisObjectUsed().timePeriodId);
     });
 
-    theApp.tabbar.on('onSettingsTap', function () {
-        theApp.nav.goToPage($(el.settingsPage), 'flip');
+    theApp.tabbar.on('onSettingsTap', function (button) {
+        if (button.isHighlighted) {
+            theApp.nav.goToPage($(el.settingsPage));
+        } else {
+            theApp.nav.goToPage($(el.analysisPage));
+            // theApp.updateAnalysisPage();
+        }
     });
 
     // ------------------------------------------
@@ -606,12 +655,12 @@ Zepto(function ($) {
     });
 
     theApp.pageEventsManager.on('onSettingsStart', function () {
-        // theApp.scroll.rebuild('settings');
+        theApp.scroll.rebuild('settings');
         output.log('onSettingsStart');
     });
 
     theApp.pageEventsManager.on('onSettingsEnd', function () {
-        theApp.scroll.rebuild('settings');
+        // theApp.scroll.rebuild('settings');
         output.log('onSettingsEnd');
     });
 
@@ -625,6 +674,18 @@ Zepto(function ($) {
         theApp.showAnalysisSettingsPage();
         output.log('onAnalysisPagesSettingsStart');
     });
+
+    theApp.pageEventsManager.on('onChartSettingsEnd', function () {
+        // theApp.scroll.rebuild('chartSettings');
+        // TODO: focus() doesn't work on iOS...
+        setTimeout(function () {
+            $(el.analysisPageNameTextbox).focus();
+        }, 200);
+        
+        output.log('onChartSettingsStart');
+    });
+
+    
 
     // ------------------------------------------
     // EVENTS

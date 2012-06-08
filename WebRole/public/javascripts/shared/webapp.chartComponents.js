@@ -378,8 +378,80 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             timePeriods: 'Earliest',
             measures: ['rp', 'rb'],
             seriesType: 'cumulativeIndexed'
-        }
+        },
 
+    // ------------------------------------------
+    // CHART GROUPS
+    // ------------------------------------------
+
+        'fi_contribution_group': {
+            chartId: 'fi_contribution_group',
+            title: 'Bar Charts of Fixed Income Contributions:', // lang.chart.performanceLineTitle,
+            chartType: 'Group',
+            charts: [{
+                    chartId: 'fixedIncomeContribution_bar',
+                    width: '50%',
+                    height: '100%'
+                },{
+                    chartId: 'carryContribution_bar',
+                    width: '50%',
+                    height: '100%'
+
+                },{
+                    chartId: 'yieldCurveContribution_bar',
+                    width: '50%',
+                    height: '100%'
+                },{
+                    chartId: 'riskNumbers_bar',
+                    width: '50%',
+                    height: '100%'
+                }]
+        },
+        
+        'fi_exposures_group': {
+            chartId: 'fi_exposures_group',
+            title: 'Column Charts of Fixed Income Exposures:', // lang.chart.performanceLineTitle,
+            chartType: 'Group',
+            charts: [{
+                    chartId: 'interestRatesExposure_column',
+                    width: '50%',
+                    height: '100%'
+                },{
+                    chartId: 'creditSpreadsExposure_column',
+                    width: '50%',
+                    height: '100%'
+                },{
+                    chartId: 'dv01Exposure_column',
+                    width: '50%',
+                    height: '100%'
+                }]
+        },
+        
+        'fi_gridRiskNumber_group': {
+            chartId: 'fi_gridRiskNumber_group',
+            title: 'Grid of Risk Numbers:', // lang.chart.performanceLineTitle,
+            chartType: 'Group',
+            charts: [{
+                    chartId: 'fixedIncome_grid',
+                    width: '100%',
+                    height: '100%'
+                },{
+                    chartId: 'fixedIncomeContribution_grid',
+                    width: '100%',
+                    height: '100%'
+                }]
+        },
+
+        'fi_gridExposure_group': {
+            chartId: 'fi_gridExposure_group',
+            title: 'Grid of FI Exposure:', // lang.chart.performanceLineTitle,
+            chartType: 'Group',
+            charts: [{
+                    chartId: 'fixedIncomeExposure_grid',
+                    width: '100%',
+                    height: '100%'
+                }]
+        }
     });
 
     chartsData = chartsDataObject.getData();
@@ -410,39 +482,87 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         }
     }
 
-    function render(chartsToRender, renderTo) {
-        var chart = null;
-            chartTitle = '';
+    function render(charts, renderTo) {
+        var chartsToLoad    = [],
+            htmlToAppend    = '';
 
-        // Create the chart containers according to the chart types.
-        for (var i = 0; i < chartsToRender.length; i++) {
-            chart = chartsData[chartsToRender[i].chartId] || null;
-            
-            chartTitle = (chart)
-                ? chart.title
-                : chartsToRender[i].title || ''; // TODO: Remove this line of code when charts layout is completed.
+        function openAnalysisSection(chartTitle) {
+            htmlToAppend = '';
+            htmlToAppend += 
+                '<div class="analysisSummarySection">' + 
+                '   <h2>' + chartTitle + '</h2>' +
+                '   <div class="analysisComponentContainer">';
+        }
 
-            if (!chart) {
-                $(renderTo).append(
-                    $(
-                        '<div class="analysisSummarySection">' + 
-                        '   <h2>' + chartTitle + '</h2>' +
-                        '</div>'
-                    ));    
-            } else {
-                $(renderTo).append(
-                    $(
-                        '<div class="analysisSummarySection">' + 
-                        '   <h2>' + chartTitle + '</h2>' +
-                        '   <div class="analysisComponentContainer">' +
-                        '       <div id="' + chartsToRender[i].chartId + '" class="chartContainer"></div>' +
-                        '   </div>' + 
-                        '</div>'
-                    ));
-            }
+        function addChartToAnalysisSection(chartToAdd) {
+            htmlToAppend += 
+                '       <div id="' + chartToAdd.chartId + '" class="chartContainer"></div>';
+        }
+
+        function addChartToGroup(chartToAdd) {
+            htmlToAppend += 
+                '       <div id="' + chartToAdd.chartId + 
+                '" class="halfSizeChart" style="width: ' + chartToAdd.width + ';' +
+                'height: ' + chartToAdd.height + ';"></div>';
+        }
+
+        function closeAnalysisSection() {
+            htmlToAppend += 
+                '       <div style="clear: both;"></div>' +
+                '   </div>' + 
+                '</div>';
+        }
+
+        function appendHtmlToAnalysisSection() {
+            $(renderTo).append($(htmlToAppend));
         }
         
-        load(chartsToRender);   
+        function addChartToChartsToRender(chartToAdd) {
+            var chartsToRender = [],
+                isGroup        = false;
+            
+            // Extract the charts to render if the current chart is a group.
+            if (chartToAdd.chartType === 'Group') {
+                chartsToRender = chartToAdd.charts;
+                isGroup = true;
+            } else {
+                chartsToRender.push(chartToAdd);
+            }
+
+            if (isGroup) {
+                openAnalysisSection(chartToAdd.title);
+            }
+
+            // Create the chart containers according to the chart types.
+            for (var i = 0; i < chartsToRender.length; i++) {
+                chart = chartsData[chartsToRender[i].chartId] || null;
+                
+                // Add current chart to the list of charts to load.
+                chartsToLoad.push(chart);
+
+                if (chart) {
+                    if (isGroup) {
+                        addChartToGroup(chartsToRender[i]);
+                    } else {
+                        openAnalysisSection(chart.title);
+                        addChartToAnalysisSection(chartsToRender[i]);
+                        closeAnalysisSection();
+                        appendHtmlToAnalysisSection();
+                    }
+                }
+            }
+        
+            if (isGroup) {
+                closeAnalysisSection();
+                appendHtmlToAnalysisSection();
+            }
+        }
+
+        for (var i = 0; i < charts.length; i++) {
+            addChartToChartsToRender(chartsData[charts[i].chartId] || null);
+        }
+
+        load(chartsToLoad);   
     }
 
     // TODO: Investigate...
