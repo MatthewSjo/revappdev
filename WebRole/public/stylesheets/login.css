@@ -52,11 +52,22 @@ div#jqt ul li.login_button a
 
 p.login_style
 {
-    font-size: 12pt;
+    font-family: HelveticaNeue-Light;
+    font-size: 10pt;
     text-align: center;
     color: #d69c9f;
     text-shadow: 0px 1px 0px #77050b;
-    margin-top: 60px;
+    margin-top: 20px;
+}
+
+#loginErrorText
+{
+    font-family: HelveticaNeue-Bold;
+    font-size: 13pt;
+    text-align: center;
+    color: #ffffff;
+    text-shadow: 0px 1px 0px #77050b;
+    margin-top: 10px;
 }
 
 #myloading

@@ -14,8 +14,10 @@
 				ul.rounded
 					li.login_button
 						a#loginButton(href='#')  #{lang.loginPage.loginText}
+				p#loginErrorText
 				p.login_style #{lang.loginPage.signUpText} | #{lang.loginPage.supportText}
-				p.login_style ver. 01a
+				p.login_style #{new Date().getFullYear()} StatPro International SARL | ver. 01a
+
 		#home(data-pageEvents="both")
 			.toolbar
 				#toolbar_logo
@@ -54,18 +56,7 @@
 				// #btn_favourite_off
 			#wrapper
 				#scroller
-					#analysis_partial
-			//
-				#swipeview-wrapper
-					ul#swipeview-nav
-						li#prev(onclick='gallery.prev()') -
-						li.selected(onclick='gallery.goToPage(0)')
-						li(onclick='gallery.goToPage(1)')
-						li(onclick='gallery.goToPage(2)')
-						li(onclick='gallery.goToPage(3)')
-						li(onclick='gallery.goToPage(4)')
-						li(onclick='gallery.goToPage(5)')
-						li#next(onclick='gallery.next()') +					
+					#analysis_partial				
 
 		#eula(data-pageEvents="both", class='pageWithEvents')
 			.toolbar
@@ -135,13 +126,15 @@
 								input#analysisPageNameTextbox(type='text', placeholder='Page Name', value='')						
 							li.arrow
 								select#chartsSelectbox(multiple="multiple")
-									// optgroup(label='Line Charts')
-									// 	option(value='1') Chart 1
-									// 	option(value='2') Chart 2
-									// optgroup(label='Bar Charts')
-									// 	option(value='3') Bar 1
-									// 	option(value='4') Bar 2
 					a#saveChartSettings.grayButton(href='#') Save
+		
+		#error(data-pageEvents="both")
+			.toolbar
+				h1 #{lang.errorPage.errorText}
+			#wrapper
+				#scroller
+					#errorMessage
+						p#errorMessageText
 
 		#test
 			.toolbar

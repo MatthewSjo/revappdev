@@ -19,11 +19,13 @@ WebAppLoader.addModule({ name: 'pageElements', isShared: true }, function () {
         startupPage                         : '#startup',
         chartSettingsPage                   : '#chartSettings',
         themesPage                          : '#themes',
+        errorPage                           : '#error',
 
         // Elements.
         portfolioAnalysisLink               : '.defaultAnalysisLink',
         toolbar                             : '.toolbar',
         loginButton                         : '#loginButton',
+        loginErrorText                      : '#loginErrorText',
         loadingMask                         : '#myloading',
         chartLoadingMask                    : '#myLoadingCharts',
         userNameTextbox                     : '#userNameTextbox',
@@ -36,7 +38,10 @@ WebAppLoader.addModule({ name: 'pageElements', isShared: true }, function () {
         saveChartSettings                   : '#saveChartSettings',
         addNewAnalysisPage                  : '#addNewAnalysisPage',
         analysisTitle                       : '#analysisTitle',
-        loadingText                         : '#loadingText'
+        loadingText                         : '#loadingText',
+        timePeriodStartDateText             : '#timePeriodStartDateText',
+        timePeriodEndDateText               : '#timePeriodEndDateText',
+        errorMessageText                    : '#errorMessageText'
     };
 
     return pageElements;

@@ -34,13 +34,19 @@ WebAppLoader.addModule({ name: 'chartManager',
         resetCounter();
     }
 
+    // Function to be called when the chart has finished attempting to load.
+    // NOTE: 'Finished' does not necessarily infer success - a chart may have 
+    // unsuccessfully attempted to load and in doing so will pass an error
+    // object as an argument to this function.
+    function onChartReady(errorObj) {
+        var container;
 
-    // Function to be called when the chart has successfully loaded and drawn itself.
-    function onChartReady() {
+        // Regardless of any error state, we still want the attempted load count to be
+        // updated and the 'onAnalysisLoading' and 'onAnalysisLoaded' events raised.
         if (isLoading) {
             chartCount += 1;
             eventManager.raiseEvent('onAnalysisLoading', chartCount, chartTotal);
-            
+
             // If all of the charts created have been loaded...
             if (chartCount === chartTotal) {
                 // ...fire the onAnalysisLoaded event.
@@ -48,11 +54,20 @@ WebAppLoader.addModule({ name: 'chartManager',
                 eventManager.raiseEvent('onAnalysisLoaded');
             }
         }
+
+        // If we've got an error...
+        if (errorObj && errorObj.id) {
+            // ...retrieve the container of the chart causing the problem.
+            container = google.visualization.errors.getContainer(errorObj.id);
+            // Display a generic error message rather than a potentially confusing Google one.
+            $('#' + container.id).html(lang.errors.chartFailedText);
+        }
     }
 
     // Function to create a new chart.
     // 'config' - An object containing configuration properties for the chart to be created.
     function create(config) {
+
         if (!config) {
             output.log('Config is not specified.');
             return;
@@ -98,8 +113,9 @@ WebAppLoader.addModule({ name: 'chartManager',
         chart.startDate = config.startDate;
         chart.timePeriods = config.timePeriods;
 
-        // Register the chart with the ready event listener.
+        // Register the chart with the ready and error event listeners.
         google.visualization.events.addListener(chart, 'ready', onChartReady);
+        google.visualization.events.addListener(chart, 'error', onChartReady);
 
         // Return the chart.
         return chart;

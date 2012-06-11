@@ -78,21 +78,24 @@ div#jqt #about a
 .summaryReturn { text-align: right; }
  
 #analysis_partial h2, #analysis_partial h3 {    
-    font-family: GillSans-Bold !important;
+    font-family: HelveticaNeue-Bold !important;
     margin: 0 !important;
     padding: 0 !important;
-    text-transform: uppercase;
     -webkit-margin-before: 0 !important;
     -webkit-margin-after: 0 !important; 
     text-shadow: none !important;
-    line-height: 0.9 !important;
+    line-height: 0.95 !important;
     font-size: 16pt;
 }
  
-.summaryTitle h2 { font-family: GillSans-Bold !important; font-size: 16pt !important; color: #ffffff !important; }
-.summaryReturn h2 { font-family: GillSans-Bold !important; font-size: 16pt !important; color: #18c900 !important; }
-.summaryTitle h3 { font-family: GillSans-Light !important; font-size: 10pt !important; color: #000000 !important; }
-.summaryReturn h3 { font-family: GillSans-Light !important; font-size: 10pt !important; color: #000000 !important; } 
+.summaryTitle h2, .summaryReturn h2 {
+    font-family: HelveticaNeue-Bold !important; 
+    font-size: 16pt !important; 
+    color: #ffffff !important; 
+    text-transform: uppercase; 
+}
+.summaryTitle h3 { font-family: HelveticaNeue-Light !important; font-size: 10pt !important; color: #000000 !important; }
+.summaryReturn h3 { font-family: HelveticaNeue-Light !important; font-size: 10pt !important; color: #000000 !important; } 
 
 .analysisComponentContainer {
     margin: 15px 0 0 0;
@@ -117,8 +120,8 @@ div#jqt #about a
 #yieldCurveContribution_bar,
 #riskNumbers_bar { display: inline-block; width: 50%; }
 
-.headerRow { font-family: GillSans-Bold !important; }
-.tableRow, .oddTableRow, .selectedTableRow, .hoverTableRow { font-family: GillSans-Light !important; }
+.headerRow { font-family: HelveticaNeue-Bold !important; }
+.tableRow, .oddTableRow, .selectedTableRow, .hoverTableRow { font-family: HelveticaNeue-Light !important; }
 .oddTableRow { background-color: #dddddd; }
 
 /************************************************
@@ -211,10 +214,13 @@ div#jqt #about a
 	position: absolute;
     left: 50%;
     top: 50%;
-    margin: 40px 0 0 -100px;
+    margin: 25px 0 0 -100px;
     color: #ffffff;
     text-align: center;
+    font-family: HelveticaNeue-Light; 
+    font-size: 10pt;
 }
+
 /*
 #myloading
 {

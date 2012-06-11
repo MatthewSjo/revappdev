@@ -17,8 +17,8 @@ WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'],
 
     analysisPagesDataObj.define({
         items: [{
-            name        : 'Performances',
-            id          : 'performances',
+            name        : 'Performance',
+            id          : 'performance',
             order       : 1,
             userDefined : false,
             charts      : [{

@@ -12,6 +12,15 @@
 exports.client = {
     hello: 'hello',
 
+    // ------------------------------------------------------------------ | E |
+
+    errors: {
+        chartFailedText             : 'Unable to load chart.',
+        accountEmptyText            : 'This account contains no portfolio data.',
+        portfolioNotFoundText       : 'The requested portfolio could not be found.',
+        analysisFailedText          : 'Unable to retrieve the requested portfolio analysis.'
+    },
+
     // ------------------------------------------------------------------ | S |
 
     shared: {
@@ -20,9 +29,9 @@ exports.client = {
     }, 
 
     spinningWheel: {
-        noPortfolioSlotAvailable    : 'No portfolio available',
-        noAnalysisSlotAvailable     : 'No analysis available',
-        noTimePeriodSlotAvailable   : 'No time period available',
+        noPortfolioSlotAvailable    : 'No portfolios available.',
+        noAnalysisSlotAvailable     : 'No analyses available.',
+        noTimePeriodSlotAvailable   : 'No time periods available.',
         noFavouritesSlotAvailable   : 'No favourites'
     },
 
@@ -103,6 +112,16 @@ exports.server = {
     },
 
     // ------------------------------------------------------------------ | E |
+
+    errorPage: {
+        errorText                   : 'Error',
+        backText                    : 'Back'
+    },
+
+    errors: {
+        unknownErrorText            : 'An unknown error occurred.',
+        invalidCredentialsText      : 'The username or password you entered is incorrect.'
+    },
 
     eulaPage: {
         eulaText                    : 'EULA',
