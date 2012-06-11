@@ -47,6 +47,15 @@ exports.client = {
         performanceLineTitle                : 'Performance Line'
     },
 
+    // ------------------------------------------------------------------ | E |
+
+    errors: {
+        chartFailedText                     : 'Unable to load chart.',
+        accountEmptyText                    : 'This account contains no portfolio data.',
+        portfolioNotFoundText               : 'The requested portfolio could not be found.',
+        analysisFailedText                  : 'Unable to retrieve the requested portfolio analysis.'
+    },
+
     // ------------------------------------------------------------------ | S |
 
     shared: {
@@ -55,9 +64,9 @@ exports.client = {
     }, 
 
     spinningWheel: {
-        noPortfolioSlotAvailable    : 'No portfolio available',
-        noAnalysisSlotAvailable     : 'No analysis available',
-        noTimePeriodSlotAvailable   : 'No time period available',
+        noPortfolioSlotAvailable    : 'No portfolios available.',
+        noAnalysisSlotAvailable     : 'No analyses available.',
+        noTimePeriodSlotAvailable   : 'No time periods available.',
         noFavouritesSlotAvailable   : 'No favourites'
     },
 
@@ -96,15 +105,25 @@ exports.server = {
     
     analysisSettingsPage: {
         settingsText                : 'Analysis Page',
-        backText                    : 'Back'
+        backText                    : 'Indietro'
     },
 
     analysisSettingsPages: {
         settingsText                : 'Analysis Pages',
-        backText                    : 'Back'
+        backText                    : 'Indietro'
     },
 
     // ------------------------------------------------------------------ | E |
+
+    errorPage: {
+        errorText                   : 'Error',
+        backText                    : 'Indietro'
+    },
+
+    errors: {
+        unknownErrorText            : 'An unknown error occurred.',
+        invalidCredentialsText      : 'The username or password you entered is incorrect.'
+    },
 
     eulaPage: {
         eulaText                    : 'EULA',
