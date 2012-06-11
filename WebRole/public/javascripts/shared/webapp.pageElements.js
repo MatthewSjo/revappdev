@@ -40,7 +40,7 @@ WebAppLoader.addModule({ name: 'pageElements', isShared: true }, function () {
         addNewAnalysisPage                  : '#addNewAnalysisPage',
         analysisTitle                       : '#analysisTitle',
         loadingText                         : '#loadingText',
-        listLanguagesPages                  : '#listLanguagesPages'
+        listLanguagesPages                  : '#listLanguagesPages',
         timePeriodEndDateText               : '#timePeriodEndDateText',
         errorMessageText                    : '#errorMessageText'
     };
