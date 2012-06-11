@@ -18,7 +18,7 @@
 {
     width: 50%;
     margin: 0 auto;
-    padding-top: 10%;
+    padding-top: 12%;
 }
 
 div#jqt ul.rounded.login_style
@@ -30,29 +30,25 @@ div#jqt ul.rounded.login_style
 div#jqt ul li.login_style
 {
     background-color: transparent;
+    height: auto;
 }
 
 div#jqt ul li input[type="email"].login_style, div#jqt ul li input[type="password"].login_style
 {
     text-shadow: none;
     color: #000000;
+    font-family: HelveticaNeue-Light !important;
+    font-size: 13pt;
 }
 
-div#jqt ul li.login_button
-{
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f3f3f3), to(#dcdcdc), color-stop(.5, #dbdbdb),color-stop(.51, #cacaca));
-    text-align: center;
-}
-
-div#jqt ul li.login_button a
-{
-    color: #48494b;
-    text-shadow: 0px 1px 0px #e4e4e4;
+#loginButton {
+    font-family: HelveticaNeue-Bold !important; 
+    font-weight: normal !important; 
 }
 
 p.login_style
 {
-    font-family: HelveticaNeue-Light;
+    font-family: HelveticaNeue-Light !important;
     font-size: 10pt;
     text-align: center;
     color: #d69c9f;
@@ -62,7 +58,7 @@ p.login_style
 
 #loginErrorText
 {
-    font-family: HelveticaNeue-Bold;
+    font-family: HelveticaNeue-Bold !important;
     font-size: 13pt;
     text-align: center;
     color: #ffffff;
