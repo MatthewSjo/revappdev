@@ -235,6 +235,9 @@ Zepto(function ($) {
         // theApp.portfolioManager.loadPortfolio(analysisDataObject.portfolioId);
         var analysisDataObject = analysisDataObjectValue || theApp.getLastAnalysisObjectUsed();
 
+        // Deselct Settings button.
+        theApp.tabbar.getButton('settings').setHighlight(false);
+
         theApp.nav.goToPage($(el.analysisPage), 'dissolve');
         theApp.mask.show('analysis');
         
@@ -421,9 +424,6 @@ Zepto(function ($) {
         theApp.analysisManager.saveData('analysisPages', theApp.lastUsernameUsed);
         theApp.updateAnalysisSlot(analysisPagesData);
         
-        // Deselct Settings button.
-        theApp.tabbar.getButton('settings').setHighlight(false);
-
         // Show the new analysis page.
         theApp.setLastAnalysisObjectUsed({ 
             analysisId: updatedAnalysisPage.id, 

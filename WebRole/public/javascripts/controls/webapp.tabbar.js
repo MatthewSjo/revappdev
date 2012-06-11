@@ -65,6 +65,7 @@ WebAppLoader.addModule({ name: 'tabbar', plugins: ['helper'], hasEvents: true },
                     var tabbarItem = $('#' + this.linkId);
 
                     if(this.highlight) {
+                        this.isHighlighted = !highlighted;
                         if (this.isHighlighted) {
                             $("#tabbar a").removeClass("current");
                             $("#tabbar div").removeClass("current");
@@ -122,6 +123,7 @@ WebAppLoader.addModule({ name: 'tabbar', plugins: ['helper'], hasEvents: true },
                     if (!buttons[i].isDisabled) {
                         output.log(buttons[i].title + ' was tapped');
                         buttons[i].toggleHighlighted();
+
                         eventManager.raiseEvent(buttons[i].eventHandler, buttons[i]);
                             // ? !buttons[i].isHighlighted 
                             // : false);
