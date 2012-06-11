@@ -87,13 +87,37 @@ function addBubbleChartRow(rowArray, segment) {
     });
 }
 
-function addTreeMapRow(rowArray, nodeName, parentName, sizeValue, colorValue) {
+function addTreeMapRow(rowArray, nodeName, parentName, sizeValue, colorValue, classifierName) {
+
+    function generateUniqueNodeName(name) {
+        var i, len = rowArray.length, exists = false;
+        
+        // Check that the nodeName does not already exist in the collection.
+        for (i = 0; i < len; i++) {
+            if (rowArray[i].c[0].v === name) {
+                exists = true;
+                break;
+            }
+        }
+
+        // If the name exists...
+        if (exists) {
+            // ...try and generate another recursively, appended with a 
+            // space. This is so we can appear to display multiple rows 
+            // with the same name, but have unique IDs from the perspective 
+            // of the Google Visualization API.
+            return generateUniqueNodeName(name + ' ');
+        } else {
+            return name;
+        }
+    }
+
     rowArray.push({
         c: [
-		    { v: nodeName },
+		    { v: generateUniqueNodeName(nodeName) },
 		    { v: parentName },
             { v: sizeValue },
-		    { v: colorValue }		    
+		    { v: colorValue }
 	    ]
     });
 }
@@ -228,12 +252,14 @@ function lineChartConvert(dataPoints, seriesType, analysis, measures, language) 
 };
 
 function treeMapConvert(node, dataToInclude, analysis) {
-    var i, 
+    var i,
         len,
         parent,
         children,
         child,
-        measures, 
+        measures,
+        isSecurityLevel = (dataToInclude === 'securities'),
+        classifierName = '',
         rowArray = [];
     
     // Get the parent segment.
@@ -243,9 +269,11 @@ function treeMapConvert(node, dataToInclude, analysis) {
     this.addRow(rowArray, parent.name, null, 0, 0);
 
     // Retrieve the segments or securities from the relevant 'included data' property.
-    children = (dataToInclude === 'childSegments') ?
-        node[dataToInclude].segments :
-        node[dataToInclude].securities;
+    children = isSecurityLevel ? node[dataToInclude].securities : node[dataToInclude].segments;
+
+    if (!isSecurityLevel) {
+        classifierName = node[dataToInclude].classifier.name;
+    }
 
     // Determine the number of child segments.
     len = children.length;    
@@ -254,7 +282,7 @@ function treeMapConvert(node, dataToInclude, analysis) {
     for (i = 0; i < len; i++) {
         child = children[i];
         measures = child.measures[0].measures;
-        this.addRow(rowArray, child.name, parent.name, measures[0].val, measures[1].val);
+        this.addRow(rowArray, child.name, parent.name, measures[0].val, measures[1].val, classifierName);
     }
 
     // Return the object required by the Google Visualization API.

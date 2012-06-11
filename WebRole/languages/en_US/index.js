@@ -12,7 +12,41 @@
 exports.client = {
     hello: 'hello',
 
-    // ------------------------------------------------------------------ | C |
+    // ------------------------------------------------------------------ | E |
+
+    errors: {
+        chartFailedText             : 'Unable to load chart.',
+        accountEmptyText            : 'This account contains no portfolio data.',
+        portfolioNotFoundText       : 'The requested portfolio could not be found.',
+        analysisFailedText          : 'Unable to retrieve the requested portfolio analysis.'
+    },
+
+    // ------------------------------------------------------------------ | S |
+
+    shared: {
+        decimalSymbol               : '.',
+        groupingSymbol              : ','
+    }, 
+
+    spinningWheel: {
+        noPortfolioSlotAvailable    : 'No portfolios available.',
+        noAnalysisSlotAvailable     : 'No analyses available.',
+        noTimePeriodSlotAvailable   : 'No time periods available.',
+        noFavouritesSlotAvailable   : 'No favourites'
+    },
+
+    // ------------------------------------------------------------------ | T |
+    
+    tabbar: {
+        favourites                  : 'Favourites',
+        home                        : 'Home',
+        portfolios                  : 'Portfolios',
+        analysis                    : 'Analysis',
+        timePeriods                 : 'Time Periods',
+        infos                       : 'Infos',
+        more                        : 'More',
+        settings                    : 'Settings'
+    },
 
     chart: {
         performanceBarTitle                 : 'Bar Chart Segment Return',
@@ -47,33 +81,6 @@ exports.client = {
         performanceLineTitle                : 'Performance Line'
     },
 
-    // ------------------------------------------------------------------ | S |
-
-    shared: {
-        decimalSymbol               : '.',
-        groupingSymbol              : ','
-    }, 
-
-    spinningWheel: {
-        noPortfolioSlotAvailable    : 'No portfolio available',
-        noAnalysisSlotAvailable     : 'No analysis available',
-        noTimePeriodSlotAvailable   : 'No time period available',
-        noFavouritesSlotAvailable   : 'No favourites'
-    },
-
-    // ------------------------------------------------------------------ | T |
-    
-    tabbar: {
-        favourites                  : 'Favourites',
-        home                        : 'Home',
-        portfolios                  : 'Portfolios',
-        analysis                    : 'Analysis',
-        timePeriods                 : 'Time Periods',
-        infos                       : 'Infos',
-        more                        : 'More',
-        settings                    : 'Settings'
-    },
-
     // -------------------------- | END OF FILE | -------------------------- \\
     //                     A way to avoid missing comma                      \\
 
@@ -105,6 +112,16 @@ exports.server = {
     },
 
     // ------------------------------------------------------------------ | E |
+
+    errorPage: {
+        errorText                   : 'Error',
+        backText                    : 'Back'
+    },
+
+    errors: {
+        unknownErrorText            : 'An unknown error occurred.',
+        invalidCredentialsText      : 'The username or password you entered is incorrect.'
+    },
 
     eulaPage: {
         eulaText                    : 'EULA',

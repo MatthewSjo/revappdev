@@ -154,7 +154,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
         return repository;
     })();
 
-        // Analysis Slot Repository.
+    // Favourites Slot Repository.
     repositories.favouritesSlot = (function () {
         var repository = {},
             favouritesSlotItems = null;

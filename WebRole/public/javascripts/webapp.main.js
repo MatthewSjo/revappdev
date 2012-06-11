@@ -22,14 +22,14 @@ var jQT = new $.jQTouch({
 // Main functions:
 Zepto(function ($) {
 
-    var theApp       = {},
-        loader       = WebAppLoader, // Alias
-        output       = loader.getConsole(),
+    var theApp = {},
+        loader = WebAppLoader, // Alias
+        output = loader.getConsole(),
         eventManager = loader.getEventManager(),
-        helper       = loader.loadModule('helper'),
-        siteUrls     = loader.getSharedModule('settings').siteUrls,
-        el           = loader.getSharedModule('pageElements'),
-        lang         = loader.getSharedModule('localizationManager').getLanguage() || {};
+        helper = loader.loadModule('helper'),
+        siteUrls = loader.getSharedModule('settings').siteUrls,
+        el = loader.getSharedModule('pageElements'),
+        lang = loader.getSharedModule('localizationManager').getLanguage() || {};
 
     // Test log method.
     output.log('Hello from Dan & Asa!');
@@ -42,18 +42,18 @@ Zepto(function ($) {
     theApp.lastAnalysisObjectUsed = {
         portfolioId: '',
         portfolioName: '',
-        analysisId: 'performances',
-        analysisName: 'Performances',
+        analysisId: 'performance',
+        analysisName: 'Performance',
         timePeriodId: 'Earliest',
         timePeriodName: 'Earliest',
-        chartId : 'performance_bar',
+        chartId: 'performance_bar',
         timeStamp: ''
     };
 
     /* ----------------------- ON/OFF ----------------------- /
-       'Switch comments off changing /* in //* and viceversa'
+    'Switch comments off changing /* in //* and viceversa'
     // ------------------------------------------------------ */
-    
+
     // ------------------------------------------
     // COMPONENTS CREATION
     // ------------------------------------------
@@ -95,18 +95,18 @@ Zepto(function ($) {
     // LAST ANALYSIS DATA OBJECT
     // ------------------------------------------
 
-    theApp.getLastAnalysisObjectUsed = function() {
+    theApp.getLastAnalysisObjectUsed = function () {
         return theApp.lastAnalysisObjectUsed;
     };
 
-    theApp.setLastAnalysisObjectUsed = function(obj) {
-        for(property in obj) {
+    theApp.setLastAnalysisObjectUsed = function (obj) {
+        for (property in obj) {
             if (theApp.lastAnalysisObjectUsed.hasOwnProperty(property)) {
-                theApp.lastAnalysisObjectUsed[property] = obj[property];   
+                theApp.lastAnalysisObjectUsed[property] = obj[property];
             }
         }
     };
-    
+
 //    theApp.tryToChangeLanguage = function (language) {
 //        var currentLanguage = helper.getURLParameter('lang') || 'en_US';
 
@@ -117,14 +117,14 @@ Zepto(function ($) {
 //    }
 
     // ------------------------------------------
-    // THE MAIN ENTRY POINT (Befor Login)
+    // THE MAIN ENTRY POINT (Before Login)
     // ------------------------------------------
 
     theApp.startHere = function () {
-        var appSettingsData     = theApp.settings.loadData('appSettings'),
-            userSettingsData    = {}, 
-            lastLoggedOnUser    = '',
-            username            = '',
+        var appSettingsData = theApp.settings.loadData('appSettings'),
+            userSettingsData = {},
+            lastLoggedOnUser = '',
+            username = '',
             password            = '',
             language            = '';
             
@@ -142,9 +142,9 @@ Zepto(function ($) {
             : null;
 
         if (lastLoggedOnUser) {
-            theApp.settings.loadData('userSettings', lastLoggedOnUser);    
+            theApp.settings.loadData('userSettings', lastLoggedOnUser);
             userSettingsData = theApp.settings.getData('userSettings');
-            
+
             // Try to get username and password.
             username = userSettingsData.username || '';
             password = userSettingsData.password || '';
@@ -154,7 +154,6 @@ Zepto(function ($) {
 
             if (userSettingsData.automaticLogin) {
                 // If username and password fields are available...
-
                 if (username && password) {
                     // .. try to login or...
                     theApp.doLogin(username, password);
@@ -170,7 +169,7 @@ Zepto(function ($) {
         }
     }
 
-    theApp.doLogin = function(username, password) {
+    theApp.doLogin = function (username, password) {
         theApp.lastUsernameUsed = username.toLowerCase();
         theApp.lastPasswordUsed = password;
         theApp.auth.doLogin(username, password, siteUrls.authenticate);
@@ -179,12 +178,11 @@ Zepto(function ($) {
     theApp.goToLoginPage = function (username) {
         theApp.tabbar.hide();
 
-        // Set the fields value.
+        // Set the field's value.
         $(el.userNameTextbox).val(username || '');
-        //$(el.passwordTextbox).val('');
 
-        // Show the login page
-        setTimeout(function (){
+        // Show the login page.
+        setTimeout(function () {
             theApp.nav.goToPage($(el.loginPage), 'dissolve');
         }, 1000);
     }
@@ -203,14 +201,14 @@ Zepto(function ($) {
         //    - Update  with the current username [and password] the user settings data object
         //      and the lastLoggedOnUser property of app settings.
 
-        var appSettingsData     = theApp.settings.loadData('appSettings'),
-            userSettingsData    = theApp.settings.loadData('userSettings', theApp.lastUsernameUsed);
-        
+        var appSettingsData = theApp.settings.loadData('appSettings'),
+            userSettingsData = theApp.settings.loadData('userSettings', theApp.lastUsernameUsed);
+
         lastLoggedOnUser = (appSettingsData && appSettingsData.lastLoggedOnUser)
             ? appSettingsData.lastLoggedOnUser.toLowerCase()
             : null;
-        
-        appSettingsData.lastLoggedOnUser =  theApp.lastUsernameUsed;
+
+        appSettingsData.lastLoggedOnUser = theApp.lastUsernameUsed;
         theApp.settings.saveData('appSettings');
 
         userSettingsData.username = theApp.lastUsernameUsed;
@@ -225,7 +223,7 @@ Zepto(function ($) {
         //    - Init the themeManager using the last theme used (or the default one).        
         var lastThemeUsed = theApp.themesManager.loadData('theme', theApp.lastUsernameUsed);
         theApp.themesManager.switchStyle(lastThemeUsed);
-        
+
         //
         //    - Load the favourites and fill the favourites slot.
         //    - Load the analysis settings (page and charts) and fill the analysis slot. 
@@ -252,7 +250,7 @@ Zepto(function ($) {
         theApp.updateAnalysisPage(lastAnalysisObjectUsed);
     };
 
-    theApp.updateAnalysisPage = function(analysisDataObjectValue) {
+    theApp.updateAnalysisPage = function (analysisDataObjectValue) {
         // theApp.portfolioManager.loadPortfolio(analysisDataObject.portfolioId);
         var analysisDataObject = analysisDataObjectValue || theApp.getLastAnalysisObjectUsed();
 
@@ -261,19 +259,22 @@ Zepto(function ($) {
 
         theApp.nav.goToPage($(el.analysisPage), 'dissolve');
         theApp.mask.show('analysis');
-        
+
         // TODO: 
         // Get analysis name and timeperiods name from respective ids and select 
         // the right spinning wheel.
 
-        function renderAnalysisPage (portfolio) {
-            var chartsToRender      = [], 
-                analysisPagesData   = {},
-                analysisPage        = {},
-                portfolioId         = portfolio.code,
+        function renderAnalysisPage(portfolio) {
+            var chartsToRender = [],
+                analysisPagesData = {},
+                analysisPage = {},
+                portfolioId = portfolio.code,
                 portfolioName       = portfolio.name,
                 analysisPageCharts  = null,
-                analysisPageTitle   = '';
+                portfolioName = portfolio.name,
+                analysisPageTitle   = '',
+                i;
+                
         
             analysisPagesData = theApp.analysisManager.getData('analysisPages');
 
@@ -296,12 +297,29 @@ Zepto(function ($) {
 
             // Update the page title.
             $(el.analysisTitle).html(analysisPageTitle);
+            
+            // Add the currently requested time period to each of the chart config objects.
+            $.each(chartsToRender, function (index, chart) {
+                chart.timePeriodId = analysisDataObject.timePeriodId;
+            });
 
+            // Loop around the provided time periods for the portfolio,
+            // and get hold of the start and end date for that particular
+            // period, breaking the loop when found.
+            $.each(portfolio.timePeriods, function (index, period) {
+                if (period.code === analysisDataObject.timePeriodId) {
+                    $(el.timePeriodStartDateText).html(period.startDate);
+                    $(el.timePeriodEndDateText).html(period.endDate);
+                    return false;
+                }
+            });
+
+            
             theApp.setLastAnalysisObjectUsed(analysisDataObject);
-            theApp.setLastAnalysisObjectUsed({ 
-                portfolioId: portfolioId, 
-                portfolioName: portfolioName 
-                });
+            theApp.setLastAnalysisObjectUsed({
+                portfolioId: portfolioId,
+                portfolioName: portfolioName
+            });
 
             theApp.saveLastAnalysisObjectUsed();
             theApp.synchronizeFavouriteButton();
@@ -313,7 +331,7 @@ Zepto(function ($) {
         }
 
         theApp.portfolioManager.loadPortfolioAnalysis(
-            analysisDataObject.portfolioId, 
+            analysisDataObject.portfolioId,
             onLoadPortfolioAnalysisCompleted
         );
     };
@@ -329,13 +347,13 @@ Zepto(function ($) {
     theApp.chartComponents.on('onAllChartsLoaded', function(){
         theApp.scroll.rebuild('analysis');
         theApp.mask.updateAnalysisText(' ');
-        theApp.mask.hide('analysis');    
+        theApp.mask.hide('analysis');
     });
 
-    theApp.chartComponents.on('onChartsLoading', function(chartCount, chartTotal){
-        theApp.mask.updateAnalysisText('Loading ' + (chartCount) + ' of ' +  chartTotal);
+    theApp.chartComponents.on('onChartsLoading', function (chartCount, chartTotal) {
+        theApp.mask.updateAnalysisText('Loading ' + chartCount + ' of ' + chartTotal);
     });
-    
+
 
     // ------------------------------------------
     // SETTINGS PAGES
@@ -343,7 +361,7 @@ Zepto(function ($) {
 
     theApp.showAnalysisSettingsPage = function () {
         var analysisPagesData = {}, analysisPages;
-       
+
         analysisPagesData = theApp.analysisManager.getData('analysisPages');
 
         analysisPages = jLinq.from(analysisPagesData.items)
@@ -382,13 +400,13 @@ Zepto(function ($) {
     }
 
     theApp.showChartSettingsPage = function (analysisId) {
-        var analysisPagesData    = {}, 
-            chartComponentsData  = {},
-            analysisPage         = {},
-            charts               = theApp.showChartSettingsPage.charts;
-        
+        var analysisPagesData = {},
+            chartComponentsData = {},
+            analysisPage = {},
+            charts = theApp.showChartSettingsPage.charts;
+
         if (!analysisId) return; // TODO: Add a message error.
-               
+
         analysisPagesData = theApp.analysisManager.getData('analysisPages');
         chartComponentsData = theApp.chartComponents.getData('charts');
 
@@ -400,9 +418,9 @@ Zepto(function ($) {
                     id: record.id,
                     charts: record.charts
                 }
-            })[0] || null; 
-        
-        if (!analysisPage) {   
+            })[0] || null;
+
+        if (!analysisPage) {
             analysisPage = {
                 name: '',
                 id: analysisId,
@@ -411,7 +429,7 @@ Zepto(function ($) {
         }
 
         // TODO: Add comments...
-        if(charts.length === 0){
+        if (charts.length === 0) {
             for (var chart in chartComponentsData) {
                 charts.push({
                     chartId: chartComponentsData[chart].chartId,
@@ -422,11 +440,11 @@ Zepto(function ($) {
 
             theApp.chartSettingsPage.create(charts);
         }
-        
+
         theApp.chartSettingsPage.update(analysisPage);
     };
 
-    theApp.chartSettingsPage.on('onSettingsChanged', function(updatedAnalysisPage){
+    theApp.chartSettingsPage.on('onSettingsChanged', function (updatedAnalysisPage) {
         var analysisPage, analysisPagesData;
         
         updatedAnalysisPage.name = updatedAnalysisPage.name || 'Untitled'; // TODO: Localize string 'Untitled'
@@ -485,12 +503,19 @@ Zepto(function ($) {
         output.log('Loaded portfolio:', portfolio);
     });
 
-    theApp.portfolioManager.on('onAnalysisReceived', function (data) {
+    theApp.portfolioManager.on('onAnalysisLoaded', function (data) {
         theApp.scroll.rebuild('analysis');
         $(el.analysisPage + '_partial').html(data);
-        
+        theApp.mask.hide('analysis');
         theApp.nav.goToPage($(el.analysisPage), 'dissolve');
         theApp.tabbar.show();
+    });
+
+    theApp.portfolioManager.on('onFailed', function (message) {
+        theApp.scroll.rebuild('error');
+        $(el.errorMessageText).html(message);
+        theApp.nav.goToPage($(el.errorPage));
+        theApp.mask.hide('analysis');
     });
 
     // ------------------------------------------
@@ -503,7 +528,7 @@ Zepto(function ($) {
         visible: true,
         items: [
             { id: 'favourite', title: lang.tabbar.favourites, class: 'favourite' }
-            // { id: 'favourite2', title: lang.tabbar.favourites, class: 'favourite' }
+        // { id: 'favourite2', title: lang.tabbar.favourites, class: 'favourite' }
         ]
     };
 
@@ -515,7 +540,7 @@ Zepto(function ($) {
     });
 
     theApp.toolbar.on('onFavouriteTap', function (isSelected) {
-        if(isSelected) {
+        if (isSelected) {
             theApp.addToFavourites();
         } else {
             theApp.removeFromFavourites();
@@ -543,13 +568,13 @@ Zepto(function ($) {
         buttonPrefix: 'tabbar_btn',
         visible: false,
         items: [
-         // { id: 'home', title: lang.tabbar.home, class: 'home' },
-            { id: 'favourites', title: lang.tabbar.favourites, class: 'favourites' },
+        // { id: 'home', title: lang.tabbar.home, class: 'home' },
+            {id: 'favourites', title: lang.tabbar.favourites, class: 'favourites' },
             { id: 'portfolios', title: lang.tabbar.portfolios, class: 'portfolios' },
             { id: 'analysis', title: lang.tabbar.analysis, class: 'analysis' },
             { id: 'timePeriods', title: lang.tabbar.timePeriods, class: 'timeperiods' },
-         // { id: 'infos', title: lang.tabbar.infos, class: 'infos' },
-         // { id: 'more', title: lang.tabbar.more, class: 'more' }
+        // { id: 'infos', title: lang.tabbar.infos, class: 'infos' },
+        // { id: 'more', title: lang.tabbar.more, class: 'more' }
             { id: 'settings', title: lang.tabbar.settings, class: 'settings', highlight: true }
         ]
     };
@@ -592,7 +617,6 @@ Zepto(function ($) {
             { id: 'portfolios', repository: theApp.repositories.portfoliosSlot },
             { id: 'analysis', repository: theApp.repositories.analysisSlot },
             { id: 'timePeriods', repository: theApp.repositories.timePeriodsSlot }
-         // { id: 'test', repository: { getData: function (callback) { callback({ a: 'a', b: 'b' }); } }}
         ]
     };
 
@@ -600,12 +624,17 @@ Zepto(function ($) {
     theApp.spinningWheel.create(slotConfig);
 
     theApp.spinningWheel.on('onPortfoliosDone', function (key, value) {
-        theApp.setLastAnalysisObjectUsed({ portfolioId: key, portfolioName: value});
+        theApp.setLastAnalysisObjectUsed({ portfolioId: key, portfolioName: value });
         theApp.updateAnalysisPage();
     });
 
     theApp.spinningWheel.on('onAnalysisDone', function (key, value) {
         theApp.setLastAnalysisObjectUsed({ analysisId: key, analysisName: value });
+        theApp.updateAnalysisPage();
+    });
+
+    theApp.spinningWheel.on('onTimePeriodsDone', function (key, value) {
+        theApp.setLastAnalysisObjectUsed({ timePeriodId: key, timePeriodName: value });
         theApp.updateAnalysisPage();
     });
 
@@ -617,7 +646,7 @@ Zepto(function ($) {
             theApp.updateAnalysisPage();
         }
     });
-    
+
     // ------------------------------------------
     // AUTHENTICATION
     // ------------------------------------------
@@ -641,8 +670,9 @@ Zepto(function ($) {
         theApp.init();
     });
 
-    theApp.auth.on('onLoginFailed', function (response) {
-        output.log('onLoginFailed response: ', response);
+    theApp.auth.on('onLoginFailed', function (message) {
+        $(el.loginErrorText).html(message)
+        output.log('onLoginFailed response: ', message);
     });
 
     // ------------------------------------------
@@ -650,7 +680,7 @@ Zepto(function ($) {
     // ------------------------------------------
 
     theApp.pageEventsManager = loader.loadModule('pageEventsManager');
-    
+
     theApp.pageEventsManager.on('onStartupStart', function () {
         output.log('onStartupEnd');
     });
@@ -670,13 +700,13 @@ Zepto(function ($) {
         output.log('onHomeEnd');
     });
 
-//    theApp.pageEventsManager.on('onPortfoliosEnd', function () {
-//        $.post(siteUrls.portfolios, function (data) {
-//            theApp.scroll.rebuild('portfolios');
-//            $(el.portfoliosPage + '_partial').html(data);
-//        });
-//        output.log('onPortfoliosEnd');
-//    });
+    //    theApp.pageEventsManager.on('onPortfoliosEnd', function () {
+    //        $.post(siteUrls.portfolios, function (data) {
+    //            theApp.scroll.rebuild('portfolios');
+    //            $(el.portfoliosPage + '_partial').html(data);
+    //        });
+    //        output.log('onPortfoliosEnd');
+    //    });
 
     theApp.pageEventsManager.on('onEulaEnd', function () {
         $.get(siteUrls.eula, function (data) {
@@ -738,7 +768,7 @@ Zepto(function ($) {
     // ------------------------------------------
 
     theApp.analysisManager = loader.loadModule('analysisManager');
-    
+
     // NOTA BENE: the analysis manager is updated the first time when the home
     // page is loaded.
     theApp.analysisManager.on('onUpdated', function (analysisPages) {
@@ -754,7 +784,7 @@ Zepto(function ($) {
                     code: record.id
                 }
             });
-            
+
         theApp.repositories.analysisSlot.setData(analysisSlotItems);
     };
 
@@ -763,7 +793,7 @@ Zepto(function ($) {
     // ------------------------------------------
 
     theApp.favouritesManager = loader.loadModule('favouritesManager');
-    
+
     theApp.favouritesManager.on('onFavouritesUpdated', function (favourites) {
         theApp.updateFavouritesSlot(favourites);
     });
@@ -777,13 +807,13 @@ Zepto(function ($) {
                     code: record.favouriteId
                 }
             });
-            
+
         theApp.repositories.favouritesSlot.setData(favouritesSlotItems);
     };
 
     theApp.analysisDataObjectToFavourite = function (analysisDataObject) {
         var favourite = null;
-        
+
         favourite = theApp.favouritesManager.getFavourteFromAnalysisDataObject(analysisDataObject);
         return favourite || null;
     };
@@ -796,11 +826,11 @@ Zepto(function ($) {
     };
     
     theApp.getFavouriteById = function (favouriteId) {
-        var favourite           = null,
-            favouriteToCheck    = null,
-            favouritesData      = theApp.favouritesManager.getData('favourites');
+        var favourite = null,
+            favouriteToCheck = null,
+            favouritesData = theApp.favouritesManager.getData('favourites');
 
-        if(!favouriteId){
+        if (!favouriteId) {
             favourite = theApp.analysisDataObjectToFavourite(theApp.lastAnalysisObjectUsed);
             favouriteId = favourite.favouriteId;
         }
@@ -818,7 +848,7 @@ Zepto(function ($) {
 
         favouriteToAdd = theApp.analysisDataObjectToFavourite(theApp.lastAnalysisObjectUsed);
         if (favouriteToAdd) {
-            if(!theApp.favouriteExists(favouriteToAdd.favouriteId)) {
+            if (!theApp.favouriteExists(favouriteToAdd.favouriteId)) {
                 favouritesData = theApp.favouritesManager.getData('favourites');
                 favouritesData.items.push(favouriteToAdd);
                 theApp.favouritesManager.saveData('favourites', theApp.lastUsernameUsed);
@@ -829,12 +859,12 @@ Zepto(function ($) {
     };
 
     theApp.removeFromFavourites = function () {
-        var favouriteToRemove   = {},
-            favouritesData      = null;
- 
+        var favouriteToRemove = {},
+            favouritesData = null;
+
         favouriteToRemove = theApp.analysisDataObjectToFavourite(theApp.lastAnalysisObjectUsed);
         if (favouriteToRemove) {
-            if(theApp.favouriteExists(favouriteToRemove.favouriteId)) {
+            if (theApp.favouriteExists(favouriteToRemove.favouriteId)) {
                 favouritesData = theApp.favouritesManager.getData('favourites');
                 if (helper.removeObjectFromArray(favouritesData.items, 'favouriteId', favouriteToRemove.favouriteId)) {
                     theApp.favouritesManager.saveData('favourites', theApp.lastUsernameUsed);
@@ -843,9 +873,9 @@ Zepto(function ($) {
             }
         }
     };
-    
+
     // - favouriteId [optional]
-    theApp.synchronizeFavouriteButton = function(favouriteId) {
+    theApp.synchronizeFavouriteButton = function (favouriteId) {
         var favourite       = theApp.getFavouriteById(favouriteId), 
             favouriteButton = theApp.toolbar.getButton('favourite');
 
@@ -866,7 +896,7 @@ Zepto(function ($) {
     // ------------------------------------------
 
     theApp.themesManager = loader.loadModule('themesManager');
-    
+
     theApp.themesManager.on('onThemeChanged', function (themeName) {
         // theApp.scroll.rebuild('analysis');
         // $(el.analysisPage + '_partial').html(data);
@@ -876,10 +906,10 @@ Zepto(function ($) {
             themeData.name = themeName;
             theApp.themesManager.saveData('theme', theApp.lastUsernameUsed);
         }
-        
+
         output.log('onThemeChanged', themeName);
     });
-    
+
     // ------------------------------------------
     // PORTFOLIOS LIST
     // ------------------------------------------
@@ -904,21 +934,21 @@ Zepto(function ($) {
     $('#btnTestSaveToLS').on('click', function () {
         var analysisPages = {
             items: [{
-                name        : 'Contribution',
-                userDefined : false,
-                charts      : [{
-                        name: 'barChart1'
-                    },{
-                        name: 'barChart2'
-                    }] 
-            },{
-                name        : 'My Analysis',
-                userDefined : true,
-                charts      : [{
-                        name: 'lineChart1'
-                    },{
-                        name: 'lineChart2'
-                    }]             
+                name: 'Contribution',
+                userDefined: false,
+                charts: [{
+                    name: 'barChart1'
+                }, {
+                    name: 'barChart2'
+                }]
+            }, {
+                name: 'My Analysis',
+                userDefined: true,
+                charts: [{
+                    name: 'lineChart1'
+                }, {
+                    name: 'lineChart2'
+                }]
             }]
         };
 
@@ -946,7 +976,7 @@ Zepto(function ($) {
         theApp.localStorage.remove('boolean');
         theApp.localStorage.remove('date');
     });
-    
+
     // ------------------------------------------
     // TEARDOWN
     // ------------------------------------------
@@ -962,7 +992,7 @@ Zepto(function ($) {
     //        $("#tabbar a").addClass("current").not(tabbarItem).removeClass("current");
     //        $("#tabbar div").addClass("current").not(tabbarItem).removeClass("current");
     //    }
-    
+
     theApp.startHere();
 });
 

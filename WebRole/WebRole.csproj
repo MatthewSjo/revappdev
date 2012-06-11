@@ -964,6 +964,7 @@
     <Content Include="views\portfolios.jade" />
     <Content Include="views\index.jade" />
     <Content Include="views\layout.jade" />
+    <None Include="views\error.jade" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\iisnode.msi" />

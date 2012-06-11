@@ -24,7 +24,7 @@ WebAppLoader.addModule({ name: 'auth', plugins: ['base64'], sharedModules: ['aja
                 hash = tokenHash;
                 eventManager.raiseEvent('onLoginSuccess', token); //response.portfolioTotal
             } else {
-                eventManager.raiseEvent('onLoginFailed', response);
+                eventManager.raiseEvent('onLoginFailed', response.message);
             }
         }, 'json');
     }

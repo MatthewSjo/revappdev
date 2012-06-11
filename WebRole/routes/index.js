@@ -64,7 +64,11 @@ exports.index = function (req, res) {
 
 // Authentication
 exports.authenticate = function (req, res, next) {
-    var email, token;
+    var email, token, currentLanguage;
+
+    // If we had a language specified as part of the querystring,
+    // retrieve it from the language module, otherwise load the default.
+    currentLanguage = languages[req.query.lang || defaultLanguage].server;
 
     // Extract the email and authentication token from the request body.
     email = req.body.email;
@@ -74,17 +78,31 @@ exports.authenticate = function (req, res, next) {
     delete req.session.token;
 
     // Attempt to consume the service.
-    webApi.initService(email, token, webApiUri, function (resource) {
+    webApi.initService(email, token, webApiUri, currentLanguage, function (resource) {
         var obj;
 
         // Create an object to pass down as JSON to the calling function.
         obj = { authenticated: !resource.error };
         console.log('authenticate', resource);
-        // If the authentication was successful...
-        if (!resource.error) {
+
+        // If the authentication was unsuccessful...
+        if (resource.error) {
+
+            // The API doesn't return a 'username or password incorrect'
+            // message, merely an HTTP 401 status code. Therefore, check
+            // if the code is 401, and display a more appropriate message,
+            // or use the default 'unknown error' if anything else has
+            // gone wrong.
+            obj.message = (resource.error.httpStatusCode === 401) ?
+                currentLanguage.errors.invalidCredentialsText :
+                resource.error.message;
+
+        } else {
+
             // Persist our authorization token in a session variable.
             req.session.token = token;
-            // Also pass down the number of portfolios available to the user.
+
+            // Otherwise, pass down the number of portfolios available to the user.
             obj.portfolioTotal = resource.data.portfolios.total;
         }
 
@@ -102,11 +120,15 @@ exports.portfolios = function (req, res) {
             orderby: '',
             skip: '',
             top: ''
-        };
+        },
+        currentLanguage;
 
-    webApi.getPortfolios(oData, datatype, req.session.token, function (resource, datatype) {
-        var viewModel;
-        viewModel = resource.data || {};
+    // If we had a language specified as part of the querystring,
+    // retrieve it from the language module, otherwise load the default.
+    currentLanguage = languages[req.query.lang || defaultLanguage].server;
+
+    webApi.getPortfolios(oData, datatype, req.session.token, currentLanguage, function (resource, datatype) {
+        var viewModel = resource.data || {};
 
         switch (datatype) {
             case 'json':
@@ -123,12 +145,16 @@ exports.portfolios = function (req, res) {
 // Portfolio Analysis
 exports.portfolioAnalysis = function (req, res) {
     var datatype = req.body.datatype || '',
-        maxAttempts = 3; // TODO: We could use a const to set the maxAttempts.
-    
-    webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, req.session.token, function (analysis) {
-        var viewModel = {};
-        viewModel = analysis.data || {};
-        
+        maxAttempts = 3, // TODO: We could use a const to set the maxAttempts.
+        currentLanguage;
+
+    // If we had a language specified as part of the querystring,
+    // retrieve it from the language module, otherwise load the default.
+    currentLanguage = languages[req.query.lang || defaultLanguage].server;
+
+    webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, req.session.token, currentLanguage, function (analysis) {
+        var viewModel = analysis.data || {};
+
         switch (datatype) {
             case 'json':
                 res.json(viewModel);
@@ -143,11 +169,16 @@ exports.portfolioAnalysis = function (req, res) {
 
 // Analysis
 exports.analysis = function (req, res) {
-    var maxAttempts = 3;
+    var maxAttempts = 3,
+        currentLanguage;
 
-    webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, req.session.token, function (analysis) {
-        var viewModel = {};
-        viewModel = analysis.data || {};
+    // If we had a language specified as part of the querystring,
+    // retrieve it from the language module, otherwise load the default.
+    currentLanguage = languages[req.query.lang || defaultLanguage].server;
+
+    webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, req.session.token, currentLanguage, function (analysis) {
+        var viewModel = analysis.data || {};
+
         viewModel.layout = false;
         res.render('analysis', viewModel);
     });
@@ -155,15 +186,18 @@ exports.analysis = function (req, res) {
 
 // EULA
 exports.eula = function (req, res) {
-    webApi.getEula('fragment', req.session.token, function (resource) {
-        var viewModel = {};
+    var currentLanguage;
+    
+    // If we had a language specified as part of the querystring,
+    // retrieve it from the language module, otherwise load the default.
+    currentLanguage = languages[req.query.lang || defaultLanguage].server;
 
-        viewModel.eula = resource.data || {};
-        viewModel.layout = false;
+    webApi.getEula('fragment', req.session.token, currentLanguage, function (resource) {
+        var viewModel = {
+            eula: resource.data || {},
+            layout: false
+        };
 
         res.render('eula', viewModel);
     });
-};
-
-exports.dashboard = function (req, res) {
 };

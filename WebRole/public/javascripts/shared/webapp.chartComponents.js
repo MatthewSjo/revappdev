@@ -24,51 +24,50 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             chartId: 'performance_bar',
             title: lang.chart.performanceBarTitle,
             chartType: 'BarChart',
-            timePeriods: 'Earliest',
             include: 'childSegments',
             measures: ['rp'],
             includeMeasuresFor: ['childSegments'],
             options: {
                 hAxis: { title: 'Return' }
-            }},
+            }
+        },
         'risk_bar': {
             chartId: 'risk_bar',
             title: lang.chart.riskBarTitle,
             chartType: 'BarChart',
-            timePeriods: 'Earliest',
             include: 'childSegments',
             measures: ['wp', 'contributionvar'],
             includeMeasuresFor: ['childSegments'],
             options: {
                 hAxis: { title: 'Return' }
-            }},
+            }
+        },
         'allocation_bar': {
             chartId: 'allocation_bar',
             title: lang.chart.allocationbarTitle,    
             chartType: 'BarChart',
-            timePeriods: 'Earliest',
             include: 'childSegments',
             measures: ['wover'],
             includeMeasuresFor: ['childSegments'],
             options: {
                 hAxis: { title: 'Excess Weight %' }
-            }},
+            }
+        },
         'contribution_bar': {
             chartId: 'contribution_bar',
             title: lang.chart.contributionBarTitle,
             chartType: 'BarChart',
-            timePeriods: 'Earliest',
             include: 'securities',
             measures: ['ctp'],
             includeMeasuresFor: ['securities'],
             options: {
                 hAxis: { title: 'Contribution' }
-            }},
+            }
+        },
         'attribution_bar': {
             chartId: 'attribution_bar',
             title: lang.chart.attributionBarTitle,
             chartType: 'BarChart',
-            timePeriods: 'Earliest',
             include: 'childSegments',
             measures: ['wendover', 'etotal'],
             includeMeasuresFor: ['childSegments']
@@ -77,152 +76,151 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             chartId: 'fixedIncomeContribution_bar',
             title: lang.chart.fixedIncomeContributionBarTitle,
             chartType: 'BarChart',
-            timePeriods: 'Earliest',
             include: 'none',
             measures: ['ctpyc', 'ctpspread', 'ctpcur'],
             includeMeasuresFor: ['segment'],
             options: {
                 chartArea: { left: 10, width: '60%', height: '80%' },
                 colors: ['#FF6600', '#CC0000', '#FFCC00']
-            }},
+            }
+        },
         'carryContribution_bar': {
             chartId: 'carryContribution_bar',
             title: lang.chart.carryContributionBarTitle,
             chartType: 'BarChart',
-            timePeriods: 'Earliest',
             include: 'none',
             measures: ['ctpsystcarry', 'ctpspeccarry'],
             includeMeasuresFor: ['segment'],
             options: {
                 chartArea: { left: 10, width: '60%', height: '80%' },
                 colors: ['#336600', '#990000']
-            }},
+            }
+        },
         'yieldCurveContribution_bar': {
             chartId: 'yieldCurveContribution_bar',
             title: lang.chart.yieldCurveContributionBarTitle,
             chartType: 'BarChart',
-            timePeriods: 'Earliest',
             include: 'none',
             measures: ['ctpshift', 'ctptwist', 'ctpbutterfly', 'ctprolldown'],
             includeMeasuresFor: ['segment'],
             options: {
                 chartArea: { left: 10, width: '60%', height: '80%' },
                 colors: ['#CD66CD', '#339900', '#FF9900', '#660000']
-            }},
+            }
+        },
         'riskNumbers_bar': {
             chartId: 'riskNumbers_bar',
             title: lang.chart.riskNumbersBarTitle,
             chartType: 'BarChart',
-            timePeriods: 'Earliest',
             include: 'none',
             measures: ['ytmpend', 'mdpend'],
             includeMeasuresFor: ['segment'],
             options: {
                 chartArea: { left: 10, width: '60%', height: '80%' },
                 colors: ['#336699', '#530066']
-            }},
-        
-    // ------------------------------------------
-    // BUBBLE CHARTS
-    // ------------------------------------------
-        
+            }
+        },
+
+        // ------------------------------------------
+        // BUBBLE CHARTS
+        // ------------------------------------------
+
         'performance_bubble': {
             chartId: 'performance_bubble',
             title: lang.chart.performanceBubbleTitle,
             chartType: 'BubbleChart',
-            timePeriods: 'Earliest',
             include: 'childSegments',
             measures: ['stddevann', 'returnannifgtyr', 'wpabsolute'],
             includeMeasuresFor: ['childSegments'],
             options: {
                 hAxis: { title: 'Annualized Volatility' },
                 vAxis: { title: 'Annualized Return' }
-            }},
+            }
+        },
         'risk_bubble': {
             chartId: 'risk_bubble',
             title: lang.chart.riskBubbleTitle,
             chartType: 'BubbleChart',
-            timePeriods: 'Earliest',
             include: 'childSegments',
             measures: ['valueatriskpercent', 'rp', 'wpabsolute'],
             includeMeasuresFor: ['childSegments'],
             options: {
                 hAxis: { title: '% Value at Risk' },
                 vAxis: { title: 'Return' }
-            }},
+            }
+        },
 
-    // ------------------------------------------
-    // COLUMN CHARTS
-    // ------------------------------------------
-        
+        // ------------------------------------------
+        // COLUMN CHARTS
+        // ------------------------------------------
+
         'contribution_column': {
             chartId: 'contribution_column',
             title: lang.chart.contributionColumnTitle,
             chartType: 'ColumnChart',
-            timePeriods: 'Earliest',
             include: 'childSegments',
             measures: ['ctp', 'ctb'],
             includeMeasuresFor: ['childSegments'],
             options: {
                 vAxis: { title: 'Return %' }
-            }},
+            }
+        },
         'interestRatesExposure_column': {
             chartId: 'interestRatesExposure_column',
             title: lang.chart.interestRatesExposureColumnTitle,
             chartType: 'ColumnChart',
-            timePeriods: 'Earliest',
             include: 'childSegments',
             measures: ['interestratesdown100percent', 'interestratesdown50percent', 'interestratesup50percent', 'interestratesup100percent'],
             includeMeasuresFor: ['childSegments'],
             options: {
                 vAxis: { title: 'Exposure %' },
                 colors: ['#CC0000', '#CD66CD', '#FFCC00', '#3399CC']
-            }},
+            }
+        },
         'creditSpreadsExposure_column': {
             chartId: 'creditSpreadsExposure_column',
             title: lang.chart.creditSpreadsExposure_columnTitle,
             chartType: 'ColumnChart',
-            timePeriods: 'Earliest',
             include: 'childSegments',
             measures: ['creditspreadsdown100percent', 'creditspreadsdown50percent', 'creditspreadsup50percent', 'creditspreadsup100percent'],
             includeMeasuresFor: ['childSegments'],
             options: {
                 vAxis: { title: 'Exposure %' },
                 colors: ['#CC0000', '#CD66CD', '#FFCC00', '#3399CC']
-            }},
+            }
+        },
         'dv01Exposure_column': {
             chartId: 'dv01Exposure_column',
             title: lang.chart.dv01ExposureColumnTitle,
             chartType: 'ColumnChart',
-            timePeriods: 'Earliest',
             include: 'childSegments',
             measures: ['interestratesdv01percent', 'creditspreadsdv01percent', 'inflationratesdv01percent'],
             includeMeasuresFor: ['childSegments'],
             options: {
                 vAxis: { title: 'Exposure %' },
                 colors: ['#3399CC', '#336699', '#003366']
-            }},
+            }
+        },
         'attribution_column': {
             chartId: 'attribution_column',
             title: lang.chart.attributionColumnTitle,
             chartType: 'ColumnChart',
-            timePeriods: 'Earliest',
             include: 'childSegments',
             measures: ['etotal', 'ealloc', 'eselecinter'],
             includeMeasuresFor: ['childSegments'],
             options: {
                 colors: ['#003366', '#FF6600', '#990066']
-            }},
+            }
+        },
 
-    // ------------------------------------------
-    // PIE CHARTS
-    // ------------------------------------------
-        
+        // ------------------------------------------
+        // PIE CHARTS
+        // ------------------------------------------
+
         'allocation_pie': {
             chartId: 'allocation_pie',
             title: lang.chart.allocationPieTitle,
             chartType: 'PieChart',
-            timePeriods: 'Earliest',
             include: 'childSegments',
             measures: ['wpabsoluteend'],
             includeMeasuresFor: ['childSegments']
@@ -231,7 +229,6 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             chartId: 'contribution_pie',
             title: lang.chart.contributionPieTitle,
             chartType: 'PieChart',
-            timePeriods: 'Earliest',
             include: 'childSegments',
             isHeatMap: true,
             isGradientReversed: false,
@@ -242,7 +239,6 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             chartId: 'risk_pie',
             title: lang.chart.riskPietitle,
             chartType: 'PieChart',
-            timePeriods: 'Earliest',
             include: 'childSegments',
             isHeatMap: true,
             isGradientReversed: true,
@@ -250,15 +246,14 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             includeMeasuresFor: ['childSegments']
         },
 
-    // ------------------------------------------
-    // GRIDS
-    // ------------------------------------------
+        // ------------------------------------------
+        // GRIDS
+        // ------------------------------------------
 
         'performance_grid': {
             chartId: 'performance_grid',
             title: lang.chart.performanceGridTitle,
             chartType: 'Table',
-            timePeriods: 'Earliest',
             include: 'none',
             measures: [
                 'rp', 'returnann', 'stddevann', 'relr',
@@ -273,7 +268,6 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             chartId: 'attribution_grid',
             title: lang.chart.attributionGridTitle,
             chartType: 'Table',
-            timePeriods: 'Earliest',
             include: 'childSegments',
             measures: [
                 'ctp', 'ctb', 'ealloclocal', 'eselecinterlocal', 'etotalc', 'etotalmca'
@@ -284,7 +278,6 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             chartId: 'fixedIncome_grid',
             title: lang.chart.fixedIncomeGridTitle,
             chartType: 'Table',
-            timePeriods: 'Earliest',
             include: 'childSegments',
             measures: [
                 'ttmpend', 'ytmpend', 'mdpend', 'durwpend', 'spreadpend'
@@ -295,7 +288,6 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             chartId: 'fixedIncomeContribution_grid',
             title: lang.chart.fixedIncomeContributionGridTitle,
             chartType: 'Table',
-            timePeriods: 'Earliest',
             include: 'childSegments',
             measures: [
                 'ctp', 'ctpyc', 'ctpcarry', 'ctpspread', 'ctpcur', 'ctpother', 'ctpresidual'
@@ -306,7 +298,6 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             chartId: 'fixedIncomeExposure_grid',
             title: lang.chart.fixedIncomeExposureGridTitle,
             chartType: 'Table',
-            timePeriods: 'Earliest',
             include: 'childSegments',
             measures: [
                 'wpend', 'interestratesdv01percent', 'creditspreadsdv01percent', 'inflationratesdv01percent'
@@ -317,7 +308,6 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             chartId: 'performanceTopTen_grid',
             title: lang.chart.performanceTopTenGridTitle,
             chartType: 'Table',
-            timePeriods: 'Earliest',
             include: 'securities',
             measures: ['wpend', 'rp', 'ctp'],
             oData: { orderby: 'wpend-Earliest desc', top: 10 },
@@ -327,7 +317,6 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             chartId: 'contributionTopTen_grid',
             title: lang.chart.contributionTopTenGridTitle,
             chartType: 'Table',
-            timePeriods: 'Earliest',
             include: 'securities',
             measures: ['wpend', 'rp', 'ctp'],
             oData: { orderby: 'ctp-Earliest desc', top: 10 },
@@ -337,22 +326,20 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             chartId: 'riskTopTen_grid',
             title: lang.chart.riskTopTenGridTitle,
             chartType: 'Table',
-            timePeriods: 'Earliest',
             include: 'securities',
             measures: ['wpend', 'expectedshortfallpercent', 'valueatriskpercent', 'expectedvolatilitypercent'],
             oData: { orderby: 'valueatriskpercent-Earliest desc', top: 10 },
             includeMeasuresFor: ['securities']
         },
-    
-    // ------------------------------------------
-    // TREE MAP CHARTS
-    // ------------------------------------------
+
+        // ------------------------------------------
+        // TREE MAP CHARTS
+        // ------------------------------------------
 
         'performance_treemap': {
             chartId: 'performance_treemap',
             title: lang.chart.performanceTreemapTitle,
             chartType: 'TreeMap',
-            timePeriods: 'Earliest',
             include: 'securities',
             measures: ['wpabsoluteend', 'rp'],
             includeMeasuresFor: ['segment', 'securities']
@@ -361,21 +348,19 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             chartId: 'risk_treemap',
             title: lang.chart.riskTreemapTitle,
             chartType: 'TreeMap',
-            timePeriods: 'Earliest',
             include: 'childSegments',
             measures: ['wpabsoluteend', 'contributionvar'],
             includeMeasuresFor: ['segment', 'childSegments']
-        }, 
+        },
 
-    // ------------------------------------------
-    // LINE CHARTS
-    // ------------------------------------------
+        // ------------------------------------------
+        // LINE CHARTS
+        // ------------------------------------------
 
         'performance_line': {
             chartId: 'performance_line',
             title: lang.chart.performanceLineTitle,
             chartType: 'LineChart',
-            timePeriods: 'Earliest',
             measures: ['rp', 'rb'],
             seriesType: 'cumulativeIndexed'
         },
@@ -458,23 +443,30 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
 
     // Public
     function load(chartsToLoad) {
-        var chartToLoad, chartId, 
+        var chartToLoad, chartId, timePeriodId,
             newRequest = true;
 
         for (var i = 0; i < chartsToLoad.length; i++) {
             chartId = chartsToLoad[i].chartId;
+            timePeriodId = chartsToLoad[i].timePeriodId;
+
             // If the chart has been created...
-            if(createdCharts[chartId]) {
+            if (createdCharts[chartId]) {
                 // Use it else...
                 chartToLoad = createdCharts[chartId];
             } else {
                 // Create a new chart and return it.
-                chartToLoad = chartManager.create(chartsData[chartId])
+                chartToLoad = chartManager.create(chartsData[chartId]);
                 createdCharts[chartId] = chartToLoad;
             }
 
+            // Add the requested time period to the chart if it exists.
+            if (timePeriodId) {
+                chartToLoad.timePeriods = timePeriodId;
+            }
+
             chartManager.load(chartToLoad, newRequest);
-            
+
             // Change the status of newRequest only if a valid chart has been loaded.
             if (chartToLoad) {
                 newRequest = false;
@@ -551,7 +543,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
                     }
                 }
             }
-        
+
             if (isGroup) {
                 closeAnalysisSection();
                 appendHtmlToAnalysisSection();
@@ -566,11 +558,11 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
     }
 
     // TODO: Investigate...
-    chartManager.on('onAnalysisLoaded', function(){
+    chartManager.on('onAnalysisLoaded', function () {
         eventManager.raiseEvent('onAllChartsLoaded');
     });
 
-    chartManager.on('onAnalysisLoading', function(chartCount, chartTotal){
+    chartManager.on('onAnalysisLoading', function (chartCount, chartTotal) {
         eventManager.raiseEvent('onChartsLoading', chartCount, chartTotal);
     });
 

@@ -9,7 +9,6 @@ var webApi = require('../web-api'),
     adapters = require('../adapters');
     
 var languages       = require('../languages'),
-    currentLanguage = {},
     defaultLanguage = 'en_US';
 
 // Local Authentication Confirmation
@@ -23,6 +22,7 @@ exports.isUserAuthenticated = function (req, res) {
 exports.segmentsTreeNode = function (req, res) {
     var params,
         adapter,
+        currentLanguage,
         oData = req.body.oData || {
             filter: '', // 'Code eq "EQUITY5"',
             orderby: '',
@@ -46,7 +46,7 @@ exports.segmentsTreeNode = function (req, res) {
         includeMeasuresFor: req.body.includeMeasuresFor
     };
 
-    webApi.getSegmentsTreeNode(oData, params, req.session.token, function (segments, analysis) {
+    webApi.getSegmentsTreeNode(oData, params, req.session.token, currentLanguage, function (segments, analysis) {
         var jsonObj = adapter.convert(
             segments.data,
             req.body.include,
@@ -62,6 +62,7 @@ exports.segmentsTreeNode = function (req, res) {
 // Time Series Retrieval
 exports.timeSeries = function (req, res) {
     var params,
+        currentLanguage,
         adapter;
 
     // If we had a language specified as part of the querystring,
@@ -81,7 +82,7 @@ exports.timeSeries = function (req, res) {
         include: req.body.include
     };
 
-    webApi.getTimeSeries(params, req.session.token, function (series, analysis) {
+    webApi.getTimeSeries(params, req.session.token, currentLanguage, function (series, analysis) {
         var jsonObj = adapter.convert(
             series.data.dataPoints,
             req.body.seriesType,

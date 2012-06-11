@@ -14,8 +14,10 @@
 				// ul.rounded
 				//	li.login_button
 				a#loginButton.whiteButton(href='#')  #{lang.loginPage.loginText}
+				p#loginErrorText
 				p.login_style #{lang.loginPage.signUpText} | #{lang.loginPage.supportText}
-				p.login_style ver. 01a
+				p.login_style #{new Date().getFullYear()} StatPro International SARL | ver. 01a
+
 		#home(data-pageEvents="both")
 			.toolbar
 				#toolbar_logo
@@ -54,7 +56,7 @@
 				// #btn_favourite_off
 			#wrapper
 				#scroller
-					#analysis_partial
+					#analysis_partial				
 
 		#eula(data-pageEvents="both", class='pageWithEvents')
 			.toolbar
@@ -129,6 +131,14 @@
 			#wrapper
 				#scroller
 					ul#listLanguagesPages.rounded
+		
+		#error(data-pageEvents="both")
+			.toolbar
+				h1 #{lang.errorPage.errorText}
+			#wrapper
+				#scroller
+					#errorMessage
+						p#errorMessageText
 
 		#test
 			.toolbar

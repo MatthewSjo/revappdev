@@ -18,9 +18,9 @@ WebAppLoader.addModule({ name: 'chartDefaults', isShared: true }, function () {
     // COMMON CHART SETTINGS
     commonSettings = {
         forceIFrame: false,
-        labelFontName: 'GillSans-Light',
+        labelFontName: 'HelveticaNeue-Light',
         labelFontSize: 12,
-        titleFontName: 'GillSans-Bold',
+        titleFontName: 'HelveticaNeue-Bold',
         titleFontSize: 25
     };
 
