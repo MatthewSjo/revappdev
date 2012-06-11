@@ -6,7 +6,7 @@ WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSet
     var settings            = {},
         appSettings         = {},
         siteUrls            = {},
-        analysisTypes       = {},
+        languages           = [],
         output              = this.getConsole(),
         userSettingsDataObj = this.getDataObject('userSettings'),
         appSettingsDataObj  = this.getDataObject('appSettings');
@@ -15,7 +15,7 @@ WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSet
         automaticLogin  : false,
         username        : 'asa.fama@statpro.com',
         password        : 'StatPro123',
-        language        : 'en-US'
+        language        : 'en_US'
     });
 
     appSettingsDataObj.define({
@@ -39,17 +39,16 @@ WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSet
         eula                : '/eula'
     };
 
-    // Analysis types.
-    analysisTypes = {
-        dashboard           : 'Dashboard',
-        performance         : 'Performance',
-        risk                : 'Risk',
-        assetAllocation     : 'Asset Allocation',
-        contribution        : 'Contribution',
-        attribution         : 'Attribution',
-        fixedIncome         : 'Fixed Income',
-        balanced            : 'Balanced'
-    };
+    // LANGUAGES
+    languages = [{
+        id      : 'en-US',
+        value   : 'en_US',
+        name    : 'English'
+    }, {
+        id      : 'it-IT',
+        value   : 'it_IT',
+        name    : 'Italiano'
+    }];
 
     function changeSetting(key, value) {
         appSettings[key] = value;
@@ -70,11 +69,7 @@ WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSet
     settings.getVersion = getVersion;
     settings.appSettings = appSettings;
     settings.siteUrls = siteUrls;
-    settings.analysisTypes = analysisTypes;
-
-    // Data Objects
-    // settings.appSettingsData = appSettingsData;
-    // settings.userSettingsData = userSettingsData;
+    settings.languages = languages;
 
     return settings;
 });

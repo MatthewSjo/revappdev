@@ -107,6 +107,15 @@ Zepto(function ($) {
         }
     };
     
+//    theApp.tryToChangeLanguage = function (language) {
+//        var currentLanguage = helper.getURLParameter('lang') || 'en_US';
+
+//        if (language && currentLanguage && (language.toLowerCase() !== currentLanguage.toLowerCase())) {
+//            theApp.nav.reloadApp('?lang=' + language);
+//        }
+
+//    }
+
     // ------------------------------------------
     // THE MAIN ENTRY POINT (Befor Login)
     // ------------------------------------------
@@ -116,13 +125,22 @@ Zepto(function ($) {
             userSettingsData    = {}, 
             lastLoggedOnUser    = '',
             username            = '',
-            password            = '';
+            password            = '',
+            language            = '';
             
+        function tryToChangeLanguage(language) {
+            var currentLanguage = helper.getURLParameter('lang') || 'en_US';
+
+            if (language && currentLanguage && (language.toLowerCase() !== currentLanguage.toLowerCase())) {
+                theApp.nav.reloadApp('?lang=' + language);
+            }
+        }
+
         // Try to get the last logged on user.
         lastLoggedOnUser = (appSettingsData && appSettingsData.lastLoggedOnUser)
             ? appSettingsData.lastLoggedOnUser.toLowerCase()
             : null;
-        
+
         if (lastLoggedOnUser) {
             theApp.settings.loadData('userSettings', lastLoggedOnUser);    
             userSettingsData = theApp.settings.getData('userSettings');
@@ -130,7 +148,10 @@ Zepto(function ($) {
             // Try to get username and password.
             username = userSettingsData.username || '';
             password = userSettingsData.password || '';
-            
+            language = userSettingsData.language || null;
+
+            tryToChangeLanguage(language);
+
             if (userSettingsData.automaticLogin) {
                 // If username and password fields are available...
 
@@ -435,6 +456,22 @@ Zepto(function ($) {
 
     // Memoization pattern.
     theApp.showChartSettingsPage.charts = [];
+
+    // ------------------------------------------
+    // LANGUAGE SETTINGS PAGE
+    // ------------------------------------------
+
+    theApp.languageSettingsPage = loader.loadModule('languageSettingsPage');
+    theApp.languageSettingsPage.create();
+
+    theApp.languageSettingsPage.on('onLanguageSelected', function (language) {
+        var userSettingsData = theApp.settings.loadData('userSettings', theApp.lastUsernameUsed);
+        
+        userSettingsData.language = language.value;
+        theApp.settings.saveData('userSettings', theApp.lastUsernameUsed);
+        output.log('onLanguageSelected', language);
+        theApp.nav.reloadApp('?lang=' + language.value);
+    });
 
     // ------------------------------------------
     // PORTFOLIO MANAGER

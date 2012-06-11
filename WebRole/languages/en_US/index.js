@@ -12,32 +12,7 @@
 exports.client = {
     hello: 'hello',
 
-    // ------------------------------------------------------------------ | S |
-
-    shared: {
-        decimalSymbol               : '.',
-        groupingSymbol              : ','
-    }, 
-
-    spinningWheel: {
-        noPortfolioSlotAvailable    : 'No portfolio available',
-        noAnalysisSlotAvailable     : 'No analysis available',
-        noTimePeriodSlotAvailable   : 'No time period available',
-        noFavouritesSlotAvailable   : 'No favourites'
-    },
-
-    // ------------------------------------------------------------------ | T |
-    
-    tabbar: {
-        favourites                  : 'Favourites',
-        home                        : 'Home',
-        portfolios                  : 'Portfolios',
-        analysis                    : 'Analysis',
-        timePeriods                 : 'Time Periods',
-        infos                       : 'Infos',
-        more                        : 'More',
-        settings                    : 'Settings'
-    },
+    // ------------------------------------------------------------------ | C |
 
     chart: {
         performanceBarTitle                 : 'Bar Chart Segment Return',
@@ -70,6 +45,33 @@ exports.client = {
         performanceTreemapTitle             : 'Tree Map Portfolio Weight vs Return',
         riskTreemapTitle                    : 'Tree Map Individual Security Weight VaR',
         performanceLineTitle                : 'Performance Line'
+    },
+
+    // ------------------------------------------------------------------ | S |
+
+    shared: {
+        decimalSymbol               : '.',
+        groupingSymbol              : ','
+    }, 
+
+    spinningWheel: {
+        noPortfolioSlotAvailable    : 'No portfolio available',
+        noAnalysisSlotAvailable     : 'No analysis available',
+        noTimePeriodSlotAvailable   : 'No time period available',
+        noFavouritesSlotAvailable   : 'No favourites'
+    },
+
+    // ------------------------------------------------------------------ | T |
+    
+    tabbar: {
+        favourites                  : 'Favourites',
+        home                        : 'Home',
+        portfolios                  : 'Portfolios',
+        analysis                    : 'Analysis',
+        timePeriods                 : 'Time Periods',
+        infos                       : 'Infos',
+        more                        : 'More',
+        settings                    : 'Settings'
     },
 
     // -------------------------- | END OF FILE | -------------------------- \\
@@ -119,6 +121,11 @@ exports.server = {
     },
 
     // ------------------------------------------------------------------ | L |
+
+    languageSettingsPage: {
+        settingsText                : 'Languages',
+        backText                    : 'Back'
+    },
 
     loginPage: {
         loginText                   : 'Login',

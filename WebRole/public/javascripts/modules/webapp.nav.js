@@ -16,8 +16,10 @@ WebAppLoader.addModule({ name: 'nav', hasEvents: true }, function () {
         jQT.goTo($(idPage), animation || 'fade');
     }
 
-    function reloadApp() {
-        window.location = './';
+    function reloadApp(params) {
+        var paramsToAdd = params || '';
+
+        window.location = './' + paramsToAdd;
         return false;
     }
 

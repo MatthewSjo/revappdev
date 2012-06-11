@@ -19,6 +19,7 @@ WebAppLoader.addModule({ name: 'pageElements', isShared: true }, function () {
         startupPage                         : '#startup',
         chartSettingsPage                   : '#chartSettings',
         themesPage                          : '#themes',
+        languageSettingsPages               : '#languageSettings',
 
         // Elements.
         portfolioAnalysisLink               : '.defaultAnalysisLink',
@@ -36,7 +37,8 @@ WebAppLoader.addModule({ name: 'pageElements', isShared: true }, function () {
         saveChartSettings                   : '#saveChartSettings',
         addNewAnalysisPage                  : '#addNewAnalysisPage',
         analysisTitle                       : '#analysisTitle',
-        loadingText                         : '#loadingText'
+        loadingText                         : '#loadingText',
+        listLanguagesPages                  : '#listLanguagesPages'
     };
 
     return pageElements;

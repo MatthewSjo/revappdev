@@ -112,6 +112,15 @@ WebAppLoader.addModule({ name: 'helper', isPlugin: true }, function () {
         return removedObject;
     }
 
+    function getURLParameter(name) {
+        var param = decodeURIComponent(
+            (location.search.match(RegExp("[?|&]"+name+'=(.+?)(&|$)'))||[,null])[1]
+        );  
+        return (param === 'null')
+            ? null
+            : param;
+    }
+
     helper.capitaliseFirstLetter = capitaliseFirstLetter;
     helper.getValueAs = getValueAs;
     helper.startsWith = startsWith;
@@ -120,6 +129,7 @@ WebAppLoader.addModule({ name: 'helper', isPlugin: true }, function () {
     helper.hasValue = hasValue;
     helper.createUUID = createUUID;
     helper.removeObjectFromArray = removeObjectFromArray;
+    helper.getURLParameter = getURLParameter;
 
     return helper;
 });
