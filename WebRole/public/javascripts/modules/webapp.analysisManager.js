@@ -22,20 +22,23 @@ WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'],
             order       : 1,
             userDefined : false,
             charts      : [{
-                    chartId : 'performance_grid',
+                    chartId : 'performance_line',
                     order   : 1
-                },{
-                    chartId : 'performance_bubble',
+                }, {
+                    chartId : 'performance_grid',
                     order   : 2
                 },{
+                    chartId : 'performance_bubble',
+                    order   : 3
+                },{
                     chartId: 'performance_bar',
-                    order: 3
+                    order   : 4
                 },{
                     chartId: 'performance_treemap',
-                    order: 4
+                    order   : 5
                 },{
                     chartId: 'performanceTopTen_grid',
-                    order: 5
+                    order   : 6
                 }] 
         },{
             name        : 'Risk',
