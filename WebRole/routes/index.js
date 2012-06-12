@@ -179,7 +179,10 @@ exports.analysis = function (req, res) {
     webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, req.session.token, currentLanguage, function (analysis) {
         var viewModel = analysis.data || {};
 
+        // Set language and layout.
+        viewModel.lang = currentLanguage;
         viewModel.layout = false;
+
         res.render('analysis', viewModel);
     });
 };

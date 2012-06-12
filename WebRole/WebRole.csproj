@@ -330,7 +330,9 @@
     <Content Include="public\images\calendar.png" />
     <Content Include="public\images\cloud.png" />
     <Content Include="public\images\favourites.png" />
+    <Content Include="public\images\Gear.png" />
     <Content Include="public\images\info.png" />
+    <Content Include="public\images\iphone.png" />
     <Content Include="public\images\loading.gif" />
     <Content Include="public\images\loading_charts.png" />
     <Content Include="public\images\logo.png" />
@@ -406,6 +408,7 @@
     <Content Include="public\javascripts\shared\webapp.settings.js" />
     <Content Include="public\javascripts\controls\webapp.spinningWheel.js" />
     <Content Include="public\javascripts\controls\webapp.tabbar.js" />
+    <Content Include="public\src\date.js" />
     <Content Include="public\src\jlinq.js" />
     <Content Include="public\src\jqt.themeswitcher.js" />
     <Content Include="public\src\jquery.swipeButton-1.2.0.js" />
@@ -960,11 +963,9 @@
     </Content>
     <Content Include="views\eula.jade" />
     <Content Include="views\portfolioAnalysis.jade" />
-    <Content Include="views\dashboard.jade" />
     <Content Include="views\portfolios.jade" />
     <Content Include="views\index.jade" />
     <Content Include="views\layout.jade" />
-    <None Include="views\error.jade" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\iisnode.msi" />

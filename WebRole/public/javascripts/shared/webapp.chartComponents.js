@@ -44,7 +44,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         },
         'allocation_bar': {
             chartId: 'allocation_bar',
-            title: lang.chart.allocationbarTitle,    
+            title: lang.chart.allocationbarTitle,
             chartType: 'BarChart',
             include: 'childSegments',
             measures: ['wover'],
@@ -179,7 +179,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         },
         'creditSpreadsExposure_column': {
             chartId: 'creditSpreadsExposure_column',
-            title: lang.chart.creditSpreadsExposure_columnTitle,
+            title: lang.chart.creditSpreadsExposureColumnTitle,
             chartType: 'ColumnChart',
             include: 'childSegments',
             measures: ['creditspreadsdown100percent', 'creditspreadsdown50percent', 'creditspreadsup50percent', 'creditspreadsup100percent'],
@@ -365,77 +365,64 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             seriesType: 'cumulativeIndexed'
         },
 
-    // ------------------------------------------
-    // CHART GROUPS
-    // ------------------------------------------
+        // ------------------------------------------
+        // CHART GROUPS
+        // ------------------------------------------
 
         'fi_contribution_group': {
             chartId: 'fi_contribution_group',
-            title: 'Bar Charts of Fixed Income Contributions:', // lang.chart.performanceLineTitle,
+            title: lang.chart.fixedIncomeContributionsGroupTitle,
             chartType: 'Group',
             charts: [{
-                    chartId: 'fixedIncomeContribution_bar',
-                    width: '50%',
-                    height: '100%'
-                },{
-                    chartId: 'carryContribution_bar',
-                    width: '50%',
-                    height: '100%'
+                chartId: 'fixedIncomeContribution_bar',
+                width: '50%',
+                height: '100%'
+            }, {
+                chartId: 'carryContribution_bar',
+                width: '50%',
+                height: '100%'
 
-                },{
-                    chartId: 'yieldCurveContribution_bar',
-                    width: '50%',
-                    height: '100%'
-                },{
-                    chartId: 'riskNumbers_bar',
-                    width: '50%',
-                    height: '100%'
-                }]
+            }, {
+                chartId: 'yieldCurveContribution_bar',
+                width: '50%',
+                height: '100%'
+            }, {
+                chartId: 'riskNumbers_bar',
+                width: '50%',
+                height: '100%'
+            }]
         },
-        
         'fi_exposures_group': {
             chartId: 'fi_exposures_group',
-            title: 'Column Charts of Fixed Income Exposures:', // lang.chart.performanceLineTitle,
+            title: lang.chart.fixedIncomeExposuresGroupTitle,
             chartType: 'Group',
             charts: [{
-                    chartId: 'interestRatesExposure_column',
-                    width: '50%',
-                    height: '100%'
-                },{
-                    chartId: 'creditSpreadsExposure_column',
-                    width: '50%',
-                    height: '100%'
-                },{
-                    chartId: 'dv01Exposure_column',
-                    width: '50%',
-                    height: '100%'
-                }]
+                chartId: 'interestRatesExposure_column',
+                width: '50%',
+                height: '100%'
+            }, {
+                chartId: 'creditSpreadsExposure_column',
+                width: '50%',
+                height: '100%'
+            }, {
+                chartId: 'dv01Exposure_column',
+                width: '50%',
+                height: '100%'
+            }]
         },
-        
         'fi_gridRiskNumber_group': {
             chartId: 'fi_gridRiskNumber_group',
-            title: 'Grid of Risk Numbers:', // lang.chart.performanceLineTitle,
+            title: lang.chart.fixedIncomeRiskNumbersGroupTitle,
             chartType: 'Group',
             charts: [{
-                    chartId: 'fixedIncome_grid',
-                    width: '100%',
-                    height: '100%'
-                },{
-                    chartId: 'fixedIncomeContribution_grid',
-                    width: '100%',
-                    height: '100%'
-                }]
-        },
-
-        'fi_gridExposure_group': {
-            chartId: 'fi_gridExposure_group',
-            title: 'Grid of FI Exposure:', // lang.chart.performanceLineTitle,
-            chartType: 'Group',
-            charts: [{
-                    chartId: 'fixedIncomeExposure_grid',
-                    width: '100%',
-                    height: '100%'
-                }]
+                chartId: 'fixedIncome_grid',
+                width: '100%',
+                height: '100%'
+            }, {
+                chartId: 'fixedIncomeContribution_grid',
+                width: '100%',
+                height: '100%'
+            }]
         }
     });
 
@@ -475,44 +462,45 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
     }
 
     function render(charts, renderTo) {
-        var chartsToLoad    = [],
-            htmlToAppend    = '';
+        var chartsToLoad = [],
+            htmlToAppend = '';
 
         function openAnalysisSection(chartTitle) {
             htmlToAppend = '';
-            htmlToAppend += 
-                '<div class="analysisSummarySection">' + 
-                '   <h2>' + chartTitle + '</h2>' +
-                '   <div class="analysisComponentContainer">';
+            htmlToAppend +=
+                '<div class="analysisSummarySection">' +
+                '    <h2>' + chartTitle + '</h2>' +
+                '    <div class="analysisComponentContainer">';
         }
 
-        function addChartToAnalysisSection(chartToAdd) {
-            htmlToAppend += 
-                '       <div id="' + chartToAdd.chartId + '" class="chartContainer"></div>';
+        function addChartToAnalysisSection(chartToAdd, containerClass) {
+            htmlToAppend +=
+                '        <div id="' + chartToAdd.chartId + '" class="' + containerClass + '"></div>';
         }
 
         function addChartToGroup(chartToAdd) {
-            htmlToAppend += 
-                '       <div id="' + chartToAdd.chartId + 
+            htmlToAppend +=
+                '        <div id="' + chartToAdd.chartId +
                 '" class="halfSizeChart" style="width: ' + chartToAdd.width + ';' +
                 'height: ' + chartToAdd.height + ';"></div>';
         }
 
         function closeAnalysisSection() {
-            htmlToAppend += 
-                '       <div style="clear: both;"></div>' +
-                '   </div>' + 
+            htmlToAppend +=
+                '        <div style="clear: both;"></div>' +
+                '    </div>' +
                 '</div>';
         }
 
         function appendHtmlToAnalysisSection() {
             $(renderTo).append($(htmlToAppend));
         }
-        
+
         function addChartToChartsToRender(chartToAdd) {
             var chartsToRender = [],
-                isGroup        = false;
-            
+                isGroup = false,
+                containerClass;
+
             // Exit if the chart to add doesn't exist.
             if (!chartToAdd) {
                 output.log('addChartToChartsToRender: Skipped empty chart');
@@ -531,10 +519,15 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
                 openAnalysisSection(chartToAdd.title);
             }
 
+            // Define a wrapper DIV class for the chart container depending on
+            // the chart type. If the chart is a table, it sets its own height,
+            // so an explicit class defining height is not required.
+            containerClass = (chartToAdd.chartType === 'Table') ? '' : 'chartContainer';
+
             // Create the chart containers according to the chart types.
             for (var i = 0; i < chartsToRender.length; i++) {
                 chart = chartsData[chartsToRender[i].chartId] || null;
-                
+
                 // Add current chart to the list of charts to load.
                 chartsToLoad.push(chart);
 
@@ -543,7 +536,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
                         addChartToGroup(chartsToRender[i]);
                     } else {
                         openAnalysisSection(chart.title);
-                        addChartToAnalysisSection(chartsToRender[i]);
+                        addChartToAnalysisSection(chartsToRender[i], containerClass);
                         closeAnalysisSection();
                         appendHtmlToAnalysisSection();
                     }
@@ -560,7 +553,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             addChartToChartsToRender(chartsData[charts[i].chartId] || null);
         }
 
-        load(chartsToLoad);   
+        load(chartsToLoad);
     }
 
     // TODO: Investigate...

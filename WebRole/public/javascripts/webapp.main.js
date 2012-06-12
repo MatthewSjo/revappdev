@@ -145,6 +145,10 @@ Zepto(function ($) {
                 theApp.tryToChangeLanguage(language);
             }
 
+            // With the language defined, set the CultureInfo property of the 
+            // JavaScript Date object, so date.js can hook in for localization.
+            Date.CultureInfo = lang.cultureInfo;
+
             if (userSettingsData.automaticLogin) {
                 // If username and password fields are available...
                 if (username && password) {
@@ -265,13 +269,13 @@ Zepto(function ($) {
                 analysisPagesData = {},
                 analysisPage = {},
                 portfolioId = portfolio.code,
-                portfolioName       = portfolio.name,
-                analysisPageCharts  = null,
                 portfolioName = portfolio.name,
-                analysisPageTitle   = '',
+                analysisPageCharts = null,
+                portfolioName = portfolio.name,
+                analysisPageTitle = '',
                 i;
-                
-        
+
+
             analysisPagesData = theApp.analysisManager.getData('analysisPages');
 
             analysisPage = jLinq.from(analysisPagesData.items)
@@ -283,17 +287,17 @@ Zepto(function ($) {
                 analysisPageCharts = analysisPage[0].charts;
                 analysisPageTitle = analysisPage[0].name;
             } else {
-                analysisPageCharts =analysisPagesData.items[0].charts;
+                analysisPageCharts = analysisPagesData.items[0].charts;
                 analysisPageTitle = analysisPagesData.items[0].name;
             }
-            
+
             chartsToRender = jLinq.from(analysisPageCharts)
                 .sort('order')
                 .select();
 
             // Update the page title.
             $(el.analysisTitle).html(analysisPageTitle);
-            
+
             // Add the currently requested time period to each of the chart config objects.
             $.each(chartsToRender, function (index, chart) {
                 chart.timePeriodId = analysisDataObject.timePeriodId;
@@ -303,14 +307,18 @@ Zepto(function ($) {
             // and get hold of the start and end date for that particular
             // period, breaking the loop when found.
             $.each(portfolio.timePeriods, function (index, period) {
+                var startDate, endDate;
+
                 if (period.code === analysisDataObject.timePeriodId) {
-                    $(el.timePeriodStartDateText).html(period.startDate);
-                    $(el.timePeriodEndDateText).html(period.endDate);
+                    startDate = Date.parse(period.startDate);
+                    endDate = Date.parse(period.endDate);
+
+                    $(el.timePeriodStartDateText).html(startDate.toString('MMM d, yyyy'));
+                    $(el.timePeriodEndDateText).html(endDate.toString('MMM d, yyyy'));
                     return false;
                 }
             });
 
-            
             theApp.setLastAnalysisObjectUsed(analysisDataObject);
             theApp.setLastAnalysisObjectUsed({
                 portfolioId: portfolioId,
@@ -337,13 +345,13 @@ Zepto(function ($) {
 
     theApp.saveLastAnalysisObjectUsed = function () {
         // TODO: Add code here to save in the user space the last analysis object used.
-        var userSettingsData    = theApp.settings.loadData('userSettings', theApp.lastUsernameUsed);
+        var userSettingsData = theApp.settings.loadData('userSettings', theApp.lastUsernameUsed);
 
         userSettingsData.lastAnalysisObjectUsed = theApp.getLastAnalysisObjectUsed();
         theApp.settings.saveData('userSettings', theApp.lastUsernameUsed);
     };
 
-    theApp.chartComponents.on('onAllChartsLoaded', function(){
+    theApp.chartComponents.on('onAllChartsLoaded', function () {
         theApp.scroll.rebuild('analysis');
         theApp.mask.updateAnalysisText(' ');
         theApp.mask.hide('analysis');
@@ -380,12 +388,12 @@ Zepto(function ($) {
         theApp.nav.goToPage(el.chartSettingsPage, 'slideup');
         theApp.showChartSettingsPage(analysisId);
     });
-    
+
     theApp.analysisSettingsPage.on('onPageLoaded', function () {
         // containerId, label, callback, autoRemove, buttonClass
         theApp.swipeButton.addTo('#listAnalysisSettingsUserPages', 'Delete', theApp.onUserPageDeleted, true);
     });
-    
+
     theApp.onUserPageDeleted = function ($button) {
         var userPageId = $button.parent().parent().data('link') || null,
             analysisPagesData;
@@ -445,7 +453,7 @@ Zepto(function ($) {
 
     theApp.chartSettingsPage.on('onSettingsChanged', function (updatedAnalysisPage) {
         var analysisPage, analysisPagesData;
-        
+
         updatedAnalysisPage.name = updatedAnalysisPage.name || 'Untitled'; // TODO: Localize string 'Untitled'
 
         analysisPagesData = theApp.analysisManager.getData('analysisPages');
@@ -461,10 +469,10 @@ Zepto(function ($) {
 
         theApp.analysisManager.saveData('analysisPages', theApp.lastUsernameUsed);
         theApp.updateAnalysisSlot(analysisPagesData);
-        
+
         // Show the new analysis page.
-        theApp.setLastAnalysisObjectUsed({ 
-            analysisId: updatedAnalysisPage.id, 
+        theApp.setLastAnalysisObjectUsed({
+            analysisId: updatedAnalysisPage.id,
             analysisName: updatedAnalysisPage.name
         });
         theApp.updateAnalysisPage();
@@ -568,14 +576,14 @@ Zepto(function ($) {
     // ------------------------------------------
     /* 
     theApp.lastAnalysisObjectUsed = {
-        portfolioId: '',
-        portfolioName: '',
-        analysisId: 'performances',
-        analysisName: 'Performances',
-        timePeriodId: 'Earliest',
-        timePeriodName: 'Earliest',
-        chartId : 'performance_bar',
-        timeStamp: ''
+    portfolioId: '',
+    portfolioName: '',
+    analysisId: 'performances',
+    analysisName: 'Performances',
+    timePeriodId: 'Earliest',
+    timePeriodName: 'Earliest',
+    chartId : 'performance_bar',
+    timeStamp: ''
     };    
     
     */
@@ -591,7 +599,7 @@ Zepto(function ($) {
             { id: 'timePeriods', title: lang.tabbar.timePeriods, class: 'timeperiods' },
         // { id: 'infos', title: lang.tabbar.infos, class: 'infos' },
         // { id: 'more', title: lang.tabbar.more, class: 'more' }
-            { id: 'settings', title: lang.tabbar.settings, class: 'settings', highlight: true }
+            {id: 'settings', title: lang.tabbar.settings, class: 'settings', highlight: true }
         ]
     };
 
@@ -760,7 +768,7 @@ Zepto(function ($) {
         setTimeout(function () {
             $(el.analysisPageNameTextbox).focus();
         }, 200);
-        
+
         output.log('onChartSettingsStart');
     });
     
@@ -843,10 +851,10 @@ Zepto(function ($) {
     // - favouriteId [optional]
     theApp.favouriteExists = function (favouriteId) {
         var favouriteToCheck = theApp.getFavouriteById(favouriteId);
- 
+
         return (favouriteToCheck && true);
     };
-    
+
     theApp.getFavouriteById = function (favouriteId) {
         var favourite = null,
             favouriteToCheck = null,
@@ -898,10 +906,10 @@ Zepto(function ($) {
 
     // - favouriteId [optional]
     theApp.synchronizeFavouriteButton = function (favouriteId) {
-        var favourite       = theApp.getFavouriteById(favouriteId), 
+        var favourite = theApp.getFavouriteById(favouriteId),
             favouriteButton = theApp.toolbar.getButton('favourite');
 
-        if(favourite && favouriteButton) {
+        if (favourite && favouriteButton) {
             theApp.setLastFavouriteSelected(favourite.favouriteId);
             favouriteButton.select();
         } else {
@@ -909,7 +917,7 @@ Zepto(function ($) {
         }
     };
 
-    theApp.setLastFavouriteSelected = function(favouriteId){
+    theApp.setLastFavouriteSelected = function (favouriteId) {
         theApp.lastFavouriteSelected = favouriteId;
     }
 

@@ -7,7 +7,7 @@
         }
 
         $(document).bind('gesturestart', function (e) {
-            var now = Date.now(), delta = now - (gesture.last || now)
+            var now = Date.now().getTime(), delta = now - (gesture.last || now) // NOTE: Remove .getTime() if not using date.js.
             gesture.target = parentIfText(e.target)
             gestureTimeout && clearTimeout(gestureTimeout)
             gesture.e1 = e.scale
