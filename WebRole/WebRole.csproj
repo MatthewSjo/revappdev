@@ -330,7 +330,9 @@
     <Content Include="public\images\calendar.png" />
     <Content Include="public\images\cloud.png" />
     <Content Include="public\images\favourites.png" />
+    <Content Include="public\images\Gear.png" />
     <Content Include="public\images\info.png" />
+    <Content Include="public\images\iphone.png" />
     <Content Include="public\images\loading.gif" />
     <Content Include="public\images\loading_charts.png" />
     <Content Include="public\images\logo.png" />
@@ -371,6 +373,7 @@
     <Content Include="public\img\transparent button\stars.png" />
     <Content Include="public\img\UIBack.png" />
     <Content Include="public\img\UIBackPressed.png" />
+    <Content Include="public\javascripts\controls\webapp.swipeButton.js" />
     <Content Include="public\javascripts\extensions\webapp.consoleManager.js" />
     <Content Include="public\javascripts\extensions\webapp.dataObject.js" />
     <Content Include="public\javascripts\extensions\webapp.emptyExtension.js" />
@@ -380,6 +383,7 @@
     <Content Include="public\javascripts\modules\webapp.themesManager.js" />
     <Content Include="public\javascripts\pages\webapp.chartSettingsPage.js" />
     <Content Include="public\javascripts\pages\webapp.analysisSettingsPage.js" />
+    <Content Include="public\javascripts\pages\webapp.languageSettingsPage.js" />
     <Content Include="public\javascripts\shared\webapp.ajaxManager.js" />
     <Content Include="public\javascripts\shared\webapp.chartComponents.js" />
     <Content Include="public\javascripts\shared\webapp.colorManager.js" />
@@ -404,8 +408,10 @@
     <Content Include="public\javascripts\shared\webapp.settings.js" />
     <Content Include="public\javascripts\controls\webapp.spinningWheel.js" />
     <Content Include="public\javascripts\controls\webapp.tabbar.js" />
+    <Content Include="public\src\date.js" />
     <Content Include="public\src\jlinq.js" />
     <Content Include="public\src\jqt.themeswitcher.js" />
+    <Content Include="public\src\jquery.swipeButton-1.2.0.js" />
     <Content Include="public\src\selector.js" />
     <Content Include="public\src\zepto.js" />
     <Content Include="public\src\add2home.js" />
@@ -423,6 +429,7 @@
     <Content Include="public\stylesheets\add2home.css" />
     <Content Include="public\stylesheets\apple.css" />
     <Content Include="public\stylesheets\jqtouch.css" />
+    <Content Include="public\stylesheets\jquery.swipeButton-1.2.css" />
     <Content Include="public\stylesheets\login.css" />
     <Content Include="public\stylesheets\itabbar.css" />
     <Content Include="public\stylesheets\spinningwheel.css" />
@@ -956,7 +963,6 @@
     </Content>
     <Content Include="views\eula.jade" />
     <Content Include="views\portfolioAnalysis.jade" />
-    <Content Include="views\dashboard.jade" />
     <Content Include="views\portfolios.jade" />
     <Content Include="views\index.jade" />
     <Content Include="views\layout.jade" />

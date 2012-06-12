@@ -41,6 +41,7 @@ WebAppLoader.addModule({ name: 'pageElements', isShared: true }, function () {
         analysisTitle                       : '#analysisTitle',
         loadingText                         : '#loadingText',
         listLanguagesPages                  : '#listLanguagesPages',
+        timePeriodStartDateText             : '#timePeriodStartDateText',
         timePeriodEndDateText               : '#timePeriodEndDateText',
         errorMessageText                    : '#errorMessageText'
     };

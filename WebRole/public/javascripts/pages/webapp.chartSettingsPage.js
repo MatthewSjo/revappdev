@@ -2,20 +2,28 @@
 // CHART SETTINGS PAGE
 // ------------------------------------------
 
-WebAppLoader.addModule({ name: 'chartSettingsPage', plugins: ['helper'], sharedModules: ['settings', 'pageElements'], hasEvents: true }, function () {
-    var chartSettingsPage    = {},
-        output               = this.getConsole(),
-        eventManager         = this.getEventManager(),
-        helper               = this.getPlugin('helper'),
-        settings             = this.getSharedModule('settings'),
-        el                   = this.getSharedModule('pageElements'),
-        analysisId           = '';
+WebAppLoader.addModule({ name: 'chartSettingsPage',
+    plugins: ['helper'], sharedModules: ['settings', 'pageElements', 'localizationManager'],
+    hasEvents: true
+}, function () {
+    var chartSettingsPage = {},
+        output = this.getConsole(),
+        eventManager = this.getEventManager(),
+        helper = this.getPlugin('helper'),
+        lang = this.getSharedModule('localizationManager').getLanguage() || {},
+        settings = this.getSharedModule('settings'),
+        el = this.getSharedModule('pageElements'),
+        analysisId = '';
 
     function create(charts) {
+        var chartType;
+
         for (var i = 0; i < charts.length; i++) {
+            chartType = '(' + lang.chartTypes[charts[i].chartType] + ') ';
+
             $(el.chartsSelectbox).append(
                 $('<option>').attr('value', charts[i].chartId)
-                    .html(charts[i].chartTitle)
+                    .html(chartType + charts[i].chartTitle)
                 );
         }
     }
@@ -23,7 +31,7 @@ WebAppLoader.addModule({ name: 'chartSettingsPage', plugins: ['helper'], sharedM
     function update(analysisPage) {
         // NOTA BENE: The current version of Zepto doesn't support
         // multiple selection based on array.
-        
+
         // Reset the select box.
         // $(el.chartsSelectbox + ' > option').removeAttr('selected');
         $(el.chartsSelectbox).children('option:selected').removeAttr('selected');
@@ -36,22 +44,22 @@ WebAppLoader.addModule({ name: 'chartSettingsPage', plugins: ['helper'], sharedM
         $(el.analysisPageNameTextbox).val(analysisPage.name);
         analysisId = analysisPage.id;
     }
-    
+
     function getSettings() {
         var settings = {
-                name: '',
-                id: '',
-                order: new Date().getTime(),
-                userDefined : true,
-                charts: []
-            }, 
+            name: '',
+            id: '',
+            order: new Date().getTime(),
+            userDefined: true,
+            charts: []
+        },
             chartOrder = 1;
 
         settings.name = $(el.analysisPageNameTextbox).val();
         settings.id = analysisId;
-        
+
         // $(el.chartsSelectbox + ' > option').each(function (chart){
-        $(el.chartsSelectbox).children('option:selected').each(function (chart){
+        $(el.chartsSelectbox).children('option:selected').each(function (chart) {
             settings.charts.push({
                 chartId: $(this).val(),
                 order: chartOrder
@@ -63,7 +71,7 @@ WebAppLoader.addModule({ name: 'chartSettingsPage', plugins: ['helper'], sharedM
         return settings;
     }
 
-    $(el.saveChartSettings).on('click', function (){
+    $(el.saveChartSettings).on('click', function () {
         eventManager.raiseEvent('onSettingsChanged', getSettings());
     });
 

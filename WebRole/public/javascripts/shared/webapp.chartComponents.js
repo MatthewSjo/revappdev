@@ -12,7 +12,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         helper = this.getPlugin('helper'),
         chartManager = this.getSharedModule('chartManager'),
         lang = this.getSharedModule('localizationManager').getLanguage() || {};
-    createdCharts = {},
+        createdCharts = {},
         chartsDataObject = this.getDataObject('charts'),
         chartsData = null;
 
@@ -180,7 +180,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         },
         'creditSpreadsExposure_column': {
             chartId: 'creditSpreadsExposure_column',
-            title: lang.chart.creditSpreadsExposure_columnTitle,
+            title: lang.chart.creditSpreadsExposureColumnTitle,
             chartType: 'ColumnChart',
             include: 'childSegments',
             measures: ['creditspreadsdown100percent', 'creditspreadsdown50percent', 'creditspreadsup50percent', 'creditspreadsup100percent'],
@@ -372,7 +372,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
 
         'fi_contribution_group': {
             chartId: 'fi_contribution_group',
-            title: 'Bar Charts of Fixed Income Contributions:', // lang.chart.performanceLineTitle,
+            title: lang.chart.fixedIncomeContributionsGroupTitle,
             chartType: 'Group',
             charts: [{
                 chartId: 'fixedIncomeContribution_bar',
@@ -393,10 +393,9 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
                 height: '100%'
             }]
         },
-
         'fi_exposures_group': {
             chartId: 'fi_exposures_group',
-            title: 'Column Charts of Fixed Income Exposures:', // lang.chart.performanceLineTitle,
+            title: lang.chart.fixedIncomeExposuresGroupTitle,
             chartType: 'Group',
             charts: [{
                 chartId: 'interestRatesExposure_column',
@@ -412,10 +411,9 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
                 height: '100%'
             }]
         },
-
         'fi_gridRiskNumber_group': {
             chartId: 'fi_gridRiskNumber_group',
-            title: 'Grid of Risk Numbers:', // lang.chart.performanceLineTitle,
+            title: lang.chart.fixedIncomeRiskNumbersGroupTitle,
             chartType: 'Group',
             charts: [{
                 chartId: 'fixedIncome_grid',
@@ -423,17 +421,6 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
                 height: '100%'
             }, {
                 chartId: 'fixedIncomeContribution_grid',
-                width: '100%',
-                height: '100%'
-            }]
-        },
-
-        'fi_gridExposure_group': {
-            chartId: 'fi_gridExposure_group',
-            title: 'Grid of FI Exposure:', // lang.chart.performanceLineTitle,
-            chartType: 'Group',
-            charts: [{
-                chartId: 'fixedIncomeExposure_grid',
                 width: '100%',
                 height: '100%'
             }]
@@ -483,26 +470,26 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             htmlToAppend = '';
             htmlToAppend +=
                 '<div class="analysisSummarySection">' +
-                '   <h2>' + chartTitle + '</h2>' +
-                '   <div class="analysisComponentContainer">';
+                '    <h2>' + chartTitle + '</h2>' +
+                '    <div class="analysisComponentContainer">';
         }
 
         function addChartToAnalysisSection(chartToAdd, containerClass) {
             htmlToAppend +=
-                '       <div id="' + chartToAdd.chartId + '" class="' + containerClass + '"></div>';
+                '        <div id="' + chartToAdd.chartId + '" class="' + containerClass + '"></div>';
         }
 
         function addChartToGroup(chartToAdd) {
             htmlToAppend +=
-                '       <div id="' + chartToAdd.chartId +
+                '        <div id="' + chartToAdd.chartId +
                 '" class="halfSizeChart" style="width: ' + chartToAdd.width + ';' +
                 'height: ' + chartToAdd.height + ';"></div>';
         }
 
         function closeAnalysisSection() {
             htmlToAppend +=
-                '       <div style="clear: both;"></div>' +
-                '   </div>' +
+                '        <div style="clear: both;"></div>' +
+                '    </div>' +
                 '</div>';
         }
 

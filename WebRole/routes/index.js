@@ -2,7 +2,7 @@
 // ROUTING
 // ------------------------------------------
 
-var webApiUri       = 'https://revapistage.statpro.com/v1', // 'https://revapidev.statpro.com/v1/', // 
+var webApiUri       = 'https://revapidev.statpro.com/v1/', // 'https://revapistage.statpro.com/v1', //
     http            = require('http'),
     webApi          = require('../web-api'),
     expose          = require('../node_modules/express-expose'),
@@ -179,7 +179,10 @@ exports.analysis = function (req, res) {
     webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, req.session.token, currentLanguage, function (analysis) {
         var viewModel = analysis.data || {};
 
+        // Set language and layout.
+        viewModel.lang = currentLanguage;
         viewModel.layout = false;
+
         res.render('analysis', viewModel);
     });
 };

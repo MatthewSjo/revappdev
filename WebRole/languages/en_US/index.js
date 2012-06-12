@@ -12,39 +12,142 @@
 exports.client = {
     hello: 'hello',
 
+    // CultureInfo object from the date.js source for the en-US culture.
+    cultureInfo: {
+        name: "en-US",
+        englishName: "English (United States)",
+        nativeName: "English (United States)",
+        dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        abbreviatedDayNames: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        shortestDayNames: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+        firstLetterDayNames: ["S", "M", "T", "W", "T", "F", "S"],
+        monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        abbreviatedMonthNames: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        amDesignator: "AM",
+        pmDesignator: "PM",
+        firstDayOfWeek: 0,
+        twoDigitYearMax: 2029,
+        dateElementOrder: "mdy",
+        formatPatterns: {
+            shortDate: "M/d/yyyy",
+            longDate: "dddd, MMMM dd, yyyy",
+            shortTime: "h:mm tt",
+            longTime: "h:mm:ss tt",
+            fullDateTime: "dddd, MMMM dd, yyyy h:mm:ss tt",
+            sortableDateTime: "yyyy-MM-ddTHH:mm:ss",
+            universalSortableDateTime: "yyyy-MM-dd HH:mm:ssZ",
+            rfc1123: "ddd, dd MMM yyyy HH:mm:ss GMT",
+            monthDay: "MMMM dd",
+            yearMonth: "MMMM, yyyy"
+        },
+        regexPatterns: {
+            jan: /^jan(uary)?/i,
+            feb: /^feb(ruary)?/i,
+            mar: /^mar(ch)?/i,
+            apr: /^apr(il)?/i,
+            may: /^may/i,
+            jun: /^jun(e)?/i,
+            jul: /^jul(y)?/i,
+            aug: /^aug(ust)?/i,
+            sep: /^sep(t(ember)?)?/i,
+            oct: /^oct(ober)?/i,
+            nov: /^nov(ember)?/i,
+            dec: /^dec(ember)?/i,
+            sun: /^su(n(day)?)?/i,
+            mon: /^mo(n(day)?)?/i,
+            tue: /^tu(e(s(day)?)?)?/i,
+            wed: /^we(d(nesday)?)?/i,
+            thu: /^th(u(r(s(day)?)?)?)?/i,
+            fri: /^fr(i(day)?)?/i,
+            sat: /^sa(t(urday)?)?/i,
+            future: /^next/i,
+            past: /^last|past|prev(ious)?/i,
+            add: /^(\+|after|from)/i,
+            subtract: /^(\-|before|ago)/i,
+            yesterday: /^yesterday/i,
+            today: /^t(oday)?/i,
+            tomorrow: /^tomorrow/i,
+            now: /^n(ow)?/i,
+            millisecond: /^ms|milli(second)?s?/i,
+            second: /^sec(ond)?s?/i,
+            minute: /^min(ute)?s?/i,
+            hour: /^h(ou)?rs?/i,
+            week: /^w(ee)?k/i,
+            month: /^m(o(nth)?s?)?/i,
+            day: /^d(ays?)?/i,
+            year: /^y((ea)?rs?)?/i,
+            shortMeridian: /^(a|p)/i,
+            longMeridian: /^(a\.?m?\.?|p\.?m?\.?)/i,
+            timezone: /^((e(s|d)t|c(s|d)t|m(s|d)t|p(s|d)t)|((gmt)?\s*(\+|\-)\s*\d\d\d\d?)|gmt)/i,
+            ordinalSuffix: /^\s*(st|nd|rd|th)/i,
+            timeContext: /^\s*(\:|a|p)/i
+        },
+        abbreviatedTimeZoneStandard: {
+            GMT: "-000",
+            EST: "-0400",
+            CST: "-0500",
+            MST: "-0600",
+            PST: "-0700"
+        },
+        abbreviatedTimeZoneDST: {
+            GMT: "-000",
+            EDT: "-0500",
+            CDT: "-0600",
+            MDT: "-0700",
+            PDT: "-0800"
+        } 
+    },
+
     // ------------------------------------------------------------------ | C |
 
     chart: {
-        performanceBarTitle                 : 'Bar Chart Segment Return',
-        riskBarTitle                        : 'Bar Chart Weight Vs Contrib to VaR',
-        allocationbarTitle                  : 'Bar Chart of Relative Weight',
-        contributionBarTitle                : 'Bar Chart of Security Level Contribution',
-        attributionBarTitle                 : 'Bar Chart of Relative Weight Vs Total Effects',
+        performanceBarTitle                 : 'Segment Return',
+        riskBarTitle                        : 'Weight vs. Contribution to VaR',
+        allocationbarTitle                  : 'Relative Weight',
+        contributionBarTitle                : 'Security Level Contribution',
+        attributionBarTitle                 : 'Relative Weight vs. Total Effects',
         fixedIncomeContributionBarTitle     : 'Fixed Income Contribution',
         carryContributionBarTitle           : 'Carry Contribution',
         yieldCurveContributionBarTitle      : 'Yield Curve Contribution',
         riskNumbersBarTitle                 : 'Risk Numbers',
-        performanceBubbleTitle              : 'Scatter Chart',
-        riskBubbleTitle                     : 'Scatter of Portfolio Segment Return / VaR',
-        contributionColumnTitle             : 'Column Chart of Portfolio Contribution Vs Benchmark Contribution',
-        interestRatesExposureColumnTitle    : 'Interest Rates Exposure Column',
-        creditSpreadsExposure_columnTitle   : 'Credit Spreads Exposure',
-        dv01ExposureColumnTitle             : 'DV01 Exposure Column',
-        attributionColumnTitle              : 'Column Chart of Attribution Effects',
-        allocationPieTitle                  : 'Pie Chart of Portfolio Weight',
-        contributionPieTitle                : 'Pie Chart - Heat Map. Portfolio Weight',
-        riskPietitle                        : 'Pie Chart - Heat Map. Portfolio Absolute Weight',
-        performanceGridTitle                : 'Grid of Performance Stats',
-        attributionGridTitle                : 'Grid of Total Level Attribution Effects',
-        fixedIncomeGridTitle                : 'Fixed Income Grid',
-        fixedIncomeContributionGridTitle    : 'Fixed Income Contribution Grid',
-        fixedIncomeExposureGridTitle        : 'Fixed Income Exposure Grid',
-        performanceTopTenGridTitle          : 'Grid of Top 10 Securities by Weight',
-        contributionTopTenGridTitle         : 'Grid of Top 5 Bottom 5 Securities By Contribution',
-        riskTopTenGridTitle                 : 'Grid of Top 10 Securities by Risk Weight',
-        performanceTreemapTitle             : 'Tree Map Portfolio Weight vs Return',
-        riskTreemapTitle                    : 'Tree Map Individual Security Weight VaR',
-        performanceLineTitle                : 'Performance Line'
+        performanceBubbleTitle              : 'Portfolio Return vs. Volatility',
+        riskBubbleTitle                     : 'Portfolio Return vs. VaR',
+        contributionColumnTitle             : 'Portfolio Contribution vs. Benchmark Contribution',
+        interestRatesExposureColumnTitle    : 'Interest Rates Exposure',
+        creditSpreadsExposureColumnTitle    : 'Credit Spreads Exposure',
+        dv01ExposureColumnTitle             : 'DV01 Exposure',
+        attributionColumnTitle              : 'Attribution Effects',
+        allocationPieTitle                  : 'Portfolio Weight',
+        contributionPieTitle                : 'Portfolio Weight vs. Contribution to Return',
+        riskPietitle                        : 'Portfolio Weight vs. Contribution to VaR',
+        performanceGridTitle                : 'Performance Statistics',
+        attributionGridTitle                : 'Total Level Attribution Effects',
+        fixedIncomeGridTitle                : 'Fixed Income Statistics',
+        fixedIncomeContributionGridTitle    : 'Fixed Income Contribution',
+        fixedIncomeExposureGridTitle        : 'Fixed Income Exposure',
+        performanceTopTenGridTitle          : 'Top 10 Securities by Weight',
+        contributionTopTenGridTitle         : 'Top 5 / Bottom 5 Securities By Contribution',
+        riskTopTenGridTitle                 : 'Top 10 Securities by Risk Weight',
+        performanceTreemapTitle             : 'Portfolio Weight vs. Return',
+        riskTreemapTitle                    : 'Individual Security Weight vs. VaR',
+        performanceLineTitle                : 'Return Over Period',
+        fixedIncomeContributionsGroupTitle  : 'Fixed Income Contributions',
+        fixedIncomeExposuresGroupTitle      : 'Fixed Income Exposures',
+        fixedIncomeRiskNumbersGroupTitle    : 'Fixed Income Risk Numbers'
+    },
+
+    chartTypes: {
+        AreaChart                           : 'Area',
+        BarChart                            : 'Bar',
+        BubbleChart                         : 'Bubble',
+        ColumnChart                         : 'Column',
+        Group                               : 'Group',
+        LineChart                           : 'Line',
+        PieChart                            : 'Pie',
+        ScatterChart                        : 'Scatter',
+        SteppedAreaChart                    : 'Stepped Area',
+        Table                               : 'Grid',
+        TreeMap                             : 'Heatmap'
     },
 
     // ------------------------------------------------------------------ | E |
@@ -60,7 +163,7 @@ exports.client = {
 
     shared: {
         decimalSymbol               : '.',
-        groupingSymbol              : ','
+        groupingSymbol              : ','        
     }, 
 
     spinningWheel: {
@@ -99,25 +202,23 @@ exports.server = {
     // ------------------------------------------------------------------ | A |
     
     analysisPage: {
-        analysisText                : 'Analysis',
-        backText                    : 'Back'
+        analysisText                : 'Analysis',        
+        endDate                     : 'End Date',
+        startDate                   : 'Start Date'        
     },
     
     analysisSettingsPage: {
-        settingsText                : 'Analysis Page',
-        backText                    : 'Back'
+        settingsText                : 'Analysis Page'
     },
 
     analysisSettingsPages: {
-        settingsText                : 'Analysis Pages',
-        backText                    : 'Back'
+        settingsText                : 'Analysis Pages'
     },
 
     // ------------------------------------------------------------------ | E |
 
     errorPage: {
-        errorText                   : 'Error',
-        backText                    : 'Back'
+        errorText                   : 'Error'
     },
 
     errors: {
@@ -126,8 +227,7 @@ exports.server = {
     },
 
     eulaPage: {
-        eulaText                    : 'EULA',
-        backText                    : 'Back'
+        eulaText                    : 'EULA'
     },
 
     // ------------------------------------------------------------------ | H |
@@ -142,13 +242,13 @@ exports.server = {
     // ------------------------------------------------------------------ | L |
 
     languageSettingsPage: {
-        settingsText                : 'Languages',
-        backText                    : 'Back'
+        settingsText                : 'Languages'
     },
 
     loginPage: {
         loginText                   : 'Login',
         signUpText                  : 'Sign Up',
+        statProText                 : 'StatPro International SARL',
         supportText                 : 'Support',
         userNamePlaceholderText     : 'User Name',
         passwordPlaceholderText     : 'Password'
@@ -431,23 +531,21 @@ exports.server = {
     // ------------------------------------------------------------------ | P |
 
     portfoliosAnalysisPage: {
-        portfoliosAnalysisText      : 'Portfolios Analysis',
-        backText                    : 'Back'
+        portfoliosAnalysisText      : 'Portfolios Analysis'
     },
 
     portfoliosPage: {
-        portfoliosText              : 'Portfolios',
-        backText                    : 'Back'
+        portfoliosText              : 'Portfolios'
     },
 
     // ------------------------------------------------------------------ | S |
 
     settingsPage: {
-        settingsText                : 'Settings',
-        backText                    : 'Back'
+        settingsText                : 'Settings'
     },
 
     shared: {
+        backText                    : 'Back',
         Monthly                     : 'Monthly',
         Weekly                      : 'Weekly',
         Quarterly                   : 'Quarterly'

@@ -91,9 +91,10 @@ div#jqt #about a
 .summaryTitle h2, .summaryReturn h2 {
     font-family: HelveticaNeue-Bold !important; 
     font-size: 16pt !important; 
-    color: #ffffff !important; 
-    text-transform: uppercase; 
+    color: #ffffff !important;
 }
+
+.summaryTitle h2 { text-transform: uppercase; }
 .summaryTitle h3 { font-family: HelveticaNeue-Light !important; font-size: 10pt !important; color: #000000 !important; }
 .summaryReturn h3 { font-family: HelveticaNeue-Light !important; font-size: 10pt !important; color: #000000 !important; } 
 

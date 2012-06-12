@@ -11,12 +11,9 @@
 					li.login_style
 						div
 							input#passwordTextbox.login_style(type='password', placeholder='#{lang.loginPage.passwordPlaceholderText}', name='user[password]', value='StatPro123')
-				// ul.rounded
-				//	li.login_button
 				a#loginButton.whiteButton(href='#')  #{lang.loginPage.loginText}
 				p#loginErrorText
-				// p.login_style #{lang.loginPage.signUpText} | #{lang.loginPage.supportText}
-				p.login_style #{new Date().getFullYear()} StatPro International SARL | ver. 01a
+				p.login_style #{new Date().getFullYear()} #{lang.loginPage.statProText} | ver. 01a
 
 		#home(data-pageEvents="both")
 			.toolbar
@@ -36,7 +33,7 @@
 		#portfolios(data-pageEvents="both")
 			.toolbar
 				h1 #{lang.portfoliosPage.portfoliosText}
-				a.back(href='#') #{lang.portfoliosPage.backText}
+				a.back(href='#') #{lang.shared.backText}
 			#wrapper
 				#scroller
 					#portfolios_partial
@@ -44,7 +41,7 @@
 		#portfolioAnalysis(data-pageEvents="both")
 			.toolbar
 				h1 #{lang.portfoliosAnalysisPage.portfoliosAnalysisText}
-				a.back(href='#') #{lang.portfoliosAnalysisPage.backText}
+				a.back(href='#') #{lang.shared.backText}
 			#wrapper
 				#scroller
 					#portfolioAnalysis_partial
@@ -52,8 +49,6 @@
 		#analysis(data-pageEvents="both")
 			.toolbar
 				h1#analysisTitle #{lang.analysisPage.analysisText}
-				// a.back(href='#') #{lang.analysisPage.backText}
-				// #btn_favourite_off
 			#wrapper
 				#scroller
 					#analysis_partial				
@@ -61,7 +56,7 @@
 		#eula(data-pageEvents="both", class='pageWithEvents')
 			.toolbar
 				h1 #{lang.eulaPage.eulaText}
-				a.back(href='#') #{lang.eulaPage.backText}
+				a.back(href='#') #{lang.shared.backText}
 			#wrapper
 				#scroller
 					#eula_partial
@@ -69,7 +64,6 @@
 		#settings(data-pageEvents="both")
 			.toolbar
 				h1 #{lang.settingsPage.settingsText}
-				// a.back(href='#') #{lang.settingsPage.backText}
 			#wrapper
 				#scroller
 					// form.scroll
@@ -90,6 +84,7 @@
 					// h2 TODO: Memory Statistics / Consumed
 					a#reloadApp.whiteButton(href='#') Reload App
 					a#resetApp.whiteButton(href='#') Reset App (TODO)
+
 		#themes
 			.toolbar
 				h1 Themes
@@ -99,20 +94,19 @@
 		#analysisPagesSettings(data-pageEvents="both")
 			.toolbar
 				h1 #{lang.analysisSettingsPages.settingsText}
-				a.back(href='#') #{lang.analysisSettingsPages.backText}
+				a.back(href='#') #{lang.shared.backText}
 			#wrapper
 				#scroller
 					h2 User Pages
 					ul#listAnalysisSettingsUserPages.edit.rounded
 					h2 Default Pages
 					ul#listAnalysisSettingsDefaultPages.edit.rounded
-					// a#addNewAnalysisPage.whiteButton(href='#') Add New Page
 
 		// TODO: Change server localization file. analysisSettingsPage -> chartSettingsPage
 		#chartSettings(data-pageEvents="both")
 			.toolbar
 				h1 #{lang.analysisSettingsPage.settingsText}
-				a.back(href='#') #{lang.analysisSettingsPage.backText}
+				a.back(href='#') #{lang.shared.backText}
 			#wrapper
 				#scroller
 					h2 User Page
@@ -127,7 +121,7 @@
 		#languageSettings(data-pageEvents="both")
 			.toolbar
 				h1 #{lang.languageSettingsPage.settingsText}
-				a.back(href='#') #{lang.languageSettingsPage.backText}
+				a.back(href='#') #{lang.shared.backText}
 			#wrapper
 				#scroller
 					ul#listLanguagesPages.rounded
@@ -140,32 +134,6 @@
 					#errorMessage
 						p#errorMessageText
 
-		#test
-			.toolbar
-				h1 test
-				a.back(href='#') #{lang.eulaPage.backText}
-			#wrapper
-				#scroller
-					h2 Local Storage
-					a#btnTestSaveToLS.grayButton(href='#') Save
-					a#btnLoadFromLS.grayButton(href='#') Load
-					a#btnItemsCountLS.grayButton(href='#') Count
-					a#btnTestClearAllLS.grayButton(href='#') Clear
-					h2 Option Group
-					form.scroll
-						ul.edit.rounded
-							li.arrow
-								select#lol(multiple="multiple")
-									optgroup(label='Line Charts')
-										option(value='1') Chart 1
-										option(value='2') Chart 2
-									optgroup(label='Bar Charts')
-										option(value='3') Bar 1
-										option(value='4') Bar 2
-					a#showSlot.grayButton(href='#') Show Slot
-					#test_partial
-
-	// nav#tabbar(style="display: none")
 	nav#tabbar(style="opacity: 0; -webkit-transition: opacity 0.25s linear 0.25s;")
 		ul
 
@@ -175,4 +143,3 @@
 #myLoadingCharts.modalBackground
 	img(src='img/loading.gif' )
 	#loadingText
-	// img(src='images/loading.gif' )
