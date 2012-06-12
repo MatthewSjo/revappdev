@@ -112,6 +112,19 @@ WebAppLoader.addModule({ name: 'helper', isPlugin: true }, function () {
         return removedObject;
     }
 
+    function getObjectFromArray(arrayItems, propertyToCheck, value) {
+        var object = null;
+
+         for(var i = arrayItems.length-1; i >= 0; i--){  
+            if(arrayItems[i] && arrayItems[i][propertyToCheck] === value){                     
+                object = arrayItems[i];
+                break;
+            }
+        }
+       
+        return object;
+    }
+
     function getURLParameter(name) {
         var param = decodeURIComponent(
             (location.search.match(RegExp("[?|&]"+name+'=(.+?)(&|$)'))||[,null])[1]
@@ -119,6 +132,12 @@ WebAppLoader.addModule({ name: 'helper', isPlugin: true }, function () {
         return (param === 'null')
             ? null
             : param;
+    }
+
+    function htmlDecode(input){
+        var e = document.createElement('div');
+        e.innerHTML = input;
+        return e.childNodes[0].nodeValue;
     }
 
     helper.capitaliseFirstLetter = capitaliseFirstLetter;
@@ -130,6 +149,8 @@ WebAppLoader.addModule({ name: 'helper', isPlugin: true }, function () {
     helper.createUUID = createUUID;
     helper.removeObjectFromArray = removeObjectFromArray;
     helper.getURLParameter = getURLParameter;
+    helper.getObjectFromArray = getObjectFromArray;
+    helper.htmlDecode = htmlDecode;
 
     return helper;
 });

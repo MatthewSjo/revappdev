@@ -2,7 +2,7 @@
 // ROUTING
 // ------------------------------------------
 
-var webApiUri       = 'https://revapistage.statpro.com/v1', // 'https://revapidev.statpro.com/v1/', // 
+var webApiUri       = 'https://revapidev.statpro.com/v1/', // 'https://revapistage.statpro.com/v1', // 
     http            = require('http'),
     webApi          = require('../web-api'),
     expose          = require('../node_modules/express-expose'),

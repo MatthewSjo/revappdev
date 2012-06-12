@@ -513,6 +513,12 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             var chartsToRender = [],
                 isGroup        = false;
             
+            // Exit if the chart to add doesn't exist.
+            if (!chartToAdd) {
+                output.log('addChartToChartsToRender: Skipped empty chart');
+                return;
+            }
+
             // Extract the charts to render if the current chart is a group.
             if (chartToAdd.chartType === 'Group') {
                 chartsToRender = chartToAdd.charts;

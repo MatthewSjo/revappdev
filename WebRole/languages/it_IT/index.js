@@ -106,6 +106,11 @@ exports.server = {
 
     // ------------------------------------------------------------------ | E |
 
+    errorPage: {
+        errorText                   : 'Error',
+        backText                    : 'Back'
+    },
+
     eulaPage: {
         eulaText                    : 'EULA',
         backText                    : 'Indietro'

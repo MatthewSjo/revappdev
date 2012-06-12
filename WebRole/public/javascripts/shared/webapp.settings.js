@@ -12,10 +12,11 @@ WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSet
         appSettingsDataObj  = this.getDataObject('appSettings');
 
     userSettingsDataObj.define({
-        automaticLogin  : false,
-        username        : 'asa.fama@statpro.com',
-        password        : 'StatPro123',
-        language        : 'en_US'
+        automaticLogin      : false,
+        username            : 'asa.fama@statpro.com',
+        password            : 'StatPro123',
+        language            : 'en_US',
+        lastUsedLanguage    : 'none'
     });
 
     appSettingsDataObj.define({

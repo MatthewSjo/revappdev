@@ -107,35 +107,26 @@ Zepto(function ($) {
         }
     };
 
-//    theApp.tryToChangeLanguage = function (language) {
-//        var currentLanguage = helper.getURLParameter('lang') || 'en_US';
+    theApp.tryToChangeLanguage = function (language) {
+        var currentLanguage = helper.getURLParameter('lang') || 'en_US';
 
-//        if (language && currentLanguage && (language.toLowerCase() !== currentLanguage.toLowerCase())) {
-//            theApp.nav.reloadApp('?lang=' + language);
-//        }
-
-//    }
+        if (language && currentLanguage && (language.toLowerCase() !== currentLanguage.toLowerCase())) {
+            theApp.nav.reloadApp('?lang=' + language);
+        }
+    }
 
     // ------------------------------------------
     // THE MAIN ENTRY POINT (Before Login)
     // ------------------------------------------
 
     theApp.startHere = function () {
-        var appSettingsData = theApp.settings.loadData('appSettings'),
-            userSettingsData = {},
-            lastLoggedOnUser = '',
-            username = '',
-            password            = '',
-            language            = '';
+        var appSettingsData     = theApp.settings.loadData('appSettings'),
+            userSettingsData    = {},
+            lastLoggedOnUser    = '',
+            language            = '',
+            username            = '',
+            password            = '';
             
-        function tryToChangeLanguage(language) {
-            var currentLanguage = helper.getURLParameter('lang') || 'en_US';
-
-            if (language && currentLanguage && (language.toLowerCase() !== currentLanguage.toLowerCase())) {
-                theApp.nav.reloadApp('?lang=' + language);
-            }
-        }
-
         // Try to get the last logged on user.
         lastLoggedOnUser = (appSettingsData && appSettingsData.lastLoggedOnUser)
             ? appSettingsData.lastLoggedOnUser.toLowerCase()
@@ -148,9 +139,11 @@ Zepto(function ($) {
             // Try to get username and password.
             username = userSettingsData.username || '';
             password = userSettingsData.password || '';
-            language = userSettingsData.language || null;
+            language = userSettingsData.language || '';
 
-            tryToChangeLanguage(language);
+            if (username !== '') {
+                theApp.tryToChangeLanguage(language);
+            }
 
             if (userSettingsData.automaticLogin) {
                 // If username and password fields are available...
@@ -193,6 +186,7 @@ Zepto(function ($) {
 
     theApp.init = function () {
         var lastLoggedOnUser = '',
+            automaticLogin = false,
             analysisDataObject = {};
 
         theApp.nav.goToPage($(el.startupPage), 'dissolve');
@@ -214,6 +208,8 @@ Zepto(function ($) {
         userSettingsData.username = theApp.lastUsernameUsed;
         userSettingsData.password = theApp.lastPasswordUsed;
         theApp.settings.saveData('userSettings', theApp.lastUsernameUsed);
+
+        automaticLogin = helper.getValueAs(userSettingsData.automaticLogin, 'boolean');
 
         //  TODO:
         //    - If the current user and the last logged on user are different clear
@@ -244,7 +240,7 @@ Zepto(function ($) {
         //          - the default time periods code
         //
         //    - When this information is available call updateAnalysisPage({analysisDataObject})
-
+        theApp.updateSettingsPage({email: theApp.lastUsernameUsed, automaticLogin: automaticLogin});
         theApp.analysisManager.update(theApp.lastUsernameUsed);
         theApp.favouritesManager.update(theApp.lastUsernameUsed);
         theApp.updateAnalysisPage(lastAnalysisObjectUsed);
@@ -254,7 +250,7 @@ Zepto(function ($) {
         // theApp.portfolioManager.loadPortfolio(analysisDataObject.portfolioId);
         var analysisDataObject = analysisDataObjectValue || theApp.getLastAnalysisObjectUsed();
 
-        // Deselct Settings button.
+        // Deselect Settings button.
         theApp.tabbar.getButton('settings').setHighlight(false);
 
         theApp.nav.goToPage($(el.analysisPage), 'dissolve');
@@ -320,6 +316,9 @@ Zepto(function ($) {
                 portfolioId: portfolioId,
                 portfolioName: portfolioName
             });
+
+            // Deselect Settings button when charts have been rendered.
+            theApp.tabbar.getButton('settings').setHighlight(false);
 
             theApp.saveLastAnalysisObjectUsed();
             theApp.synchronizeFavouriteButton();
@@ -475,6 +474,23 @@ Zepto(function ($) {
     // Memoization pattern.
     theApp.showChartSettingsPage.charts = [];
 
+    theApp.updateSettingsPage = function (settings) {
+        var email             = settings.email || null,
+            automaticLogin    = settings.automaticLogin || false;
+
+        // If an email has been specified update the field.
+        if (email) {
+            $(el.userEmailLabel).html(theApp.lastUsernameUsed);
+        }
+
+        // Update the automatic login checkbox.
+        if (automaticLogin) {
+            $(el.stayLoggedCheckbox).attr('checked', true);
+        } else {
+            $(el.stayLoggedCheckbox).removeAttr('checked');
+        }
+    };
+
     // ------------------------------------------
     // LANGUAGE SETTINGS PAGE
     // ------------------------------------------
@@ -483,12 +499,12 @@ Zepto(function ($) {
     theApp.languageSettingsPage.create();
 
     theApp.languageSettingsPage.on('onLanguageSelected', function (language) {
-        var userSettingsData = theApp.settings.loadData('userSettings', theApp.lastUsernameUsed);
-        
-        userSettingsData.language = language.value;
-        theApp.settings.saveData('userSettings', theApp.lastUsernameUsed);
-        output.log('onLanguageSelected', language);
-        theApp.nav.reloadApp('?lang=' + language.value);
+       var userSettingsData = theApp.settings.loadData('userSettings', theApp.lastUsernameUsed);
+       
+       userSettingsData.language = language.value;
+       theApp.settings.saveData('userSettings', theApp.lastUsernameUsed);
+       output.log('onLanguageSelected', language);
+       theApp.nav.reloadApp('?lang=' + language.value);
     });
 
     // ------------------------------------------
@@ -507,7 +523,7 @@ Zepto(function ($) {
         theApp.scroll.rebuild('analysis');
         $(el.analysisPage + '_partial').html(data);
         theApp.mask.hide('analysis');
-        theApp.nav.goToPage($(el.analysisPage), 'dissolve');
+        // theApp.nav.goToPage($(el.analysisPage), 'dissolve');
         theApp.tabbar.show();
     });
 
@@ -700,24 +716,20 @@ Zepto(function ($) {
         output.log('onHomeEnd');
     });
 
-    //    theApp.pageEventsManager.on('onPortfoliosEnd', function () {
-    //        $.post(siteUrls.portfolios, function (data) {
-    //            theApp.scroll.rebuild('portfolios');
-    //            $(el.portfoliosPage + '_partial').html(data);
-    //        });
-    //        output.log('onPortfoliosEnd');
-    //    });
-
     theApp.pageEventsManager.on('onEulaEnd', function () {
         $.get(siteUrls.eula, function (data) {
             theApp.scroll.rebuild('eula');
-            $(el.eulaPage + '_partial').html(data);
-        }, 'xml');
+            $(el.eulaPage + '_partial').append('<div class="genericContainer">' + helper.htmlDecode(data) + '</div>');
+        });
         output.log('onEulaEnd');
     });
 
     theApp.pageEventsManager.on('onAnalysisEnd', function () {
         theApp.scroll.rebuild('analysis');
+        
+        // Deselect Settings button.
+        theApp.tabbar.getButton('settings').setHighlight(false);
+        
         output.log('onAnalysisEnd');
     });
 
@@ -751,9 +763,7 @@ Zepto(function ($) {
         
         output.log('onChartSettingsStart');
     });
-
     
-
     // ------------------------------------------
     // EVENTS
     // ------------------------------------------
@@ -763,6 +773,18 @@ Zepto(function ($) {
         theApp.nav.reloadApp();
     });
 
+    $(el.stayLoggedCheckbox).on('click', function () {
+        var stayLogged = $(el.stayLoggedCheckbox + ':checked').val()
+            ? true 
+            : false,
+        userSettingsData = theApp.settings.loadData('userSettings', theApp.lastUsernameUsed);
+
+        userSettingsData.automaticLogin = stayLogged;
+        theApp.settings.saveData('userSettings', theApp.lastUsernameUsed);
+        
+        output.log(stayLogged);
+    });
+    
     // ------------------------------------------
     // ANALYSIS MANAGER
     // ------------------------------------------

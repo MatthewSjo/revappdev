@@ -74,22 +74,27 @@
 				#scroller
 					// form.scroll
 					h2 Application
-					ul.edit.rounded
+					ul.rounded
 						li.arrow
 							a(href="#themes") Themes
 						li.arrow
 							a(href="#analysisPagesSettings") Analysis Pages
 
 					h2 User preferences
-					ul.edit.rounded
+					ul.rounded
 						li.arrow
 							a(href="#languageSettings") Languages
-						li Stay Logged
+						li Auto Login
 							span.toggle
-								input(type="checkbox")
+								input#stayLoggedCheckbox(type="checkbox")
 					// h2 TODO: Memory Statistics / Consumed
+					ul.rounded
+						li.arrow
+							a(href="#eula") EULA
 					a#reloadApp.whiteButton(href='#') Reload App
 					a#resetApp.whiteButton(href='#') Reset App (TODO)
+					ul.rounded
+						li#userEmailLabel.centeredText
 		#themes
 			.toolbar
 				h1 Themes

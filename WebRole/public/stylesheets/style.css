@@ -289,6 +289,11 @@ div#jqt #about a
     padding-top: 5px;
 }
 
+.centeredText
+{
+    text-align: center !important;	
+}
+
 #btn_asset
 {
     background-image: url('../images/btn_asset.png');
@@ -360,3 +365,17 @@ div#jqt #about a
      
 .favourite_on  { background-image: url('../images/btn_favourites_on.png'); }     
 .favourite_off { background-image: url('../images/btn_favourites_off.png'); }
+
+/************************************************
+ * GENERIC CONTAINER
+ ***********************************************/
+
+.genericContainer {
+    margin: 15px 0 0 0;
+    padding: 15px;
+    border: 1px solid #000000;
+    background-color: #ffffff;
+    -webkit-border-radius: 15px;
+    -webkit-box-shadow: inset 0 0 10px #666666;
+    height: 100%;
+}

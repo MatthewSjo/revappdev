@@ -42,7 +42,9 @@ WebAppLoader.addModule({ name: 'pageElements', isShared: true }, function () {
         loadingText                         : '#loadingText',
         listLanguagesPages                  : '#listLanguagesPages',
         timePeriodEndDateText               : '#timePeriodEndDateText',
-        errorMessageText                    : '#errorMessageText'
+        errorMessageText                    : '#errorMessageText',
+        stayLoggedCheckbox                  : '#stayLoggedCheckbox',
+        userEmailLabel                      : '#userEmailLabel'
     };
 
     return pageElements;

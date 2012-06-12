@@ -31,6 +31,7 @@ $toolbar-button-color: saturate(darken($base-color, 10), 10);
     ul {
 
         li {
+			color: #000;
             input[type="checkbox"], input[type="radio"] {
                 color: rgb(50,79,133);
             }
