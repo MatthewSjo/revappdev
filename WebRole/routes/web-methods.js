@@ -9,7 +9,7 @@ var webApi = require('../web-api'),
     adapters = require('../adapters');
     
 var languages       = require('../languages'),
-    defaultLanguage = 'en_US';
+    defaultLanguage = 'en-US';
 
 // Local Authentication Confirmation
 exports.isUserAuthenticated = function (req, res) {

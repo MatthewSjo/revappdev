@@ -60,9 +60,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="languages\en_US\index.js" />
+    <Content Include="languages\en-US\index.js" />
     <Content Include="languages\index.js" />
-    <Content Include="languages\it_IT\index.js" />
+    <Content Include="languages\it-IT\index.js" />
     <Content Include="node_modules\.bin\express" />
     <Content Include="node_modules\.bin\express.cmd" />
     <Content Include="node_modules\.bin\jade" />
@@ -762,6 +762,7 @@
     </Content>
     <Content Include="public\themes\compass-recipes\tests\_tests.scss" />
     <Content Include="public\themes\compass-recipes\VERSION" />
+    <None Include="iisnode.yml" />
     <None Include="node_modules\express-expose\.npmignore" />
     <None Include="node_modules\express-expose\History.md" />
     <None Include="node_modules\express-expose\Makefile" />

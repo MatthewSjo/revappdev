@@ -1,2 +1,2 @@
-﻿exports.en_US = require("./en_US");
-exports.it_IT = require("./it_IT");
+﻿exports['en-US'] = require("./en-US");
+exports['it-IT'] = require("./it-IT");

@@ -13,7 +13,7 @@
 							input#passwordTextbox.login_style(type='password', placeholder='#{lang.loginPage.passwordPlaceholderText}', name='user[password]', value='StatPro123')
 				a#loginButton.whiteButton(href='#')  #{lang.loginPage.loginText}
 				p#loginErrorText
-				p.login_style #{new Date().getFullYear()} #{lang.loginPage.statProText} | ver. 01a
+				p.login_style #{new Date().getFullYear()} #{lang.loginPage.statProText} | ver. 01a <br /> #{environment}
 
 		#home(data-pageEvents="both")
 			.toolbar

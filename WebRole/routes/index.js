@@ -2,12 +2,11 @@
 // ROUTING
 // ------------------------------------------
 
-var webApiUri       = 'https://revapidev.statpro.com/v1/', // 'https://revapistage.statpro.com/v1', // 
-    http            = require('http'),
+var http            = require('http'),
     webApi          = require('../web-api'),
     expose          = require('../node_modules/express-expose'),
     languages       = require('../languages'),
-    defaultLanguage = 'en_US';
+    defaultLanguage = 'en-US';
 
 /* ----------------------- ON/OFF ----------------------- /
 
@@ -55,6 +54,9 @@ exports.index = function (req, res) {
     currentLanguage = req.query.lang || defaultLanguage;
     viewModel.lang = languages[currentLanguage].server;
 
+    // Add some extra information to the viewModel.
+    viewModel.environment = GLOBAL_ENVIRONMENT;
+
     // Set client side language.
     res.exposeRequire();
     res.expose(languages[currentLanguage].client, 'language');
@@ -78,7 +80,7 @@ exports.authenticate = function (req, res, next) {
     delete req.session.token;
 
     // Attempt to consume the service.
-    webApi.initService(email, token, webApiUri, currentLanguage, function (resource) {
+    webApi.initService(email, token, GLOBAL_WAPI_URI, currentLanguage, function (resource) {
         var obj;
 
         // Create an object to pass down as JSON to the calling function.

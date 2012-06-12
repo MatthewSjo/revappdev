@@ -15,7 +15,7 @@ WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSet
         automaticLogin      : false,
         username            : 'asa.fama@statpro.com',
         password            : 'StatPro123',
-        language            : 'en_US',
+        language            : 'en-US',
         lastUsedLanguage    : 'none'
     });
 
@@ -43,11 +43,11 @@ WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSet
     // LANGUAGES
     languages = [{
         id      : 'en-US',
-        value   : 'en_US',
+        value   : 'en-US',
         name    : 'English'
     }, {
         id      : 'it-IT',
-        value   : 'it_IT',
+        value   : 'it-IT',
         name    : 'Italiano'
     }];
 

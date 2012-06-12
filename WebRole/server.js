@@ -12,6 +12,15 @@ var express = require('express'),
 var app = module.exports = express.createServer(),
     port = process.env.port || 1337;
 
+// ------------------------------------------
+// GLOBAL SETTINGS
+// ------------------------------------------
+
+GLOBAL_ENVIRONMENT = app.settings.env;
+GLOBAL_WAPI_URI = (app.settings.env === 'production')
+    ? 'https://revapistage.statpro.com/v1'
+    : 'https://revapidev.statpro.com/v1/';
+
 // Create a dynamic manifest
 //var lib = require("./manifest.js");
 

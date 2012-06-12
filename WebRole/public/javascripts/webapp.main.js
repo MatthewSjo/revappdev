@@ -108,7 +108,7 @@ Zepto(function ($) {
     };
 
     theApp.tryToChangeLanguage = function (language) {
-        var currentLanguage = helper.getURLParameter('lang') || 'en_US';
+        var currentLanguage = helper.getURLParameter('lang') || 'en-US';
 
         if (language && currentLanguage && (language.toLowerCase() !== currentLanguage.toLowerCase())) {
             theApp.nav.reloadApp('?lang=' + language);
