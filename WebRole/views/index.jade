@@ -49,7 +49,17 @@
 		#analysis(data-pageEvents="both")
 			.toolbar
 				h1#analysisTitle #{lang.analysisPage.analysisText}
-			#wrapper
+			#analysisSummary(style="height:80px; -webkit-box-shadow: rgba(0, 0, 0, 0.4) 0 1px 6px;")
+				.summaryTitle
+						h2#summaryTitleName
+						h3#summaryTitleBenchmarkName
+				.summaryReturn
+					h2#timePeriodStartDateText
+					h3 #{lang.analysisPage.startDate}
+				.summaryReturn
+					h2#timePeriodEndDateText
+					h3 #{lang.analysisPage.endDate}
+			#wrapper(style="top:128px")
 				#scroller
 					#analysis_partial				
 

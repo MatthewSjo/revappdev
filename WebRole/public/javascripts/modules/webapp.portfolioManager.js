@@ -154,7 +154,7 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
 
     // Public
     function getAnalysis(uri, callback) {
-        ajaxManager.post(settings.siteUrls.analysis, { uri: uri }, function (data) {
+        ajaxManager.post(settings.siteUrls.analysis, { uri: uri, datatype: 'json' }, function (data) {
 
             // If no analysis HTML template data was returned for the given portfolio...
             if (!data) {
@@ -168,7 +168,7 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
 
             // Call the callback.
             callback();
-        });
+        }, 'json');
     }
 
     portfolioManager.loadPortfolio = loadPortfolio;

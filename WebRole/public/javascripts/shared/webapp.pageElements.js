@@ -45,7 +45,9 @@ WebAppLoader.addModule({ name: 'pageElements', isShared: true }, function () {
         timePeriodEndDateText               : '#timePeriodEndDateText',
         errorMessageText                    : '#errorMessageText',
         stayLoggedCheckbox                  : '#stayLoggedCheckbox',
-        userEmailLabel                      : '#userEmailLabel'
+        userEmailLabel                      : '#userEmailLabel',
+        summaryTitleName                    : '#summaryTitleName',
+        summaryTitleBenchmarkName           : '#summaryTitleBenchmarkName'
     };
 
     return pageElements;

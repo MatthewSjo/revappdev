@@ -169,7 +169,8 @@ exports.portfolioAnalysis = function (req, res) {
 
 // Analysis
 exports.analysis = function (req, res) {
-    var maxAttempts = 3,
+    var datatype = req.body.datatype || '',
+        maxAttempts = 3,
         currentLanguage;
 
     // If we had a language specified as part of the querystring,
@@ -179,11 +180,18 @@ exports.analysis = function (req, res) {
     webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, req.session.token, currentLanguage, function (analysis) {
         var viewModel = analysis.data || {};
 
-        // Set language and layout.
-        viewModel.lang = currentLanguage;
-        viewModel.layout = false;
+        switch (datatype) {
+            case 'json':
+                res.json(viewModel);
+                break;
+            default:
+                // Set language and layout.
+                viewModel.lang = currentLanguage;
+                viewModel.layout = false;
 
-        res.render('analysis', viewModel);
+                res.render('analysis', viewModel);
+                break;
+        }
     });
 };
 

@@ -529,9 +529,8 @@ Zepto(function ($) {
 
     theApp.portfolioManager.on('onAnalysisLoaded', function (data) {
         theApp.scroll.rebuild('analysis');
-        $(el.analysisPage + '_partial').html(data);
+        theApp.updateAnalysisInfo(data);
         theApp.mask.hide('analysis');
-        // theApp.nav.goToPage($(el.analysisPage), 'dissolve');
         theApp.tabbar.show();
     });
 
@@ -541,6 +540,19 @@ Zepto(function ($) {
         theApp.nav.goToPage($(el.errorPage));
         theApp.mask.hide('analysis');
     });
+
+    theApp.updateAnalysisInfo = function(data) {
+        if(data){
+            if (data.name.indexOf(' ') === -1) {
+                $(el.summaryTitleName).attr('style', 'word-break: break-all;');
+            } else {
+                $(el.summaryTitleName).attr('style', 'word-break: normal;');
+            }
+
+            $(el.summaryTitleName).html(data.name);
+            $(el.summaryTitleBenchmarkName).html(data.analysis.benchmarks[0].name);
+        }
+    };
 
     // ------------------------------------------
     // TOOLBAR
