@@ -515,7 +515,7 @@ Zepto(function ($) {
         theApp.scroll.rebuild('analysis');
         $(el.analysisPage + '_partial').html(data);
         theApp.mask.hide('analysis');
-        theApp.nav.goToPage($(el.analysisPage), 'dissolve');
+        theApp.nav.goToPage($(el.analysisPage));
         theApp.tabbar.show();
     });
 
