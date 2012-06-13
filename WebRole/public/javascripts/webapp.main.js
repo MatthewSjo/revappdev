@@ -542,15 +542,21 @@ Zepto(function ($) {
     });
 
     theApp.updateAnalysisInfo = function(data) {
-        if(data){
+        if(data){            
+            // Define the CSS word-break rules depending on 
+            // the whitespace available in the portfolio name.
             if (data.name.indexOf(' ') === -1) {
                 $(el.summaryTitleName).attr('style', 'word-break: break-all;');
             } else {
                 $(el.summaryTitleName).attr('style', 'word-break: normal;');
             }
 
+            // Update the title and benchmark names.
             $(el.summaryTitleName).html(data.name);
             $(el.summaryTitleBenchmarkName).html(data.analysis.benchmarks[0].name);
+
+            // Clear the analysis partial of existing elements.
+            $(el.analysisPage + '_partial').html('');
         }
     };
 
