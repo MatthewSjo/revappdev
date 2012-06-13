@@ -120,13 +120,13 @@ Zepto(function ($) {
     // ------------------------------------------
 
     theApp.startHere = function () {
-        var appSettingsData     = theApp.settings.loadData('appSettings'),
-            userSettingsData    = {},
-            lastLoggedOnUser    = '',
-            language            = '',
-            username            = '',
-            password            = '';
-            
+        var appSettingsData = theApp.settings.loadData('appSettings'),
+            userSettingsData = {},
+            lastLoggedOnUser = '',
+            language = '',
+            username = '',
+            password = '';
+
         // Try to get the last logged on user.
         lastLoggedOnUser = (appSettingsData && appSettingsData.lastLoggedOnUser)
             ? appSettingsData.lastLoggedOnUser.toLowerCase()
@@ -244,7 +244,7 @@ Zepto(function ($) {
         //          - the default time periods code
         //
         //    - When this information is available call updateAnalysisPage({analysisDataObject})
-        theApp.updateSettingsPage({email: theApp.lastUsernameUsed, automaticLogin: automaticLogin});
+        theApp.updateSettingsPage({ email: theApp.lastUsernameUsed, automaticLogin: automaticLogin });
         theApp.analysisManager.update(theApp.lastUsernameUsed);
         theApp.favouritesManager.update(theApp.lastUsernameUsed);
         theApp.updateAnalysisPage(lastAnalysisObjectUsed);
@@ -483,8 +483,8 @@ Zepto(function ($) {
     theApp.showChartSettingsPage.charts = [];
 
     theApp.updateSettingsPage = function (settings) {
-        var email             = settings.email || null,
-            automaticLogin    = settings.automaticLogin || false;
+        var email = settings.email || null,
+            automaticLogin = settings.automaticLogin || false;
 
         // If an email has been specified update the field.
         if (email) {
@@ -507,12 +507,12 @@ Zepto(function ($) {
     theApp.languageSettingsPage.create();
 
     theApp.languageSettingsPage.on('onLanguageSelected', function (language) {
-       var userSettingsData = theApp.settings.loadData('userSettings', theApp.lastUsernameUsed);
-       
-       userSettingsData.language = language.value;
-       theApp.settings.saveData('userSettings', theApp.lastUsernameUsed);
-       output.log('onLanguageSelected', language);
-       theApp.nav.reloadApp('?lang=' + language.value);
+        var userSettingsData = theApp.settings.loadData('userSettings', theApp.lastUsernameUsed);
+
+        userSettingsData.language = language.value;
+        theApp.settings.saveData('userSettings', theApp.lastUsernameUsed);
+        output.log('onLanguageSelected', language);
+        theApp.nav.reloadApp('?lang=' + language.value);
     });
 
     // ------------------------------------------
@@ -541,8 +541,10 @@ Zepto(function ($) {
         theApp.mask.hide('analysis');
     });
 
-    theApp.updateAnalysisInfo = function(data) {
-        if(data){            
+    theApp.updateAnalysisInfo = function (data) {
+        var i, benchmarks, benchmarkPlaceholder;
+
+        if (data) {
             // Define the CSS word-break rules depending on 
             // the whitespace available in the portfolio name.
             if (data.name.indexOf(' ') === -1) {
@@ -551,9 +553,23 @@ Zepto(function ($) {
                 $(el.summaryTitleName).attr('style', 'word-break: normal;');
             }
 
-            // Update the title and benchmark names.
+            // Update the portfolio name.
             $(el.summaryTitleName).html(data.name);
-            $(el.summaryTitleBenchmarkName).html(data.analysis.benchmarks[0].name);
+
+            // Clear out any existing benchmarks.
+            benchmarkPlaceholder = $(el.summaryTitleBenchmarkName);
+            benchmarkPlaceholder.html('');
+
+            // Loop around any benchmarks we have, 
+            // adding their names to the placeholder.
+            benchmarks = data.analysis.benchmarks || [];
+
+            for (i = 0; i < benchmarks.length; i++) {
+                if (i > 0) {
+                    benchmarkPlaceholder.append(', ');
+                }
+                benchmarkPlaceholder.append(benchmarks[i].name);
+            }
 
             // Clear the analysis partial of existing elements.
             $(el.analysisPage + '_partial').html('');
@@ -752,10 +768,10 @@ Zepto(function ($) {
 
     theApp.pageEventsManager.on('onAnalysisEnd', function () {
         theApp.scroll.rebuild('analysis');
-        
+
         // Deselect Settings button.
         theApp.tabbar.getButton('settings').setHighlight(false);
-        
+
         output.log('onAnalysisEnd');
     });
 
@@ -789,7 +805,7 @@ Zepto(function ($) {
 
         output.log('onChartSettingsStart');
     });
-    
+
     // ------------------------------------------
     // EVENTS
     // ------------------------------------------
@@ -801,16 +817,16 @@ Zepto(function ($) {
 
     $(el.stayLoggedCheckbox).on('click', function () {
         var stayLogged = $(el.stayLoggedCheckbox + ':checked').val()
-            ? true 
+            ? true
             : false,
         userSettingsData = theApp.settings.loadData('userSettings', theApp.lastUsernameUsed);
 
         userSettingsData.automaticLogin = stayLogged;
         theApp.settings.saveData('userSettings', theApp.lastUsernameUsed);
-        
+
         output.log(stayLogged);
     });
-    
+
     // ------------------------------------------
     // ANALYSIS MANAGER
     // ------------------------------------------
