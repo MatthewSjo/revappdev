@@ -959,9 +959,6 @@
       <CompileStyle>Nested</CompileStyle>
       <DebugInfo>False</DebugInfo>
     </Content>
-    <Content Include="views\analysis.jade">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="views\eula.jade" />
     <Content Include="views\portfolioAnalysis.jade" />
     <Content Include="views\portfolios.jade" />

@@ -5,32 +5,22 @@
 	Packed With: http://jsutility.pjoneil.net/
 	Version: 1.0.1
 */
-li .aSwipeBtn {
-	margin: 0;
-	/*float: right;*/
-	position: absolute;
-	right: 0;
-	top: -2px;
-	font-size: 12px !important;
-	/*margin-top: -2px !important;*/
-	padding-top: 6px !important;
-	padding-bottom: 14px !important;
-	z-index: 100;
-	border-radius: .5em;
+li .ui-btn { position: absolute; right: 10px; top: 6px; z-index: 100; }
+
+li .ui-btn .aSwipeBtn {	
+	margin: 0 !important;
+	padding: 7px 10px 12px !important;
+	font-size: 13px !important;
+	font-family: HelveticaNeue-Bold !important;
+	font-weight: normal !important;
+	color: #ffffff;
     height: 12px !important;
     text-shadow: #666 1px 0 0 !important;
-
-/*
-    margin: 0;
-    padding: 0;
-    font-size: 12px !important;
-    height: 23px;
-	float: right;
-*/
+    box-shadow: inset 0 0 2px 2px #111 !important;
+    -webkit-box-shadow: inset 0 0 1px 1px #111 !important;
 }
 
 li .aSwipeBtn .ui-btn-inner {
-	/*padding: 0.6em .9em !important;*/
 	padding: 0 !important;
 }
 
@@ -38,8 +28,7 @@ li .aSwipeBtn .ui-btn-corner-all {
 	border-radius: .5em;
 }
 
-.ui-button 
-{
+.ui-button {
     margin-top: -12px;
-    height:28px;
+    height: 28px;
 }

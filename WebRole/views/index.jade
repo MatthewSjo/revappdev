@@ -1,7 +1,7 @@
 #page
 	#jqt
 		#startup(data-pageEvents="both")
-		#revolutionLogin.login_background(data-pageEvents="both")
+		#login.login_background(data-pageEvents="both")
 			#login_content
 				.login_r
 				ul.rounded.login_style
@@ -10,7 +10,7 @@
 							input#userNameTextbox.login_style(type='email', placeholder='#{lang.loginPage.userNamePlaceholderText}', name='user[username]', value='')
 					li.login_style
 						div
-							input#passwordTextbox.login_style(type='password', placeholder='#{lang.loginPage.passwordPlaceholderText}', name='user[password]', value='StatPro123')
+							input#passwordTextbox.login_style(type='password', placeholder='#{lang.loginPage.passwordPlaceholderText}', name='user[password]', value='')
 				a#loginButton.whiteButton(href='#')  #{lang.loginPage.loginText}
 				p#loginErrorText
 				p.login_style #{new Date().getFullYear()} #{lang.loginPage.statProText} | ver. 01a <br /> #{environment}
@@ -49,7 +49,7 @@
 		#analysis(data-pageEvents="both")
 			.toolbar
 				h1#analysisTitle #{lang.analysisPage.analysisText}
-			#analysisSummary(style="height:80px; -webkit-box-shadow: rgba(0, 0, 0, 0.4) 0 1px 6px;")
+			#analysisSummary
 				.summaryTitle
 						h2#summaryTitleName
 						h3#summaryTitleBenchmarkName
@@ -59,7 +59,7 @@
 				.summaryReturn
 					h2#timePeriodEndDateText
 					h3 #{lang.analysisPage.endDate}
-			#wrapper(style="top:128px")
+			#wrapper(style="top:105px")
 				#scroller
 					#analysis_partial				
 
@@ -73,64 +73,63 @@
 		
 		#settings(data-pageEvents="both")
 			.toolbar
-				h1 #{lang.settingsPage.settingsText}
+				h1 #{lang.settingsPages.settingsText}
 			#wrapper
 				#scroller
-					// form.scroll
-					h2 Application
+					h2 #{lang.settingsPages.applicationSettingsText}
 					ul.rounded
 						li.arrow
-							a(href="#themes") Themes
+							a(href="#themes") #{lang.settingsPages.themesText}
 						li.arrow
-							a(href="#analysisPagesSettings") Analysis Pages
+							a(href="#analysisPagesSettings") #{lang.settingsPages.analysisPagesText}
 
-					h2 User preferences
+					h2 #{lang.settingsPages.userPreferencesText}
 					ul.rounded
 						li.arrow
-							a(href="#languageSettings") Languages
-						li Auto Login
+							a(href="#languageSettings") #{lang.settingsPages.languagesText}
+						li #{lang.settingsPages.autoLoginText}
 							span.toggle
 								input#stayLoggedCheckbox(type="checkbox")
+
 					// h2 TODO: Memory Statistics / Consumed
 					ul.rounded
 						li.arrow
-							a(href="#eula") EULA
-					a#reloadApp.whiteButton(href='#') Reload App
+							a(href="#eula") #{lang.settingsPages.licenseText}
+					a#reloadApp.whiteButton(href='#') #{lang.settingsPages.reloadText}
 					a#resetApp.whiteButton(href='#') Reset App (TODO)
 					ul.rounded
 						li#userEmailLabel.centeredText
 		#themes
 			.toolbar
-				h1 Themes
-				a.back(href='#') Back
+				h1 #{lang.settingsPages.themesText}
+				a.back(href='#') #{lang.shared.backText}
 			ul.rounded
 
 		#analysisPagesSettings(data-pageEvents="both")
 			.toolbar
-				h1 #{lang.analysisSettingsPages.settingsText}
+				h1 #{lang.settingsPages.analysisPagesText}
 				a.back(href='#') #{lang.shared.backText}
 			#wrapper
 				#scroller
-					h2 User Pages
+					h2 #{lang.settingsPages.userPagesText}
 					ul#listAnalysisSettingsUserPages.edit.rounded
-					h2 Default Pages
+					h2 #{lang.settingsPages.defaultPagesText}
 					ul#listAnalysisSettingsDefaultPages.edit.rounded
 
-		// TODO: Change server localization file. analysisSettingsPage -> chartSettingsPage
 		#chartSettings(data-pageEvents="both")
 			.toolbar
-				h1 #{lang.analysisSettingsPage.settingsText}
+				h1 #{lang.settingsPages.analysisPageText}
 				a.back(href='#') #{lang.shared.backText}
 			#wrapper
 				#scroller
-					h2 User Page
+					h2 #{lang.settingsPages.userPageText}
 					form.scroll
 						ul.edit.rounded
 							li
-								input#analysisPageNameTextbox(type='text', placeholder='Page Name', value='')						
+								input#analysisPageNameTextbox(type='text', placeholder='#{lang.settingsPages.pageNameText}', value='')						
 							li.arrow
 								select#chartsSelectbox(multiple="multiple")
-					a#saveChartSettings.whiteButton(href='#') Save
+					a#saveChartSettings.whiteButton(href='#') #{lang.settingsPages.saveText}
 		
 		#languageSettings(data-pageEvents="both")
 			.toolbar

@@ -15,7 +15,7 @@ WebAppLoader.addModule({ name: 'pageElements', isShared: true }, function () {
         analysisPage                        : '#analysis',
         eulaPage                            : '#eula',
         settingsPage                        : '#settings',
-        loginPage                           : '#revolutionLogin',
+        loginPage                           : '#login',
         startupPage                         : '#startup',
         chartSettingsPage                   : '#chartSettings',
         themesPage                          : '#themes',
