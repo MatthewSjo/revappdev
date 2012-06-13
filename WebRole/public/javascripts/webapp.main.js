@@ -807,12 +807,21 @@ Zepto(function ($) {
     });
 
     // ------------------------------------------
-    // EVENTS
+    // SETTINGS PAGE EVENTS
     // ------------------------------------------
 
-    $('#reloadApp').on('click', function () {
+    $(el.reloadAppButton).on('click', function () {
+        theApp.nav.reloadApp();
+    });
+
+    $(el.resetAllSettingsButton).on('click', function () {
         theApp.localStorage.clearAll();
         theApp.nav.reloadApp();
+    });
+
+    $(el.resetCurrentSettingsButton).on('click', function () {
+        theApp.localStorage.clearUserSettings(theApp.lastUsernameUsed);
+        theApp.nav.goToPage($(el.settingsPage));
     });
 
     $(el.stayLoggedCheckbox).on('click', function () {

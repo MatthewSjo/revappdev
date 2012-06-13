@@ -76,15 +76,15 @@
 				h1 #{lang.settingsPages.settingsText}
 			#wrapper
 				#scroller
-					h2 #{lang.settingsPages.applicationSettingsText}
+					// h2 #{lang.settingsPages.applicationSettingsText}
 					ul.rounded
-						li.arrow
-							a(href="#themes") #{lang.settingsPages.themesText}
 						li.arrow
 							a(href="#analysisPagesSettings") #{lang.settingsPages.analysisPagesText}
 
-					h2 #{lang.settingsPages.userPreferencesText}
+					// h2 #{lang.settingsPages.userPreferencesText}
 					ul.rounded
+						li.arrow
+							a(href="#themes") #{lang.settingsPages.themesText}
 						li.arrow
 							a(href="#languageSettings") #{lang.settingsPages.languagesText}
 						li #{lang.settingsPages.autoLoginText}
@@ -94,11 +94,25 @@
 					// h2 TODO: Memory Statistics / Consumed
 					ul.rounded
 						li.arrow
+							a#reloadAppButton(href="#") #{lang.settingsPages.reloadText}
+						li.arrow
+							a(href="#reset") #{lang.settingsPages.resetText}
+					ul.rounded
+						li.arrow
+							a(href="#about") #{lang.settingsPages.aboutText}
+						li.arrow
 							a(href="#eula") #{lang.settingsPages.licenseText}
-					a#reloadApp.whiteButton(href='#') #{lang.settingsPages.reloadText}
-					a#resetApp.whiteButton(href='#') Reset App (TODO)
+					// a#reloadApp.whiteButton(href='#') #{lang.settingsPages.reloadText}
+					// a#resetApp.whiteButton(href='#reset') Reset App
 					ul.rounded
 						li#userEmailLabel.centeredText
+		#reset
+			.toolbar
+				h1 #{lang.settingsPages.themesText}
+				a.back(href='#') #{lang.shared.backText}
+			ul.rounded
+				li#resetCurrentSettingsButton.centeredText #{lang.settingsPages.resetCurrentSettingsText}
+				li#resetAllSettingsButton.centeredText #{lang.settingsPages.resetAllSettingsText}
 		#themes
 			.toolbar
 				h1 #{lang.settingsPages.themesText}
@@ -146,6 +160,14 @@
 				#scroller
 					#errorMessage
 						p#errorMessageText
+
+		#about(data-pageEvents="both", class='pageWithEvents')
+			.toolbar
+				h1 #{lang.aboutPage.aboutText}
+				a.back(href='#') #{lang.shared.backText}
+			#wrapper
+				#scroller
+					#about_partial
 
 	nav#tabbar(style="opacity: 0; -webkit-transition: opacity 0.25s linear 0.25s;")
 		ul

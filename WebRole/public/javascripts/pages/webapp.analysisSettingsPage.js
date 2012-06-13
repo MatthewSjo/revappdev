@@ -2,12 +2,14 @@
 // ANALYSIS SETTINGS PAGE
 // ------------------------------------------
 
-WebAppLoader.addModule({ name: 'analysisSettingsPage', plugins: ['helper'], sharedModules: ['settings', 'pageElements'], hasEvents: true }, function () {
+WebAppLoader.addModule({ name: 'analysisSettingsPage', plugins: ['helper'], 
+    sharedModules: ['settings', 'pageElements', 'localizationManager'], hasEvents: true }, function () {
     var analysisSettingsPage = {},
         output               = this.getConsole(),
         eventManager         = this.getEventManager(),
         helper               = this.getPlugin('helper'),
         settings             = this.getSharedModule('settings'),
+        lang                 = this.getSharedModule('localizationManager').getLanguage() || {},
         el                   = this.getSharedModule('pageElements');
 
     function onAnalysisPageClick() {
@@ -66,7 +68,7 @@ WebAppLoader.addModule({ name: 'analysisSettingsPage', plugins: ['helper'], shar
         $(appendTo).append(
             $('<li>').attr('class', 'arrow').append(
                 $('<a>').attr({ 'href': '#', 'data-link' : pageId })
-                .html('Add New Page...') // TODO: Localize string 'Add New Page...'
+                .html(lang.chartTexts.addNewPage) // TODO: Localize string 'Add New Page...'
                 .on('click', onNewAnalysisPageClick)
             )
         );

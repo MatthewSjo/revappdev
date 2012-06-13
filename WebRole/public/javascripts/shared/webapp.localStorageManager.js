@@ -92,11 +92,20 @@ WebAppLoader.addModule({ name: 'localStorageManager', sharedModules: [], plugins
         output.log('clearAll()');
     }
 
+    function clearUserSettings(username) {
+        for (var key in localStorage) {
+            if(helper.startsWith(key, username)) {
+                localStorage.removeItem(key);
+            }
+        }
+    }
+
     localStorageManager.load = load;
     localStorageManager.save = save;
     localStorageManager.remove = remove;
     localStorageManager.count = count;
     localStorageManager.clearAll = clearAll;
-    
+    localStorageManager.clearUserSettings = clearUserSettings;
+
     return localStorageManager;
 });

@@ -47,7 +47,10 @@ WebAppLoader.addModule({ name: 'pageElements', isShared: true }, function () {
         stayLoggedCheckbox                  : '#stayLoggedCheckbox',
         userEmailLabel                      : '#userEmailLabel',
         summaryTitleName                    : '#summaryTitleName',
-        summaryTitleBenchmarkName           : '#summaryTitleBenchmarkName'
+        summaryTitleBenchmarkName           : '#summaryTitleBenchmarkName',
+        resetCurrentSettingsButton          : '#resetCurrentSettingsButton',
+        resetAllSettingsButton              : '#resetAllSettingsButton',
+        reloadAppButton                     : '#reloadAppButton'
     };
 
     return pageElements;

@@ -150,13 +150,17 @@ exports.client = {
         TreeMap                             : 'Heatmap'
     },
 
+    chartTexts: {
+        addNewPage                          : 'Aggiungi...'
+    },
+
     // ------------------------------------------------------------------ | E |
 
     errors: {
-        chartFailedText                     : 'Unable to load chart.',
-        accountEmptyText                    : 'This account contains no portfolio data.',
-        portfolioNotFoundText               : 'The requested portfolio could not be found.',
-        analysisFailedText                  : 'Unable to retrieve the requested portfolio analysis.'
+        chartFailedText                     : 'Impossibile caricare il grafico.',
+        accountEmptyText                    : 'Nessun portfolio presente.',
+        portfolioNotFoundText               : 'Il portfolio richiesto non è stato trovato.',
+        analysisFailedText                  : 'Impossibile recuperare l\'analisi del portfolio richiesta.'
     },
 
     // ------------------------------------------------------------------ | S |
@@ -167,10 +171,10 @@ exports.client = {
     }, 
 
     spinningWheel: {
-        noPortfolioSlotAvailable    : 'No portfolios available.',
-        noAnalysisSlotAvailable     : 'No analyses available.',
-        noTimePeriodSlotAvailable   : 'No time periods available.',
-        noFavouritesSlotAvailable   : 'No favourites'
+        noPortfolioSlotAvailable    : 'Nessun portfolio disponibile.',
+        noAnalysisSlotAvailable     : 'Nessuna analisi disponibile.',
+        noTimePeriodSlotAvailable   : 'Nessun periodo disponibile.',
+        noFavouritesSlotAvailable   : 'Nessun preferito'
     },
 
     // ------------------------------------------------------------------ | T |
@@ -180,9 +184,9 @@ exports.client = {
         home                        : 'Home',
         portfolios                  : 'Portfolio',
         analysis                    : 'Analisi',
-        timePeriods                 : 'Time Periods',
+        timePeriods                 : 'Periodi',
         infos                       : 'Info',
-        more                        : 'More',
+        more                        : 'Di piú',
         settings                    : 'Impostazioni'
     },
 
@@ -201,21 +205,25 @@ exports.server = {
 
     // ------------------------------------------------------------------ | A |
     
+    aboutPage: {
+        aboutText                   : 'Informazioni su'
+    },
+
     analysisPage: {
         analysisText                : 'Analisi',
-        endDate                     : 'End Date',
-        startDate                   : 'Start Date'  
+        endDate                     : 'Fine Data',
+        startDate                   : 'Inizio Data'  
     },
     
     // ------------------------------------------------------------------ | E |
 
     errorPage: {
-        errorText                   : 'Error'
+        errorText                   : 'Errori'
     },
 
     errors: {
-        unknownErrorText            : 'An unknown error occurred.',
-        invalidCredentialsText      : 'The username or password you entered is incorrect.'
+        unknownErrorText            : 'Si è verificato un errore sconosciuto.',
+        invalidCredentialsText      : 'Nome utente o password incorretti'
     },
 
     eulaPage: {
@@ -533,29 +541,33 @@ exports.server = {
     // ------------------------------------------------------------------ | S |
 
     settingsPages: {
-        settingsText                : 'Settings',
-        applicationSettingsText     : 'Application Settings',
-        userPreferencesText         : 'User Preferences',
-        languagesText               : 'Languages',
-        autoLoginText               : 'Auto Login',
-        licenseText                 : 'License',
-        themesText                  : 'Themes',
-        analysisPagesText           : 'Analysis Pages',
-        reloadText                  : 'Reload Application',
-        analysisPageText            : 'Analysis Page',
-        analysisPagesText           : 'Analysis Pages',
-        userPageText                : 'User Page',
-        userPagesText               : 'User Pages',
-        defaultPagesText            : 'Default Pages',
-        pageNameText                : 'Page Name',
-        saveText                    : 'Save'
+        settingsText                : 'Impostazioni',
+        applicationSettingsText     : 'Impostazioni Applicazione',
+        userPreferencesText         : 'Preferenze Utente',
+        languagesText               : 'Lingue',
+        autoLoginText               : 'Accesso Automatico',
+        licenseText                 : 'Licenza',
+        themesText                  : 'Temi',
+        analysisPagesText           : 'Personalizza Analisi',
+        reloadText                  : 'Ricarica Applicazione',
+        analysisPageText            : 'Analisi',
+        analysisPagesText           : 'Personalizza Analisi',
+        userPageText                : 'Analisi Utente',
+        userPagesText               : 'Analisi Utenti',
+        defaultPagesText            : 'Analisi Predefinite',
+        pageNameText                : 'Nome Pagina',
+        saveText                    : 'Salva',
+        resetText                   : 'Resetta',
+        aboutText                   : 'Informazioni',
+        resetCurrentSettingsText    : 'Resetta Settaggi Correnti',
+        resetAllSettingsText        : 'Resetta Tutto'
     },
 
     shared: {
         backText                    : 'Indietro',
-        Monthly                     : 'Monthly',
-        Weekly                      : 'Weekly',
-        Quarterly                   : 'Quarterly'        
+        Monthly                     : 'Mensile',
+        Weekly                      : 'Settimanale',
+        Quarterly                   : 'Quadrimestrale'        
     },
 
     // -------------------------- | END OF FILE | -------------------------- \\

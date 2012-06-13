@@ -150,6 +150,10 @@ exports.client = {
         TreeMap                             : 'Heatmap'
     },
 
+    chartTexts: {
+        addNewPage                          : 'Add New Page...'
+    },
+
     // ------------------------------------------------------------------ | E |
 
     errors: {
@@ -200,7 +204,10 @@ exports.server = {
     hello: 'hello',
 
     // ------------------------------------------------------------------ | A |
-    
+    aboutPage: {
+        aboutText                   : 'About'
+    },
+
     analysisPage: {
         analysisText                : 'Analysis',        
         endDate                     : 'End Date',
@@ -548,7 +555,11 @@ exports.server = {
         userPagesText               : 'User Pages',
         defaultPagesText            : 'Default Pages',
         pageNameText                : 'Page Name',
-        saveText                    : 'Save'
+        saveText                    : 'Save',
+        resetText                   : 'Reset',
+        aboutText                   : 'About',
+        resetCurrentSettingsText    : 'Reset Current Settings',
+        resetAllSettingsText        : 'Reset All Settings'
     },
 
     shared: {

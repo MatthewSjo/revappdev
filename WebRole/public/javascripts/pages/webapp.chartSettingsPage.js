@@ -7,13 +7,13 @@ WebAppLoader.addModule({ name: 'chartSettingsPage',
     hasEvents: true
 }, function () {
     var chartSettingsPage = {},
-        output = this.getConsole(),
-        eventManager = this.getEventManager(),
-        helper = this.getPlugin('helper'),
-        lang = this.getSharedModule('localizationManager').getLanguage() || {},
-        settings = this.getSharedModule('settings'),
-        el = this.getSharedModule('pageElements'),
-        analysisId = '';
+        output            = this.getConsole(),
+        eventManager      = this.getEventManager(),
+        helper            = this.getPlugin('helper'),
+        lang              = this.getSharedModule('localizationManager').getLanguage() || {},
+        settings          = this.getSharedModule('settings'),
+        el                = this.getSharedModule('pageElements'),
+        analysisId        = '';
 
     function create(charts) {
         var chartType;
