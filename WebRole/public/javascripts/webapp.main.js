@@ -551,6 +551,7 @@ Zepto(function ($) {
 
             $(el.summaryTitleName).html(data.name);
             $(el.summaryTitleBenchmarkName).html(data.analysis.benchmarks[0].name);
+            $(el.analysisPage + '_partial').html('');
         }
     };
 

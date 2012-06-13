@@ -39,6 +39,26 @@ var osInfo = {
 // ------------------------------------------------------ */
 
 // ------------------------------------------
+// LANGUAGE HELPER FUNCTIONS
+// ------------------------------------------
+
+function getLanguage(lang, host) {
+    var language = lang || defaultLanguage;
+
+    return (languages[language] && languages[language][host])
+        ? languages[language][host]
+        : languages[defaultLanguage][host];
+}
+
+function getServerLanguage(lang) {
+    return getLanguage(lang, 'server');
+}
+
+function getClientLanguage(lang) {
+    return getLanguage(lang, 'client');
+}
+
+// ------------------------------------------
 // VIEW ROUTING
 // ------------------------------------------
 
@@ -48,18 +68,18 @@ var osInfo = {
 // Homepage
 exports.index = function (req, res) {
     var viewModel = {}, 
-        currentLanguage;
+        requestedLanguage;
     
     // Set server side language.
-    currentLanguage = req.query.lang || defaultLanguage;
-    viewModel.lang = languages[currentLanguage].server;
+    requestedLanguage = req.query.lang || defaultLanguage;
+    viewModel.lang = getServerLanguage(requestedLanguage);
 
     // Add some extra information to the viewModel.
     viewModel.environment = GLOBAL_ENVIRONMENT;
 
     // Set client side language.
     res.exposeRequire();
-    res.expose(languages[currentLanguage].client, 'language');
+    res.expose(getClientLanguage(requestedLanguage), 'language');
 
     res.render('index', viewModel);
 };
@@ -70,7 +90,7 @@ exports.authenticate = function (req, res, next) {
 
     // If we had a language specified as part of the querystring,
     // retrieve it from the language module, otherwise load the default.
-    currentLanguage = languages[req.query.lang || defaultLanguage].server;
+    currentLanguage = getServerLanguage(req.query.lang);
 
     // Extract the email and authentication token from the request body.
     email = req.body.email;
@@ -127,7 +147,7 @@ exports.portfolios = function (req, res) {
 
     // If we had a language specified as part of the querystring,
     // retrieve it from the language module, otherwise load the default.
-    currentLanguage = languages[req.query.lang || defaultLanguage].server;
+    currentLanguage = getServerLanguage(req.query.lang);
 
     webApi.getPortfolios(oData, datatype, req.session.token, currentLanguage, function (resource, datatype) {
         var viewModel = resource.data || {};
@@ -152,7 +172,7 @@ exports.portfolioAnalysis = function (req, res) {
 
     // If we had a language specified as part of the querystring,
     // retrieve it from the language module, otherwise load the default.
-    currentLanguage = languages[req.query.lang || defaultLanguage].server;
+    currentLanguage = getServerLanguage(req.query.lang);
 
     webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, req.session.token, currentLanguage, function (analysis) {
         var viewModel = analysis.data || {};
@@ -177,7 +197,7 @@ exports.analysis = function (req, res) {
 
     // If we had a language specified as part of the querystring,
     // retrieve it from the language module, otherwise load the default.
-    currentLanguage = languages[req.query.lang || defaultLanguage].server;
+    currentLanguage = getServerLanguage(req.query.lang);
 
     webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, req.session.token, currentLanguage, function (analysis) {
         var viewModel = analysis.data || {};
@@ -203,7 +223,7 @@ exports.eula = function (req, res) {
     
     // If we had a language specified as part of the querystring,
     // retrieve it from the language module, otherwise load the default.
-    currentLanguage = languages[req.query.lang || defaultLanguage].server;
+    currentLanguage = getServerLanguage(req.query.lang);
 
     webApi.getEula('fragment', req.session.token, currentLanguage, function (resource) {
         var viewModel = {

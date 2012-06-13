@@ -208,7 +208,7 @@ exports.server = {
     },
     
     analysisSettingsPage: {
-        settingsText                : 'Analysis Page',
+        settingsText                : 'Analysis Page'
         
     },
 

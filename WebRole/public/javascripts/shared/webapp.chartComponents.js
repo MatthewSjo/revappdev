@@ -10,7 +10,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         eventManager        = this.getEventManager(),
         helper              = this.getPlugin('helper'),
         chartManager        = this.getSharedModule('chartManager'),
-        lang                = this.getSharedModule('localizationManager').getLanguage() || {};
+        lang                = this.getSharedModule('localizationManager').getLanguage() || {},
         createdCharts       = {},
         chartsDataObject    = this.getDataObject('charts'),
         chartsData          = null;
