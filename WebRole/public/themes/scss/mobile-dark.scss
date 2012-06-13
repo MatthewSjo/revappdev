@@ -33,7 +33,6 @@ $toolbar-button-color: saturate(darken($toolbar-background-color, 10), 20);
         li {
             border-top: 1px solid darken($base-color, 5);
 			background-color: #ffffff;
-			height: 28px;
 			color: #000;
             //@include background-gradient(rgba($base-color, .2), matte);
 

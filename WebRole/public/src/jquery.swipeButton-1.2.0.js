@@ -41,7 +41,7 @@
                                     
 					// slide insert button into list item
 					$swipeBtn.prependTo($li).wrap('<div class="ui-btn"></div>');
-					$li.find('.ui-btn > .' + btnClass).animate({ width: '60px' }, 100);
+					$li.find('.ui-btn > .' + btnClass).animate({ width: '45px' }, 100);
 
                     $li.data('link', $('a[data-link]', $li).data('link'));
                     $('a[data-link]', $li).data('link', '');

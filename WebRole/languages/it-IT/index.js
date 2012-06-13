@@ -207,15 +207,6 @@ exports.server = {
         startDate                   : 'Start Date'  
     },
     
-    analysisSettingsPage: {
-        settingsText                : 'Analysis Page',
-        
-    },
-
-    analysisSettingsPages: {
-        settingsText                : 'Analysis Pages'
-    },
-
     // ------------------------------------------------------------------ | E |
 
     errorPage: {
@@ -541,8 +532,23 @@ exports.server = {
 
     // ------------------------------------------------------------------ | S |
 
-    settingsPage: {
-        settingsText                : 'Settings'
+    settingsPages: {
+        settingsText                : 'Settings',
+        applicationSettingsText     : 'Application Settings',
+        userPreferencesText         : 'User Preferences',
+        languagesText               : 'Languages',
+        autoLoginText               : 'Auto Login',
+        licenseText                 : 'License',
+        themesText                  : 'Themes',
+        analysisPagesText           : 'Analysis Pages',
+        reloadText                  : 'Reload Application',
+        analysisPageText            : 'Analysis Page',
+        analysisPagesText           : 'Analysis Pages',
+        userPageText                : 'User Page',
+        userPagesText               : 'User Pages',
+        defaultPagesText            : 'Default Pages',
+        pageNameText                : 'Page Name',
+        saveText                    : 'Save'
     },
 
     shared: {

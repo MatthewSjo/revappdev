@@ -1310,12 +1310,12 @@ body {
   position: absolute;
   overflow: hidden;
   left: 50%;
-  bottom: 12px;
+  bottom: 10px;
   margin: 1px 0 0 -75px;
   width: 150px;
   font-size: 20px;
   font-weight: bold;
-  line-height: 1em;
+  line-height: 24px;
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1914,7 +1914,6 @@ body {
 #jqt ul li {
   border-top: 1px solid #2a2f31;
   background-color: #ffffff;
-  height: 28px;
   color: #000;
 }
 /* line 40, ../scss/mobile-dark.scss */
