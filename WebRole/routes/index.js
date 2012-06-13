@@ -97,7 +97,7 @@ exports.authenticate = function (req, res, next) {
             // gone wrong.
             obj.message = (resource.error.httpStatusCode === 401) ?
                 currentLanguage.errors.invalidCredentialsText :
-                resource.error.message;
+                currentLanguage.errors.unknownErrorText;
 
         } else {
 
