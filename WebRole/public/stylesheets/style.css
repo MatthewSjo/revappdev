@@ -422,16 +422,17 @@ html, body
 }
 
 #about_partial p { margin: 0 0 20px 0; }
+#about_partial a { text-shadow: none !important; }
 
-#about_partial a {
+#about_partial .links a {
     display: inline-block;
     padding: 0 10px 0 0; 
     border-right: 1px solid #aaaaaa; 
-    margin: 0 10px 0 0;
+    margin: 0 10px 0 0;    
 }
 
-#about_partial .last {
-    padding: 0; 
-    margin: 0; 
-    border: 0; 
+#about_partial .last, #about_partial .links {
+    padding: 0 !important; 
+    margin: 0 !important; 
+    border: 0 !important; 
 }
