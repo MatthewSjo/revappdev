@@ -113,7 +113,7 @@ WebAppLoader.addExtension({ name: 'dataObject', plugins: ['helper', 'storage'], 
 
             moduleToLoad.bin.getDataObject = function (dataObjectName) {
                 return this[dataObjectName];
-            }
+            };
         }
     }
 
