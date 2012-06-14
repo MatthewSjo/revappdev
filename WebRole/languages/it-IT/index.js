@@ -206,7 +206,10 @@ exports.server = {
     // ------------------------------------------------------------------ | A |
     
     aboutPage: {
-        aboutText                   : 'Informazioni su'
+        aboutText                   : 'Informazioni su',
+        mobileText                  : 'StatPro Revolution Mobile',
+        openSourceText              : 'This project is made possible by open source software.',
+        poweredText                 : 'Powered by the StatPro Revolution Web API.'
     },
 
     analysisPage: {
@@ -223,7 +226,7 @@ exports.server = {
 
     errors: {
         unknownErrorText            : 'Si è verificato un errore sconosciuto.',
-        invalidCredentialsText      : 'Nome utente o password incorretti'
+        invalidCredentialsText      : 'Nome utente o password incorretti.'
     },
 
     eulaPage: {
@@ -248,7 +251,6 @@ exports.server = {
     loginPage: {
         loginText                   : 'Accedi',
         signUpText                  : 'Sottoscrivi',
-        statProText                 : 'StatPro International SARL',
         supportText                 : 'Supporto',
         userNamePlaceholderText     : 'Nome Utente',
         passwordPlaceholderText     : 'Password'
@@ -565,6 +567,8 @@ exports.server = {
 
     shared: {
         backText                    : 'Indietro',
+        statProText                 : 'StatPro International SARL',
+        versionText                 : 'Versione',
         Monthly                     : 'Mensile',
         Weekly                      : 'Settimanale',
         Quarterly                   : 'Quadrimestrale'        

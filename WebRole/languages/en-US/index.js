@@ -184,7 +184,7 @@ exports.client = {
         home                        : 'Home',
         portfolios                  : 'Portfolios',
         analysis                    : 'Analysis',
-        timePeriods                 : 'Time Periods',
+        timePeriods                 : 'Periods',
         infos                       : 'Infos',
         more                        : 'More',
         settings                    : 'Settings'
@@ -206,7 +206,10 @@ exports.server = {
     // ------------------------------------------------------------------ | A |
     
     aboutPage: {
-        aboutText                   : 'About'
+        aboutText                   : 'About',
+        mobileText                  : 'StatPro Revolution Mobile',
+        openSourceText              : 'This project is made possible by open source software.',
+        poweredText                 : 'Powered by the StatPro Revolution Web API.'        
     },
 
     analysisPage: {
@@ -247,8 +250,7 @@ exports.server = {
 
     loginPage: {
         loginText                   : 'Login',
-        signUpText                  : 'Sign Up',
-        statProText                 : 'StatPro International SARL',
+        signUpText                  : 'Sign Up',        
         supportText                 : 'Support',
         userNamePlaceholderText     : 'User Name',
         passwordPlaceholderText     : 'Password'
@@ -565,9 +567,11 @@ exports.server = {
 
     shared: {
         backText                    : 'Back',
+        statProText                 : 'StatPro International SARL',
+        versionText                 : 'Version',
         Monthly                     : 'Monthly',
         Weekly                      : 'Weekly',
-        Quarterly                   : 'Quarterly'
+        Quarterly                   : 'Quarterly'        
     },
 
     // -------------------------- | END OF FILE | -------------------------- \\
