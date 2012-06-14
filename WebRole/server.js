@@ -16,6 +16,7 @@ var app = module.exports = express.createServer(),
 // GLOBAL SETTINGS
 // ------------------------------------------
 
+GLOBAL_VERSION = '0.2a';
 GLOBAL_ENVIRONMENT = app.settings.env;
 GLOBAL_WAPI_URI = (app.settings.env === 'production')
     ? 'https://revapistage.statpro.com/v1'

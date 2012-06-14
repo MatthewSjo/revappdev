@@ -24,13 +24,13 @@ WebAppLoader.addModule({ name: 'languageSettingsPage', plugins: ['helper'], shar
     function create() {
         for (var i = 0; i < languages.length; i++) {
             $(el.listLanguagesPages).append(
-                $('<li>').attr('class', 'forward').append(
+                $('<li>').append(
                     $('<a>').attr({ 'href': '#', 'data-link': JSON.stringify(languages[i]) })
                     .html(languages[i].name)
                     .on('click', onLanguageClick)
                 )
             );
-       }
+        }
     }
 
     languageSettingsPage.create = create;

@@ -44,29 +44,6 @@ html, body
 }
 
 /************************************************
- * ABOUT PAGE  
- ***********************************************/
-div#jqt #about
-{
-    padding: 50px 0px 40px;
-    text-shadow: rgba(0, 0, 0, 0.3) 0px -1px 0;
-    color: #999;
-    font-size: 13px;
-    text-align: center;
-    background: #161618;
-}
-div#jqt #about p
-{
-    margin-bottom: 8px;
-}
-div#jqt #about a
-{
-    color: #fff;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-/************************************************
  * ANALYSIS
  ***********************************************/
 
@@ -355,11 +332,78 @@ div#jqt #about a
  ***********************************************/
 
 .genericContainer {
-    margin: 15px 0 0 0;
-    padding: 15px;
+    margin: 15px;
+    padding: 30px;
     border: 1px solid #000000;
     background-color: #ffffff;
     -webkit-border-radius: 15px;
     -webkit-box-shadow: inset 0 0 10px #666666;
     height: 100%;
+}
+
+/************************************************
+ * EULA
+ ***********************************************/
+
+#eula_partial {
+    font-size: 12px; 
+    font-family: HelveticaNeue-Light;
+}
+
+#eula_partial td { vertical-align: top !important; }
+#eula_partial p, #eula_partial table { margin: 0 0 20px 0; }
+
+#eula_partial b,
+#eula_partial strong, 
+#eula_partial p.altHeader,
+#eula_partial p.paragraphBold {
+    font-family: HelveticaNeue-Bold; 
+}
+
+#eula_partial p.altHeader {
+    padding: 0 0 5px 0;
+    border-bottom: 1px solid #aaaaaa;
+}
+
+/************************************************
+ * ABOUT PAGE
+ ***********************************************/
+
+#aboutLogo {
+    padding: 5px;
+    background-color: #b5121b;
+    -webkit-border-radius: 15px;    
+    -webkit-box-shadow: rgba(0, 0, 0, 0.4) 0 1px 6px;
+}
+
+#about_partial .genericContainer {
+    text-align: center; 
+    font-size: 12px; 
+    font-family: HelveticaNeue-Light;
+    text-shadow: rgba(0, 0, 0, 0.3) 0px -1px 0;
+}
+
+#about_partial h2 {
+    color: #000000 !important;
+    font-size: 24px !important;
+    font-family: HelveticaNeue-Bold !important; 
+    font-weight: normal !important; 
+    text-shadow: none !important;
+    margin: 0;
+    padding: 0;
+}
+
+#about_partial p { margin: 0 0 20px 0; }
+
+#about_partial a {
+    display: inline-block;
+    padding: 0 10px 0 0; 
+    border-right: 1px solid #aaaaaa; 
+    margin: 0 10px 0 0;
+}
+
+#about_partial .last {
+    padding: 0; 
+    margin: 0; 
+    border: 0; 
 }

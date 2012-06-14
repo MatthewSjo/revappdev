@@ -13,7 +13,7 @@
 							input#passwordTextbox.login_style(type='password', placeholder='#{lang.loginPage.passwordPlaceholderText}', name='user[password]', value='')
 				a#loginButton.whiteButton(href='#')  #{lang.loginPage.loginText}
 				p#loginErrorText
-				p.login_style #{new Date().getFullYear()} #{lang.loginPage.statProText} | ver. 01a <br /> #{environment}
+				p.login_style &copy; #{new Date().getFullYear()} #{lang.shared.statProText} | #{lang.shared.versionText} #{version} <br /> [#{environment}]
 
 		#home(data-pageEvents="both")
 			.toolbar
@@ -93,13 +93,13 @@
 
 					// h2 TODO: Memory Statistics / Consumed
 					ul.rounded
-						li.forward
+						li
 							a#reloadAppButton(href="#") #{lang.settingsPages.reloadText}
 						li.arrow
 							a(href="#reset") #{lang.settingsPages.resetText}
 					ul.rounded
 						li.arrow
-							a(href="#aboutUs") #{lang.settingsPages.aboutText}
+							a(href="#about") #{lang.settingsPages.aboutText}
 						li.arrow
 							a(href="#eula") #{lang.settingsPages.licenseText}
 					// a#reloadApp.whiteButton(href='#') #{lang.settingsPages.reloadText}
@@ -161,13 +161,26 @@
 					#errorMessage
 						p#errorMessageText
 
-		#aboutUs(data-pageEvents="both", class='pageWithEvents')
+		#about(data-pageEvents="both", class='pageWithEvents')
 			.toolbar
 				h1 #{lang.aboutPage.aboutText}
 				a.back(href='#settings') #{lang.shared.backText}
 			#wrapper
 				#scroller
 					#about_partial
+						.genericContainer
+							img#aboutLogo(src='images/icon.png' )
+							h2 #{lang.aboutPage.mobileText} 
+							p &copy; #{new Date().getFullYear()} #{lang.shared.statProText} | #{lang.shared.versionText} #{version}
+							p #{lang.aboutPage.poweredText} <br /> #{lang.aboutPage.openSourceText}
+							p.last
+								a(href='http://nodejs.org/') Node
+								a(href='http://expressjs.com/') Express
+								a(href='http://zeptojs.com/') Zepto
+								a(href='http://www.jqtouch.com/') jQTouch
+								a(href='http://www.datejs.com/') Datejs
+								a(href='http://cubiq.org/iscroll') iScroll
+								a.last(href='http://itabbar.com/') iTabbar
 
 	nav#tabbar(style="opacity: 0; -webkit-transition: opacity 0.25s linear 0.25s;")
 		ul

@@ -76,6 +76,7 @@ exports.index = function (req, res) {
 
     // Add some extra information to the viewModel.
     viewModel.environment = GLOBAL_ENVIRONMENT;
+    viewModel.version = GLOBAL_VERSION;
 
     // Set client side language.
     res.exposeRequire();
