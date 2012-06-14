@@ -3,17 +3,18 @@
 // ------------------------------------------
 
 WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedModules: ['chartManager', 'localizationManager'],
-    dataObjects: ['charts'], hasEvents: true, isShared: true }, function () {
-    
-    var chartComponents     = {},
-        output              = this.getConsole(),
-        eventManager        = this.getEventManager(),
-        helper              = this.getPlugin('helper'),
-        chartManager        = this.getSharedModule('chartManager'),
-        lang                = this.getSharedModule('localizationManager').getLanguage() || {},
-        createdCharts       = {},
-        chartsDataObject    = this.getDataObject('charts'),
-        chartsData          = null;
+    dataObjects: ['charts'], hasEvents: true, isShared: true
+}, function () {
+
+    var chartComponents = {},
+        output = this.getConsole(),
+        eventManager = this.getEventManager(),
+        helper = this.getPlugin('helper'),
+        chartManager = this.getSharedModule('chartManager'),
+        lang = this.getSharedModule('localizationManager').getLanguage() || {},
+        createdCharts = {},
+        chartsDataObject = this.getDataObject('charts'),
+        chartsData = null;
 
     chartsDataObject.define({
         // ------------------------------------------
@@ -430,12 +431,10 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
 
     // Public
     function load(chartsToLoad) {
-        var chartToLoad, chartId, timePeriodId,
-            newRequest = true;
+        var chartToLoad, chartId, newRequest = true;
 
         for (var i = 0; i < chartsToLoad.length; i++) {
             chartId = chartsToLoad[i].chartId;
-            timePeriodId = chartsToLoad[i].timePeriodId;
 
             // If the chart has been created...
             if (createdCharts[chartId]) {
@@ -447,11 +446,6 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
                 createdCharts[chartId] = chartToLoad;
             }
 
-            // Add the requested time period to the chart if it exists.
-            if (timePeriodId) {
-                chartToLoad.timePeriods = timePeriodId;
-            }
-
             chartManager.load(chartToLoad, newRequest);
 
             // Change the status of newRequest only if a valid chart has been loaded.
@@ -459,6 +453,20 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
                 newRequest = false;
             }
         }
+    }
+
+    function setTimePeriod(charts, timePeriod) {
+        $.each(charts, function (index, chart) {
+            var config;
+
+            // Assign our time period to different objects depending if the chart 
+            // has already been created or not; the chart config if it's not yet 
+            // created, or add it to the actual chart object if it is.
+            config = createdCharts[chart.chartId] || chartsData[chart.chartId];
+            config.timePeriods = timePeriod.code;
+            config.startDate = timePeriod.startDate;
+            config.endDate = timePeriod.endDate;
+        });
     }
 
     function render(charts, renderTo) {
@@ -567,6 +575,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
 
     chartComponents.load = load;
     chartComponents.render = render;
+    chartComponents.setTimePeriod = setTimePeriod;
 
     return chartComponents;
 });

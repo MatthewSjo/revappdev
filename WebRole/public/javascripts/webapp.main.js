@@ -298,11 +298,6 @@ Zepto(function ($) {
             // Update the page title.
             $(el.analysisTitle).html(analysisPageTitle);
 
-            // Add the currently requested time period to each of the chart config objects.
-            $.each(chartsToRender, function (index, chart) {
-                chart.timePeriodId = analysisDataObject.timePeriodId;
-            });
-
             // Loop around the provided time periods for the portfolio,
             // and get hold of the start and end date for that particular
             // period, breaking the loop when found.
@@ -310,6 +305,10 @@ Zepto(function ($) {
                 var startDate, endDate;
 
                 if (period.code === analysisDataObject.timePeriodId) {
+
+                    // Add the currently requested time period to each of the chart config objects.
+                    theApp.chartComponents.setTimePeriod(chartsToRender, period);
+
                     startDate = Date.parse(period.startDate);
                     endDate = Date.parse(period.endDate);
 
@@ -330,6 +329,7 @@ Zepto(function ($) {
 
             theApp.saveLastAnalysisObjectUsed();
             theApp.synchronizeFavouriteButton();
+
             theApp.chartComponents.render(chartsToRender, '#analysis_partial');
         }
 

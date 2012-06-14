@@ -204,6 +204,7 @@ exports.server = {
     hello: 'hello',
 
     // ------------------------------------------------------------------ | A |
+    
     aboutPage: {
         aboutText                   : 'About'
     },
