@@ -585,8 +585,8 @@ Zepto(function ($) {
         buttonPrefix: 'toolbar_btn',
         visible: true,
         items: [
-            { id: 'favourite', title: lang.tabbar.favourites, class: 'favourite' }
-        // { id: 'favourite2', title: lang.tabbar.favourites, class: 'favourite' }
+            { id: 'favourite', title: lang.tabbar.favourites, btnClass: 'favourite' }
+        // { id: 'favourite2', title: lang.tabbar.favourites, btnClass: 'favourite' }
         ]
     };
 
@@ -626,14 +626,14 @@ Zepto(function ($) {
         buttonPrefix: 'tabbar_btn',
         visible: false,
         items: [
-        // { id: 'home', title: lang.tabbar.home, class: 'home' },
-            {id: 'favourites', title: lang.tabbar.favourites, class: 'favourites' },
-            { id: 'portfolios', title: lang.tabbar.portfolios, class: 'portfolios' },
-            { id: 'analysis', title: lang.tabbar.analysis, class: 'analysis' },
-            { id: 'timePeriods', title: lang.tabbar.timePeriods, class: 'timeperiods' },
-        // { id: 'infos', title: lang.tabbar.infos, class: 'infos' },
-        // { id: 'more', title: lang.tabbar.more, class: 'more' }
-            {id: 'settings', title: lang.tabbar.settings, class: 'settings', highlight: true }
+        // { id: 'home', title: lang.tabbar.home, btnClass: 'home' },
+            {id: 'favourites', title: lang.tabbar.favourites, btnClass: 'favourites' },
+            { id: 'portfolios', title: lang.tabbar.portfolios, btnClass: 'portfolios' },
+            { id: 'analysis', title: lang.tabbar.analysis, btnClass: 'analysis' },
+            { id: 'timePeriods', title: lang.tabbar.timePeriods, btnClass: 'timeperiods' },
+        // { id: 'infos', title: lang.tabbar.infos, btnClass: 'infos' },
+        // { id: 'more', title: lang.tabbar.more, btnClass: 'more' }
+            {id: 'settings', title: lang.tabbar.settings, btnClass: 'settings', highlight: true }
         ]
     };
 
@@ -1083,3 +1083,4 @@ Zepto(function ($) {
     
     
     // ------------------------------------------------------ */
+

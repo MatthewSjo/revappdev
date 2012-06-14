@@ -51,14 +51,14 @@ WebAppLoader.addModule({ name: 'toolbar', plugins: ['helper'], sharedModules: ['
                 // linkId: buttonPrefix + id,
                 // badgeId: badgePrefix + id,
                 title: val.title,
-                class: val.class,
+                btnClass: val.btnClass,
                 eventHandler: 'on' + id + 'Tap',
                 isDisabled: false,
                 isSelected: false,
                 select: function () {
                     var button     = $('#' + buttons[i].buttonId),
-                        classOn    = buttons[i].class + '_on',
-                        classOff   = buttons[i].class + '_off';
+                        classOn    = buttons[i].btnClass + '_on',
+                        classOff   = buttons[i].btnClass + '_off';
                     
                     button.removeClass(classOff);
                     button.addClass(classOn);
@@ -66,8 +66,8 @@ WebAppLoader.addModule({ name: 'toolbar', plugins: ['helper'], sharedModules: ['
                 },
                 deselect: function () {
                     var button     = $('#' + buttons[i].buttonId),
-                        classOn    = buttons[i].class + '_on',
-                        classOff   = buttons[i].class + '_off';
+                        classOn    = buttons[i].btnClass + '_on',
+                        classOff   = buttons[i].btnClass + '_off';
                     
                     button.removeClass(classOn);
                     button.addClass(classOff);
@@ -97,15 +97,15 @@ WebAppLoader.addModule({ name: 'toolbar', plugins: ['helper'], sharedModules: ['
 
             $(toolbarId).append(
                 $('<div>')
-                    .addClass('toolbar_button ' + buttons[i].class + '_off')
+                    .addClass('toolbar_button ' + buttons[i].btnClass + '_off')
                     .attr({ 
                         id: buttons[i].buttonId,
                         style: 'right: ' + (buttonsCount * buttonWidth + buttonPadding) + 'px;'
                     })
                     .on('click', function(event){
                         var isSelected = buttons[i].isSelected,
-                            classOn    = buttons[i].class + '_on',
-                            classOff   = buttons[i].class + '_off';
+                            classOn    = buttons[i].btnClass + '_on',
+                            classOff   = buttons[i].btnClass + '_off';
                         
                         output.log('toolbar button tapped!');
                         

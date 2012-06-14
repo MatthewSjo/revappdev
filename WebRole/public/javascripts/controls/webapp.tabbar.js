@@ -56,7 +56,7 @@ WebAppLoader.addModule({ name: 'tabbar', plugins: ['helper'], hasEvents: true },
                 linkId: buttonPrefix + id,
                 badgeId: badgePrefix + id,
                 title: val.title,
-                class: val.class,
+                btnClass: val.btnClass,
                 highlight: val.highlight || false,
                 eventHandler: 'on' + id + 'Tap',
                 isHighlighted: false,
@@ -109,11 +109,11 @@ WebAppLoader.addModule({ name: 'tabbar', plugins: ['helper'], hasEvents: true },
                         $('<a>').attr('id', buttons[i].linkId).append(
                             $('<small>').attr({
                                 id: buttons[i].badgeId,
-                                class: 'badge right',
+                                'class': 'badge right',
                                 style: 'display: none;'
                             })).append(
                             $('<strong>').append(buttons[i].title)).append(
-                            $('<div>').attr('class', buttons[i].class)
+                            $('<div>').attr('class', buttons[i].btnClass)
                         )));
         });
 

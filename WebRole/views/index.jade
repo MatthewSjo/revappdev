@@ -66,7 +66,7 @@
 		#eula(data-pageEvents="both", class='pageWithEvents')
 			.toolbar
 				h1 #{lang.eulaPage.eulaText}
-				a.back(href='#') #{lang.shared.backText}
+				a.back(href='#settings') #{lang.shared.backText}
 			#wrapper
 				#scroller
 					#eula_partial
@@ -93,13 +93,13 @@
 
 					// h2 TODO: Memory Statistics / Consumed
 					ul.rounded
-						li.arrow
+						li.forward
 							a#reloadAppButton(href="#") #{lang.settingsPages.reloadText}
 						li.arrow
 							a(href="#reset") #{lang.settingsPages.resetText}
 					ul.rounded
 						li.arrow
-							a(href="#about") #{lang.settingsPages.aboutText}
+							a(href="#aboutUs") #{lang.settingsPages.aboutText}
 						li.arrow
 							a(href="#eula") #{lang.settingsPages.licenseText}
 					// a#reloadApp.whiteButton(href='#') #{lang.settingsPages.reloadText}
@@ -109,20 +109,20 @@
 		#reset
 			.toolbar
 				h1 #{lang.settingsPages.themesText}
-				a.back(href='#') #{lang.shared.backText}
+				a.back(href='#settings') #{lang.shared.backText}
 			ul.rounded
 				li#resetCurrentSettingsButton.centeredText #{lang.settingsPages.resetCurrentSettingsText}
 				li#resetAllSettingsButton.centeredText #{lang.settingsPages.resetAllSettingsText}
 		#themes
 			.toolbar
 				h1 #{lang.settingsPages.themesText}
-				a.back(href='#') #{lang.shared.backText}
+				a.back(href='#settings') #{lang.shared.backText}
 			ul.rounded
 
 		#analysisPagesSettings(data-pageEvents="both")
 			.toolbar
 				h1 #{lang.settingsPages.analysisPagesText}
-				a.back(href='#') #{lang.shared.backText}
+				a.back(href='#settings') #{lang.shared.backText}
 			#wrapper
 				#scroller
 					h2 #{lang.settingsPages.userPagesText}
@@ -133,7 +133,7 @@
 		#chartSettings(data-pageEvents="both")
 			.toolbar
 				h1 #{lang.settingsPages.analysisPageText}
-				a.back(href='#') #{lang.shared.backText}
+				a.back(href='#settings') #{lang.shared.backText}
 			#wrapper
 				#scroller
 					h2 #{lang.settingsPages.userPageText}
@@ -148,7 +148,7 @@
 		#languageSettings(data-pageEvents="both")
 			.toolbar
 				h1 #{lang.languageSettingsPage.settingsText}
-				a.back(href='#') #{lang.shared.backText}
+				a.back(href='#settings') #{lang.shared.backText}
 			#wrapper
 				#scroller
 					ul#listLanguagesPages.rounded
@@ -161,10 +161,10 @@
 					#errorMessage
 						p#errorMessageText
 
-		#about(data-pageEvents="both", class='pageWithEvents')
+		#aboutUs(data-pageEvents="both", class='pageWithEvents')
 			.toolbar
 				h1 #{lang.aboutPage.aboutText}
-				a.back(href='#') #{lang.shared.backText}
+				a.back(href='#settings') #{lang.shared.backText}
 			#wrapper
 				#scroller
 					#about_partial
