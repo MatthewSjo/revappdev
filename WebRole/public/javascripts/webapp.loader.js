@@ -11,7 +11,7 @@ var WebAppLoader = {};
         sharingOptions  = { sharingDenied: 0, sharingAllowed: 1 },
 
     // Loader settings:
-        disableLog      = false,
+        disableLog      = true,
         suppressErrors  = false,
         sharingSetting  = sharingOptions.sharingAllowed;
 
@@ -195,13 +195,10 @@ var WebAppLoader = {};
             switch(moduleType) {
                 case 'plugin':
                     return m.name === moduleName && m.isPlugin;
-                    break;
                 case 'shared':
                     return m.name === moduleName && m.isShared;
-                    break;
                 case 'extension':
                     return m.name === moduleName && m.isExtension;
-                    break;
                 default:
                     return m.name === moduleName;
             }   
@@ -436,7 +433,7 @@ var WebAppLoader = {};
     function extendAddModule(config, moduleToAdd) {
         var moduleToExtend = moduleToAdd;
 
-        for(ext in extensions) {
+        for(var ext in extensions) {
             if (extensions[ext].extendAddModule) {
                 extensions[ext].extendAddModule(config, moduleToAdd);
             }
@@ -447,7 +444,7 @@ var WebAppLoader = {};
     function extendLoadModule(moduleToLoad) {
         var moduleToExtend = moduleToLoad;
 
-        for(ext in extensions) {
+        for(var ext in extensions) {
             if (extensions[ext].extendLoadModule) {
                 extensions[ext].extendLoadModule(moduleToLoad);
             }

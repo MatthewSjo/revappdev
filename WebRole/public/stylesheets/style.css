@@ -283,34 +283,6 @@ html, body
     text-align: center !important;	
 }
 
-#btn_asset
-{
-    background-image: url('../images/btn_asset.png');
-}
-#btn_attribution
-{
-    background-image: url('../images/btn_attribution.png');
-}
-#btn_balanced
-{
-    background-image: url('../images/btn_balanced.png');
-}
-#btn_contribution
-{
-    background-image: url('../images/btn_contribution.png');
-}
-#btn_fixed-income
-{
-    background-image: url('../images/btn_fixed-income.png');
-}
-#btn_performance
-{
-    background-image: url('../images/btn_performance.png');
-}
-#btn_risk
-{
-    background-image: url('../images/btn_risk.png');
-}
 .dark-box
 {
     border-radius: 10px;

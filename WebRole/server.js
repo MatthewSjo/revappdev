@@ -56,6 +56,7 @@ app.configure(function () {
 // Environment Configurations
 app.configure('development', function () {
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+    app.set("view options", { layout: "layout_dev.jade" });
 });
 
 app.configure('production', function () {

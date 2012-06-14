@@ -11,25 +11,25 @@ var jQT = new $.jQTouch({
     hoverDelay              : 10,
     pressDelay              : 10,
     preloadImages           : [
-        'stylesheets/sw-slot-border.png',
-        'stylesheets/sw-alpha.png',
-        'stylesheets/sw-button-cancel.png',
-        'stylesheets/sw-button-done.png',
-        'stylesheets/sw-header.png'
+        'images/sw-slot-border.png',
+        'images/sw-alpha.png',
+        'images/sw-button-cancel.png',
+        'images/sw-button-done.png',
+        'images/sw-header.png'
     ]
 });
 
 // Main functions:
 Zepto(function ($) {
 
-    var theApp = {},
-        loader = WebAppLoader, // Alias
-        output = loader.getConsole(),
+    var theApp       = {},
+        loader       = WebAppLoader, // Alias
+        output       = loader.getConsole(),
         eventManager = loader.getEventManager(),
-        helper = loader.loadModule('helper'),
-        siteUrls = loader.getSharedModule('settings').siteUrls,
-        el = loader.getSharedModule('pageElements'),
-        lang = loader.getSharedModule('localizationManager').getLanguage() || {};
+        helper       = loader.loadModule('helper'),
+        siteUrls     = loader.getSharedModule('settings').siteUrls,
+        el           = loader.getSharedModule('pageElements'),
+        lang         = loader.getSharedModule('localizationManager').getLanguage() || {};
 
     // Test log method.
     output.log('Hello from Dan & Asa!');
@@ -50,7 +50,7 @@ Zepto(function ($) {
         timeStamp: ''
     };
 
-    /* ----------------------- ON/OFF ----------------------- /
+        /* ----------------------- ON/OFF ----------------------- /
     'Switch comments off changing /* in //* and viceversa'
     // ------------------------------------------------------ */
 
@@ -100,7 +100,7 @@ Zepto(function ($) {
     };
 
     theApp.setLastAnalysisObjectUsed = function (obj) {
-        for (property in obj) {
+        for (var property in obj) {
             if (theApp.lastAnalysisObjectUsed.hasOwnProperty(property)) {
                 theApp.lastAnalysisObjectUsed[property] = obj[property];
             }
@@ -113,7 +113,7 @@ Zepto(function ($) {
         if (language && currentLanguage && (language.toLowerCase() !== currentLanguage.toLowerCase())) {
             theApp.nav.reloadApp('?lang=' + language);
         }
-    }
+    };
 
     // ------------------------------------------
     // THE MAIN ENTRY POINT (Before Login)
@@ -164,7 +164,7 @@ Zepto(function ($) {
         } else {
             theApp.goToLoginPage();
         }
-    }
+    };
 
     theApp.doLogin = function (username, password) {
         theApp.lastUsernameUsed = username.toLowerCase();
@@ -182,7 +182,7 @@ Zepto(function ($) {
         setTimeout(function () {
             theApp.nav.goToPage($(el.loginPage), 'dissolve');
         }, 1000);
-    }
+    };
 
     // ------------------------------------------
     // INIT APP (After Login)
@@ -271,7 +271,6 @@ Zepto(function ($) {
                 portfolioId = portfolio.code,
                 portfolioName = portfolio.name,
                 analysisPageCharts = null,
-                portfolioName = portfolio.name,
                 analysisPageTitle = '',
                 i;
 
@@ -378,7 +377,7 @@ Zepto(function ($) {
                     name: record.name,
                     id: record.id,
                     userDefined: record.userDefined
-                }
+                };
             });
 
         theApp.analysisSettingsPage.create(analysisPages);
@@ -404,7 +403,7 @@ Zepto(function ($) {
             theApp.updateAnalysisSlot(analysisPagesData);
         }
         // alert(userPageId);
-    }
+    };
 
     theApp.showChartSettingsPage = function (analysisId) {
         var analysisPagesData = {},
@@ -412,7 +411,9 @@ Zepto(function ($) {
             analysisPage = {},
             charts = theApp.showChartSettingsPage.charts;
 
-        if (!analysisId) return; // TODO: Add a message error.
+        if (!analysisId) {
+            return; // TODO: Add a message error.
+        }
 
         analysisPagesData = theApp.analysisManager.getData('analysisPages');
         chartComponentsData = theApp.chartComponents.getData('charts');
@@ -424,7 +425,7 @@ Zepto(function ($) {
                     name: record.name,
                     id: record.id,
                     charts: record.charts
-                }
+                };
             })[0] || null;
 
         if (!analysisPage) {
@@ -729,7 +730,7 @@ Zepto(function ($) {
     });
 
     theApp.auth.on('onLoginFailed', function (message) {
-        $(el.loginErrorText).html(message)
+        $(el.loginErrorText).html(message);
         output.log('onLoginFailed response: ', message);
     });
 
@@ -855,7 +856,7 @@ Zepto(function ($) {
                 return {
                     name: record.name,
                     code: record.id
-                }
+                };
             });
 
         theApp.repositories.analysisSlot.setData(analysisSlotItems);
@@ -878,7 +879,7 @@ Zepto(function ($) {
                 return {
                     name: record.title,
                     code: record.favouriteId
-                }
+                };
             });
 
         theApp.repositories.favouritesSlot.setData(favouritesSlotItems);
@@ -962,7 +963,7 @@ Zepto(function ($) {
 
     theApp.setLastFavouriteSelected = function (favouriteId) {
         theApp.lastFavouriteSelected = favouriteId;
-    }
+    };
 
     // ------------------------------------------
     // THEMES MANAGER
@@ -999,58 +1000,6 @@ Zepto(function ($) {
     });
 
     // ------------------------------------------
-    // TEST PAGE
-    // ------------------------------------------
-
-    theApp.localStorage = loader.loadModule('localStorageManager');
-
-    $('#btnTestSaveToLS').on('click', function () {
-        var analysisPages = {
-            items: [{
-                name: 'Contribution',
-                userDefined: false,
-                charts: [{
-                    name: 'barChart1'
-                }, {
-                    name: 'barChart2'
-                }]
-            }, {
-                name: 'My Analysis',
-                userDefined: true,
-                charts: [{
-                    name: 'lineChart1'
-                }, {
-                    name: 'lineChart2'
-                }]
-            }]
-        };
-
-        theApp.localStorage.save('analysisPages', analysisPages);
-        theApp.localStorage.save('number', 75);
-        theApp.localStorage.save('boolean', false);
-        theApp.localStorage.save('date', new Date);
-    });
-
-    $('#btnLoadFromLS').on('click', function () {
-        output.log('Loaded:', theApp.localStorage.load('analysisPages'));
-        output.log('Loaded:', theApp.localStorage.load('number'));
-        output.log('Loaded:', theApp.localStorage.load('boolean'));
-        output.log('Loaded:', theApp.localStorage.load('date'));
-    });
-
-    $('#btnItemsCountLS').on('click', function () {
-        theApp.localStorage.count();
-    });
-
-    $('#btnTestClearAllLS').on('click', function () {
-        // theApp.localStorage.clearAll();
-        theApp.localStorage.remove('analysisPages');
-        theApp.localStorage.remove('number');
-        theApp.localStorage.remove('boolean');
-        theApp.localStorage.remove('date');
-    });
-
-    // ------------------------------------------
     // TEARDOWN
     // ------------------------------------------
 
@@ -1060,27 +1009,6 @@ Zepto(function ($) {
     loader.unloadModule('tabbar');
     loader.unloadModule('spinningWheel');
 
-    //    function selectTabbarItem(item) {
-    //        var tabbarItem = $('#' + item + '_tabbar');
-    //        $("#tabbar a").addClass("current").not(tabbarItem).removeClass("current");
-    //        $("#tabbar div").addClass("current").not(tabbarItem).removeClass("current");
-    //    }
-
     theApp.startHere();
 });
-
-    /* ----------------------- ON/OFF ----------------------- /
-       
-       
-         // Time Stamp getter/setter
-        _timeStamp: '',
-        get timeStamp() {
-            return this._timeStamp;
-        },
-        set timeStamp(value) {
-            this._timeStamp = value;
-        }    
-    
-    
-    // ------------------------------------------------------ */
 
