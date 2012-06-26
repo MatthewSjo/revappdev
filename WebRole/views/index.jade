@@ -172,8 +172,11 @@
 							img#aboutLogo(src='images/icon.png' )
 							h2 #{lang.aboutPage.mobileText} 
 							p &copy; #{new Date().getFullYear()} #{lang.shared.statProText} | #{lang.shared.versionText} #{version}
-							p #{lang.aboutPage.poweredText} <br /> #{lang.aboutPage.openSourceText}
-							p.last
+							p
+								!{lang.aboutPage.githubText} <br />
+								#{lang.aboutPage.poweredText} <br />								
+								#{lang.aboutPage.openSourceText} 								
+							p.links
 								a(href='http://nodejs.org/') Node
 								a(href='http://expressjs.com/') Express
 								a(href='http://zeptojs.com/') Zepto
