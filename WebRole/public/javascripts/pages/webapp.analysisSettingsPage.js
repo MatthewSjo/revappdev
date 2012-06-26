@@ -59,7 +59,6 @@ WebAppLoader.addModule({ name: 'analysisSettingsPage', plugins: ['helper'],
                     $('<li>').attr('class', '').append(
                         $('<a>').attr({ 'href': '#', 'data-link' : pageId })
                         .html(pageName)
-                        // .on('click', onAnalysisPageClick)
                     )
                 );  
             }
@@ -68,15 +67,13 @@ WebAppLoader.addModule({ name: 'analysisSettingsPage', plugins: ['helper'],
         $(appendTo).append(
             $('<li>').attr('class', 'arrow').append(
                 $('<a>').attr({ 'href': '#', 'data-link' : pageId })
-                .html(lang.chartTexts.addNewPage) // TODO: Localize string 'Add New Page...'
+                .html(lang.chartTexts.addNewPage)
                 .on('click', onNewAnalysisPageClick)
             )
         );
     
         eventManager.raiseEvent('onPageLoaded');
     }
-
-    // $(el.addNewAnalysisPage).on('click', onNewAnalysisPageClick);
 
     analysisSettingsPage.create = create;
 

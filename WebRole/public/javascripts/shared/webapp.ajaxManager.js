@@ -24,7 +24,7 @@ WebAppLoader.addModule({ name: 'ajaxManager', plugins: ['helper'], hasEvents: tr
     function post(urlValue, dataValue, callbackValue, typeValue) {
         var url      = '',
             data     = {},
-            type     = typeValue, // || 'json',
+            type     = typeValue,
             callback = callbackValue || null;
 
         url = urlValue;

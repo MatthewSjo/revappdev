@@ -3,17 +3,17 @@
 // ------------------------------------------
 
 WebAppLoader.addModule({ name: 'chartDefaults', isShared: true }, function () {
-    var chartDefaults = {},
+    var chartDefaults  = {},
         commonSettings = {},
-        barChart = {},
-        bubbleChart = {},
-        columnChart = {},
-        gaugeChart = {},
-        gridChart = {},
-        lineChart = {},
-        pieChart = {},
-        treeMapChart = {},
-        output = this.getConsole();
+        barChart       = {},
+        bubbleChart    = {},
+        columnChart    = {},
+        gaugeChart     = {},
+        gridChart      = {},
+        lineChart      = {},
+        pieChart       = {},
+        treeMapChart   = {},
+        output         = this.getConsole();
 
     // COMMON CHART SETTINGS
     commonSettings = {

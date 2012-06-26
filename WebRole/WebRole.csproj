@@ -376,13 +376,13 @@
     <Content Include="public\javascripts\shared\webapp.chartDefaults.js" />
     <Content Include="public\javascripts\shared\webapp.localizationManager.js" />
     <Content Include="public\javascripts\shared\webapp.pageElements.js" />
-    <Content Include="public\javascripts\modules\webapp.test.js" />
     <Content Include="public\javascripts\controls\webapp.scroll.js" />
     <Content Include="public\javascripts\shared\webapp.settings.js" />
     <Content Include="public\javascripts\controls\webapp.spinningWheel.js" />
     <Content Include="public\javascripts\controls\webapp.tabbar.js" />
     <Content Include="public\javascripts\webapp.mashed.js" />
     <Content Include="public\javascripts\webapp.minified.js" />
+    <Content Include="public\src\comma.js" />
     <Content Include="public\src\date.js" />
     <Content Include="public\src\jlinq.js" />
     <Content Include="public\src\jqt.themeswitcher.js" />
@@ -407,9 +407,19 @@
     <Content Include="public\stylesheets\itabbar.css" />
     <Content Include="public\stylesheets\spinningwheel.css" />
     <Content Include="public\stylesheets\style.css" />
+    <Content Include="public\stylesheets\webapp.mashed.css" />
+    <Content Include="public\stylesheets\webapp.minified.css" />
     <Content Include="public\test.htm" />
-    <Content Include="public\themes\css\login.css" />
+    <Content Include="public\themes\css\apple.min.css">
+      <DependentUpon>apple.css</DependentUpon>
+    </Content>
+    <Content Include="public\themes\css\jqtouch.min.css">
+      <DependentUpon>jqtouch.css</DependentUpon>
+    </Content>
     <Content Include="public\themes\css\mobile-dark.css" />
+    <Content Include="public\themes\css\mobile-dark.min.css">
+      <DependentUpon>mobile-dark.css</DependentUpon>
+    </Content>
     <Content Include="public\themes\css\mobile.css" />
     <Content Include="routes\web-methods.js" />
     <Content Include="web-api.js" />
@@ -882,12 +892,6 @@
     </Content>
     <Content Include="public\themes\scss\config.rb" />
     <Content Include="public\themes\scss\mobile-dark.scss">
-      <Compile>False</Compile>
-      <Minify>True</Minify>
-      <CompileStyle>Nested</CompileStyle>
-      <DebugInfo>False</DebugInfo>
-    </Content>
-    <Content Include="public\themes\scss\login.scss">
       <Compile>False</Compile>
       <Minify>True</Minify>
       <CompileStyle>Nested</CompileStyle>

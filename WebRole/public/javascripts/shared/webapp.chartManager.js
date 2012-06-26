@@ -6,18 +6,18 @@ WebAppLoader.addModule({ name: 'chartManager',
     sharedModules: ['settings', 'chartDefaults', 'colorManager', 'localizationManager', 'ajaxManager'],
     isShared: true, hasEvents: true
 }, function () {
-    var chartBase = {},
-        charts = [],
-        eventManager = this.getEventManager(),
+    var chartBase     = {},
+        charts        = [],
+        eventManager  = this.getEventManager(),
         chartDefaults = this.getSharedModule('chartDefaults'),
-        siteUrls = this.getSharedModule('settings').siteUrls,
-        colorManager = this.getSharedModule('colorManager'),
-        lang = this.getSharedModule('localizationManager').getLanguage() || {},
-        ajaxManager = this.getSharedModule('ajaxManager'),
-        output = this.getConsole(),
-        chartCount = 0,
-        chartTotal = 0,
-        isLoading = false;
+        siteUrls      = this.getSharedModule('settings').siteUrls,
+        colorManager  = this.getSharedModule('colorManager'),
+        lang          = this.getSharedModule('localizationManager').getLanguage() || {},
+        ajaxManager   = this.getSharedModule('ajaxManager'),
+        output        = this.getConsole(),
+        chartCount    = 0,
+        chartTotal    = 0,
+        isLoading     = false;
 
     function resetCounter() {
         chartCount = 0;

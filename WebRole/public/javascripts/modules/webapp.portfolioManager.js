@@ -5,15 +5,15 @@
 WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: ['settings', 'ajaxManager', 'localizationManager'],
     dataObjects: ['portfolio'], hasEvents: true
 }, function () {
-    var portfolioManager = {},
-        output = this.getConsole(),
-        eventManager = this.getEventManager(),
-        settings = this.getSharedModule('settings'),
-        portfolioDataObj = this.getDataObject('portfolio'),
-        lang = this.getSharedModule('localizationManager').getLanguage() || {},
-        ajaxManager = this.getSharedModule('ajaxManager'),
+    var portfolioManager    = {},
+        output              = this.getConsole(),
+        eventManager        = this.getEventManager(),
+        settings            = this.getSharedModule('settings'),
+        portfolioDataObj    = this.getDataObject('portfolio'),
+        lang                = this.getSharedModule('localizationManager').getLanguage() || {},
+        ajaxManager         = this.getSharedModule('ajaxManager'),
         lastPortfolioIdUsed = '',
-        lastPortfolioUsed = {};
+        lastPortfolioUsed   = {};
 
     portfolioDataObj.define({
         code: '',
@@ -52,7 +52,6 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
             };
 
         // Load default portfolio.
-
         function getPortfolioCode() {
             // TODO: Add code here to select the right portfolio code from:
             // - First portfolio

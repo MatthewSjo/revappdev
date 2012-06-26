@@ -20,8 +20,6 @@ WebAppLoader.addModule({ name: 'tabbar', plugins: ['helper'], hasEvents: true },
     }
 
     function show() {
-        // $(tabbarId).show();
-        // $(tabbarId).css({ transition: 'visibility 1s ease-in-out' }); //show();
         $(tabbarId).css({ opacity: 1 });
         visible = true;
         output.log('tabbar.show()');
@@ -125,8 +123,6 @@ WebAppLoader.addModule({ name: 'tabbar', plugins: ['helper'], hasEvents: true },
                         buttons[i].toggleHighlighted();
 
                         eventManager.raiseEvent(buttons[i].eventHandler, buttons[i]);
-                            // ? !buttons[i].isHighlighted 
-                            // : false);
                     } else {
                         output.log(buttons[i].title + ' is disabled');
                     }
@@ -135,10 +131,8 @@ WebAppLoader.addModule({ name: 'tabbar', plugins: ['helper'], hasEvents: true },
         });
 
         if (!visible) {
-            // $(tabbarId).hide();
             $(tabbarId).css({ opacity: 0 });
         } else {
-            // $(tabbarId).show();
             $(tabbarId).css({ opacity: 1 });
         }
     }

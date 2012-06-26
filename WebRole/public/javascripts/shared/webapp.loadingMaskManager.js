@@ -38,26 +38,6 @@ WebAppLoader.addModule({ name: 'loadingMaskManager', sharedModules: ['pageElemen
         hide('analysis');
     });
 
-    /* ----------------------- ON/OFF ----------------------- /
-
-    function showAnalysisMask(fade) {
-
-    }
-
-    function hideAnalysisMask(fade) {
-    
-    }
-
-    function showAjaxMask() {
-
-    }
-
-    function hideAjaxMask() {
-
-    }
-
-    // ------------------------------------------------------ */
-    
     function show(type /* TODO: fade */) {
         var mask = masks[type || 'default'] || null;
 

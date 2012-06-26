@@ -14,18 +14,6 @@ WebAppLoader.addExtension({ name: 'dataObject', plugins: ['helper', 'storage'], 
     var dataObject = (function() {
         var dataObject  = {};
 
-        // NOTA BENE:  
-        // dataObject.data = {}; // This is a shared property.
-        // this.data = {}; // If declared inside a function it's a private property.
-
-        // TODO: Try to define methods using enumerable option set to false in order 
-        // to add properties to the object directly instead to store them in data[..].
-
-//        dataObject.name = 'dataObject@' + Date.now();
-//        dataObject.sayHello = function () {
-//            console.log('HELLO!', Object.keys(this));
-//        };
-        
         // Public
         function define(properties) {
             this.data = {};
@@ -92,22 +80,18 @@ WebAppLoader.addExtension({ name: 'dataObject', plugins: ['helper', 'storage'], 
         moduleToAdd.dataObjects = dataObjects;
     }
     
-    // TODO: Add properties to store lowercase and uppuercase values.
     // Invoked when a module is loaded.
     function extendLoadModule(moduleToLoad) {
         if (moduleToLoad.dataObjects && moduleToLoad.dataObjects.length > 0) {
             moduleToLoad.bin.getData = function (dataObjectName) {
-                // return this[dataObjectName].getData();
                 return dataObjects[dataObjectName].getData();
             };
             
             moduleToLoad.bin.saveData = function (dataObjectName, username) {
-                // return this[dataObjectName].saveData(username);
                 return dataObjects[dataObjectName].saveData(username);
             };
             
             moduleToLoad.bin.loadData = function (dataObjectName, username) {
-                // return this[dataObjectName].loadData(username);
                 return dataObjects[dataObjectName].loadData(username);
             };
 
@@ -116,9 +100,6 @@ WebAppLoader.addExtension({ name: 'dataObject', plugins: ['helper', 'storage'], 
             };
         }
     }
-
-    // Private functions.
-    // Add code here.
 
     // Module methods:
     module.getDataObject = function (objectlName) {
@@ -140,19 +121,7 @@ WebAppLoader.addExtension({ name: 'dataObject', plugins: ['helper', 'storage'], 
         }
 
         return newDataObject;
-
-        /*
-        return (isDataObjectAvailable)
-            ? Object.create(dataObject)
-            : null;
-        */
     };
-
-    // Shared module loader methods:
-    // Add code here
-
-    // Public WebAppLoader methods;
-    // Add code here
 
     extension.extendAddModule = extendAddModule;
     extension.extendLoadModule = extendLoadModule;

@@ -3,7 +3,7 @@
 // ---------------------    ---------------------
 
 WebAppLoader.addModule({ name: 'storage', plugins: ['helper'], hasEvents: true, isPlugin: true }, function () {
-    var storage  = {},
+    var storage             = {},
         output              = this.getConsole(),
         eventManager        = this.getEventManager(),
         helper              = this.getPlugin('helper'),
@@ -63,7 +63,7 @@ WebAppLoader.addModule({ name: 'storage', plugins: ['helper'], hasEvents: true, 
     // Public
     function save(itemName, itemValue, namespace) {
         var name = getNamespacedName(itemName, namespace),
-            value = ''; //stringifiedValue = '';
+            value = '';
 
         if (name && helper.hasValue(itemValue)) {
             value = (typeof itemValue === 'object')

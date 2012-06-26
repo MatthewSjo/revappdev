@@ -22,6 +22,8 @@ WebAppLoader.addModule({ name: 'scroll' }, function () {
                 e.preventDefault();
             }
         };
+
+        // Remove comments from these options if you want to activate the snap.
         // options.snap = 'hr';
         // options.momentum = true;
 

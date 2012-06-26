@@ -33,7 +33,6 @@ WebAppLoader.addModule({ name: 'chartSettingsPage',
         // multiple selection based on array.
 
         // Reset the select box.
-        // $(el.chartsSelectbox + ' > option').removeAttr('selected');
         $(el.chartsSelectbox).children('option:selected').removeAttr('selected');
         $(el.chartsSelectbox).attr('selectedIndex', '-1');
 
@@ -58,7 +57,6 @@ WebAppLoader.addModule({ name: 'chartSettingsPage',
         settings.name = $(el.analysisPageNameTextbox).val();
         settings.id = analysisId;
 
-        // $(el.chartsSelectbox + ' > option').each(function (chart){
         $(el.chartsSelectbox).children('option:selected').each(function (chart) {
             settings.charts.push({
                 chartId: $(this).val(),

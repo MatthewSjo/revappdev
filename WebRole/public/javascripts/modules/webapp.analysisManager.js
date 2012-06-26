@@ -13,8 +13,6 @@ WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'],
         charts                  = [],
         analysisPages           = {};
 
-    // TODO: Add a method called changeChartPosition or changeChartOrder...
-
     analysisPagesDataObj.define({
         items: [{
             name        : 'Performance',
@@ -164,12 +162,9 @@ WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'],
             order       : 100,
             userDefined : true,
             charts      : [{
-                    chartId: 'fi_contribution_group', //'performance_bar',
+                    chartId: 'fi_contribution_group',
                     order   : 1
-                }/*,{
-                    chartId: 'risk_bar',
-                    order   : 2
-                }*/]             
+                }]             
         }]
     });
 
@@ -179,7 +174,6 @@ WebAppLoader.addModule({ name: 'analysisManager', plugins: ['helper'],
     }
 
     function analysisUpdated() {
-        // eventManager.raiseEvent('onUpdated', analysisPages);
         eventManager.raiseEvent('onUpdated', analysisPagesDataObj.getData());
     }
 

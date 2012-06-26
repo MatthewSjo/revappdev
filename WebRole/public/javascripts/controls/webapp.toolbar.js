@@ -48,8 +48,6 @@ WebAppLoader.addModule({ name: 'toolbar', plugins: ['helper'], sharedModules: ['
             buttons[i] = {
                 id: val.id,
                 buttonId: buttonPrefix + id,
-                // linkId: buttonPrefix + id,
-                // badgeId: badgePrefix + id,
                 title: val.title,
                 btnClass: val.btnClass,
                 eventHandler: 'on' + id + 'Tap',
@@ -73,26 +71,6 @@ WebAppLoader.addModule({ name: 'toolbar', plugins: ['helper'], sharedModules: ['
                     button.addClass(classOff);
                     this.isSelected = false;
                 }
-//                setDisabled: function (disabled) {
-//                    var opacity = (disabled) ? 0.20 : 1,
-//                            badgeBackColor = (disabled) ? '#333' : '#f00';
-
-//                    this.isDisabled = disabled;
-//                    $('#' + this.linkId).css({ opacity: opacity });
-//                    $('#' + this.badgeId).css({ backgroundColor: badgeBackColor });
-
-//                },
-//                setBadgeText: function (text) {
-//                    var badge = $('#' + this.badgeId),
-//                            displayBadge = true;
-
-//                    if (text) {
-//                        badge.html(text);
-//                        badge.show();
-//                    } else {
-//                        badge.hide();
-//                    }
-//                }
             };
 
             $(toolbarId).append(

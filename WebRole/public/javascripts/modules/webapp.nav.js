@@ -3,7 +3,7 @@
 // ------------------------------------------
 
 WebAppLoader.addModule({ name: 'nav', hasEvents: true }, function () {
-    var nav              = {},
+    var nav             = {},
         eventManager    = this.getEventManager();
 
     // Navigate to an external page.

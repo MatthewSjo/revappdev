@@ -4,10 +4,10 @@
 
 WebAppLoader.addModule({ name: 'localStorageManager', sharedModules: [], plugins: ['helper'], hasEvents: true, isShared: true }, function () {
     var localStorageManager  = {},
-        output              = this.getConsole(),
-        eventManager        = this.getEventManager(),
-        helper              = this.getPlugin('helper'),
-        revolutionNamespace = 'Revolution';
+        output               = this.getConsole(),
+        eventManager         = this.getEventManager(),
+        helper               = this.getPlugin('helper'),
+        revolutionNamespace  = 'Revolution';
 
     // Private
     function getNamespacedName(itemName, namespace) {

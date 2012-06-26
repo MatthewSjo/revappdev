@@ -11,26 +11,9 @@ WebAppLoader.addModule({ name: 'favouritesManager', plugins: ['helper'],
         helper               = this.getPlugin('helper'),
         favouritesDataObj    = this.getDataObject('favourites'),
         favourites           = {};
-/*
-    theApp.lastAnalysisObjectUsed = {
-        portfolioId: '',
-        portfolioName: '',
-        analysisId: 'performances',
-        analysisName: 'Performances',
-        timePeriodId: 'Earliest',
-        timePeriodName: 'Earliest',
-        chartId : 'performance_bar',
-        timeStamp: ''
-    };
-*/
+
     favouritesDataObj.define({
-        items: [/*{
-            title: 'First Portfolio - Performances - Earliest',
-            favouriteId: '@~~<first>~~@performancesEarliest', // Unusual id.
-            portfolioId: '@~~<first>~~@',
-            analysisId: 'performances',
-            timePeriodId: 'Earliest'
-        }*/]
+        items: []
     });
 
     function createIdFromAnalysisDataObject(analysisDataObject) {
