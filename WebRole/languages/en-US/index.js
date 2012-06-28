@@ -534,7 +534,7 @@ exports.server = {
     // ------------------------------------------------------------------ | P |
 
     portfoliosAnalysisPage: {
-        portfoliosAnalysisText      : 'Portfolios Analysis'
+        portfoliosAnalysisText      : 'Portfolio Analysis'
     },
 
     portfoliosPage: {
@@ -551,7 +551,6 @@ exports.server = {
         autoLoginText               : 'Auto Login',
         licenseText                 : 'License',
         themesText                  : 'Themes',
-        analysisPagesText           : 'Analysis Pages',
         reloadText                  : 'Reload Application',
         analysisPageText            : 'Analysis Page',
         analysisPagesText           : 'Analysis Pages',

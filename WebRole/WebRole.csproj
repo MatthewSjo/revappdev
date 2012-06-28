@@ -334,11 +334,8 @@
     <Content Include="public\images\more.png" />
     <Content Include="public\images\settings.png" />
     <Content Include="public\images\splash-landscape.gif" />
-    <Content Include="public\images\splash-landscape.png" />
     <Content Include="public\images\splash-portrait-retina.gif" />
-    <Content Include="public\images\splash-portrait-retina.png" />
     <Content Include="public\images\splash-portrait.gif" />
-    <Content Include="public\images\splash-portrait.png" />
     <Content Include="public\images\sw-alpha.png" />
     <Content Include="public\images\sw-button-cancel.png" />
     <Content Include="public\images\sw-button-done.png" />
