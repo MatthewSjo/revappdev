@@ -60,6 +60,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="languages\pl-PL\index.js" />
     <Content Include="languages\en-US\index.js" />
     <Content Include="languages\index.js" />
     <Content Include="languages\it-IT\index.js" />
