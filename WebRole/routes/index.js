@@ -45,6 +45,12 @@ var osInfo = {
 function getLanguage(lang, host) {
     var language = lang || defaultLanguage;
 
+    language = language.charAt(0).toLowerCase() + 
+               language.charAt(1).toLowerCase() + 
+               '-' +
+               language.charAt(3).toUpperCase() + 
+               language.charAt(4).toUpperCase();
+
     return (languages[language] && languages[language][host])
         ? languages[language][host]
         : languages[defaultLanguage][host];

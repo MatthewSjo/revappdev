@@ -106,6 +106,10 @@
 					// a#resetApp.whiteButton(href='#reset') Reset App
 					ul.rounded
 						li#userEmailLabel.centeredText
+					ul.rounded
+						li
+							a#testButton(href="#test") Test Page
+						
 		#reset
 			.toolbar
 				h1 #{lang.settingsPages.themesText}
@@ -184,6 +188,16 @@
 								a(href='http://www.datejs.com/') Datejs
 								a(href='http://cubiq.org/iscroll') iScroll
 								a.last(href='http://itabbar.com/') iTabbar
+		
+		#test(data-pageEvents="both")
+			.toolbar
+				h1 Test Page
+			#wrapper
+				#scroller
+					#div1.testBox box 1
+					#div2.testBox box 2
+					#div3.testBox box 3
+					#lastDiv(style="clear: both")
 
 	nav#tabbar(style="opacity: 0; -webkit-transition: opacity 0.25s linear 0.25s;")
 		ul
@@ -194,3 +208,30 @@
 #myLoadingCharts.modalBackground
 	img(src='images/loading.gif' )
 	#loadingText
+
+#fullScreenPage
+	#fullScreenContainer
+		#fullScreenHeader
+			#smallLogo
+			h2 Title
+			#minimizeButton
+		#fullScreenSummary
+			.summaryTitle
+					h2 summaryTitleName
+					h3 summaryTitleBenchmarkName
+			.summaryReturn
+				h2 Jun 13, 2010
+				// timePeriodStartDateText
+				h3 #{lang.analysisPage.startDate}
+			.summaryReturn
+				h2 Jun 13, 2012
+				// timePeriodEndDateText
+				h3 #{lang.analysisPage.endDate}
+		#wrapper
+			#scroller
+				#testChart
+	#fullScreenMask
+	#turnIcon
+
+
+	

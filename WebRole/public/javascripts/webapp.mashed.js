@@ -6330,6 +6330,108 @@ WebAppLoader.addModule({ name: 'base64', isPlugin: true}, function () {
     return base64;
 });
 // ------------------------------------------
+// DEVICE
+// ---------------------    ---------------------
+
+WebAppLoader.addModule({ name: 'device', plugins: ['helper'], hasEvents: true, isPlugin: true }, function () {
+    var device          = {},
+        output          = this.getConsole(),
+        eventManager    = this.getEventManager(),
+        helper          = this.getPlugin('helper'),
+        nav             = navigator;
+
+    function isIDevice() {
+        return (/iphone|ipod|ipad/gi).test(nav.platform);
+    }
+     
+    function isIPad() {
+        return (/ipad/gi).test(nav.platform);
+    }
+          
+    function isRetina() {
+        return 'devicePixelRatio' in window && window.devicePixelRatio > 1;
+    }
+         
+    function isSafari() {
+        return nav.appVersion.match(/Safari/gi);
+    }
+      
+    function hasHomescreen() {
+        return 'standalone' in nav && isIDevice;
+    }
+    
+    function isStandalone() {
+        return device.hasHomescreen && nav.standalone;
+    }
+    
+    function OSVersion() {
+        return nav.appVersion.match(/OS \d+_\d+/g);
+    }
+    
+    function platform() {
+        return nav.platform.split(' ')[0];
+    }
+    
+    function language() {
+        return nav.language.replace('-', '_');
+    }
+    
+    function maxWidth() {
+        var width = 0;
+
+        if (isIDevice) {
+            if (isIPad) {
+                width = 1024;
+            } else {
+                /* 480 on old iPhones */
+                width = 960;
+            }
+        }
+
+        return width;
+    }
+
+    function minWidth() {
+        return maxWidth() - 20;
+    }
+
+    function maxHeight() {
+        
+        var height = 0;
+
+        if (isIDevice) {
+            if (isIPad) {
+                height = 768;
+            } else {
+                /* 320 on old iPhones */
+                height = 640;
+            }
+        }
+
+        return height;
+    }
+
+    function minHeight() {
+        return maxHeight() - 20;
+    }
+
+    device.isIDevice     = isIDevice;
+    device.isIPad        = isIPad;
+    device.isRetina      = isRetina;
+    device.isSafari      = isSafari;
+    device.hasHomescreen = hasHomescreen;
+    device.isStandalone  = isStandalone;
+    device.OSVersion     = OSVersion;
+    device.platform      = platform;
+    device.language      = language;
+    device.maxWidth      = maxWidth;
+    device.minWidth      = minHeight;
+    device.maxHeight     = maxHeight;
+    device.minHeight     = minHeight;
+
+    return device;
+});
+// ------------------------------------------
 // HELPER
 // ------------------------------------------
 
@@ -6779,7 +6881,15 @@ WebAppLoader.addModule({ name: 'scroll' }, function () {
         // Remove comments from these options if you want to activate the snap.
         // options.snap = 'hr';
         // options.momentum = true;
-
+         options.hScroll = true;
+         options.vScroll = true;
+        // options.zoom = true;
+        
+//        options.snap = true;
+//        options.momentum = false;
+//        options.hScrollbar = false;
+//        options.vScrollbar = false;
+        
         if (myScroll) {
             myScroll.destroy();
             myScroll = null;
@@ -7694,14 +7804,17 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         var chartsToLoad = [],
             htmlToAppend = '';
 
-        function openAnalysisSection(chartTitle) {
+        function openAnalysisSection(chartId, chartTitle) {
             htmlToAppend = '';
             htmlToAppend +=
                 '<div class="analysisSummarySection">' +
-                '    <h2>' + chartTitle + '</h2>' +
-                '    <div class="analysisComponentContainer">';
+                '    <div class="analysisComponentContainer">' +
+                '       <div class="analysisComponentHeader">' +
+                '           <h2>' + chartTitle + '</h2>' +
+                '           <div class="analysisComponentFullScreenButton" data-chartId="' + chartId + '"></div>' +
+                '       </div>';
         }
-
+        
         function addChartToAnalysisSection(chartToAdd, containerClass) {
             htmlToAppend +=
                 '        <div id="' + chartToAdd.chartId + '" class="' + containerClass + '"></div>';
@@ -7727,7 +7840,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
 
         function addChartToChartsToRender(chartToAdd) {
             var chartsToRender = [],
-                isGroup = false,
+                isGroup        = false,
                 containerClass;
 
             // Exit if the chart to add doesn't exist.
@@ -7745,7 +7858,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             }
 
             if (isGroup) {
-                openAnalysisSection(chartToAdd.title);
+                openAnalysisSection(chartToAdd.chartId, chartToAdd.title);
             }
 
             // Define a wrapper DIV class for the chart container depending on
@@ -7764,7 +7877,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
                     if (isGroup) {
                         addChartToGroup(chartsToRender[i]);
                     } else {
-                        openAnalysisSection(chart.title);
+                        openAnalysisSection(chart.chartId, chart.title);
                         addChartToAnalysisSection(chartsToRender[i], containerClass);
                         closeAnalysisSection();
                         appendHtmlToAnalysisSection();
@@ -8051,6 +8164,9 @@ WebAppLoader.addModule({ name: 'chartManager',
         // Apply defaults then any overrides to a new object.
         options = $.extend({}, defaults, options);
 
+        // Add a transparent background to all charts.
+        options.backgroundColor = { fill: 'transparent' };
+
         // Create a new visualization wrapper instance, using the type, options and ID.
         chart = new google.visualization.ChartWrapper({
             chartType: type,
@@ -8183,7 +8299,7 @@ WebAppLoader.addModule({ name: 'chartManager',
 
             // Set up the chart to be redrawn on change of orientation.
             $(document).on('orientationchange', function (event) {
-                chart.draw();
+                // chart.draw();
             });
         }
 
@@ -8566,6 +8682,8 @@ WebAppLoader.addModule({ name: 'pageElements', isShared: true }, function () {
         themesPage                          : '#themes',
         languageSettingsPages               : '#languageSettings',
         errorPage                           : '#error',
+        fullScreenPage                      : '#fullScreenPage',
+	
 
         // Elements.
         portfolioAnalysisLink               : '.defaultAnalysisLink',
@@ -8595,7 +8713,12 @@ WebAppLoader.addModule({ name: 'pageElements', isShared: true }, function () {
         summaryTitleBenchmarkName           : '#summaryTitleBenchmarkName',
         resetCurrentSettingsButton          : '#resetCurrentSettingsButton',
         resetAllSettingsButton              : '#resetAllSettingsButton',
-        reloadAppButton                     : '#reloadAppButton'
+        reloadAppButton                     : '#reloadAppButton',
+        analysisComponentFullScreenButton   : '.analysisComponentFullScreenButton',
+        fullScreenContainer                 : '#fullScreenContainer',
+        minimizeButton                      : '#minimizeButton',
+        fullScreenMask                      : '#fullScreenMask',
+	    turnIcon                            : '#turnIcon'
     };
 
     return pageElements;
@@ -8615,19 +8738,20 @@ WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSet
 
     userSettingsDataObj.define({
         automaticLogin      : false,
-        username            : 'asa.fama@statpro.com',
-        password            : 'StatPro123',
+        username            : '',
+        password            : '',
         language            : 'en-US',
         lastUsedLanguage    : 'none'
     });
 
     appSettingsDataObj.define({
-        lastLoggedOnUser    : 'asa.fama@statpro.com'
+        lastLoggedOnUser    : ''
     });
     
     // APP SETTINGS.
     appSettings = {
-        loadPortfoliosSlotDataOnce: true
+        loadPortfoliosSlotDataOnce: true,
+        automaticLanguageDetection: true
     };
 
     // URLs.
@@ -9295,6 +9419,100 @@ WebAppLoader.addModule({ name: 'portfolioManager', plugins: [], sharedModules: [
     return portfolioManager;
 });
 // ------------------------------------------
+// FULL SCREEN MANAGER
+// ------------------------------------------
+
+WebAppLoader.addModule({ name: 'presentationManager', plugins: ['helper', 'device'], sharedModules: ['pageElements'], hasEvents: true }, function () {
+    var presentationManager  = {},
+        eventManager        = this.getEventManager(),
+        output              = this.getConsole(),
+        helper              = this.getPlugin('helper'),
+        device              = this.getPlugin('device'),
+        el                  = this.getSharedModule('pageElements'),
+        fullScreen          = false;
+
+    $(el.minimizeButton).on('click', function (e, info) {
+        exitPresentationMode();
+        e.preventDefault();
+    });
+    
+    function enterPresentationMode(chartId) {
+        fullScreen = true;
+        turnView();
+
+        $(el.fullScreenPage).show();
+        $(el.fullScreenPage).animate({ opacity: 1 }, { duration: 750, easing: 'ease-out', complete: function () {
+        }});
+
+        $('#testChart').append( $('#' + chartId) );
+        $('#allocation_pie').css('-webkit-transform', 'scale(1.3, 1.3)');
+    }
+
+    function exitPresentationMode() {
+        fullScreen = false;
+        $(el.fullScreenPage).animate({ opacity: 0 }, { duration: 750, easing: 'ease-out', complete: function () {
+            $(el.fullScreenPage).css({ 'display': 'none' });
+        }});
+    }
+
+    function isFullScreen() {
+        return fullScreen;
+    }
+
+    // Private
+    function turnView() {
+        var o         = Math.abs(window.orientation - 90),
+            left      = '0',
+            width     = '0',
+            height    = '0',
+            forceTurn = false;
+        
+        o = (o == 180) ? 0: o;
+        
+        if (o == 90) {
+            width     = '1004px';
+            height    = '768px';
+            left      = '768px';
+            forceTurn = true;
+        } else {
+            width     = '1024px';
+            height    = '748px';
+            left      = '0';
+            forceTurn = false;
+        }
+
+        if (forceTurn) {
+            $(el.turnIcon).animate({ opacity: 1 }, { duration: 250, easing: 'ease-out', complete: function () {
+                $(el.fullScreenMask).css({ 'display': 'block' });
+            }});
+        } else {
+            $(el.turnIcon).animate({ opacity: 0 }, { duration: 250, easing: 'ease-out', complete: function () {
+                $(el.fullScreenMask).css({ 'display': 'none' });
+            }});
+        }
+
+        $(el.fullScreenContainer).css({ 
+            width: width,
+            height: height,
+            '-webkit-transform-origin': 'left top',
+            '-webkit-transform': 'rotate('+ o +'deg)',
+            left: left
+        });
+    }
+
+    $('body').bind('turn', function(event, info){
+        if (isFullScreen()) {
+            turnView();
+        }
+    });
+
+    presentationManager.enterPresentationMode = enterPresentationMode;
+    presentationManager.exitPresentationMode = exitPresentationMode;
+    presentationManager.isFullScreen = isFullScreen;
+
+    return presentationManager;
+});
+// ------------------------------------------
 // REPOSITORIES
 // ------------------------------------------
 
@@ -9750,7 +9968,7 @@ var jQT = new $.jQTouch({
     useFastTouch            : true,
     statusBar               : 'default',
     hoverDelay              : 10,
-    pressDelay              : 10,
+    pressDelay              : 2,
     preloadImages           : [
         'images/sw-slot-border.png',
         'images/sw-alpha.png',
@@ -9768,6 +9986,7 @@ Zepto(function ($) {
         output       = loader.getConsole(),
         eventManager = loader.getEventManager(),
         helper       = loader.loadModule('helper'),
+        device       = loader.loadModule('device'),
         siteUrls     = loader.getSharedModule('settings').siteUrls,
         el           = loader.getSharedModule('pageElements'),
         lang         = loader.getSharedModule('localizationManager').getLanguage() || {};
@@ -9791,6 +10010,8 @@ Zepto(function ($) {
         timeStamp: ''
     };
 
+    theApp.defaultLanguage = "en-US";
+    
     /* ----------------------- ON/OFF ----------------------- /
        'Switch comments off changing /* in //* and viceversa'
     // ------------------------------------------------------ */
@@ -9813,6 +10034,7 @@ Zepto(function ($) {
 
     // Loading Settings
     theApp.settings = loader.loadModule('settings');
+    theApp.automaticLanguageDetection = theApp.settings.appSettings.automaticLanguageDetection;
 
     // Swipe View
     theApp.swipeView = loader.loadModule('swipeView');
@@ -9831,7 +10053,13 @@ Zepto(function ($) {
 
     // Swipe Button Control
     theApp.swipeButton = loader.loadModule('swipeButton');
+    
+    // Local Storage Manager
+    theApp.localStorage = loader.loadModule('localStorageManager');
 
+    // Full Screen Manager
+    theApp.presentationManager = loader.loadModule('presentationManager');
+    
     // ------------------------------------------
     // LAST ANALYSIS DATA OBJECT
     // ------------------------------------------
@@ -9848,12 +10076,19 @@ Zepto(function ($) {
         }
     };
 
+    theApp.getLanguage = function () {
+        return helper.getURLParameter('lang') || theApp.defaultLanguage;
+    };
+
     theApp.tryToChangeLanguage = function (language) {
-        var currentLanguage = helper.getURLParameter('lang') || 'en-US';
+        var currentLanguage = theApp.getLanguage();
 
         if (language && currentLanguage && (language.toLowerCase() !== currentLanguage.toLowerCase())) {
             theApp.nav.reloadApp('?lang=' + language);
+            return true;
         }
+
+        return false;
     };
 
     // ------------------------------------------
@@ -9864,7 +10099,7 @@ Zepto(function ($) {
         var appSettingsData = theApp.settings.loadData('appSettings'),
             userSettingsData = {},
             lastLoggedOnUser = '',
-            language = '',
+            language = device.language() || '',
             username = '',
             password = '';
 
@@ -9882,10 +10117,16 @@ Zepto(function ($) {
             password = userSettingsData.password || '';
             language = userSettingsData.language || '';
 
-            if (username !== '') {
-                theApp.tryToChangeLanguage(language);
+            if (theApp.automaticLanguageDetection) {
+                if (username !== '' && theApp.tryToChangeLanguage(language)) {
+                    return;
+                }
+            } else {
+                if (username !== '') {
+                    theApp.tryToChangeLanguage(language);
+                }
             }
-
+            
             // With the language defined, set the CultureInfo property of the 
             // JavaScript Date object, so date.js can hook in for localization.
             Date.CultureInfo = lang.cultureInfo;
@@ -9903,7 +10144,14 @@ Zepto(function ($) {
                 theApp.goToLoginPage(username || lastLoggedOnUser);
             }
         } else {
-            theApp.goToLoginPage();
+            if (theApp.automaticLanguageDetection) {
+                if (!theApp.tryToChangeLanguage(language)) {
+                    theApp.goToLoginPage();
+                }
+            } else {
+                theApp.goToLoginPage();
+            }
+
         }
     };
 
@@ -9949,6 +10197,12 @@ Zepto(function ($) {
 
         userSettingsData.username = theApp.lastUsernameUsed;
         userSettingsData.password = theApp.lastPasswordUsed;
+
+        if (userSettingsData.lastUsedLanguage === 'none') {
+            userSettingsData.language = theApp.getLanguage();
+            userSettingsData.lastUsedLanguage = userSettingsData.language;
+        }
+
         theApp.settings.saveData('userSettings', theApp.lastUsernameUsed);
 
         automaticLogin = helper.getValueAs(userSettingsData.automaticLogin, 'boolean');
@@ -9985,7 +10239,6 @@ Zepto(function ($) {
                 analysisPageCharts = null,
                 analysisPageTitle = '',
                 i;
-
 
             analysisPagesData = theApp.analysisManager.getData('analysisPages');
 
@@ -10042,6 +10295,11 @@ Zepto(function ($) {
             theApp.synchronizeFavouriteButton();
 
             theApp.chartComponents.render(chartsToRender, '#analysis_partial');
+            
+            $(el.analysisComponentFullScreenButton).on('click', function (e, info) {
+                var chartId = $(this).attr('data-chartId');
+                theApp.presentationManager.enterPresentationMode(chartId);
+            });
         }
 
         function onLoadPortfolioAnalysisCompleted(portfolio) {
@@ -10324,11 +10582,11 @@ Zepto(function ($) {
         buttonPrefix: 'tabbar_btn',
         visible: false,
         items: [
-            {id: 'favourites', title: lang.tabbar.favourites, btnClass: 'favourites' },
+            { id: 'favourites', title: lang.tabbar.favourites, btnClass: 'favourites' },
             { id: 'portfolios', title: lang.tabbar.portfolios, btnClass: 'portfolios' },
             { id: 'analysis', title: lang.tabbar.analysis, btnClass: 'analysis' },
             { id: 'timePeriods', title: lang.tabbar.timePeriods, btnClass: 'timeperiods' },
-            {id: 'settings', title: lang.tabbar.settings, btnClass: 'settings', highlight: true }
+            { id: 'settings', title: lang.tabbar.settings, btnClass: 'settings', highlight: true }
         ]
     };
 
@@ -10503,6 +10761,16 @@ Zepto(function ($) {
     theApp.pageEventsManager.on('onAboutEnd', function () {
         theApp.scroll.rebuild('about');
         output.log('onAboutEnd');
+    });
+
+    theApp.pageEventsManager.on('onTestEnd', function () {
+        theApp.scroll.rebuild('test');
+        output.log('onTestEnd');
+    });
+
+    theApp.pageEventsManager.on('onResetEnd', function () {
+        theApp.scroll.rebuild('reset');
+        output.log('onResetEnd');
     });
 
     // ------------------------------------------
@@ -10705,10 +10973,12 @@ Zepto(function ($) {
     loader.unloadModule('auth');
     loader.unloadModule('chartComponents');
     loader.unloadModule('chartSettingsPage');
+    loader.unloadModule('device');
     loader.unloadModule('favouritesManager');
-    loader.unloadModule('helper'),
+    loader.unloadModule('helper');
     loader.unloadModule('languageSettingsPage');
     loader.unloadModule('loadingMaskManager');
+    loader.unloadModule('localStorageManager');
     loader.unloadModule('nav');
     loader.unloadModule('pageEventsManager');
     loader.unloadModule('portfoliosList');
@@ -10722,8 +10992,34 @@ Zepto(function ($) {
     loader.unloadModule('swipeView');
     loader.unloadModule('themesManager');
     loader.unloadModule('toolbar');
+    loader.unloadModule('presentationManager');
 
     theApp.startHere();
+
+    $('body').bind('turn', function(event, info){
+        // alert(JSON.stringify(info)); // landscape or profile
+        // alert(window.orientation);
+        if (theApp.presentationManager.isFullScreen()) {
+            return;
+        }
+
+        if (info.orientation === 'landscape') {
+            $('.chartContainer').css('-webkit-transform', 'scale(1, 1)');
+            $('.analysisComponentContainer').css({
+                'height': '500px'
+            });
+        } else {
+            //$('.analysisComponentContainer').css('-webkit-transform', 'rotate(-90deg)');
+            $('.analysisComponentContainer').css({
+                'height': '380px'
+            });
+            
+            $('.chartContainer').css({
+                '-webkit-transform': 'scale(.7)',
+                '-webkit-transform-origin': 'left top'
+            });
+        }
+    });
 });
 
 

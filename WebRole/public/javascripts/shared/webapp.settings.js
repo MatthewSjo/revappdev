@@ -13,19 +13,20 @@ WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSet
 
     userSettingsDataObj.define({
         automaticLogin      : false,
-        username            : 'asa.fama@statpro.com',
-        password            : 'StatPro123',
+        username            : '',
+        password            : '',
         language            : 'en-US',
         lastUsedLanguage    : 'none'
     });
 
     appSettingsDataObj.define({
-        lastLoggedOnUser    : 'asa.fama@statpro.com'
+        lastLoggedOnUser    : ''
     });
     
     // APP SETTINGS.
     appSettings = {
-        loadPortfoliosSlotDataOnce: true
+        loadPortfoliosSlotDataOnce: true,
+        automaticLanguageDetection: true
     };
 
     // URLs.

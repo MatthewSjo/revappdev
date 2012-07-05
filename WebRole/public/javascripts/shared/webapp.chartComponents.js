@@ -473,14 +473,17 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         var chartsToLoad = [],
             htmlToAppend = '';
 
-        function openAnalysisSection(chartTitle) {
+        function openAnalysisSection(chartId, chartTitle) {
             htmlToAppend = '';
             htmlToAppend +=
                 '<div class="analysisSummarySection">' +
-                '    <h2>' + chartTitle + '</h2>' +
-                '    <div class="analysisComponentContainer">';
+                '    <div class="analysisComponentContainer">' +
+                '       <div class="analysisComponentHeader">' +
+                '           <h2>' + chartTitle + '</h2>' +
+                '           <div class="analysisComponentFullScreenButton" data-chartId="' + chartId + '"></div>' +
+                '       </div>';
         }
-
+        
         function addChartToAnalysisSection(chartToAdd, containerClass) {
             htmlToAppend +=
                 '        <div id="' + chartToAdd.chartId + '" class="' + containerClass + '"></div>';
@@ -506,7 +509,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
 
         function addChartToChartsToRender(chartToAdd) {
             var chartsToRender = [],
-                isGroup = false,
+                isGroup        = false,
                 containerClass;
 
             // Exit if the chart to add doesn't exist.
@@ -524,7 +527,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
             }
 
             if (isGroup) {
-                openAnalysisSection(chartToAdd.title);
+                openAnalysisSection(chartToAdd.chartId, chartToAdd.title);
             }
 
             // Define a wrapper DIV class for the chart container depending on
@@ -543,7 +546,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
                     if (isGroup) {
                         addChartToGroup(chartsToRender[i]);
                     } else {
-                        openAnalysisSection(chart.title);
+                        openAnalysisSection(chart.chartId, chart.title);
                         addChartToAnalysisSection(chartsToRender[i], containerClass);
                         closeAnalysisSection();
                         appendHtmlToAnalysisSection();

@@ -93,6 +93,9 @@ WebAppLoader.addModule({ name: 'chartManager',
         // Apply defaults then any overrides to a new object.
         options = $.extend({}, defaults, options);
 
+        // Add a transparent background to all charts.
+        options.backgroundColor = { fill: 'transparent' };
+
         // Create a new visualization wrapper instance, using the type, options and ID.
         chart = new google.visualization.ChartWrapper({
             chartType: type,
@@ -225,7 +228,7 @@ WebAppLoader.addModule({ name: 'chartManager',
 
             // Set up the chart to be redrawn on change of orientation.
             $(document).on('orientationchange', function (event) {
-                chart.draw();
+                // chart.draw();
             });
         }
 

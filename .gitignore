@@ -57,3 +57,6 @@ WebRole/server.js.logs/0.txt
 obj/Debug/revappdev.ccproj.FileListAbsolute.txt
 WebRole/server.js.logs/0.txt
 WebRole/WebRole.csproj.user
+revappdev.ccproj.user
+revappdev.sln.docstates.suo
+WebRole/WebRole.Publish.xml

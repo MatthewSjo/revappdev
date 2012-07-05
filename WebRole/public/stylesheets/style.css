@@ -87,7 +87,7 @@ html, body
 .summaryReturn h3 { font-family: HelveticaNeue-Light !important; font-size: 10pt !important; color: #000000 !important; } 
 
 .analysisComponentContainer {
-    margin: 15px 0 0 0;
+    margin: 0 0 0 0;
     padding: 15px;
     border: 1px solid #000000;
     background-color: #ffffff;
@@ -95,11 +95,44 @@ html, body
     -moz-border-radius: 15px;
     border-radius: 15px;
     -webkit-box-shadow: inset 0 0 10px #666666;
+    overflow: hidden;
+    -webkit-transition: height .5s;
+    height: 500px;
+}
+
+.analysisComponentContainer h2 {
+    color: #000000 !important;
+    font-size: 24px !important;
+    font-family: HelveticaNeue-Bold !important; 
+    font-weight: normal !important; 
+    text-shadow: none !important;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.analysisComponentHeader 
+{
+    position: relative;
+}
+
+.analysisComponentFullScreenButton
+{
+    position: absolute;
+    right: 10px;
+    top: 0;
+    background-image: url('../images/btn_maximize.png');
+    background-repeat: no-repeat;
+    width: 22px;
+    height: 22px;
 }
 
 .chartContainer 
 {
-    height: 500px;
+    height: 700px;
+    width: 1024px;
+    background-color: Yellow;
+    -webkit-transition: -webkit-transform .5s;
 }
 
 .halfSizeChart 
@@ -136,11 +169,17 @@ html, body
 
 #scroller
 {
+    
     position: absolute;
     z-index: 1;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     width: 100%;
     padding: 0;
+    
+	/*width:2048px;
+	height:100%;
+	float:left;
+	padding:0;*/
 }
 
 #myFrame
@@ -350,4 +389,127 @@ html, body
     padding: 0 !important; 
     margin: 0 !important; 
     border: 0 !important; 
+}
+
+.testBox
+{
+    width: 100%; 
+    height: 400px; 
+    background-color: #fff; 
+    float: left;
+    margin: 10px;
+}
+
+#fullScreenPage 
+{
+	width: 100%;
+	height: 100%;
+	z-index: 10000 !important;
+	position: absolute;
+	background: #fff;
+	opacity: 0;
+	display: none;
+    margin: 0;
+    padding: 0;
+    -webkit-box-shadow: inset 0 0 10px #666666;
+    overflow: hidden;
+    position: absolute;
+}
+
+#fullScreenContainer
+{
+    background-color: transparent;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+	width: 100%;
+	height: 100%;    
+}
+
+#fullScreenPage h2 {
+    color: #000000 !important;
+    font-size: 24px !important;
+    font-family: HelveticaNeue-Bold !important; 
+    font-weight: normal !important; 
+    text-shadow: none !important;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+#fullScreenHeader 
+{
+    position: relative;
+    padding-top: 5px;
+}
+
+#minimizeButton
+{
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    background-image: url('../images/btn_minimize.png');
+    background-repeat: no-repeat;
+    width: 22px;
+    height: 22px;
+}
+
+#smallLogo
+{
+    position: absolute;
+    left: 15px;
+    top: 10px;
+    background-image: url('../images/mini_logo.png');
+    background-repeat: no-repeat;
+    width: 22px;
+    height: 22px;
+}
+
+#fullScreenSummary {
+    margin: 0; 
+    padding-left: 15px;
+    padding-right: 15px;
+    height: 40px;
+    z-index: 1000;
+}
+
+#fullScreenSummary .summaryTitle { display: inline-block; width: 60% !important; vertical-align: top; }
+#fullScreenSummary .summaryReturn { display: inline-block; width: 20% !important; vertical-align: top; }
+#fullScreenSummary .summaryReturn { text-align: right; }
+ 
+#fullScreenSummary .summaryTitle h2, #fullScreenSummary .summaryReturn h2 {
+    font-family: HelveticaNeue-Bold !important; 
+    color: #555 !important;
+    font-size: 10pt !important;
+    text-align: left;
+}
+
+#fullScreenSummary .summaryTitle h2 { text-transform: uppercase; }
+#fullScreenSummary .summaryTitle h3 { font-family: HelveticaNeue-Light !important; font-size: 8pt !important; color: #aaa !important; text-align: left;}
+#fullScreenSummary .summaryReturn h2 { text-align: right; }
+#fullScreenSummary .summaryReturn h3 { font-family: HelveticaNeue-Light !important; font-size: 8pt !important; color: #aaa !important; text-align: right;} 
+
+#fullScreenMask
+{
+    margin: 0 0 0 0;
+    /*padding: 15px;*/
+    background-color: #000;
+	width: 100%;
+	height: 100%;
+	position: absolute;        
+	opacity: 0;
+	z-index: 10001;
+}
+
+#turnIcon
+{
+    background-image: url('../images/turn.png');
+    background-repeat: no-repeat;
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -75px 0 0 -75px;    
+    z-index: 10002;
 }

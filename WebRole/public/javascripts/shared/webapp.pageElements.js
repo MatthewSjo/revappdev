@@ -21,6 +21,8 @@ WebAppLoader.addModule({ name: 'pageElements', isShared: true }, function () {
         themesPage                          : '#themes',
         languageSettingsPages               : '#languageSettings',
         errorPage                           : '#error',
+        fullScreenPage                      : '#fullScreenPage',
+	
 
         // Elements.
         portfolioAnalysisLink               : '.defaultAnalysisLink',
@@ -50,7 +52,12 @@ WebAppLoader.addModule({ name: 'pageElements', isShared: true }, function () {
         summaryTitleBenchmarkName           : '#summaryTitleBenchmarkName',
         resetCurrentSettingsButton          : '#resetCurrentSettingsButton',
         resetAllSettingsButton              : '#resetAllSettingsButton',
-        reloadAppButton                     : '#reloadAppButton'
+        reloadAppButton                     : '#reloadAppButton',
+        analysisComponentFullScreenButton   : '.analysisComponentFullScreenButton',
+        fullScreenContainer                 : '#fullScreenContainer',
+        minimizeButton                      : '#minimizeButton',
+        fullScreenMask                      : '#fullScreenMask',
+	    turnIcon                            : '#turnIcon'
     };
 
     return pageElements;
