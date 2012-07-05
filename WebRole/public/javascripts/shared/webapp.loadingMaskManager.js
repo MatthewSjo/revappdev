@@ -17,15 +17,21 @@ WebAppLoader.addModule({ name: 'loadingMaskManager', sharedModules: ['pageElemen
 
     // Define all the available masks.
     masks.ajax = {
-        name    : 'ajax',
-        enabled : true,
-        el      : el.loadingMask
+        name        : 'ajax',
+        enabled     : true,
+        el          : el.loadingMask
     };
 
     masks.analysis = {
-        name    : 'analysis',
-        enabled : true,
-        el      : el.chartLoadingMask
+        name        : 'analysis',
+        enabled     : true,
+        el          : el.chartLoadingMask
+    };
+
+    masks.turn = {
+        name        : 'turn',
+        enabled     : true,
+        el          : el.turnLoadingMask
     };
     
     masks['default'] = masks.ajax;

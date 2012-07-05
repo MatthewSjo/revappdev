@@ -3000,39 +3000,44 @@ return q
 a.decode=b;
 return a
 });
-WebAppLoader.addModule({name:"device",plugins:["helper"],hasEvents:true,isPlugin:true},function(){var a={},q=this.getConsole(),b=this.getEventManager(),d=this.getPlugin("helper"),o=navigator;
+WebAppLoader.addModule({name:"device",plugins:["helper"],hasEvents:true,isPlugin:true},function(){var a={},s=this.getConsole(),b=this.getEventManager(),d=this.getPlugin("helper"),o=navigator;
 function e(){return(/iphone|ipod|ipad/gi).test(o.platform)
 }function f(){return(/ipad/gi).test(o.platform)
 }function g(){return"devicePixelRatio" in window&&window.devicePixelRatio>1
 }function h(){return o.appVersion.match(/Safari/gi)
 }function c(){return"standalone" in o&&e
 }function i(){return a.hasHomescreen&&o.standalone
-}function p(){return o.appVersion.match(/OS \d+_\d+/g)
-}function s(){return o.platform.split(" ")[0]
+}function q(){return o.appVersion.match(/OS \d+_\d+/g)
+}function t(){return o.platform.split(" ")[0]
 }function j(){return o.language.replace("-","_")
-}function l(){var t=0;
-if(e){if(f){t=1024
-}else{t=960
-}}return t
+}function l(){var u=0;
+if(e){if(f){u=1024
+}else{u=960
+}}return u
 }function n(){return l()-20
-}function k(){var t=0;
-if(e){if(f){t=768
-}else{t=640
-}}return t
+}function k(){var u=0;
+if(e){if(f){u=768
+}else{u=640
+}}return u
 }function m(){return k()-20
-}a.isIDevice=e;
+}function p(){var u=Math.abs(window.orientation-90);
+u=(u==180)?0:u;
+if(u==90){return"portrait"
+}else{return"landscape"
+}}a.isIDevice=e;
 a.isIPad=f;
 a.isRetina=g;
 a.isSafari=h;
 a.hasHomescreen=c;
 a.isStandalone=i;
-a.OSVersion=p;
-a.platform=s;
+a.OSVersion=q;
+a.platform=t;
 a.language=j;
 a.maxWidth=l;
 a.minWidth=m;
 a.maxHeight=k;
 a.minHeight=m;
+a.orientation=p;
 return a
 });
 WebAppLoader.addModule({name:"helper",isPlugin:true},function(){var i={};
@@ -3183,7 +3188,6 @@ g.onBeforeScrollStart=function(i){var j=i.target;
 while(j.nodeType!=1){j=j.parentNode
 }if(j.tagName!="SELECT"&&j.tagName!="INPUT"&&j.tagName!="TEXTAREA"){i.preventDefault()
 }};
-g.hScroll=true;
 g.vScroll=true;
 if(b){b.destroy();
 b=null
@@ -3428,13 +3432,15 @@ i.raiseEvent("onAnalysisLoaded")
 $("#"+t.id).html(k.errors.chartFailedText)
 }}function h(u){if(!u){n.log("Config is not specified.");
 return
-}var w=u.chartId||null,y=u.chartType||null,x=u.options||{},v={},t=null;
-if(!w||!y){n.log("Chart ID or type is not specified.");
+}var w=u.chartId||null,z=u.chartType||null,x=u.options||{},v={},t=null;
+if(!w||!z){n.log("Chart ID or type is not specified.");
 return
-}v=(d&&d[y])?d[y]:{};
+}v=(d&&d[z])?d[z]:{};
 x=$.extend({},v,x);
 x.backgroundColor={fill:"transparent"};
-t=new google.visualization.ChartWrapper({chartType:y,options:x,containerId:w});
+t=new google.visualization.ChartWrapper({chartType:z,options:x,containerId:w});
+var y=t.clone();
+y.setContainerId("testChart");
 t.endDate=u.endDate;
 t.include=u.include;
 t.includeMeasuresFor=u.includeMeasuresFor;
@@ -3533,6 +3539,7 @@ WebAppLoader.addModule({name:"loadingMaskManager",sharedModules:["pageElements"]
 f=$(a.loadingText);
 g.ajax={name:"ajax",enabled:true,el:a.loadingMask};
 g.analysis={name:"analysis",enabled:true,el:a.chartLoadingMask};
+g.turn={name:"turn",enabled:true,el:a.turnLoadingMask};
 g["default"]=g.ajax;
 $(a.loadingMask).click(function(){d("ajax")
 });
@@ -3591,7 +3598,7 @@ i.clearUserSettings=b;
 return i
 });
 WebAppLoader.addModule({name:"pageElements",isShared:true},function(){var a={};
-a={blankPage:"#blank_page",dashboardPage:"#dashboard",homePage:"#home",portfoliosPage:"#portfolios",portfolioAnalysisPage:"#portfolioAnalysis",analysisPage:"#analysis",eulaPage:"#eula",settingsPage:"#settings",loginPage:"#login",startupPage:"#startup",chartSettingsPage:"#chartSettings",themesPage:"#themes",languageSettingsPages:"#languageSettings",errorPage:"#error",fullScreenPage:"#fullScreenPage",portfolioAnalysisLink:".defaultAnalysisLink",toolbar:".toolbar",loginButton:"#loginButton",loginErrorText:"#loginErrorText",loadingMask:"#myloading",chartLoadingMask:"#myLoadingCharts",userNameTextbox:"#userNameTextbox",passwordTextbox:"#passwordTextbox",tabbar:"nav#tabbar",listAnalysisSettingsDefaultPages:"#listAnalysisSettingsDefaultPages",listAnalysisSettingsUserPages:"#listAnalysisSettingsUserPages",chartsSelectbox:"#chartsSelectbox",analysisPageNameTextbox:"#analysisPageNameTextbox",saveChartSettings:"#saveChartSettings",addNewAnalysisPage:"#addNewAnalysisPage",analysisTitle:"#analysisTitle",loadingText:"#loadingText",listLanguagesPages:"#listLanguagesPages",timePeriodStartDateText:"#timePeriodStartDateText",timePeriodEndDateText:"#timePeriodEndDateText",errorMessageText:"#errorMessageText",stayLoggedCheckbox:"#stayLoggedCheckbox",userEmailLabel:"#userEmailLabel",summaryTitleName:"#summaryTitleName",summaryTitleBenchmarkName:"#summaryTitleBenchmarkName",resetCurrentSettingsButton:"#resetCurrentSettingsButton",resetAllSettingsButton:"#resetAllSettingsButton",reloadAppButton:"#reloadAppButton",analysisComponentFullScreenButton:".analysisComponentFullScreenButton",fullScreenContainer:"#fullScreenContainer",minimizeButton:"#minimizeButton",fullScreenMask:"#fullScreenMask",turnIcon:"#turnIcon"};
+a={blankPage:"#blank_page",dashboardPage:"#dashboard",homePage:"#home",portfoliosPage:"#portfolios",portfolioAnalysisPage:"#portfolioAnalysis",analysisPage:"#analysis",eulaPage:"#eula",settingsPage:"#settings",loginPage:"#login",startupPage:"#startup",chartSettingsPage:"#chartSettings",themesPage:"#themes",languageSettingsPages:"#languageSettings",errorPage:"#error",fullScreenPage:"#fullScreenPage",portfolioAnalysisLink:".defaultAnalysisLink",toolbar:".toolbar",loginButton:"#loginButton",loginErrorText:"#loginErrorText",loadingMask:"#myloading",chartLoadingMask:"#myLoadingCharts",turnLoadingMask:"#turnLoadingMask",userNameTextbox:"#userNameTextbox",passwordTextbox:"#passwordTextbox",tabbar:"nav#tabbar",listAnalysisSettingsDefaultPages:"#listAnalysisSettingsDefaultPages",listAnalysisSettingsUserPages:"#listAnalysisSettingsUserPages",chartsSelectbox:"#chartsSelectbox",analysisPageNameTextbox:"#analysisPageNameTextbox",saveChartSettings:"#saveChartSettings",addNewAnalysisPage:"#addNewAnalysisPage",analysisTitle:"#analysisTitle",loadingText:"#loadingText",listLanguagesPages:"#listLanguagesPages",timePeriodStartDateText:"#timePeriodStartDateText",timePeriodEndDateText:"#timePeriodEndDateText",errorMessageText:"#errorMessageText",stayLoggedCheckbox:"#stayLoggedCheckbox",userEmailLabel:"#userEmailLabel",summaryTitleName:"#summaryTitleName",summaryTitleBenchmarkName:"#summaryTitleBenchmarkName",resetCurrentSettingsButton:"#resetCurrentSettingsButton",resetAllSettingsButton:"#resetAllSettingsButton",reloadAppButton:"#reloadAppButton",analysisComponentFullScreenButton:".analysisComponentFullScreenButton",fullScreenContainer:"#fullScreenContainer",minimizeButton:"#minimizeButton",fullScreenMask:"#fullScreenMask",turnIcon:"#turnIcon"};
 return a
 });
 WebAppLoader.addModule({name:"settings",dataObjects:["appSettings","userSettings"],isShared:true},function(){var h={},a={},i={},f=[],g=this.getConsole(),j=this.getDataObject("userSettings"),b=this.getDataObject("appSettings");
@@ -3762,9 +3769,7 @@ l.preventDefault()
 function c(l){f=true;
 k();
 $(b.fullScreenPage).show();
-$(b.fullScreenPage).animate({opacity:1},{duration:750,easing:"ease-out",complete:function(){}});
-$("#testChart").append($("#"+l));
-$("#allocation_pie").css("-webkit-transform","scale(1.3, 1.3)")
+$(b.fullScreenPage).animate({opacity:1},{duration:750,easing:"ease-out",complete:function(){}})
 }function e(){f=false;
 $(b.fullScreenPage).animate({opacity:0},{duration:750,easing:"ease-out",complete:function(){$(b.fullScreenPage).css({display:"none"})
 }})
@@ -4045,6 +4050,7 @@ l.tabbar.getButton("settings").setHighlight(false);
 l.saveLastAnalysisObjectUsed();
 l.synchronizeFavouriteButton();
 l.chartComponents.render(w,"#analysis_partial");
+l.changeOrientation();
 a(c.analysisComponentFullScreenButton).on("click",function(C,D){var B=a(this).attr("data-chartId");
 l.presentationManager.enterPresentationMode(B)
 })
@@ -4333,10 +4339,17 @@ g.unloadModule("themesManager");
 g.unloadModule("toolbar");
 g.unloadModule("presentationManager");
 l.startHere();
-a("body").bind("turn",function(n,o){if(l.presentationManager.isFullScreen()){return
-}if(o.orientation==="landscape"){a(".chartContainer").css("-webkit-transform","scale(1, 1)");
-a(".analysisComponentContainer").css({height:"500px"})
-}else{a(".analysisComponentContainer").css({height:"380px"});
-a(".chartContainer").css({"-webkit-transform":"scale(.7)","-webkit-transform-origin":"left top"})
-}})
+l.changeOrientation=function(){var n=250,o=500;
+if(l.presentationManager.isFullScreen()){return
+}l.mask.show("turn");
+if(b.orientation()==="landscape"){a(".chartContainer").css({"-webkit-transform":"scale(.93)","-webkit-transform-origin":"left top"});
+a(".analysisComponentContainer").animate({height:"500px"},{duration:n,easing:"ease-out",complete:function(){}})
+}else{a(".chartContainer").css({"-webkit-transform":"scale(.69)","-webkit-transform-origin":"left top"});
+a(".analysisComponentContainer").animate({height:"375px"},{duration:n,easing:"ease-out",complete:function(){}})
+}setTimeout(function(){l.scroll.rebuild("analysis");
+l.mask.hide("turn")
+},n+o)
+};
+a("body").bind("turn",function(n,o){l.changeOrientation()
+})
 });

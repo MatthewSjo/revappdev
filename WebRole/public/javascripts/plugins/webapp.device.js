@@ -84,6 +84,18 @@ WebAppLoader.addModule({ name: 'device', plugins: ['helper'], hasEvents: true, i
         return maxHeight() - 20;
     }
 
+    function orientation() {
+        var o = Math.abs(window.orientation - 90);
+    
+        o = (o == 180) ? 0: o;
+        
+        if (o == 90) {
+            return 'portrait';
+        } else {
+            return 'landscape';
+        }
+    }
+
     device.isIDevice     = isIDevice;
     device.isIPad        = isIPad;
     device.isRetina      = isRetina;
@@ -97,6 +109,7 @@ WebAppLoader.addModule({ name: 'device', plugins: ['helper'], hasEvents: true, i
     device.minWidth      = minHeight;
     device.maxHeight     = maxHeight;
     device.minHeight     = minHeight;
+    device.orientation   = orientation;
 
     return device;
 });

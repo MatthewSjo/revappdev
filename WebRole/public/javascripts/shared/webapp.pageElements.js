@@ -31,6 +31,7 @@ WebAppLoader.addModule({ name: 'pageElements', isShared: true }, function () {
         loginErrorText                      : '#loginErrorText',
         loadingMask                         : '#myloading',
         chartLoadingMask                    : '#myLoadingCharts',
+        turnLoadingMask                     : '#turnLoadingMask',
         userNameTextbox                     : '#userNameTextbox',
         passwordTextbox                     : '#passwordTextbox',
         tabbar                              : 'nav#tabbar',

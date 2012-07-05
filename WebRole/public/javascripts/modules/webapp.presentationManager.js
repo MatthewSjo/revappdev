@@ -24,8 +24,8 @@ WebAppLoader.addModule({ name: 'presentationManager', plugins: ['helper', 'devic
         $(el.fullScreenPage).animate({ opacity: 1 }, { duration: 750, easing: 'ease-out', complete: function () {
         }});
 
-        $('#testChart').append( $('#' + chartId) );
-        $('#allocation_pie').css('-webkit-transform', 'scale(1.3, 1.3)');
+//        $('#testChart').append( $('#' + chartId) );
+//        $('#' + chartId).css('-webkit-transform', 'scale(1)');
     }
 
     function exitPresentationMode() {
@@ -41,6 +41,7 @@ WebAppLoader.addModule({ name: 'presentationManager', plugins: ['helper', 'devic
 
     // Private
     function turnView() {
+        // ASA TODO: Use device.orientation()...
         var o         = Math.abs(window.orientation - 90),
             left      = '0',
             width     = '0',

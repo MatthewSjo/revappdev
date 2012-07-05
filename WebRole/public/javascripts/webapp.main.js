@@ -336,7 +336,7 @@ Zepto(function ($) {
             theApp.synchronizeFavouriteButton();
 
             theApp.chartComponents.render(chartsToRender, '#analysis_partial');
-            
+            theApp.changeOrientation();
             $(el.analysisComponentFullScreenButton).on('click', function (e, info) {
                 var chartId = $(this).attr('data-chartId');
                 theApp.presentationManager.enterPresentationMode(chartId);
@@ -1037,29 +1037,36 @@ Zepto(function ($) {
 
     theApp.startHere();
 
-    $('body').bind('turn', function(event, info){
-        // alert(JSON.stringify(info)); // landscape or profile
-        // alert(window.orientation);
+    theApp.changeOrientation = function () {
+        var animationSpeed  = 250,
+            rebuildingDelay = 500;
+
         if (theApp.presentationManager.isFullScreen()) {
             return;
         }
+        theApp.mask.show('turn');
+        // ASA TODO: Change left, top, width and height from chartDefaults instead of scaling all charts about .93...
+        if (device.orientation() === 'landscape') {
+            // $('.chartContainer').css('-webkit-transform', 'scale(.75)');
+            $('.chartContainer').css({'-webkit-transform': 'scale(.93)', '-webkit-transform-origin': 'left top'});
+            $('.analysisComponentContainer').animate({ height: '500px' }, { duration: animationSpeed, easing: 'ease-out', complete: function () {}});
 
-        if (info.orientation === 'landscape') {
-            $('.chartContainer').css('-webkit-transform', 'scale(1, 1)');
-            $('.analysisComponentContainer').css({
-                'height': '500px'
-            });
         } else {
-            //$('.analysisComponentContainer').css('-webkit-transform', 'rotate(-90deg)');
-            $('.analysisComponentContainer').css({
-                'height': '380px'
-            });
-            
-            $('.chartContainer').css({
-                '-webkit-transform': 'scale(.7)',
-                '-webkit-transform-origin': 'left top'
-            });
+            $('.chartContainer').css({'-webkit-transform': 'scale(.69)', '-webkit-transform-origin': 'left top'});
+            $('.analysisComponentContainer').animate({ height: '375px' }, { duration: animationSpeed, easing: 'ease-out', complete: function () {}});
         }
+
+        // Rebuild the iScroll using a delay is necessary to ensure that the page height
+        // is calculate correctly.
+        setTimeout(function () {
+            theApp.scroll.rebuild('analysis');
+            theApp.mask.hide('turn');
+        }, animationSpeed + rebuildingDelay);
+    };
+
+    $('body').bind('turn', function(event, info){
+        theApp.changeOrientation();
+
     });
 });
 

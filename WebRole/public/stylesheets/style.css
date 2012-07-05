@@ -129,10 +129,10 @@ html, body
 
 .chartContainer 
 {
-    height: 700px;
-    width: 1024px;
-    background-color: Yellow;
-    -webkit-transition: -webkit-transform .5s;
+    width: 960px;
+    height: 500px;
+    background-color: transparent;
+    -webkit-transition: -webkit-transform .25s;
 }
 
 .halfSizeChart 
@@ -216,7 +216,7 @@ html, body
 
 }
 
-#myloading img, #myLoadingCharts img
+#myloading img, #myLoadingCharts img, #turnLoadingMask img
 {
     width: 32px;
     height: 32px;

@@ -6415,6 +6415,18 @@ WebAppLoader.addModule({ name: 'device', plugins: ['helper'], hasEvents: true, i
         return maxHeight() - 20;
     }
 
+    function orientation() {
+        var o = Math.abs(window.orientation - 90);
+    
+        o = (o == 180) ? 0: o;
+        
+        if (o == 90) {
+            return 'portrait';
+        } else {
+            return 'landscape';
+        }
+    }
+
     device.isIDevice     = isIDevice;
     device.isIPad        = isIPad;
     device.isRetina      = isRetina;
@@ -6428,6 +6440,7 @@ WebAppLoader.addModule({ name: 'device', plugins: ['helper'], hasEvents: true, i
     device.minWidth      = minHeight;
     device.maxHeight     = maxHeight;
     device.minHeight     = minHeight;
+    device.orientation   = orientation;
 
     return device;
 });
@@ -6881,9 +6894,9 @@ WebAppLoader.addModule({ name: 'scroll' }, function () {
         // Remove comments from these options if you want to activate the snap.
         // options.snap = 'hr';
         // options.momentum = true;
-         options.hScroll = true;
+        // options.hScroll = true;
          options.vScroll = true;
-        // options.zoom = true;
+         // options.zoom = true;
         
 //        options.snap = true;
 //        options.momentum = false;
@@ -8174,6 +8187,10 @@ WebAppLoader.addModule({ name: 'chartManager',
             containerId: id
         });
 
+        // ASA: Test
+        var presentationChart = chart.clone();
+        presentationChart.setContainerId('testChart');
+
         // Although it's not part of the Google API, store 
         // the parameters for this chart in the object.
         chart.endDate = config.endDate;
@@ -8469,15 +8486,21 @@ WebAppLoader.addModule({ name: 'loadingMaskManager', sharedModules: ['pageElemen
 
     // Define all the available masks.
     masks.ajax = {
-        name    : 'ajax',
-        enabled : true,
-        el      : el.loadingMask
+        name        : 'ajax',
+        enabled     : true,
+        el          : el.loadingMask
     };
 
     masks.analysis = {
-        name    : 'analysis',
-        enabled : true,
-        el      : el.chartLoadingMask
+        name        : 'analysis',
+        enabled     : true,
+        el          : el.chartLoadingMask
+    };
+
+    masks.turn = {
+        name        : 'turn',
+        enabled     : true,
+        el          : el.turnLoadingMask
     };
     
     masks['default'] = masks.ajax;
@@ -8692,6 +8715,7 @@ WebAppLoader.addModule({ name: 'pageElements', isShared: true }, function () {
         loginErrorText                      : '#loginErrorText',
         loadingMask                         : '#myloading',
         chartLoadingMask                    : '#myLoadingCharts',
+        turnLoadingMask                     : '#turnLoadingMask',
         userNameTextbox                     : '#userNameTextbox',
         passwordTextbox                     : '#passwordTextbox',
         tabbar                              : 'nav#tabbar',
@@ -9444,8 +9468,8 @@ WebAppLoader.addModule({ name: 'presentationManager', plugins: ['helper', 'devic
         $(el.fullScreenPage).animate({ opacity: 1 }, { duration: 750, easing: 'ease-out', complete: function () {
         }});
 
-        $('#testChart').append( $('#' + chartId) );
-        $('#allocation_pie').css('-webkit-transform', 'scale(1.3, 1.3)');
+//        $('#testChart').append( $('#' + chartId) );
+//        $('#' + chartId).css('-webkit-transform', 'scale(1)');
     }
 
     function exitPresentationMode() {
@@ -9461,6 +9485,7 @@ WebAppLoader.addModule({ name: 'presentationManager', plugins: ['helper', 'devic
 
     // Private
     function turnView() {
+        // ASA TODO: Use device.orientation()...
         var o         = Math.abs(window.orientation - 90),
             left      = '0',
             width     = '0',
@@ -10295,7 +10320,7 @@ Zepto(function ($) {
             theApp.synchronizeFavouriteButton();
 
             theApp.chartComponents.render(chartsToRender, '#analysis_partial');
-            
+            theApp.changeOrientation();
             $(el.analysisComponentFullScreenButton).on('click', function (e, info) {
                 var chartId = $(this).attr('data-chartId');
                 theApp.presentationManager.enterPresentationMode(chartId);
@@ -10996,29 +11021,36 @@ Zepto(function ($) {
 
     theApp.startHere();
 
-    $('body').bind('turn', function(event, info){
-        // alert(JSON.stringify(info)); // landscape or profile
-        // alert(window.orientation);
+    theApp.changeOrientation = function () {
+        var animationSpeed  = 250,
+            rebuildingDelay = 500;
+
         if (theApp.presentationManager.isFullScreen()) {
             return;
         }
+        theApp.mask.show('turn');
+        // ASA TODO: Change left, top, width and height from chartDefaults instead of scaling all charts about .93...
+        if (device.orientation() === 'landscape') {
+            // $('.chartContainer').css('-webkit-transform', 'scale(.75)');
+            $('.chartContainer').css({'-webkit-transform': 'scale(.93)', '-webkit-transform-origin': 'left top'});
+            $('.analysisComponentContainer').animate({ height: '500px' }, { duration: animationSpeed, easing: 'ease-out', complete: function () {}});
 
-        if (info.orientation === 'landscape') {
-            $('.chartContainer').css('-webkit-transform', 'scale(1, 1)');
-            $('.analysisComponentContainer').css({
-                'height': '500px'
-            });
         } else {
-            //$('.analysisComponentContainer').css('-webkit-transform', 'rotate(-90deg)');
-            $('.analysisComponentContainer').css({
-                'height': '380px'
-            });
-            
-            $('.chartContainer').css({
-                '-webkit-transform': 'scale(.7)',
-                '-webkit-transform-origin': 'left top'
-            });
+            $('.chartContainer').css({'-webkit-transform': 'scale(.69)', '-webkit-transform-origin': 'left top'});
+            $('.analysisComponentContainer').animate({ height: '375px' }, { duration: animationSpeed, easing: 'ease-out', complete: function () {}});
         }
+
+        // Rebuild the iScroll using a delay is necessary to ensure that the page height
+        // is calculate correctly.
+        setTimeout(function () {
+            theApp.scroll.rebuild('analysis');
+            theApp.mask.hide('turn');
+        }, animationSpeed + rebuildingDelay);
+    };
+
+    $('body').bind('turn', function(event, info){
+        theApp.changeOrientation();
+
     });
 });
 

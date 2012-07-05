@@ -103,6 +103,10 @@ WebAppLoader.addModule({ name: 'chartManager',
             containerId: id
         });
 
+        // ASA: Test
+        var presentationChart = chart.clone();
+        presentationChart.setContainerId('testChart');
+
         // Although it's not part of the Google API, store 
         // the parameters for this chart in the object.
         chart.endDate = config.endDate;
