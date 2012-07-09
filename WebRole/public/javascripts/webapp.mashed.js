@@ -7012,12 +7012,13 @@ WebAppLoader.addModule({ name: 'scroll' }, function () {
 // SPINNING WHEEL SLOT
 // ------------------------------------------
 
-WebAppLoader.addModule({ name: 'spinningWheel', plugins: ['helper'], hasEvents: true }, function () {
+WebAppLoader.addModule({ name: 'spinningWheel', plugins: ['helper'], sharedModules: ['localizationManager'], hasEvents: true }, function () {
     var spinningWheel   = {},
         slots           = [],
         slotIndices     = {},
         eventManager    = this.getEventManager(),
-        helper          = this.getPlugin('helper');
+        helper          = this.getPlugin('helper'),
+        lang            = this.getSharedModule('localizationManager').getLanguage() || {};
 
     function getSlot(index) {
         if (typeof index == 'string') {
@@ -7037,7 +7038,7 @@ WebAppLoader.addModule({ name: 'spinningWheel', plugins: ['helper'], hasEvents: 
                 repository: val.repository,
                 lastItemSelected: '', // TODO: Get a value from the config.
                 isShown: false,
-                onDoneHandler: 'on' + id + 'Done', // TODO: Localize 'Done' and 'Cancel'
+                onDoneHandler: 'on' + id + 'Done',
                 onCancelHandler: 'on' + id + 'Cancel',
                 onSlotCancel: function () {
                     SpinningWheel.close();
@@ -7062,6 +7063,10 @@ WebAppLoader.addModule({ name: 'spinningWheel', plugins: ['helper'], hasEvents: 
                         SpinningWheel.setCancelAction(slots[i].onSlotCancel);
                         SpinningWheel.setDoneAction(slots[i].onSlotDone);
                         SpinningWheel.open();
+                        
+                        // Add localization to spinning wheel object.
+                        $('#sw-done').html(lang.spinningWheel.done);
+                        $('#sw-cancel').html(lang.spinningWheel.cancel);
                     }
                     if (!slots[i].isShown) {
                         slots[i].isShown = true;
@@ -8888,7 +8893,7 @@ WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSet
         id      : 'it-IT',
         value   : 'it-IT',
         name    : 'Italiano'
-    }, {
+    }, { 
         id      : 'pl-PL',
         value   : 'pl-PL',
         name    : 'Polski'

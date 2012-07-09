@@ -52,7 +52,7 @@ WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSet
         id      : 'it-IT',
         value   : 'it-IT',
         name    : 'Italiano'
-    }, {
+    }, { 
         id      : 'pl-PL',
         value   : 'pl-PL',
         name    : 'Polski'
