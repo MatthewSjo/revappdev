@@ -6586,6 +6586,24 @@ WebAppLoader.addModule({ name: 'helper', isPlugin: true }, function () {
         return e.childNodes[0].nodeValue;
     }
 
+    function sortObject(o) {
+        var sorted = {},
+        key, a = [];
+
+        for (key in o) {
+            if (o.hasOwnProperty(key)) {
+                    a.push(key);
+            }
+        }
+
+        a.sort();
+
+        for (key = 0; key < a.length; key++) {
+            sorted[a[key]] = o[a[key]];
+        }
+        return sorted;
+    }
+
     helper.capitaliseFirstLetter = capitaliseFirstLetter;
     helper.getValueAs = getValueAs;
     helper.startsWith = startsWith;
@@ -6597,6 +6615,7 @@ WebAppLoader.addModule({ name: 'helper', isPlugin: true }, function () {
     helper.getURLParameter = getURLParameter;
     helper.getObjectFromArray = getObjectFromArray;
     helper.htmlDecode = htmlDecode;
+    helper.sortObject = sortObject;
 
     return helper;
 });
@@ -6872,11 +6891,68 @@ WebAppLoader.addModule({ name: 'portfoliosList', plugins: [],
 
 WebAppLoader.addModule({ name: 'scroll' }, function () {
     var scroll = {},
-        myScroll; // Please don't initialize myScroll.
+        myScroll,
+        savedScrollPosition = [],
+        lastXPosition = 0,
+        lastYPosition = 0; // Please don't initialize myScroll.
 
     /* Use this for high compatibility (iDevice + Android)*/
     document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 
+    function saveScrollPosition() {
+        // TODO: Store positions and return an id to use with restoreScrollPosition.
+        // savedScrollPosition[0] = {x: myScroll.x, y: myScroll.y};
+        if (myScroll) {
+            lastXPosition = myScroll.x;
+            lastYPosition = myScroll.y;
+        }
+    }
+
+    function restoreScrollPosition(offsetX, offsetY/* TODO: id*/) {
+        offsetX = offsetX || 0;
+        offsetY = offsetY || 0;
+        // If restoreScrollPosition has been called immediately after the rebuildScroll
+        // method, we need deferring execution of the code to ensure that the myScroll object
+        // exists.
+        setTimeout(function () {
+            try {
+                myScroll.scrollTo(lastXPosition, lastYPosition);
+            } catch (e) {
+
+            }
+        }, 100);
+    }
+    
+    function scrollToElement(element, offset, time) {
+        var top = 0,
+            el  = null;
+        
+        try { el = $(element); } catch (e) {}
+                
+        if (!el) return;
+
+        setTimeout(function () {
+            try {
+                top = (el.offset().top * -1) + offset || 0;
+                top += myScroll.wrapperOffsetTop;
+                myScroll.scrollTo(0, top, time + 100);
+                // myScroll.scrollToElement(element, time);
+            } catch (e) {
+
+            }
+        }, 100);
+    }
+
+    function scrollTo(x, y, time) {
+        setTimeout(function () {
+            try {
+                myScroll.scrollTo(x, y  - myScroll.wrapperOffsetTop, time || 1000, true);
+            } catch (e) {
+
+            }
+        }, 100);
+    }
+    
     function rebuildScroll(id, optionConfig) {
         var wrapper = 'div#' + id + ' #wrapper',
             options = optionConfig || {}; // { hScrollbar: false, vScrollbar: true }
@@ -6895,8 +6971,8 @@ WebAppLoader.addModule({ name: 'scroll' }, function () {
         // options.snap = 'hr';
         // options.momentum = true;
         // options.hScroll = true;
-         options.vScroll = true;
-         // options.zoom = true;
+        // options.vScroll = true;
+        // options.zoom = true;
         
 //        options.snap = true;
 //        options.momentum = false;
@@ -6925,6 +7001,10 @@ WebAppLoader.addModule({ name: 'scroll' }, function () {
 
     scroll.rebuild = rebuildScroll;
     scroll.goUp = goUp;
+    scroll.saveScrollPosition = saveScrollPosition;
+    scroll.restoreScrollPosition = restoreScrollPosition;
+    scroll.scrollToElement = scrollToElement;
+    scroll.scrollTo = scrollTo;
 
     return scroll;
 });
@@ -6956,7 +7036,7 @@ WebAppLoader.addModule({ name: 'spinningWheel', plugins: ['helper'], hasEvents: 
                 id: val.id,
                 repository: val.repository,
                 lastItemSelected: '', // TODO: Get a value from the config.
-                onDoneHandler: 'on' + id + 'Done',
+                onDoneHandler: 'on' + id + 'Done', // TODO: Localize 'Done' and 'Cancel'
                 onCancelHandler: 'on' + id + 'Cancel',
                 onSlotCancel: function () {
                     SpinningWheel.close();
@@ -7820,6 +7900,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         function openAnalysisSection(chartId, chartTitle) {
             htmlToAppend = '';
             htmlToAppend +=
+                '<hr class = "snapper" style="visibility: hidden;" data-chartId="' + chartId + '" />' +
                 '<div class="analysisSummarySection">' +
                 '    <div class="analysisComponentContainer">' +
                 '       <div class="analysisComponentHeader">' +
@@ -8775,7 +8856,9 @@ WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSet
     // APP SETTINGS.
     appSettings = {
         loadPortfoliosSlotDataOnce: true,
-        automaticLanguageDetection: true
+        automaticLanguageDetection: true,
+        animatedChartResizing: true,
+        automaticChartRepositioning: true
     };
 
     // URLs.
@@ -8799,6 +8882,10 @@ WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSet
         id      : 'it-IT',
         value   : 'it-IT',
         name    : 'Italiano'
+    }, {
+        id      : 'pl-PL',
+        value   : 'pl-PL',
+        name    : 'Polski'
     }];
 
     function changeSetting(key, value) {
@@ -9468,8 +9555,8 @@ WebAppLoader.addModule({ name: 'presentationManager', plugins: ['helper', 'devic
         $(el.fullScreenPage).animate({ opacity: 1 }, { duration: 750, easing: 'ease-out', complete: function () {
         }});
 
-//        $('#testChart').append( $('#' + chartId) );
-//        $('#' + chartId).css('-webkit-transform', 'scale(1)');
+        $('#testChart').append( $('#' + chartId) );
+        $('#' + chartId).css('-webkit-transform', 'scale(1)');
     }
 
     function exitPresentationMode() {
@@ -10320,7 +10407,7 @@ Zepto(function ($) {
             theApp.synchronizeFavouriteButton();
 
             theApp.chartComponents.render(chartsToRender, '#analysis_partial');
-            theApp.changeOrientation();
+            theApp.synchronizeOrientation();
             $(el.analysisComponentFullScreenButton).on('click', function (e, info) {
                 var chartId = $(this).attr('data-chartId');
                 theApp.presentationManager.enterPresentationMode(chartId);
@@ -10580,6 +10667,7 @@ Zepto(function ($) {
         visible: true,
         items: [
             { id: 'favourite', title: lang.tabbar.favourites, btnClass: 'favourite' }
+            // { id: 'test', title: test, btnClass: 'favourite' }
         ]
     };
 
@@ -10596,6 +10684,10 @@ Zepto(function ($) {
         } else {
             theApp.removeFromFavourites();
         }
+    });
+
+    theApp.toolbar.on('onTestTap', function (isSelected) {
+        theApp.onTestApp();
     });
 
     // ------------------------------------------
@@ -11021,37 +11113,106 @@ Zepto(function ($) {
 
     theApp.startHere();
 
-    theApp.changeOrientation = function () {
-        var animationSpeed  = 250,
-            rebuildingDelay = 500;
+/*
+        animatedChartResizing: true,
+        automaticChartRepositioning: true
+*/
+
+    // ------------------------------------------
+    // EXTRA FUNCTIONALITIES
+    // ------------------------------------------
+
+    theApp.synchronizeOrientation = function () {
+        var animationSpeed  = 0,
+            rebuildingDelay = 50,
+            el              = null;
 
         if (theApp.presentationManager.isFullScreen()) {
             return;
         }
+
+        animationSpeed  = (theApp.settings.appSettings.animatedChartResizing)
+            ? 500
+            : 0;
+
         theApp.mask.show('turn');
+
         // ASA TODO: Change left, top, width and height from chartDefaults instead of scaling all charts about .93...
         if (device.orientation() === 'landscape') {
-            // $('.chartContainer').css('-webkit-transform', 'scale(.75)');
-            $('.chartContainer').css({'-webkit-transform': 'scale(.93)', '-webkit-transform-origin': 'left top'});
-            $('.analysisComponentContainer').animate({ height: '500px' }, { duration: animationSpeed, easing: 'ease-out', complete: function () {}});
+            $('.analysisComponentContainer').animate({ height: '500px' }, { duration: animationSpeed, easing: 'ease-out', complete: function () {
+                $('.chartContainer').css({'-webkit-transform': 'scale(.93)', '-webkit-transform-origin': 'left top'});
+            }});
 
         } else {
             $('.chartContainer').css({'-webkit-transform': 'scale(.69)', '-webkit-transform-origin': 'left top'});
             $('.analysisComponentContainer').animate({ height: '375px' }, { duration: animationSpeed, easing: 'ease-out', complete: function () {}});
         }
 
-        // Rebuild the iScroll using a delay is necessary to ensure that the page height
-        // is calculate correctly.
-        setTimeout(function () {
-            theApp.scroll.rebuild('analysis');
-            theApp.mask.hide('turn');
-        }, animationSpeed + rebuildingDelay);
+        if (theApp.settings.appSettings.automaticChartRepositioning) {
+            theApp.synchronizeOrientation.pendingCount += 1;
+
+            // Rebuild the iScroll using a delay is necessary to ensure that the page height
+            // is calculate correctly.
+            setTimeout(function () {
+                if (theApp.synchronizeOrientation.pendingCount > 0) {
+                    theApp.synchronizeOrientation.pendingCount -= 1;
+                }
+            
+                if (theApp.synchronizeOrientation.pendingCount === 0) {
+                    theApp.scroll.rebuild('analysis');
+                    if (theApp.synchronizeOrientation.chartToDisplay !== '') {
+                        theApp.scroll.scrollToElement('#' + theApp.synchronizeOrientation.chartToDisplay, 75, 25);
+                    }
+             
+                    theApp.mask.hide('turn');
+                }
+            }, animationSpeed + rebuildingDelay);
+        }
+    };
+    
+    // Memoization pattern.
+    theApp.synchronizeOrientation.pendingCount = 0;
+    theApp.synchronizeOrientation.chartToDisplay = '';
+
+    theApp.getCurrentChartDisplayedInViewport = function () {
+        var approximativeHeaderHeight   = 75,
+            horizon                     = 0, 
+            charts                      = [],
+            chart                       = {},
+            positions                   = [],
+            minY                        = 0;
+
+        horizon = (device.orientation() === 'landscape')
+            ? (device.maxHeight()) / 2 + approximativeHeaderHeight
+            : (device.maxWidth()) / 2 + approximativeHeaderHeight;
+
+        $('.snapper').each(function (){
+            var id, y;
+            y = Math.abs($(this).offset().top - approximativeHeaderHeight);
+            id = $(this).data('chartid');
+            y = (y >= horizon)
+                ? y - horizon
+                : y;
+           
+            positions.push(y);
+            charts.push({y: y, chartId: id});
+        });
+        
+        // Reference: http://ejohn.org/blog/fast-javascript-maxmin/
+        minY = Math.min.apply(Math, positions);
+        chart =  helper.getObjectFromArray(charts, 'y', minY);
+
+        return chart.chartId;
     };
 
-    $('body').bind('turn', function(event, info){
-        theApp.changeOrientation();
 
+    $('body').bind('turn', function(event, info){
+        theApp.synchronizeOrientation.chartToDisplay = theApp.getCurrentChartDisplayedInViewport();
+        theApp.synchronizeOrientation();
     });
+
+    theApp.onTestApp = function () {
+    };
 });
 
 

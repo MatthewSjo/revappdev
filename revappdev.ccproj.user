@@ -3,5 +3,8 @@
   <PropertyGroup>
     <RemoteDesktopMoreOptions>True</RemoteDesktopMoreOptions>
     <ActivePublishProfile>revappdevStaging</ActivePublishProfile>
+    <PackageProfile>Cloud</PackageProfile>
+    <PackageSolutionConfiguration>Release</PackageSolutionConfiguration>
+    <PackageEnableRemoteDesktop>True</PackageEnableRemoteDesktop>
   </PropertyGroup>
 </Project>

@@ -26,7 +26,7 @@ WebAppLoader.addModule({ name: 'spinningWheel', plugins: ['helper'], hasEvents: 
                 id: val.id,
                 repository: val.repository,
                 lastItemSelected: '', // TODO: Get a value from the config.
-                onDoneHandler: 'on' + id + 'Done',
+                onDoneHandler: 'on' + id + 'Done', // TODO: Localize 'Done' and 'Cancel'
                 onCancelHandler: 'on' + id + 'Cancel',
                 onSlotCancel: function () {
                     SpinningWheel.close();

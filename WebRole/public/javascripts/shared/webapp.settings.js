@@ -26,7 +26,9 @@ WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSet
     // APP SETTINGS.
     appSettings = {
         loadPortfoliosSlotDataOnce: true,
-        automaticLanguageDetection: true
+        automaticLanguageDetection: true,
+        animatedChartResizing: true,
+        automaticChartRepositioning: true
     };
 
     // URLs.

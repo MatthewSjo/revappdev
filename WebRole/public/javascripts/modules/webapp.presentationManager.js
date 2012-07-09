@@ -24,8 +24,8 @@ WebAppLoader.addModule({ name: 'presentationManager', plugins: ['helper', 'devic
         $(el.fullScreenPage).animate({ opacity: 1 }, { duration: 750, easing: 'ease-out', complete: function () {
         }});
 
-//        $('#testChart').append( $('#' + chartId) );
-//        $('#' + chartId).css('-webkit-transform', 'scale(1)');
+        $('#testChart').append( $('#' + chartId) );
+        $('#' + chartId).css('-webkit-transform', 'scale(1)');
     }
 
     function exitPresentationMode() {

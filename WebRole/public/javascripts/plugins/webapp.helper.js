@@ -140,6 +140,24 @@ WebAppLoader.addModule({ name: 'helper', isPlugin: true }, function () {
         return e.childNodes[0].nodeValue;
     }
 
+    function sortObject(o) {
+        var sorted = {},
+        key, a = [];
+
+        for (key in o) {
+            if (o.hasOwnProperty(key)) {
+                    a.push(key);
+            }
+        }
+
+        a.sort();
+
+        for (key = 0; key < a.length; key++) {
+            sorted[a[key]] = o[a[key]];
+        }
+        return sorted;
+    }
+
     helper.capitaliseFirstLetter = capitaliseFirstLetter;
     helper.getValueAs = getValueAs;
     helper.startsWith = startsWith;
@@ -151,6 +169,7 @@ WebAppLoader.addModule({ name: 'helper', isPlugin: true }, function () {
     helper.getURLParameter = getURLParameter;
     helper.getObjectFromArray = getObjectFromArray;
     helper.htmlDecode = htmlDecode;
+    helper.sortObject = sortObject;
 
     return helper;
 });
