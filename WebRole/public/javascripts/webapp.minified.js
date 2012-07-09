@@ -3229,7 +3229,8 @@ function c(h){if(typeof h=="string"){h=e[h]
 }return f[h]
 }function a(h){$.each(h.items,function(j,l){var k=d.capitaliseFirstLetter(l.id);
 e[l.id]=j;
-f[j]={id:l.id,repository:l.repository,lastItemSelected:"",onDoneHandler:"on"+k+"Done",onCancelHandler:"on"+k+"Cancel",onSlotCancel:function(){SpinningWheel.close();
+f[j]={id:l.id,repository:l.repository,lastItemSelected:"",isShown:false,onDoneHandler:"on"+k+"Done",onCancelHandler:"on"+k+"Cancel",onSlotCancel:function(){SpinningWheel.close();
+f[j].isShown=false;
 b.raiseEvent(f[j].onCancelHandler)
 },onSlotDone:function(){var i,n,m;
 m=SpinningWheel.getSelectedValues();
@@ -3237,13 +3238,15 @@ i=m.keys[0]||"";
 n=m.values[0]||"";
 f[j].lastItemSelected=i;
 SpinningWheel.close();
+f[j].isShown=false;
 b.raiseEvent(f[j].onDoneHandler,i,n)
 },show:function(i){function m(n){SpinningWheel.addSlot(n,"",i||f[j].lastItemSelected);
 SpinningWheel.setCancelAction(f[j].onSlotCancel);
 SpinningWheel.setDoneAction(f[j].onSlotDone);
 SpinningWheel.open()
-}this.repository.getData(m)
-}}
+}if(!f[j].isShown){f[j].isShown=true;
+this.repository.getData(m)
+}}}
 })
 }g.create=a;
 g.getSlot=c;
@@ -3630,7 +3633,7 @@ return a
 WebAppLoader.addModule({name:"settings",dataObjects:["appSettings","userSettings"],isShared:true},function(){var h={},a={},i={},f=[],g=this.getConsole(),j=this.getDataObject("userSettings"),b=this.getDataObject("appSettings");
 j.define({automaticLogin:false,username:"",password:"",language:"en-US",lastUsedLanguage:"none"});
 b.define({lastLoggedOnUser:""});
-a={loadPortfoliosSlotDataOnce:true,automaticLanguageDetection:true,animatedChartResizing:true,automaticChartRepositioning:true};
+a={loadPortfoliosSlotDataOnce:true,automaticLanguageDetection:true,animatedChartResizing:true,automaticChartRepositioning:false};
 i={portfolios:"/portfolios",authenticate:"/authenticate",index:"/index",portfolioAnalysis:"/portfolioAnalysis",analysis:"/analysis",segmentsTreeNode:"/segmentsTreeNode",timeSeries:"/timeSeries",eula:"/eula"};
 f=[{id:"en-US",value:"en-US",name:"English"},{id:"it-IT",value:"it-IT",name:"Italiano"},{id:"pl-PL",value:"pl-PL",name:"Polski"}];
 function c(k,l){a[k]=l;
@@ -4383,6 +4386,9 @@ setTimeout(function(){if(l.synchronizeOrientation.pendingCount>0){l.synchronizeO
 if(l.synchronizeOrientation.chartToDisplay!==""){l.scroll.scrollToElement("#"+l.synchronizeOrientation.chartToDisplay,75,25)
 }l.mask.hide("turn")
 }},n+p)
+}else{setTimeout(function(){l.scroll.rebuild("analysis");
+l.mask.hide("turn")
+},n+p)
 }};
 l.synchronizeOrientation.pendingCount=0;
 l.synchronizeOrientation.chartToDisplay="";

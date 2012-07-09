@@ -76,6 +76,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
         eventManager.init(this);
 
         function getAnalysisSlotItems() {
+            // ASA TODO: Investigate...
             return analysisSlotItems;
             return (analysisSlotItems)
                 ? analysisSlotItems

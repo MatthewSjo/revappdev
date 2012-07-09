@@ -7036,10 +7036,12 @@ WebAppLoader.addModule({ name: 'spinningWheel', plugins: ['helper'], hasEvents: 
                 id: val.id,
                 repository: val.repository,
                 lastItemSelected: '', // TODO: Get a value from the config.
+                isShown: false,
                 onDoneHandler: 'on' + id + 'Done', // TODO: Localize 'Done' and 'Cancel'
                 onCancelHandler: 'on' + id + 'Cancel',
                 onSlotCancel: function () {
                     SpinningWheel.close();
+                    slots[i].isShown = false;
                     eventManager.raiseEvent(slots[i].onCancelHandler);
                 },
                 onSlotDone: function () {
@@ -7051,6 +7053,7 @@ WebAppLoader.addModule({ name: 'spinningWheel', plugins: ['helper'], hasEvents: 
 
                     slots[i].lastItemSelected = key;
                     SpinningWheel.close();
+                    slots[i].isShown = false;
                     eventManager.raiseEvent(slots[i].onDoneHandler, key, value);
                 },
                 show: function (defaultItem) {
@@ -7060,8 +7063,11 @@ WebAppLoader.addModule({ name: 'spinningWheel', plugins: ['helper'], hasEvents: 
                         SpinningWheel.setDoneAction(slots[i].onSlotDone);
                         SpinningWheel.open();
                     }
-
-                    this.repository.getData(initSlot);
+                    if (!slots[i].isShown) {
+                        slots[i].isShown = true;
+                        this.repository.getData(initSlot);
+                    }
+                    
                 }
             };
         });
@@ -8858,7 +8864,7 @@ WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSet
         loadPortfoliosSlotDataOnce: true,
         automaticLanguageDetection: true,
         animatedChartResizing: true,
-        automaticChartRepositioning: true
+        automaticChartRepositioning: false
     };
 
     // URLs.
@@ -9702,6 +9708,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
         eventManager.init(this);
 
         function getAnalysisSlotItems() {
+            // ASA TODO: Investigate...
             return analysisSlotItems;
             return (analysisSlotItems)
                 ? analysisSlotItems
@@ -11166,6 +11173,11 @@ Zepto(function ($) {
              
                     theApp.mask.hide('turn');
                 }
+            }, animationSpeed + rebuildingDelay);
+        } else {
+            setTimeout(function () {
+                theApp.scroll.rebuild('analysis');
+                theApp.mask.hide('turn');
             }, animationSpeed + rebuildingDelay);
         }
     };

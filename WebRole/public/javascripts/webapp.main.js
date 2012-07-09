@@ -1096,6 +1096,11 @@ Zepto(function ($) {
                     theApp.mask.hide('turn');
                 }
             }, animationSpeed + rebuildingDelay);
+        } else {
+            setTimeout(function () {
+                theApp.scroll.rebuild('analysis');
+                theApp.mask.hide('turn');
+            }, animationSpeed + rebuildingDelay);
         }
     };
     
