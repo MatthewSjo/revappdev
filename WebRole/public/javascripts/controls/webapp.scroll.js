@@ -9,7 +9,7 @@ WebAppLoader.addModule({ name: 'scroll' }, function () {
     /* Use this for high compatibility (iDevice + Android)*/
     document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 
-    function rebuildScroll(id, optionConfig) {
+    function rebuildScroll(id, clickSafeMode, optionConfig) {
         var wrapper = 'div#' + id + ' #wrapper',
             options = optionConfig || {}; // { hScrollbar: false, vScrollbar: true }
 
@@ -18,7 +18,7 @@ WebAppLoader.addModule({ name: 'scroll' }, function () {
             var target = e.target;
             while (target.nodeType != 1) target = target.parentNode;
 
-            if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA') {
+            if (clickSafeMode && target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA') {
                 e.preventDefault();
             }
         };
@@ -27,14 +27,14 @@ WebAppLoader.addModule({ name: 'scroll' }, function () {
         // options.snap = 'hr';
         // options.momentum = true;
         // options.hScroll = true;
-         options.vScroll = true;
-         // options.zoom = true;
-        
-//        options.snap = true;
-//        options.momentum = false;
-//        options.hScrollbar = false;
-//        options.vScrollbar = false;
-        
+        options.vScroll = true;
+        // options.zoom = true;
+
+        //        options.snap = true;
+        //        options.momentum = false;
+        //        options.hScrollbar = false;
+        //        options.vScrollbar = false;
+
         if (myScroll) {
             myScroll.destroy();
             myScroll = null;

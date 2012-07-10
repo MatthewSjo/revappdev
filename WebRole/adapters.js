@@ -48,13 +48,37 @@ function addMeasureColumns(columnArray, measures, analysis, language) {
         len = measures.length;
 
         for (i = 0; i < len; i++) {
+
             // Obtain the measure ID.
             measureId = measures[i];
             // Get the localised measure name.
             measureName = getMeasureName(measureId, analysis, language);
-            // Add the column.
-            this.addColumn(columnArray, measureName);
+
+            // If we're making a bubble chart...
+            if (this.isBubbleChart) {
+
+                // ...we need to be specific about the columns; 
+                // their order, type and their labels.
+                switch (i) {
+                    case 0:
+                        columnArray.push({ label: 'ID', type: 'string' });
+                        columnArray.push({ label: measureName, type: 'number' });
+                        break;
+                    case 1:
+                        columnArray.push({ label: measureName, type: 'number' });
+                        break;
+                    case 2:
+                        columnArray.push({ label: 'Name', type: 'string' });
+                        columnArray.push({ label: measureName, type: 'number' });
+                        break;
+                }
+
+            } else {    
+                // Add the column.
+                this.addColumn(columnArray, measureName);
+            }
         }
+        
     }
 }
 
@@ -330,13 +354,8 @@ exports.Table.addMeasureRows = addMeasureRows;
 
 // Bubble Chart
 exports.BubbleChart.addRow = addBubbleChartRow;
-exports.BubbleChart.columns = [
-    { label: 'ID', type: 'string' },
-	{ label: 'X Coordinate', type: 'number' },
-	{ label: 'Y Coordinate', type: 'number' },
-	{ label: 'Name', type: 'string' },
-	{ label: 'Size', type: 'number' }
-];
+exports.BubbleChart.columns = [];
+exports.BubbleChart.isBubbleChart = true;
 
 // Tree Map
 exports.TreeMap.addRow = addTreeMapRow;

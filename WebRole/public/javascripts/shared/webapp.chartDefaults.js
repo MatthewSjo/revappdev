@@ -120,7 +120,9 @@ WebAppLoader.addModule({ name: 'chartDefaults', isShared: true }, function () {
         fontName: commonSettings.labelFontName,
         fontSize: commonSettings.labelFontSize,
         forceIFrame: commonSettings.forceIFrame,
-        is3D: true
+        is3D: true,
+        legend: { position: 'none' },
+        pieSliceText: 'label'
     };
 
     // TREE MAP (HEATMAP) CHART
