@@ -76,7 +76,9 @@ exports.index = function (req, res) {
     var viewModel = {}, 
         requestedLanguage;
     
-    // Set server side language.
+    // At this point, we've not called the Web API which manages 
+    // the language on the server side, so we need to set the language 
+    // based on the querystring provided, or the default language.
     requestedLanguage = req.query.lang || defaultLanguage;
     viewModel.lang = getServerLanguage(requestedLanguage);
 
@@ -93,11 +95,11 @@ exports.index = function (req, res) {
 
 // Authentication
 exports.authenticate = function (req, res, next) {
-    var email, token, currentLanguage;
+    var email, token, language;
 
-    // If we had a language specified as part of the querystring,
-    // retrieve it from the language module, otherwise load the default.
-    currentLanguage = getServerLanguage(req.query.lang);
+    // Assign the culture code to a variable if we had a language 
+    // specified as part of the body, otherwise use the default.
+    language = req.body.lang || defaultLanguage;
 
     // Extract the email and authentication token from the request body.
     email = req.body.email;
@@ -107,8 +109,8 @@ exports.authenticate = function (req, res, next) {
     delete req.session.token;
 
     // Attempt to consume the service.
-    webApi.initService(email, token, GLOBAL_WAPI_URI, currentLanguage, function (resource) {
-        var obj;
+    webApi.initService(email, token, GLOBAL_WAPI_URI, language, function (resource) {
+        var obj, currentLanguage;
 
         // Create an object to pass down as JSON to the calling function.
         obj = { authenticated: !resource.error };
@@ -116,6 +118,9 @@ exports.authenticate = function (req, res, next) {
 
         // If the authentication was unsuccessful...
         if (resource.error) {
+
+            // We need to use the language to define error strings.
+            currentLanguage = getServerLanguage(language);
 
             // The API doesn't return a 'username or password incorrect'
             // message, merely an HTTP 401 status code. Therefore, check
@@ -149,14 +154,9 @@ exports.portfolios = function (req, res) {
             orderby: '',
             skip: '',
             top: ''
-        },
-        currentLanguage;
+        };
 
-    // If we had a language specified as part of the querystring,
-    // retrieve it from the language module, otherwise load the default.
-    currentLanguage = getServerLanguage(req.query.lang);
-
-    webApi.getPortfolios(oData, datatype, req.session.token, currentLanguage, function (resource, datatype) {
+    webApi.getPortfolios(oData, datatype, req.session.token, function (resource, datatype) {
         var viewModel = resource.data || {};
 
         switch (datatype) {
@@ -174,14 +174,9 @@ exports.portfolios = function (req, res) {
 // Portfolio Analysis
 exports.portfolioAnalysis = function (req, res) {
     var datatype = req.body.datatype || '',
-        maxAttempts = 3, // TODO: We could use a const to set the maxAttempts.
-        currentLanguage;
+        maxAttempts = 3; // TODO: We could use a const to set the maxAttempts.
 
-    // If we had a language specified as part of the querystring,
-    // retrieve it from the language module, otherwise load the default.
-    currentLanguage = getServerLanguage(req.query.lang);
-
-    webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, req.session.token, currentLanguage, function (analysis) {
+    webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, req.session.token, function (analysis) {
         var viewModel = analysis.data || {};
 
         switch (datatype) {
@@ -199,14 +194,9 @@ exports.portfolioAnalysis = function (req, res) {
 // Analysis
 exports.analysis = function (req, res) {
     var datatype = req.body.datatype || '',
-        maxAttempts = 3,
-        currentLanguage;
+        maxAttempts = 3;
 
-    // If we had a language specified as part of the querystring,
-    // retrieve it from the language module, otherwise load the default.
-    currentLanguage = getServerLanguage(req.query.lang);
-
-    webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, req.session.token, currentLanguage, function (analysis) {
+    webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, req.session.token, function (analysis) {
         var viewModel = analysis.data || {};
 
         switch (datatype) {
@@ -215,9 +205,7 @@ exports.analysis = function (req, res) {
                 break;
             default:
                 // Set language and layout.
-                viewModel.lang = currentLanguage;
                 viewModel.layout = false;
-
                 res.render('analysis', viewModel);
                 break;
         }
@@ -226,13 +214,8 @@ exports.analysis = function (req, res) {
 
 // EULA
 exports.eula = function (req, res) {
-    var currentLanguage;
-    
-    // If we had a language specified as part of the querystring,
-    // retrieve it from the language module, otherwise load the default.
-    currentLanguage = getServerLanguage(req.query.lang);
 
-    webApi.getEula('fragment', req.session.token, currentLanguage, function (resource) {
+    webApi.getEula('fragment', req.session.token, function (resource) {
         var viewModel = {
             eula: resource.data || {},
             layout: false

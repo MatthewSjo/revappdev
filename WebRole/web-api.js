@@ -5,9 +5,43 @@
 // Module Dependencies
 var http = require('http'),
     path = require("path"),
-    url = require("url");
+    url = require("url"),
+    languages = require('./languages'),
+    defaultLanguage = 'en-US'; ;
 
 var MAX_ATTEMPTS = 1;
+
+// Current Language
+var currentLanguage = {};
+
+// Returns the server-side language dictionary 
+// object for the current user, or null if not defined.
+function getCurrentDictionary() {
+    return currentLanguage['object'] || null;
+}
+
+// Returns the current language culture code string 
+// for the current user, or null if not defined.
+function getCurrentLanguage() {
+    return currentLanguage['string'] || null;
+}
+
+function setCurrentLanguage(value) {
+    var language = value || defaultLanguage;
+
+    language = language.charAt(0).toLowerCase() +
+               language.charAt(1).toLowerCase() +
+               '-' +
+               language.charAt(3).toUpperCase() +
+               language.charAt(4).toUpperCase();
+
+    currentLanguage['string'] = language;
+
+    if (languages[language] && languages[language]['server']) {
+        currentLanguage['object'] = languages[language]['server'];
+    }
+}
+
 
 // Current Analysis
 var currentAnalysis = {};
@@ -44,7 +78,6 @@ function setResourceLink(token, resource, link){
     resourceLinks[token][resource] = link;
 }
 
-
 // ------------------------------------------
 // HELPER FUNCTIONS
 // ------------------------------------------
@@ -80,9 +113,8 @@ function getRequestOptions(uri, token) {
 //
 // 'statusCode' - The HTTP status code returned by the response.
 // 'data'       - The body content of the response.
-// 'language'   - An object containing localized display strings for use on the server side.
-function processResponse(statusCode, data, language) {
-    var parts, code, error;
+function processResponse(statusCode, data) {
+    var parts, code, error, dictionary;
 
     // If the HTTP status code isn't an error...
     if (statusCode < 400) {
@@ -90,9 +122,12 @@ function processResponse(statusCode, data, language) {
         return false;
     }
 
+    // Get our error dictionary.
+    dictionary = getCurrentDictionary().errors;
+
     // Assume this is an unknown error.
     error = {
-        message: language.errors.unknownErrorText,
+        message: dictionary.unknownErrorText,
         httpStatusCode: statusCode,
         internalErrorCode: null
     };
@@ -113,12 +148,12 @@ function processResponse(statusCode, data, language) {
         error.internalErrorCode = code;
         error.message = parts[1];
 
-        // If the custom error code matches a resource in the language object when we
+        // If the custom error code matches a resource in the language dictionary when we
         // adding the 'error' prefix necessary to retrieve a potential localized message 
         // from the language file...
-        if (language.errors['error' + code]) {
+        if (dictionary['error' + code]) {
             // ...use that message instead of the one returned by the API.
-            error.message = language.errors['error' + code];
+            error.message = dictionary['error' + code];
         }
     }
 
@@ -131,16 +166,13 @@ function processResponse(statusCode, data, language) {
 // 'resourceName'   - A string defining the JSON root property for the data requested.
 // 'options'        - An object created by the getRequestOptions function, containing
 //                    the required parameters to make a resource request.
-// 'language'       - An object containing display strings for use on the server side.
-//                    This will be localized if the request contains a valid 'lang' 
-//                    querystring, otherwise defaulting to 'en_US'.
 // 'callback'       - A JavaScript function to be called when the response has arrived.
 //                    Will always be called, regardless of the outcome of the request,
 //                    and will receive an object containing a 'data' property, which 
 //                    may be null, and an error property, which will either be boolean false 
 //                    (indicating that the request was successful), a boolean true, or a 
 //                    complete error object (both indicating that the request failed).
-function getResource(resourceName, options, language, callback) {
+function getResource(resourceName, options, callback) {
     var request, data = '', resource;
 
     // Define an empty resource object.
@@ -168,20 +200,20 @@ function getResource(resourceName, options, language, callback) {
             var obj, error;
 
             // Process the response.
-            error = processResponse(response.statusCode, data, language);
+            error = processResponse(response.statusCode, data);            
 
             // If we've had an error object returned by the processing of the response...
             if (error) {
-                
+
                 // ...an error has occurred, so we've got no data.
                 resource.data = null;
                 // Add the error object we've been provided.
                 resource.error = error;
-            
+
             } else {
 
                 try {
-                    
+
                     // Attempt to parse our JSON into an object we can use.
                     obj = JSON.parse(data);
                     // Assign the requested property as our returnable resource.
@@ -193,15 +225,11 @@ function getResource(resourceName, options, language, callback) {
                     // got to the resource object.
                     resource.data = data;
 
-                    // Flag the resource as erroneous.
-                    resource.error = {
-                        message: language.errors.unknownErrorText,
-                        httpStatusCode: response.statusCode,
-                        internalErrorCode: null
-                    };
+                    // Use the response processor to generate an error object.
+                    resource.error = processResponse(500, data);
                 }
             }
-            
+
             // Invoke the callback function, passing the resource object.
             callback(resource);
         });
@@ -291,8 +319,11 @@ exports.initService = function (email, token, uri, language, callback) {
     // Generate the request configuration.
     options = getRequestOptions(uri, token);
 
+    // Set the current language.
+    setCurrentLanguage(language);
+
     // Attempt to get the service's entry point resource.
-    getResource('service', options, language, function (resource) {
+    getResource('service', options, function (resource) {
 
         if (!resource.error && resource.data) {
             // Populate the resources object.
@@ -309,16 +340,13 @@ exports.initService = function (email, token, uri, language, callback) {
 // 'oData'      - An object containing filtering values to be inserted into a URI. 
 // 'datatype'   - A string defining whether the resource should be returned as HTML or JSON.
 // 'token'      - A Base64-encoded string representing a user's username and password.
-// 'language'   - An object containing display strings for use on the server side.
-//                This will be localized if the request contains a valid 'lang' 
-//                querystring, otherwise defaulting to 'en_US'.
 // 'callback'   - A JavaScript function to be called when the response has arrived.
 //                Will always be called, regardless of the outcome of the request,
 //                and will receive an object containing a 'data' property, which 
 //                may be null, and an error property, which will either be boolean false 
 //                (indicating that the request was successful), a boolean true, or a 
 //                complete error object (both indicating that the request failed).
-exports.getPortfolios = function (oData, datatype, token, language, callback) {
+exports.getPortfolios = function (oData, datatype, token, callback) {
     var options, portfoliosQuery;
 
     // Format a portfolio querystring based on the oData and the portfolio resource link.
@@ -328,7 +356,7 @@ exports.getPortfolios = function (oData, datatype, token, language, callback) {
     options = getRequestOptions(portfoliosQuery, token);
 
     // Attempt to get a list of the user's portfolios, filtered by the query.
-    getResource('portfolios', options, language, function (resource) {
+    getResource('portfolios', options, function (resource) {
         callback(resource, datatype);
     });
 };
@@ -338,16 +366,13 @@ exports.getPortfolios = function (oData, datatype, token, language, callback) {
 // 'attempts'       - The attempts setting specifies the maximum number of times to try 
 //                    access to the resource.
 // 'token'          - A Base64-encoded string representing a user's username and password.
-// 'language'       - An object containing display strings for use on the server side.
-//                    This will be localized if the request contains a valid 'lang' 
-//                    querystring, otherwise defaulting to 'en_US'.
 // 'callback'       - A JavaScript function to be called when the response has arrived.
 //                    Will always be called, regardless of the outcome of the request,
 //                    and will receive an object containing a 'data' property, which 
 //                    may be null, and an error property, which will either be boolean false 
 //                    (indicating that the request was successful), a boolean true, or a 
 //                    complete error object (both indicating that the request failed).
-exports.getPortfolioAnalysis = function (uri, attempts, token, language, callback) {
+exports.getPortfolioAnalysis = function (uri, attempts, token, callback) {
     var options;
 
     // Generate the request configuration.
@@ -358,7 +383,7 @@ exports.getPortfolioAnalysis = function (uri, attempts, token, language, callbac
         : attempts;
 
     // Attempt to get the portfolio analysis for the requested portfolio.
-    getResource('portfolioAnalysis', options, language, function (resource) {
+    getResource('portfolioAnalysis', options, function (resource) {
         var status;
 
         if (!resource.error && resource.data) {
@@ -377,7 +402,7 @@ exports.getPortfolioAnalysis = function (uri, attempts, token, language, callbac
                 // ...attempt to get the last successful analysis.
                 uri = uri.replace('lastSuccessful=false', 'lastSuccessful=true');
                 // Use the modified URI with this function.
-                exports.getPortfolioAnalysis(uri, attempts, token, language, callback);
+                exports.getPortfolioAnalysis(uri, attempts, token, callback);
                 return;
             }
 
@@ -398,16 +423,13 @@ exports.getPortfolioAnalysis = function (uri, attempts, token, language, callbac
 // 'oData'      - An object containing filtering values to be inserted into a URI. 
 // 'params'     - An object containing additional parameter values to be inserted into a URI. 
 // 'token'      - A Base64-encoded string representing a user's username and password.
-// 'language'   - An object containing display strings for use on the server side.
-//                This will be localized if the request contains a valid 'lang' 
-//                querystring, otherwise defaulting to 'en_US'.
 // 'callback'   - A JavaScript function to be called when the response has arrived.
 //                Will always be called, regardless of the outcome of the request,
 //                and will receive an object containing a 'data' property, which 
 //                may be null, and an error property, which will either be boolean false 
 //                (indicating that the request was successful), a boolean true, or a 
 //                complete error object (both indicating that the request failed).
-exports.getSegmentsTreeNode = function (oData, params, token, language, callback) {
+exports.getSegmentsTreeNode = function (oData, params, token, callback) {
     var options, filterQuery, segmentsTreeNodeQuery, uri;
 
     uri = params.url || getResourceLink(token, 'segmentsTreeNode') || null;
@@ -423,11 +445,11 @@ exports.getSegmentsTreeNode = function (oData, params, token, language, callback
         options = getRequestOptions(segmentsTreeNodeQuery, token);
 
         // Attempt to get the specified segment tree nodes.
-        getResource('segmentsTreeNode', options, language, function (resource) {
-            callback(resource, getCurrentAnalysis(token));
+        getResource('segmentsTreeNode', options, function (resource) {
+            callback(resource, getCurrentAnalysis(token), getCurrentLanguage());
         });
     } else {
-        
+
         console.log('getSegmentsTreeNode - no URI');
     }
 };
@@ -435,16 +457,13 @@ exports.getSegmentsTreeNode = function (oData, params, token, language, callback
 // Attempts to retrieve the specified time series for the requested portfolio.
 // 'params'     - An object containing additional parameter values to be inserted into a URI. 
 // 'token'      - A Base64-encoded string representing a user's username and password.
-// 'language'   - An object containing display strings for use on the server side.
-//                This will be localized if the request contains a valid 'lang' 
-//                querystring, otherwise defaulting to 'en_US'.
 // 'callback'   - A JavaScript function to be called when the response has arrived.
 //                Will always be called, regardless of the outcome of the request,
 //                and will receive an object containing a 'data' property, which 
 //                may be null, and an error property, which will either be boolean false 
 //                (indicating that the request was successful), a boolean true, or a 
 //                complete error object (both indicating that the request failed).
-exports.getTimeSeries = function (params, token, language, callback) {
+exports.getTimeSeries = function (params, token, callback) {
     var options, timeSeriesQuery;
 
     // Format the querystring with filters applied to add further parameters.
@@ -454,8 +473,8 @@ exports.getTimeSeries = function (params, token, language, callback) {
     options = getRequestOptions(timeSeriesQuery, token);
 
     // Attempt to get the specified time series.
-    getResource('timeSeries', options, language, function (resource) {
-        callback(resource, getCurrentAnalysis(token));
+    getResource('timeSeries', options, function (resource) {
+        callback(resource, getCurrentAnalysis(token), getCurrentLanguage());
     });
 };
 
@@ -465,9 +484,6 @@ exports.getTimeSeries = function (params, token, language, callback) {
 //                CSS), 'fragment' (retrieves only the HTML fragment), 'css' (retrieves
 //                only the EULA CSS). If undefined, will default to 'document' format.
 // 'token'      - A Base64-encoded string representing a user's username and password.
-// 'language'   - An object containing display strings for use on the server side.
-//                This will be localized if the request contains a valid 'lang' 
-//                querystring, otherwise defaulting to 'en_US'.
 // 'callback'   - A JavaScript function to be called when the response has arrived.
 //                Will always be called, regardless of the outcome of the request,
 //                and will receive an object containing a 'data' property, which 
@@ -481,7 +497,7 @@ exports.getEula = function (eulaFormat, token, language, callback) {
         // Generate the request configuration.
         options = getRequestOptions(eulaUri, token);
         // Attempt to get the EULA.
-        getResource('', options, language, function (eulaDoc) {
+        getResource('', options, function (eulaDoc) {
             callback(eulaDoc);
         });
     }
@@ -490,7 +506,7 @@ exports.getEula = function (eulaFormat, token, language, callback) {
     options = getRequestOptions(getResourceLink(token, 'eula'), token);
 
     // Attempt to get the EULA link dependent on the format requested.
-    getResource('eula', options, language, function (resource) {
+    getResource('eula', options, function (resource) {
         var eulaUri = '';
         
         switch (eulaFormat) {

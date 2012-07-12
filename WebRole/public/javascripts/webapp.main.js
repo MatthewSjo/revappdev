@@ -199,7 +199,7 @@ Zepto(function ($) {
     theApp.doLogin = function (username, password) {
         theApp.lastUsernameUsed = username.toLowerCase();
         theApp.lastPasswordUsed = password;
-        theApp.auth.doLogin(username, password, siteUrls.authenticate);
+        theApp.auth.doLogin(username, password, siteUrls.authenticate, theApp.getLanguage());
     };
 
     theApp.goToLoginPage = function (username) {
@@ -774,28 +774,26 @@ Zepto(function ($) {
     });
 
     theApp.pageEventsManager.on('onSettingsStart', function () {
-        theApp.scroll.rebuild('settings');
+        theApp.scroll.rebuild('settings', true); // Pass in true to ensure form elements are clickable.
         output.log('onSettingsStart');
     });
 
     theApp.pageEventsManager.on('onSettingsEnd', function () {
-        // theApp.scroll.rebuild('settings');
         output.log('onSettingsEnd');
     });
 
     theApp.pageEventsManager.on('onAnalysisSettingsEnd', function () {
-        theApp.scroll.rebuild('analysisSettings');
+        theApp.scroll.rebuild('analysisSettings', true); // Pass in true to ensure form elements are clickable.
         output.log('onAnalysisSettingsEnd');
     });
 
     theApp.pageEventsManager.on('onAnalysisPagesSettingsStart', function () {
-        theApp.scroll.rebuild('analysisPagesSettings');
+        theApp.scroll.rebuild('analysisPagesSettings', true); // Pass in true to ensure form elements are clickable.
         theApp.showAnalysisSettingsPage();
         output.log('onAnalysisPagesSettingsStart');
     });
 
     theApp.pageEventsManager.on('onChartSettingsEnd', function () {
-        // theApp.scroll.rebuild('chartSettings');
         // TODO: focus() doesn't work on iOS...
         setTimeout(function () {
             $(el.analysisPageNameTextbox).focus();
@@ -805,7 +803,7 @@ Zepto(function ($) {
     });
 
     theApp.pageEventsManager.on('onAboutEnd', function () {
-        theApp.scroll.rebuild('about');
+        theApp.scroll.rebuild('about', true); // Pass in true to ensure form elements are clickable.
         output.log('onAboutEnd');
     });
 
@@ -815,7 +813,7 @@ Zepto(function ($) {
     });
 
     theApp.pageEventsManager.on('onResetEnd', function () {
-        theApp.scroll.rebuild('reset');
+        theApp.scroll.rebuild('reset', true); // Pass in true to ensure form elements are clickable.
         output.log('onResetEnd');
     });
 
