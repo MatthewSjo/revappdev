@@ -476,6 +476,7 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         function openAnalysisSection(chartId, chartTitle) {
             htmlToAppend = '';
             htmlToAppend +=
+                '<hr class = "snapper" style="visibility: hidden;" data-chartId="' + chartId + '" />' +
                 '<div class="analysisSummarySection">' +
                 '    <div class="analysisComponentContainer">' +
                 '       <div class="analysisComponentHeader">' +

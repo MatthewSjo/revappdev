@@ -26,7 +26,9 @@ WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSet
     // APP SETTINGS.
     appSettings = {
         loadPortfoliosSlotDataOnce: true,
-        automaticLanguageDetection: true
+        automaticLanguageDetection: true,
+        animatedChartResizing: true,
+        automaticChartRepositioning: false
     };
 
     // URLs.
@@ -50,7 +52,7 @@ WebAppLoader.addModule({ name: 'settings', dataObjects: ['appSettings', 'userSet
         id      : 'it-IT',
         value   : 'it-IT',
         name    : 'Italiano'
-    }, {
+    }, { 
         id      : 'pl-PL',
         value   : 'pl-PL',
         name    : 'Polski'

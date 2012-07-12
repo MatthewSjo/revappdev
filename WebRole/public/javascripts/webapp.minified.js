@@ -3041,49 +3041,56 @@ a.orientation=p;
 return a
 });
 WebAppLoader.addModule({name:"helper",isPlugin:true},function(){var i={};
-function a(m){return m.charAt(0).toUpperCase()+m.slice(1)
-}function l(n,m){return n.indexOf(m)===0
-}function c(m,n){return m.match(n+"$")==n
-}function g(p,o){function m(s,t,q){return(typeof s===t)?s:q
-}function n(s,q){return(Array.isArray(s))?s:q
-}switch(o){case"boolean":return m(p,"boolean",false);
-case"b":return m(p,"boolean",false);
-case"string":return m(p,"string","");
-case"s":return m(p,"string","");
-case"number":return m(p,"number",0);
-case"n":return m(p,"number",0);
-case"object":return m(p,"object",{});
-case"o":return m(p,"object",{});
-case"array":return n(p,[]);
-case"a":return n(p,[]);
-default:return p
-}}function e(p){var o={"undefined":"undefined",number:"number","boolean":"boolean",string:"string","[object Function]":"function","[object RegExp]":"regexp","[object Array]":"array","[object Date]":"date","[object Error]":"error"},m=Object.prototype.toString;
-function n(q){return o[typeof q]||o[m.call(q)]||(q?"object":"null")
-}return n(p)
-}function h(m){return(m!=undefined&&m!=null)
-}function b(){return"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx".replace(/[xy]/g,function(m){var n=Math.random()*16|0,o=m=="x"?n:(n&3|8);
-return o.toString(16)
+function a(n){return n.charAt(0).toUpperCase()+n.slice(1)
+}function m(o,n){return o.indexOf(n)===0
+}function c(n,o){return n.match(o+"$")==o
+}function g(q,p){function n(t,u,s){return(typeof t===u)?t:s
+}function o(t,s){return(Array.isArray(t))?t:s
+}switch(p){case"boolean":return n(q,"boolean",false);
+case"b":return n(q,"boolean",false);
+case"string":return n(q,"string","");
+case"s":return n(q,"string","");
+case"number":return n(q,"number",0);
+case"n":return n(q,"number",0);
+case"object":return n(q,"object",{});
+case"o":return n(q,"object",{});
+case"array":return o(q,[]);
+case"a":return o(q,[]);
+default:return q
+}}function e(q){var p={"undefined":"undefined",number:"number","boolean":"boolean",string:"string","[object Function]":"function","[object RegExp]":"regexp","[object Array]":"array","[object Date]":"date","[object Error]":"error"},n=Object.prototype.toString;
+function o(s){return p[typeof s]||p[n.call(s)]||(s?"object":"null")
+}return o(q)
+}function h(n){return(n!=undefined&&n!=null)
+}function b(){return"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx".replace(/[xy]/g,function(n){var o=Math.random()*16|0,p=n=="x"?o:(o&3|8);
+return p.toString(16)
 })
-}function k(m,o,q){var p=null;
-for(var n=m.length-1;
-n>=0;
-n--){if(m[n]&&m[n][o]===q){p=m.splice(n,1);
+}function k(n,p,s){var q=null;
+for(var o=n.length-1;
+o>=0;
+o--){if(n[o]&&n[o][p]===s){q=n.splice(o,1);
+break
+}}return q
+}function d(n,q,s){var p=null;
+for(var o=n.length-1;
+o>=0;
+o--){if(n[o]&&n[o][q]===s){p=n[o];
 break
 }}return p
-}function d(m,p,q){var o=null;
-for(var n=m.length-1;
-n>=0;
-n--){if(m[n]&&m[n][p]===q){o=m[n];
-break
-}}return o
-}function f(m){var n=decodeURIComponent((location.search.match(RegExp("[?|&]"+m+"=(.+?)(&|$)"))||[,null])[1]);
-return(n==="null")?null:n
-}function j(n){var m=document.createElement("div");
-m.innerHTML=n;
-return m.childNodes[0].nodeValue
+}function f(n){var o=decodeURIComponent((location.search.match(RegExp("[?|&]"+n+"=(.+?)(&|$)"))||[,null])[1]);
+return(o==="null")?null:o
+}function j(o){var n=document.createElement("div");
+n.innerHTML=o;
+return n.childNodes[0].nodeValue
+}function l(q){var s={},p,n=[];
+for(p in q){if(q.hasOwnProperty(p)){n.push(p)
+}}n.sort();
+for(p=0;
+p<n.length;
+p++){s[n[p]]=q[n[p]]
+}return s
 }i.capitaliseFirstLetter=a;
 i.getValueAs=g;
-i.startsWith=l;
+i.startsWith=m;
 i.endsWith=c;
 i.getType=e;
 i.hasValue=h;
@@ -3092,6 +3099,7 @@ i.removeObjectFromArray=k;
 i.getURLParameter=f;
 i.getObjectFromArray=d;
 i.htmlDecode=j;
+i.sortObject=l;
 return i
 });
 WebAppLoader.addModule({name:"storage",plugins:["helper"],hasEvents:true,isPlugin:true},function(){var n={},i=this.getConsole(),c=this.getEventManager(),g=this.getPlugin("helper"),k="Revolution";
@@ -3179,49 +3187,72 @@ a.post(g.siteUrls.analysis,{uri:i},function(j){c.raiseEvent("onDataReceived",j)
 return false
 }return f
 });
-WebAppLoader.addModule({name:"scroll"},function(){var d={},b;
-document.addEventListener("touchmove",function(f){f.preventDefault()
+WebAppLoader.addModule({name:"scroll"},function(){var i={},d,g=[],b=0,c=0;
+document.addEventListener("touchmove",function(l){l.preventDefault()
 },false);
-function c(e,f){var h="div#"+e+" #wrapper",g=f||{};
-g.useTransform=false;
-g.onBeforeScrollStart=function(i){var j=i.target;
-while(j.nodeType!=1){j=j.parentNode
-}if(j.tagName!="SELECT"&&j.tagName!="INPUT"&&j.tagName!="TEXTAREA"){i.preventDefault()
+function h(){if(d){b=d.x;
+c=d.y
+}}function f(l,m){l=l||0;
+m=m||0;
+setTimeout(function(){try{d.scrollTo(b,c)
+}catch(n){}},100)
+}function k(n,o,p){var q=0,m=null;
+try{m=$(n)
+}catch(l){}if(!m){return
+}setTimeout(function(){try{q=(m.offset().top*-1)+o||0;
+q+=d.wrapperOffsetTop;
+d.scrollTo(0,q,p+100)
+}catch(s){}},100)
+}function j(m,n,l){setTimeout(function(){try{d.scrollTo(m,n-d.wrapperOffsetTop,l||1000,true)
+}catch(o){}},100)
+}function e(l,m){var o="div#"+l+" #wrapper",n=m||{};
+n.useTransform=false;
+n.onBeforeScrollStart=function(p){var q=p.target;
+while(q.nodeType!=1){q=q.parentNode
+}if(q.tagName!="SELECT"&&q.tagName!="INPUT"&&q.tagName!="TEXTAREA"){p.preventDefault()
 }};
-g.vScroll=true;
-if(b){b.destroy();
-b=null
-}if($(h).get(0)){setTimeout(function(){b=new iScroll($(h).get(0),g)
+if(d){d.destroy();
+d=null
+}if($(o).get(0)){setTimeout(function(){d=new iScroll($(o).get(0),n)
 },25)
-}}function a(){try{b.scrollTo(0,0,200)
-}catch(f){}}d.rebuild=c;
-d.goUp=a;
-return d
+}}function a(){try{d.scrollTo(0,0,200)
+}catch(l){}}i.rebuild=e;
+i.goUp=a;
+i.saveScrollPosition=h;
+i.restoreScrollPosition=f;
+i.scrollToElement=k;
+i.scrollTo=j;
+return i
 });
-WebAppLoader.addModule({name:"spinningWheel",plugins:["helper"],hasEvents:true},function(){var g={},f=[],e={},b=this.getEventManager(),d=this.getPlugin("helper");
-function c(h){if(typeof h=="string"){h=e[h]
-}return f[h]
-}function a(h){$.each(h.items,function(j,l){var k=d.capitaliseFirstLetter(l.id);
-e[l.id]=j;
-f[j]={id:l.id,repository:l.repository,lastItemSelected:"",onDoneHandler:"on"+k+"Done",onCancelHandler:"on"+k+"Cancel",onSlotCancel:function(){SpinningWheel.close();
-b.raiseEvent(f[j].onCancelHandler)
-},onSlotDone:function(){var i,n,m;
-m=SpinningWheel.getSelectedValues();
-i=m.keys[0]||"";
-n=m.values[0]||"";
-f[j].lastItemSelected=i;
+WebAppLoader.addModule({name:"spinningWheel",plugins:["helper"],sharedModules:["localizationManager"],hasEvents:true},function(){var h={},g=[],f={},b=this.getEventManager(),d=this.getPlugin("helper"),e=this.getSharedModule("localizationManager").getLanguage()||{};
+function c(i){if(typeof i=="string"){i=f[i]
+}return g[i]
+}function a(i){$.each(i.items,function(j,l){var k=d.capitaliseFirstLetter(l.id);
+f[l.id]=j;
+g[j]={id:l.id,repository:l.repository,lastItemSelected:"",isShown:false,onDoneHandler:"on"+k+"Done",onCancelHandler:"on"+k+"Cancel",onSlotCancel:function(){SpinningWheel.close();
+g[j].isShown=false;
+b.raiseEvent(g[j].onCancelHandler)
+},onSlotDone:function(){var m,o,n;
+n=SpinningWheel.getSelectedValues();
+m=n.keys[0]||"";
+o=n.values[0]||"";
+g[j].lastItemSelected=m;
 SpinningWheel.close();
-b.raiseEvent(f[j].onDoneHandler,i,n)
-},show:function(i){function m(n){SpinningWheel.addSlot(n,"",i||f[j].lastItemSelected);
-SpinningWheel.setCancelAction(f[j].onSlotCancel);
-SpinningWheel.setDoneAction(f[j].onSlotDone);
-SpinningWheel.open()
-}this.repository.getData(m)
-}}
+g[j].isShown=false;
+b.raiseEvent(g[j].onDoneHandler,m,o)
+},show:function(m){function n(o){SpinningWheel.addSlot(o,"",m||g[j].lastItemSelected);
+SpinningWheel.setCancelAction(g[j].onSlotCancel);
+SpinningWheel.setDoneAction(g[j].onSlotDone);
+SpinningWheel.open();
+$("#sw-done").html(e.spinningWheel.done);
+$("#sw-cancel").html(e.spinningWheel.cancel)
+}if(!g[j].isShown){g[j].isShown=true;
+this.repository.getData(n)
+}}}
 })
-}g.create=a;
-g.getSlot=c;
-return g
+}h.create=a;
+h.getSlot=c;
+return h
 });
 WebAppLoader.addModule({name:"swipeButton",plugins:["helper"],sharedModules:["settings","pageElements","ajaxManager"],hasEvents:true},function(){var f={},e=this.getConsole(),d=this.getPlugin("helper"),c=this.getEventManager(),b=this.getSharedModule("pageElements");
 function a(j,k,i,g,h){$(j+" li").swipeDelete({btnLabel:k,btnClass:h,click:function(l){l.preventDefault();
@@ -3356,7 +3387,7 @@ p.endDate=n.endDate
 })
 }function k(q,x){var s=[],u="";
 function w(y,z){u="";
-u+='<div class="analysisSummarySection">    <div class="analysisComponentContainer">       <div class="analysisComponentHeader">           <h2>'+z+'</h2>           <div class="analysisComponentFullScreenButton" data-chartId="'+y+'"></div>       </div>'
+u+='<hr class = "snapper" style="visibility: hidden;" data-chartId="'+y+'" /><div class="analysisSummarySection">    <div class="analysisComponentContainer">       <div class="analysisComponentHeader">           <h2>'+z+'</h2>           <div class="analysisComponentFullScreenButton" data-chartId="'+y+'"></div>       </div>'
 }function m(y,z){u+='        <div id="'+y.chartId+'" class="'+z+'"></div>'
 }function o(y){u+='        <div id="'+y.chartId+'" class="halfSizeChart" style="width: '+y.width+";height: "+y.height+';"></div>'
 }function t(){u+='        <div style="clear: both;"></div>    </div></div>'
@@ -3604,9 +3635,9 @@ return a
 WebAppLoader.addModule({name:"settings",dataObjects:["appSettings","userSettings"],isShared:true},function(){var h={},a={},i={},f=[],g=this.getConsole(),j=this.getDataObject("userSettings"),b=this.getDataObject("appSettings");
 j.define({automaticLogin:false,username:"",password:"",language:"en-US",lastUsedLanguage:"none"});
 b.define({lastLoggedOnUser:""});
-a={loadPortfoliosSlotDataOnce:true,automaticLanguageDetection:true};
+a={loadPortfoliosSlotDataOnce:true,automaticLanguageDetection:true,animatedChartResizing:true,automaticChartRepositioning:false};
 i={portfolios:"/portfolios",authenticate:"/authenticate",index:"/index",portfolioAnalysis:"/portfolioAnalysis",analysis:"/analysis",segmentsTreeNode:"/segmentsTreeNode",timeSeries:"/timeSeries",eula:"/eula"};
-f=[{id:"en-US",value:"en-US",name:"English"},{id:"it-IT",value:"it-IT",name:"Italiano"}];
+f=[{id:"en-US",value:"en-US",name:"English"},{id:"it-IT",value:"it-IT",name:"Italiano"},{id:"pl-PL",value:"pl-PL",name:"Polski"}];
 function c(k,l){a[k]=l;
 g.log("change setting")
 }function d(k){return a[k]
@@ -3769,7 +3800,9 @@ l.preventDefault()
 function c(l){f=true;
 k();
 $(b.fullScreenPage).show();
-$(b.fullScreenPage).animate({opacity:1},{duration:750,easing:"ease-out",complete:function(){}})
+$(b.fullScreenPage).animate({opacity:1},{duration:750,easing:"ease-out",complete:function(){}});
+$("#testChart").append($("#"+l));
+$("#"+l).css("-webkit-transform","scale(1)")
 }function e(){f=false;
 $(b.fullScreenPage).animate({opacity:0},{duration:750,easing:"ease-out",complete:function(){$(b.fullScreenPage).css({display:"none"})
 }})
@@ -4050,7 +4083,7 @@ l.tabbar.getButton("settings").setHighlight(false);
 l.saveLastAnalysisObjectUsed();
 l.synchronizeFavouriteButton();
 l.chartComponents.render(w,"#analysis_partial");
-l.changeOrientation();
+l.synchronizeOrientation();
 a(c.analysisComponentFullScreenButton).on("click",function(C,D){var B=a(this).attr("data-chartId");
 l.presentationManager.enterPresentationMode(B)
 })
@@ -4154,6 +4187,8 @@ l.toolbar.on("onTap",function(){l.scroll.goUp()
 l.toolbar.on("onFavouriteTap",function(n){if(n){l.addToFavourites()
 }else{l.removeFromFavourites()
 }});
+l.toolbar.on("onTestTap",function(n){l.onTestApp()
+});
 var k={tabbarId:c.tabbar,buttonPrefix:"tabbar_btn",visible:false,items:[{id:"favourites",title:f.tabbar.favourites,btnClass:"favourites"},{id:"portfolios",title:f.tabbar.portfolios,btnClass:"portfolios"},{id:"analysis",title:f.tabbar.analysis,btnClass:"analysis"},{id:"timePeriods",title:f.tabbar.timePeriods,btnClass:"timeperiods"},{id:"settings",title:f.tabbar.settings,btnClass:"settings",highlight:true}]};
 l.tabbar=g.loadModule("tabbar");
 l.tabbar.create(k);
@@ -4339,17 +4374,41 @@ g.unloadModule("themesManager");
 g.unloadModule("toolbar");
 g.unloadModule("presentationManager");
 l.startHere();
-l.changeOrientation=function(){var n=250,o=500;
+l.synchronizeOrientation=function(){var n=0,p=50,o=null;
 if(l.presentationManager.isFullScreen()){return
-}l.mask.show("turn");
-if(b.orientation()==="landscape"){a(".chartContainer").css({"-webkit-transform":"scale(.93)","-webkit-transform-origin":"left top"});
-a(".analysisComponentContainer").animate({height:"500px"},{duration:n,easing:"ease-out",complete:function(){}})
+}n=(l.settings.appSettings.animatedChartResizing)?500:0;
+l.mask.show("turn");
+if(b.orientation()==="landscape"){a(".analysisComponentContainer").animate({height:"500px"},{duration:n,easing:"ease-out",complete:function(){a(".chartContainer").css({"-webkit-transform":"scale(.93)","-webkit-transform-origin":"left top"})
+}})
 }else{a(".chartContainer").css({"-webkit-transform":"scale(.69)","-webkit-transform-origin":"left top"});
 a(".analysisComponentContainer").animate({height:"375px"},{duration:n,easing:"ease-out",complete:function(){}})
-}setTimeout(function(){l.scroll.rebuild("analysis");
+}if(l.settings.appSettings.automaticChartRepositioning){l.synchronizeOrientation.pendingCount+=1;
+setTimeout(function(){if(l.synchronizeOrientation.pendingCount>0){l.synchronizeOrientation.pendingCount-=1
+}if(l.synchronizeOrientation.pendingCount===0){l.scroll.rebuild("analysis");
+if(l.synchronizeOrientation.chartToDisplay!==""){l.scroll.scrollToElement("#"+l.synchronizeOrientation.chartToDisplay,75,25)
+}l.mask.hide("turn")
+}},n+p)
+}else{setTimeout(function(){l.scroll.rebuild("analysis");
 l.mask.hide("turn")
-},n+o)
+},n+p)
+}};
+l.synchronizeOrientation.pendingCount=0;
+l.synchronizeOrientation.chartToDisplay="";
+l.getCurrentChartDisplayedInViewport=function(){var n=75,q=0,p=[],o={},t=[],s=0;
+q=(b.orientation()==="landscape")?(b.maxHeight())/2+n:(b.maxWidth())/2+n;
+a(".snapper").each(function(){var u,v;
+v=Math.abs(a(this).offset().top-n);
+u=a(this).data("chartid");
+v=(v>=q)?v-q:v;
+t.push(v);
+p.push({y:v,chartId:u})
+});
+s=Math.min.apply(Math,t);
+o=e.getObjectFromArray(p,"y",s);
+return o.chartId
 };
-a("body").bind("turn",function(n,o){l.changeOrientation()
-})
+a("body").bind("turn",function(n,o){l.synchronizeOrientation.chartToDisplay=l.getCurrentChartDisplayedInViewport();
+l.synchronizeOrientation()
+});
+l.onTestApp=function(){}
 });

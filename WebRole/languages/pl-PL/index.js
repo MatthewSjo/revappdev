@@ -174,7 +174,9 @@ exports.client = {
         noPortfolioSlotAvailable    : 'Nie masz żadnych portfeli.',
         noAnalysisSlotAvailable     : 'Analizy nie są dostępne.',
         noTimePeriodSlotAvailable   : 'Żaden przedział czasu nie jest dostępny.',
-        noFavouritesSlotAvailable   : 'Brak ulubionych'
+        noFavouritesSlotAvailable   : 'Brak ulubionych',
+        done                        : 'OK',
+        cancel                      : 'Anuluj'
     },
 
     // ------------------------------------------------------------------ | T |
