@@ -3,9 +3,11 @@
 // ------------------------------------------
 
 // Module Dependencies
-var express = require('express'),
-    routes  = require('./routes'),
-    wm      = require('./routes/web-methods');
+var express     = require('express'),
+    sessions    = require('cookie-sessions'),
+    // MongoStore  = require('connect-mongo')(express),
+    routes      = require('./routes'),
+    wm          = require('./routes/web-methods');
 
 // Create and make global reference to new server,
 // and define which port it should be listening to.
@@ -16,11 +18,20 @@ var app = module.exports = express.createServer(),
 // GLOBAL SETTINGS
 // ------------------------------------------
 
-GLOBAL_VERSION = '0.2a';
 GLOBAL_ENVIRONMENT = app.settings.env;
-GLOBAL_WAPI_URI = (app.settings.env === 'production')
-    ? 'https://revapistage.statpro.com/v1'
-    : 'https://revapidev.statpro.com/v1/';
+GLOBAL_VERSION = process.env.VERSION;
+
+switch (app.settings.env) {
+    case 'production':
+        GLOBAL_WAPI_URI = process.env.PRODUCTION_URL;
+        break;
+    case 'staging':
+        GLOBAL_WAPI_URI = process.env.STAGING_URL;
+        break;
+    case 'development':
+        GLOBAL_WAPI_URI = process.env.DEVELOPMENT_URL;
+        break;
+}
 
 // Create a dynamic manifest
 //var lib = require("./manifest.js");
@@ -47,7 +58,21 @@ app.configure(function () {
     app.set('view engine', 'jade');
     app.use(express.bodyParser());
     app.use(express.cookieParser());
-    app.use(express.session({ secret: "pWqxFbVCoBh7smF4AWHGq3EokVDUAiufcemR5OFYMq07rWXZqYrsQBopYZz4nFu" }));
+    
+    // Configuration for secure Cookie Session storage 
+    app.use(sessions({
+        secret: process.env.SESSION_SECRET,
+        timeout: 60 * 60 * 1000    
+    }));
+
+    // Configuration for MongoDB Session storage
+    // app.use(express.session({
+    //     secret: process.env.SESSION_SECRET,
+    //     store: new MongoStore({
+    //         db: process.env.MONGODB_NAME
+    //     })
+    // }));
+
     app.use(express.methodOverride());
     app.use(express.static(__dirname + '/public'));
     app.use(app.router);
@@ -56,7 +81,7 @@ app.configure(function () {
 // Environment Configurations
 app.configure('development', function () {
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-    app.set("view options", { layout: "layout_dev.jade" });
+    // app.set("view options", { layout: "layout_dev.jade" });
 });
 
 app.configure('production', function () {
@@ -110,5 +135,5 @@ app.listen(port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
 process.on('uncaughtException', function (err) {
-  console.log('AAAHH!!! CRITICAL EXCEPTION: ' + err);
+    console.log('Critical Exception: ' + err);
 });

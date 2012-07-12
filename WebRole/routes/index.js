@@ -105,8 +105,8 @@ exports.authenticate = function (req, res, next) {
     email = req.body.email;
     token = req.body.token;
 
-    // Clear any authentication tokens in session that might currently exist.
-    delete req.session.token;
+    // Remove any previous session data.
+    req.session = {};
 
     // Attempt to consume the service.
     webApi.initService(email, token, GLOBAL_WAPI_URI, language, function (resource) {
