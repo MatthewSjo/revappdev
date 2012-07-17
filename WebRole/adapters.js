@@ -10,12 +10,12 @@
 // ------------------------------------------
 
 function getMeasureName(measureId, analysis, language) {
-    var name, 
+    var name,
         frequency,
-        subPeriodPlaceholder    = '[SUBPERIOD]',
-        subPeriodsPlaceholder   = '[SUBPERIODS]', 
-        currencyPlaceholder     = '[CUR]';
-    
+        subPeriodPlaceholder = '[SUBPERIOD]',
+        subPeriodsPlaceholder = '[SUBPERIODS]',
+        currencyPlaceholder = '[CUR]';
+
     // Get the localised version of the statistics frequency.
     frequency = language.shared[analysis.statisticsFrequency];
 
@@ -61,7 +61,6 @@ function addMeasureColumns(columnArray, measures, analysis, language) {
                 // their order, type and their labels.
                 switch (i) {
                     case 0:
-                        columnArray.push({ label: 'ID', type: 'string' });
                         columnArray.push({ label: measureName, type: 'number' });
                         break;
                     case 1:
@@ -73,12 +72,12 @@ function addMeasureColumns(columnArray, measures, analysis, language) {
                         break;
                 }
 
-            } else {    
+            } else {
                 // Add the column.
                 this.addColumn(columnArray, measureName);
             }
         }
-        
+
     }
 }
 
@@ -103,7 +102,7 @@ function addBubbleChartRow(rowArray, segment) {
     rowArray.push({
         c: [
 		    { v: '' }, // Empty string to prevent label displaying over bubble.
-		    { v: segment.measures[0].measures[0].val },
+		    {v: segment.measures[0].measures[0].val },
 		    { v: segment.measures[0].measures[1].val },
 		    { v: segment.name },
 		    { v: segment.measures[0].measures[2].val }
@@ -115,7 +114,7 @@ function addTreeMapRow(rowArray, nodeName, parentName, sizeValue, colorValue, cl
 
     function generateUniqueNodeName(name) {
         var i, len = rowArray.length, exists = false;
-        
+
         // Check that the nodeName does not already exist in the collection.
         for (i = 0; i < len; i++) {
             if (rowArray[i].c[0].v === name) {
@@ -241,7 +240,7 @@ function convert(node, dataToInclude, analysis, measures, language) {
     } else {
 
         // Retrieve the segments or securities from the relevant 'included data' property.
-        children = (dataToInclude === 'childSegments') ? 
+        children = (dataToInclude === 'childSegments') ?
             node[dataToInclude].segments :
             node[dataToInclude].securities;
 
@@ -285,10 +284,10 @@ function treeMapConvert(node, dataToInclude, analysis) {
         isSecurityLevel = (dataToInclude === 'securities'),
         classifierName = '',
         rowArray = [];
-    
+
     // Get the parent segment.
     parent = node.segment;
-    
+
     // Add the root node.
     this.addRow(rowArray, parent.name, null, 0, 0);
 
@@ -300,7 +299,7 @@ function treeMapConvert(node, dataToInclude, analysis) {
     }
 
     // Determine the number of child segments.
-    len = children.length;    
+    len = children.length;
 
     // Loop around the segments, extracting names and measures for each row.
     for (i = 0; i < len; i++) {
@@ -354,7 +353,6 @@ exports.Table.addMeasureRows = addMeasureRows;
 
 // Bubble Chart
 exports.BubbleChart.addRow = addBubbleChartRow;
-exports.BubbleChart.columns = [];
 exports.BubbleChart.isBubbleChart = true;
 
 // Tree Map
@@ -369,4 +367,4 @@ exports.TreeMap.columns = [
 
 // Line Chart
 exports.LineChart.convert = lineChartConvert;
-exports.LineChart.columns = [{ label: 'Date', type: 'date' }];
+exports.LineChart.columns = [{ label: 'Date', type: 'date'}];
