@@ -3,7 +3,7 @@
 // ------------------------------------------
 
 // Module Dependencies
-var http = require('http'),
+var https = require('https'),
     path = require("path"),
     url = require("url"),
     languages = require('./languages'),
@@ -95,7 +95,7 @@ function getRequestOptions(uri, token) {
 
     return {
         host: hostName,
-        port: '80',
+        port: '443',
         path: pathName,
         method: 'GET',
         headers: {
@@ -182,7 +182,7 @@ function getResource(resourceName, options, callback) {
     };
 
     // Set up the request.
-    request = http.request(options, function (response) {
+    request = https.request(options, function (response) {
 
         // Define the encoding for the response.
         response.setEncoding('utf8');

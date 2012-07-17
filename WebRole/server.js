@@ -18,9 +18,9 @@ var app = module.exports = express.createServer(),
 
 GLOBAL_VERSION = '0.2a';
 GLOBAL_ENVIRONMENT = app.settings.env;
-GLOBAL_WAPI_URI = (app.settings.env === 'production')
-    ? 'https://revapistage.statpro.com/v1'
-    : 'https://revapidev.statpro.com/v1/';
+GLOBAL_WAPI_URI = (app.settings.env === 'production') // STAGE: 'https://revapistage.statpro.com/v1'
+    ? 'https://revapi.statpro.com/v1' 
+    : 'https://revapidev.statpro.com/v1';
 
 // Create a dynamic manifest
 //var lib = require("./manifest.js");
