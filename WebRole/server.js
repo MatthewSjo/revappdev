@@ -19,9 +19,9 @@ var app = module.exports = express.createServer(),
 // ------------------------------------------
 
 GLOBAL_ENVIRONMENT = app.settings.env;
-GLOBAL_VERSION = process.env.VERSION;
+GLOBAL_VERSION = process.env.VERSION || 'n/a';
 
-switch (app.settings.env) {
+switch (GLOBAL_ENVIRONMENT) {
     case 'production':
         GLOBAL_WAPI_URI = process.env.PRODUCTION_URL;
         break;
@@ -29,7 +29,8 @@ switch (app.settings.env) {
         GLOBAL_WAPI_URI = process.env.STAGING_URL;
         break;
     case 'development':
-        GLOBAL_WAPI_URI = process.env.DEVELOPMENT_URL;
+        // TODO: Remove the hardcoded URI at the end of the BETA Release.
+        GLOBAL_WAPI_URI = process.env.DEVELOPMENT_URL || 'https://revapidev.statpro.com/v1';
         break;
 }
 
@@ -61,9 +62,9 @@ app.configure(function () {
     
     // Configuration for secure Cookie Session storage 
     app.use(sessions({
-        secret: process.env.SESSION_SECRET,
+        secret: process.env.SESSION_SECRET || 'revapp',
         timeout: 60 * 60 * 1000    
-    }));
+    }));   
 
     // Configuration for MongoDB Session storage
     // app.use(express.session({
@@ -72,7 +73,7 @@ app.configure(function () {
     //         db: process.env.MONGODB_NAME
     //     })
     // }));
-
+       
     app.use(express.methodOverride());
     app.use(express.static(__dirname + '/public'));
     app.use(app.router);
@@ -81,7 +82,7 @@ app.configure(function () {
 // Environment Configurations
 app.configure('development', function () {
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-    // app.set("view options", { layout: "layout_dev.jade" });
+    app.set("view options", { layout: "layout_dev.jade" });
 });
 
 app.configure('production', function () {
