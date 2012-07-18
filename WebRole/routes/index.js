@@ -156,7 +156,7 @@ exports.portfolios = function (req, res) {
             top: ''
         };
 
-    webApi.getPortfolios(oData, datatype, req.session.token, function (resource, datatype) {
+    webApi.getPortfolios(oData, datatype, req.session.token || req.body.token, function (resource, datatype) {
         var viewModel = resource.data || {};
 
         switch (datatype) {
@@ -176,7 +176,7 @@ exports.portfolioAnalysis = function (req, res) {
     var datatype = req.body.datatype || '',
         maxAttempts = 3; // TODO: We could use a const to set the maxAttempts.
 
-    webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, req.session.token, function (analysis) {
+    webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, req.session.token || req.body.token, function (analysis) {
         var viewModel = analysis.data || {};
 
         switch (datatype) {
@@ -196,7 +196,7 @@ exports.analysis = function (req, res) {
     var datatype = req.body.datatype || '',
         maxAttempts = 3;
 
-    webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, req.session.token, function (analysis) {
+    webApi.getPortfolioAnalysis(req.body.uri, maxAttempts, req.session.token || req.body.token, function (analysis) {
         var viewModel = analysis.data || {};
 
         switch (datatype) {
@@ -215,7 +215,7 @@ exports.analysis = function (req, res) {
 // EULA
 exports.eula = function (req, res) {
 
-    webApi.getEula('fragment', req.session.token, function (resource) {
+    webApi.getEula('fragment', req.session.token || req.body.token, function (resource) {
         var viewModel = {
             eula: resource.data || {},
             layout: false
