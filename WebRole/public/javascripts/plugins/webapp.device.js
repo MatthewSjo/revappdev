@@ -2,10 +2,9 @@
 // DEVICE
 // ---------------------    ---------------------
 
-WebAppLoader.addModule({ name: 'device', plugins: ['helper'], hasEvents: true, isPlugin: true }, function () {
+WebAppLoader.addModule({ name: 'device', plugins: ['helper'], isPlugin: true }, function () {
     var device          = {},
         output          = this.getConsole(),
-        eventManager    = this.getEventManager(),
         helper          = this.getPlugin('helper'),
         nav             = navigator;
 

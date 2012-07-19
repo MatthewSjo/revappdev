@@ -33,6 +33,7 @@ var WebAppLoader = {};
         hasEvents           : false,
         plugins             : [],
         sharedModules       : [],
+        moduleEventManager  : {},
         
     // Private methods:
         getPlugin           : function(pluginName) {
@@ -57,9 +58,12 @@ var WebAppLoader = {};
         },
         getEventManager     : function (){
             // if the module manages events return the event manager.
-            return (this.hasEvents) 
-                ? this.loader.getEventManager()
-                : null;
+            if (this.hasEvents) {
+                this.moduleEventManager =  this.loader.getEventManager();
+                return this.moduleEventManager;
+            } else {
+                return null;
+            }
         },
         getConsole          : function () {
             return this.loader.getConsole();
@@ -125,13 +129,25 @@ var WebAppLoader = {};
     // ------------------------------------------
 
     // Public
-    var eventManager = (function () {
-        var eventObj = {},
-            events = {};
+    var EventManager = function () {
+        var eventManager = {},
+            events       = {},
+            eventsQueue  = {};
 
         // Simple Event Manager.
         function on(event, callback) {
-            events[event] = callback;
+            // If a queue of events exists...
+            if (eventsQueue[event]) {
+                events[event] = callback;
+                // ... fire all events in the queue and then remove it.
+                for (var i = 0; i < eventsQueue[event].events.length; i++) {
+                    // ASA TODO: Add a time interval property.
+                    events[event].apply(null, eventsQueue[event].events[i]);
+                }
+                delete eventsQueue[event];
+            } else {
+                events[event] = callback;
+            }
         }
 
         function raiseEvent(event) {
@@ -139,21 +155,29 @@ var WebAppLoader = {};
 
             if (events[event]) {
                 events[event].apply(null, args);
+            } else {
+                // Create a new event queue if it doesn't exist.
+                if (!eventsQueue[event]) {
+                    eventsQueue[event] = { events: []}; 
+                }
+                eventsQueue[event].events.push(args);
             }
         }
+        
+        function attachTo(obj) {
+            var eventManager = new EventManager();
 
-        function init(obj) {
-            obj['on'] = on;
-            obj['raiseEvent'] = raiseEvent;
+            obj['on'] = eventManager.on;
+            obj['raiseEvent'] = eventManager.raiseEvent;
         }
 
-        eventObj.on = on;
-        eventObj.raiseEvent = raiseEvent;
-        eventObj.init = init;
+        eventManager.on = on;
+        eventManager.raiseEvent = raiseEvent;
+        eventManager.attachTo = attachTo;
 
-        return eventObj;
-    })();
-
+        return eventManager;
+    };
+    
     // ------------------------------------------
     // BUILT-IN - CONSOLE
     // ------------------------------------------
@@ -248,11 +272,13 @@ var WebAppLoader = {};
             
             if (moduleToAdd.isPlugin) {
                 moduleToAdd.getConsole = getConsole;
-                moduleToAdd.getEventManager = getEventManager;
+                moduleToAdd.moduleEventManager = new EventManager();
+                moduleToAdd.getEventManager = function () { 
+                    return moduleToAdd.moduleEventManager; 
+                };
             } else {
                 extendAddModule(config, moduleToAdd);
             }
-            
 
             modules.push(moduleToAdd);    
         }
@@ -284,11 +310,14 @@ var WebAppLoader = {};
 
             // If the module supports events attach the 'on' method to it.
             if (moduleToLoad.hasEvents) {
-                moduleToLoad.bin.on = eventManager.on;
+                moduleToLoad.bin.on = moduleToLoad.moduleEventManager.on;
             }
         }
         
         extendLoadModule(moduleToLoad);
+
+        moduleToLoad.bin.__module__ = {};
+        moduleToLoad.bin.__module__.name = moduleName;
 
         // If something goes wrong return null.
         return (moduleToLoad.loaded)
@@ -382,7 +411,7 @@ var WebAppLoader = {};
 
     // Public
     function getEventManager() {
-        return eventManager;
+        return new EventManager();
     }
 
     // Public
@@ -467,7 +496,7 @@ var WebAppLoader = {};
         }
         
         function getEventManager() {
-            return eventManager;
+            return new EventManager();
         }
 
         function getConsole() {
@@ -480,7 +509,7 @@ var WebAppLoader = {};
         loader.getConsole = getConsole;
 
         return loader;
-                
+                 
     })();
     
     //Add public methods to the loader.

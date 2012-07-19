@@ -2,10 +2,9 @@
 // LOCAL STORAGE MANAGER
 // ---------------------    ---------------------
 
-WebAppLoader.addModule({ name: 'storage', plugins: ['helper'], hasEvents: true, isPlugin: true }, function () {
+WebAppLoader.addModule({ name: 'storage', plugins: ['helper'], isPlugin: true }, function () {
     var storage             = {},
         output              = this.getConsole(),
-        eventManager        = this.getEventManager(),
         helper              = this.getPlugin('helper'),
         revolutionNamespace = 'Revolution';
         usedSpace           = 0;

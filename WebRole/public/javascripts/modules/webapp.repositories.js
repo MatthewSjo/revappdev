@@ -17,7 +17,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
             portfoliosSlotItems = null;
 
         // Add event handlers to the object.
-        eventManager.init(this);
+        eventManager.attachTo(repository);
 
         function getPortfoliosSlotItems() {
             return portfoliosSlotItems;
@@ -25,7 +25,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
 
         function setPortfoliosSlotItems(items) {
             portfoliosSlotItems = items;
-            eventManager.raiseEvent('onItemsChanged', items);
+            repository.raiseEvent('onItemsChanged', items);
         }
 
         function loadData(callback) {
@@ -62,7 +62,6 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
         }
 
         repository.getData = getData;
-        repository.on = on;
 
         return repository;
     })();
@@ -73,7 +72,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
             analysisSlotItems = null;
 
         // Add event handlers to the object.
-        eventManager.init(this);
+        eventManager.attachTo(repository);
 
         function getAnalysisSlotItems() {
             // ASA TODO: Investigate...
@@ -85,7 +84,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
 
         function setAnalysisSlotItems(items) {
             analysisSlotItems = items;
-            eventManager.raiseEvent('onItemsChanged', items);
+            repository.raiseEvent('onItemsChanged', items);
         }
 
         function setData(analysisPages) {
@@ -105,7 +104,6 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
 
         repository.getData = getData;
         repository.setData = setData;
-        repository.on = on;
 
         return repository;
     })();
@@ -116,7 +114,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
             timePeriodsSlotItems = null;
 
         // Add event handlers to the object.
-        eventManager.init(this);
+        eventManager.attachTo(repository);
 
         function getTimePeriodsSlotItems() {
             return (timePeriodsSlotItems)
@@ -126,7 +124,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
 
         function setTimePeriodsSlotItems(items) {
             timePeriodsSlotItems = items;
-            eventManager.raiseEvent('onItemsChanged', items);
+            repository.raiseEvent('onItemsChanged', items);
         }
 
         function setData(timePeriods) {
@@ -150,7 +148,6 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
 
         repository.getData = getData;
         repository.setData = setData;
-        repository.on = on;
 
         return repository;
     })();
@@ -161,7 +158,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
             favouritesSlotItems = null;
 
         // Add event handlers to the object.
-        eventManager.init(this);
+        eventManager.attachTo(repository);
 
         function getFavouritesSlotItems() {
             return (favouritesSlotItems)
@@ -171,7 +168,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
 
         function setFavouritesSlotItems(items) {
             favouritesSlotItems = items;
-            eventManager.raiseEvent('onItemsChanged', items);
+            repository.raiseEvent('onItemsChanged', items);
         }
 
         function setData(favourites) {
@@ -195,7 +192,6 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
 
         repository.getData = getData;
         repository.setData = setData;
-        repository.on = on;
 
         return repository;
     })();
