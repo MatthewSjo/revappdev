@@ -50,17 +50,32 @@ WebAppLoader.addModule({ name: 'presentationManager', plugins: ['helper', 'devic
         
         o = (o == 180) ? 0: o;
         
-        if (o == 90) {
-            width     = '1004px';
-            height    = '768px';
-            left      = '768px';
-            forceTurn = true;
+        if (device.isIPad()) {
+            if (o == 90) {
+                width     = '1004px';
+                height    = '768px';
+                left      = '768px';
+                forceTurn = true;
+            } else {
+                width     = '1024px';
+                height    = '748px';
+                left      = '0';
+                forceTurn = false;
+            }
         } else {
-            width     = '1024px';
-            height    = '748px';
-            left      = '0';
-            forceTurn = false;
+            if (o == 90) {
+                width     = '460px';
+                height    = '320px';
+                left      = '320px';
+                forceTurn = true;
+            } else {
+                width     = '480px';
+                height    = '310px';
+                left      = '0';
+                forceTurn = false;
+            }
         }
+
 
         if (forceTurn) {
             $(el.turnIcon).animate({ opacity: 1 }, { duration: 250, easing: 'ease-out', complete: function () {

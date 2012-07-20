@@ -192,7 +192,6 @@ Zepto(function ($) {
             } else {
                 theApp.goToLoginPage();
             }
-
         }
     };
 
@@ -269,7 +268,6 @@ Zepto(function ($) {
         theApp.tabbar.getButton('settings').setHighlight(false);
 
         theApp.nav.goToPage($(el.analysisPage), 'dissolve');
-        theApp.mask.show('analysis');
 
         function renderAnalysisPage(portfolio) {
             var chartsToRender = [],
@@ -361,15 +359,12 @@ Zepto(function ($) {
     };
 
     theApp.chartComponents.on('onAllChartsLoaded', function () {
-        theApp.scroll.rebuild('analysis');
-        theApp.mask.updateAnalysisText(' ');
-        theApp.mask.hide('analysis');
+        output.log('onAllChartsLoaded');
     });
 
     theApp.chartComponents.on('onChartsLoading', function (chartCount, chartTotal) {
-        theApp.mask.updateAnalysisText('Loading ' + chartCount + ' of ' + chartTotal);
+        output.log('onChartsLoading', chartCount, chartTotal);
     });
-
 
     // ------------------------------------------
     // SETTINGS PAGES
@@ -399,7 +394,12 @@ Zepto(function ($) {
     });
 
     theApp.analysisSettingsPage.on('onPageLoaded', function () {
-        // swipeButton params: containerId, label, callback, autoRemove, buttonClass
+        // swipeButton addTo(...) params: 
+        //  - containerId, 
+        //  - label, 
+        //  - callback, 
+        //  - autoRemove, 
+        //  - buttonClass
         theApp.swipeButton.addTo('#listAnalysisSettingsUserPages', 'Delete', theApp.onUserPageDeleted, true);
     });
 
@@ -538,9 +538,7 @@ Zepto(function ($) {
     });
 
     theApp.portfolioManager.on('onAnalysisLoaded', function (data) {
-        theApp.scroll.rebuild('analysis');
         theApp.updateAnalysisInfo(data);
-        theApp.mask.hide('analysis');
         theApp.tabbar.show();
     });
 
@@ -548,7 +546,6 @@ Zepto(function ($) {
         theApp.scroll.rebuild('error');
         $(el.errorMessageText).html(message);
         theApp.nav.goToPage($(el.errorPage));
-        theApp.mask.hide('analysis');
     });
 
     theApp.updateAnalysisInfo = function (data) {
@@ -591,12 +588,12 @@ Zepto(function ($) {
     // ------------------------------------------
 
     var toolbarConfig = {
-        toolbarId: '#analysis .toolbar',  // el.tabbar,
+        toolbarId: '#analysis .toolbar',  // TODO: el.tabbar,
         buttonPrefix: 'toolbar_btn',
         visible: true,
         items: [
             { id: 'favourite', title: lang.tabbar.favourites, btnClass: 'favourite' }
-            // { id: 'test', title: test, btnClass: 'favourite' }
+            // { id: 'test', title: test, btnClass: 'favourite' } // Comment off to add a test button.
         ]
     };
 
@@ -619,6 +616,11 @@ Zepto(function ($) {
         theApp.onTestApp();
     });
 
+    // Test
+    theApp.toolbar.on('onTestEvent', function () {
+        alert('toolbar');
+    });
+
     // ------------------------------------------
     // TABBAR
     // ------------------------------------------
@@ -638,6 +640,10 @@ Zepto(function ($) {
 
     theApp.tabbar = loader.loadModule('tabbar');
     theApp.tabbar.create(tabbarConfig);
+
+    theApp.tabbar.on('onTestEvent', function () {
+        alert('tabbar');
+    });
 
     theApp.tabbar.on('onFavouritesTap', function () {
         theApp.spinningWheel.getSlot('favourites').show(theApp.lastFavouriteSelected);
@@ -1040,18 +1046,13 @@ Zepto(function ($) {
 
     theApp.startHere();
 
-/*
-        animatedChartResizing: true,
-        automaticChartRepositioning: true
-*/
-
     // ------------------------------------------
     // EXTRA FUNCTIONALITIES
     // ------------------------------------------
 
     theApp.synchronizeOrientation = function () {
-        var animationSpeed  = 0,
-            rebuildingDelay = 50,
+        var animationSpeed  = 25,
+            rebuildingDelay = 500,
             el              = null;
 
         if (theApp.presentationManager.isFullScreen()) {
@@ -1060,7 +1061,7 @@ Zepto(function ($) {
 
         animationSpeed  = (theApp.settings.appSettings.animatedChartResizing)
             ? 500
-            : 0;
+            : 25;
 
         theApp.mask.show('turn');
 
@@ -1077,7 +1078,7 @@ Zepto(function ($) {
 
         if (theApp.settings.appSettings.automaticChartRepositioning) {
             theApp.synchronizeOrientation.pendingCount += 1;
-
+             
             // Rebuild the iScroll using a delay is necessary to ensure that the page height
             // is calculate correctly.
             setTimeout(function () {
@@ -1097,7 +1098,7 @@ Zepto(function ($) {
         } else {
             setTimeout(function () {
                 theApp.scroll.rebuild('analysis');
-                theApp.mask.hide('turn');
+                theApp.mask.hide('turn'); // ASA
             }, animationSpeed + rebuildingDelay);
         }
     };
@@ -1143,7 +1144,9 @@ Zepto(function ($) {
         theApp.synchronizeOrientation();
     });
 
+    // Generic test method.
     theApp.onTestApp = function () {
+        // TODO: Add code here.
     };
 });
 

@@ -11,7 +11,6 @@ WebAppLoader.addModule({ name: 'loadingMaskManager', sharedModules: ['pageElemen
         loadingText         = null,
         masks               = {};
 
-
     // Define the loading mask text.
     loadingText = $(el.loadingText);
 

@@ -552,30 +552,6 @@ p.login_style
     margin-top: 30px;
 }
 
-#myloading
-{
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,.6);
-    position: absolute;
-    padding: 0px;
-    position:absolute;
-	left:0;
-	top:0;
-	display: none;
-}
-
-#myloading
-{
-    width: 32px;
-    height: 32px;
-    position:absolute;
-	left: 50%;
-	top: 50%;
-	margin:-16px 0 0 -16px;
-
-}
-
 #blank_page {
 	background-image: none !important;
 	background-color: #000 !important;

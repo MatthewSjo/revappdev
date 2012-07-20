@@ -577,6 +577,14 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         eventManager.raiseEvent('onChartsLoading', chartCount, chartTotal);
     });
 
+    chartManager.on('showMask', function (chartId) {
+        $('#' + chartId).parent().addClass('genericLoadingMask');
+    });
+
+    chartManager.on('hideMask', function (chartId) {
+        $('#' + chartId).parent().removeClass('genericLoadingMask');
+    });
+
     chartComponents.load = load;
     chartComponents.render = render;
     chartComponents.setTimePeriod = setTimePeriod;

@@ -38,7 +38,7 @@ WebAppLoader.addModule({ name: 'chartManager',
     // NOTE: 'Finished' does not necessarily infer success - a chart may have 
     // unsuccessfully attempted to load and in doing so will pass an error
     // object as an argument to this function.
-    function onChartReady(errorObj) {
+    function onChartReady(info) {
         var container;
 
         // Regardless of any error state, we still want the attempted load count to be
@@ -54,11 +54,15 @@ WebAppLoader.addModule({ name: 'chartManager',
                 eventManager.raiseEvent('onAnalysisLoaded');
             }
         }
+        
+        if (info && info.chartId) {
+            eventManager.raiseEvent('hideMask', info.chartId);
+        }
 
         // If we've got an error...
-        if (errorObj && errorObj.id) {
+        if (info && info.errorObj && info.errorObj.id) {
             // ...retrieve the container of the chart causing the problem.
-            container = google.visualization.errors.getContainer(errorObj.id);
+            container = google.visualization.errors.getContainer(info.errorObj.id);
             // Display a generic error message rather than a potentially confusing Google one.
             $('#' + container.id).html(lang.errors.chartFailedText);
         }
@@ -107,6 +111,8 @@ WebAppLoader.addModule({ name: 'chartManager',
         var presentationChart = chart.clone();
         presentationChart.setContainerId('testChart');
 
+        eventManager.raiseEvent('showMask', config.chartId);
+
         // Although it's not part of the Google API, store 
         // the parameters for this chart in the object.
         chart.endDate = config.endDate;
@@ -121,9 +127,12 @@ WebAppLoader.addModule({ name: 'chartManager',
         chart.timePeriods = config.timePeriods;
 
         // Register the chart with the ready and error event listeners.
-        google.visualization.events.addListener(chart, 'ready', onChartReady);
-        google.visualization.events.addListener(chart, 'error', onChartReady);
-
+        google.visualization.events.addListener(chart, 'ready', function () {
+            onChartReady({chartId: chart.getContainerId()}); 
+        });
+        google.visualization.events.addListener(chart, 'error',  function (errorObj) {
+            onChartReady({errorObj: errorObj}); 
+        });
         // Return the chart.
         return chart;
     }
@@ -175,6 +184,8 @@ WebAppLoader.addModule({ name: 'chartManager',
 
         // Define the correct URL to use to retrieve data based on the chart type.
         url = (type === 'LineChart') ? siteUrls.timeSeries : siteUrls.segmentsTreeNode;
+
+        eventManager.raiseEvent('showMask', chart.getContainerId());
 
         // Callback function to be invoked when data is returned from the server.
         function onDataLoaded(data) {

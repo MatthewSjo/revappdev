@@ -78,6 +78,4 @@ div#jqt ul li input[type="email"].login_style,div#jqt ul li input[type="password
 #loginButton{font-family:HelveticaNeue-Bold!important;font-weight:normal!important}
 p.login_style{font-family:HelveticaNeue-Light!important;font-size:10pt;text-align:center;color:#d69c9f;text-shadow:0 1px 0 #77050b;margin-top:20px}
 #loginErrorText{font-family:HelveticaNeue-Bold!important;font-size:13pt;text-align:center;color:#fff;text-shadow:0 1px 0 #77050b;margin-top:30px}
-#myloading{width:100%;height:100%;background-color:rgba(0,0,0,.6);position:absolute;padding:0;position:absolute;left:0;top:0;display:none}
-#myloading{width:32px;height:32px;position:absolute;left:50%;top:50%;margin:-16px 0 0 -16px}
 #blank_page{background-image:none!important;background-color:#000!important}

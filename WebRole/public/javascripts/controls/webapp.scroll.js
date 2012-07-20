@@ -3,11 +3,12 @@
 // ------------------------------------------
 
 WebAppLoader.addModule({ name: 'scroll' }, function () {
-    var scroll = {},
-        myScroll,
+    var scroll              = {},
+        myScroll, // Please don't initialize myScroll.
         savedScrollPosition = [],
-        lastXPosition = 0,
-        lastYPosition = 0; // Please don't initialize myScroll.
+        lastXPosition       = 0,
+        lastYPosition       = 0,
+        isRebuilding        = false; 
 
     /* Use this for high compatibility (iDevice + Android)*/
     document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
@@ -49,7 +50,6 @@ WebAppLoader.addModule({ name: 'scroll' }, function () {
                 top = (el.offset().top * -1) + offset || 0;
                 top += myScroll.wrapperOffsetTop;
                 myScroll.scrollTo(0, top, time + 100);
-                // myScroll.scrollToElement(element, time);
             } catch (e) {
 
             }
@@ -66,7 +66,14 @@ WebAppLoader.addModule({ name: 'scroll' }, function () {
         }, 100);
     }
     
-    function rebuildScroll(id, optionConfig) {
+    function rebuildScroll(id, clickSafeMode, optionConfig) {
+        if (isRebuilding) {
+            alert('Prevent rebuilding');
+            return;
+        } else {
+            isRebuilding = true;
+        }
+
         var wrapper = 'div#' + id + ' #wrapper',
             options = optionConfig || {}; // { hScrollbar: false, vScrollbar: true }
 
@@ -75,7 +82,7 @@ WebAppLoader.addModule({ name: 'scroll' }, function () {
             var target = e.target;
             while (target.nodeType != 1) target = target.parentNode;
 
-            if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA') {
+            if (clickSafeMode && target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA') {
                 e.preventDefault();
             }
         };
@@ -83,23 +90,40 @@ WebAppLoader.addModule({ name: 'scroll' }, function () {
         // Remove comments from these options if you want to activate the snap.
         // options.snap = 'hr';
         // options.momentum = true;
-        // options.hScroll = true;
-        // options.vScroll = true;
         // options.zoom = true;
-        
-//        options.snap = true;
-//        options.momentum = false;
-//        options.hScrollbar = false;
-//        options.vScrollbar = false;
-        
+        // options.snap = true;
+        // options.momentum = false;
+        // options.hScrollbar = false;
+        // options.vScrollbar = false;
+
+        options.hScroll = false;
+        options.vScroll = true;
+
         if (myScroll) {
             myScroll.destroy();
             myScroll = null;
+
+            function removeUnusedScroll($scroller) {
+                function removeNext($next) {
+                    if ($next.length > 0) {
+                        $next.remove();
+                        if ($scroller.next().length > 0) {
+                            removeUnusedScroll($scroller.next());
+                        }
+                        alert('removed!');
+                    }
+                }
+                
+                removeNext($scroller.next());
+            }
+
+            removeUnusedScroll($(wrapper).find('#scroller'));
         }
 
         if ($(wrapper).get(0)) {
             setTimeout(function () {
                 myScroll = new iScroll($(wrapper).get(0), options);
+                isRebuilding = false;
             }, 25); // Usually timers should be set to a minimum of 25 milliseconds to work properly.
         }
     }

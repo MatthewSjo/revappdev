@@ -5726,6 +5726,7 @@ var WebAppLoader = {};
         hasEvents           : false,
         plugins             : [],
         sharedModules       : [],
+        moduleEventManager  : {},
         
     // Private methods:
         getPlugin           : function(pluginName) {
@@ -5750,9 +5751,12 @@ var WebAppLoader = {};
         },
         getEventManager     : function (){
             // if the module manages events return the event manager.
-            return (this.hasEvents) 
-                ? this.loader.getEventManager()
-                : null;
+            if (this.hasEvents) {
+                this.moduleEventManager =  this.loader.getEventManager();
+                return this.moduleEventManager;
+            } else {
+                return null;
+            }
         },
         getConsole          : function () {
             return this.loader.getConsole();
@@ -5818,13 +5822,25 @@ var WebAppLoader = {};
     // ------------------------------------------
 
     // Public
-    var eventManager = (function () {
-        var eventObj = {},
-            events = {};
+    var EventManager = function () {
+        var eventManager = {},
+            events       = {},
+            eventsQueue  = {};
 
         // Simple Event Manager.
         function on(event, callback) {
-            events[event] = callback;
+            // If a queue of events exists...
+            if (eventsQueue[event]) {
+                events[event] = callback;
+                // ... fire all events in the queue and then remove it.
+                for (var i = 0; i < eventsQueue[event].events.length; i++) {
+                    // ASA TODO: Add a time interval property.
+                    events[event].apply(null, eventsQueue[event].events[i]);
+                }
+                delete eventsQueue[event];
+            } else {
+                events[event] = callback;
+            }
         }
 
         function raiseEvent(event) {
@@ -5832,21 +5848,29 @@ var WebAppLoader = {};
 
             if (events[event]) {
                 events[event].apply(null, args);
+            } else {
+                // Create a new event queue if it doesn't exist.
+                if (!eventsQueue[event]) {
+                    eventsQueue[event] = { events: []}; 
+                }
+                eventsQueue[event].events.push(args);
             }
         }
+        
+        function attachTo(obj) {
+            var eventManager = new EventManager();
 
-        function init(obj) {
-            obj['on'] = on;
-            obj['raiseEvent'] = raiseEvent;
+            obj['on'] = eventManager.on;
+            obj['raiseEvent'] = eventManager.raiseEvent;
         }
 
-        eventObj.on = on;
-        eventObj.raiseEvent = raiseEvent;
-        eventObj.init = init;
+        eventManager.on = on;
+        eventManager.raiseEvent = raiseEvent;
+        eventManager.attachTo = attachTo;
 
-        return eventObj;
-    })();
-
+        return eventManager;
+    };
+    
     // ------------------------------------------
     // BUILT-IN - CONSOLE
     // ------------------------------------------
@@ -5941,11 +5965,13 @@ var WebAppLoader = {};
             
             if (moduleToAdd.isPlugin) {
                 moduleToAdd.getConsole = getConsole;
-                moduleToAdd.getEventManager = getEventManager;
+                moduleToAdd.moduleEventManager = new EventManager();
+                moduleToAdd.getEventManager = function () { 
+                    return moduleToAdd.moduleEventManager; 
+                };
             } else {
                 extendAddModule(config, moduleToAdd);
             }
-            
 
             modules.push(moduleToAdd);    
         }
@@ -5977,11 +6003,14 @@ var WebAppLoader = {};
 
             // If the module supports events attach the 'on' method to it.
             if (moduleToLoad.hasEvents) {
-                moduleToLoad.bin.on = eventManager.on;
+                moduleToLoad.bin.on = moduleToLoad.moduleEventManager.on;
             }
         }
         
         extendLoadModule(moduleToLoad);
+
+        moduleToLoad.bin.__module__ = {};
+        moduleToLoad.bin.__module__.name = moduleName;
 
         // If something goes wrong return null.
         return (moduleToLoad.loaded)
@@ -6075,7 +6104,7 @@ var WebAppLoader = {};
 
     // Public
     function getEventManager() {
-        return eventManager;
+        return new EventManager();
     }
 
     // Public
@@ -6160,7 +6189,7 @@ var WebAppLoader = {};
         }
         
         function getEventManager() {
-            return eventManager;
+            return new EventManager();
         }
 
         function getConsole() {
@@ -6173,7 +6202,7 @@ var WebAppLoader = {};
         loader.getConsole = getConsole;
 
         return loader;
-                
+                 
     })();
     
     //Add public methods to the loader.
@@ -6333,10 +6362,9 @@ WebAppLoader.addModule({ name: 'base64', isPlugin: true}, function () {
 // DEVICE
 // ---------------------    ---------------------
 
-WebAppLoader.addModule({ name: 'device', plugins: ['helper'], hasEvents: true, isPlugin: true }, function () {
+WebAppLoader.addModule({ name: 'device', plugins: ['helper'], isPlugin: true }, function () {
     var device          = {},
         output          = this.getConsole(),
-        eventManager    = this.getEventManager(),
         helper          = this.getPlugin('helper'),
         nav             = navigator;
 
@@ -6623,10 +6651,9 @@ WebAppLoader.addModule({ name: 'helper', isPlugin: true }, function () {
 // LOCAL STORAGE MANAGER
 // ---------------------    ---------------------
 
-WebAppLoader.addModule({ name: 'storage', plugins: ['helper'], hasEvents: true, isPlugin: true }, function () {
+WebAppLoader.addModule({ name: 'storage', plugins: ['helper'], isPlugin: true }, function () {
     var storage             = {},
         output              = this.getConsole(),
-        eventManager        = this.getEventManager(),
         helper              = this.getPlugin('helper'),
         revolutionNamespace = 'Revolution';
         usedSpace           = 0;
@@ -6890,11 +6917,12 @@ WebAppLoader.addModule({ name: 'portfoliosList', plugins: [],
 // ------------------------------------------
 
 WebAppLoader.addModule({ name: 'scroll' }, function () {
-    var scroll = {},
-        myScroll,
+    var scroll              = {},
+        myScroll, // Please don't initialize myScroll.
         savedScrollPosition = [],
-        lastXPosition = 0,
-        lastYPosition = 0; // Please don't initialize myScroll.
+        lastXPosition       = 0,
+        lastYPosition       = 0,
+        isRebuilding        = false; 
 
     /* Use this for high compatibility (iDevice + Android)*/
     document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
@@ -6936,7 +6964,6 @@ WebAppLoader.addModule({ name: 'scroll' }, function () {
                 top = (el.offset().top * -1) + offset || 0;
                 top += myScroll.wrapperOffsetTop;
                 myScroll.scrollTo(0, top, time + 100);
-                // myScroll.scrollToElement(element, time);
             } catch (e) {
 
             }
@@ -6953,7 +6980,14 @@ WebAppLoader.addModule({ name: 'scroll' }, function () {
         }, 100);
     }
     
-    function rebuildScroll(id, optionConfig) {
+    function rebuildScroll(id, clickSafeMode, optionConfig) {
+        if (isRebuilding) {
+            alert('Prevent rebuilding');
+            return;
+        } else {
+            isRebuilding = true;
+        }
+
         var wrapper = 'div#' + id + ' #wrapper',
             options = optionConfig || {}; // { hScrollbar: false, vScrollbar: true }
 
@@ -6962,7 +6996,7 @@ WebAppLoader.addModule({ name: 'scroll' }, function () {
             var target = e.target;
             while (target.nodeType != 1) target = target.parentNode;
 
-            if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA') {
+            if (clickSafeMode && target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA') {
                 e.preventDefault();
             }
         };
@@ -6970,23 +7004,40 @@ WebAppLoader.addModule({ name: 'scroll' }, function () {
         // Remove comments from these options if you want to activate the snap.
         // options.snap = 'hr';
         // options.momentum = true;
-        // options.hScroll = true;
-        // options.vScroll = true;
         // options.zoom = true;
-        
-//        options.snap = true;
-//        options.momentum = false;
-//        options.hScrollbar = false;
-//        options.vScrollbar = false;
-        
+        // options.snap = true;
+        // options.momentum = false;
+        // options.hScrollbar = false;
+        // options.vScrollbar = false;
+
+        options.hScroll = false;
+        options.vScroll = true;
+
         if (myScroll) {
             myScroll.destroy();
             myScroll = null;
+
+            function removeUnusedScroll($scroller) {
+                function removeNext($next) {
+                    if ($next.length > 0) {
+                        $next.remove();
+                        if ($scroller.next().length > 0) {
+                            removeUnusedScroll($scroller.next());
+                        }
+                        alert('removed!');
+                    }
+                }
+                
+                removeNext($scroller.next());
+            }
+
+            removeUnusedScroll($(wrapper).find('#scroller'));
         }
 
         if ($(wrapper).get(0)) {
             setTimeout(function () {
                 myScroll = new iScroll($(wrapper).get(0), options);
+                isRebuilding = false;
             }, 25); // Usually timers should be set to a minimum of 25 milliseconds to work properly.
         }
     }
@@ -8012,6 +8063,14 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         eventManager.raiseEvent('onChartsLoading', chartCount, chartTotal);
     });
 
+    chartManager.on('showMask', function (chartId) {
+        $('#' + chartId).parent().addClass('genericLoadingMask');
+    });
+
+    chartManager.on('hideMask', function (chartId) {
+        $('#' + chartId).parent().removeClass('genericLoadingMask');
+    });
+
     chartComponents.load = load;
     chartComponents.render = render;
     chartComponents.setTimePeriod = setTimePeriod;
@@ -8140,7 +8199,9 @@ WebAppLoader.addModule({ name: 'chartDefaults', isShared: true }, function () {
         fontName: commonSettings.labelFontName,
         fontSize: commonSettings.labelFontSize,
         forceIFrame: commonSettings.forceIFrame,
-        is3D: true
+        is3D: true,
+        legend: { position: 'none' },
+        pieSliceText: 'label'
     };
 
     // TREE MAP (HEATMAP) CHART
@@ -8214,7 +8275,7 @@ WebAppLoader.addModule({ name: 'chartManager',
     // NOTE: 'Finished' does not necessarily infer success - a chart may have 
     // unsuccessfully attempted to load and in doing so will pass an error
     // object as an argument to this function.
-    function onChartReady(errorObj) {
+    function onChartReady(info) {
         var container;
 
         // Regardless of any error state, we still want the attempted load count to be
@@ -8230,11 +8291,15 @@ WebAppLoader.addModule({ name: 'chartManager',
                 eventManager.raiseEvent('onAnalysisLoaded');
             }
         }
+        
+        if (info && info.chartId) {
+            eventManager.raiseEvent('hideMask', info.chartId);
+        }
 
         // If we've got an error...
-        if (errorObj && errorObj.id) {
+        if (info && info.errorObj && info.errorObj.id) {
             // ...retrieve the container of the chart causing the problem.
-            container = google.visualization.errors.getContainer(errorObj.id);
+            container = google.visualization.errors.getContainer(info.errorObj.id);
             // Display a generic error message rather than a potentially confusing Google one.
             $('#' + container.id).html(lang.errors.chartFailedText);
         }
@@ -8283,6 +8348,8 @@ WebAppLoader.addModule({ name: 'chartManager',
         var presentationChart = chart.clone();
         presentationChart.setContainerId('testChart');
 
+        eventManager.raiseEvent('showMask', config.chartId);
+
         // Although it's not part of the Google API, store 
         // the parameters for this chart in the object.
         chart.endDate = config.endDate;
@@ -8297,9 +8364,12 @@ WebAppLoader.addModule({ name: 'chartManager',
         chart.timePeriods = config.timePeriods;
 
         // Register the chart with the ready and error event listeners.
-        google.visualization.events.addListener(chart, 'ready', onChartReady);
-        google.visualization.events.addListener(chart, 'error', onChartReady);
-
+        google.visualization.events.addListener(chart, 'ready', function () {
+            onChartReady({chartId: chart.getContainerId()}); 
+        });
+        google.visualization.events.addListener(chart, 'error',  function (errorObj) {
+            onChartReady({errorObj: errorObj}); 
+        });
         // Return the chart.
         return chart;
     }
@@ -8351,6 +8421,8 @@ WebAppLoader.addModule({ name: 'chartManager',
 
         // Define the correct URL to use to retrieve data based on the chart type.
         url = (type === 'LineChart') ? siteUrls.timeSeries : siteUrls.segmentsTreeNode;
+
+        eventManager.raiseEvent('showMask', chart.getContainerId());
 
         // Callback function to be invoked when data is returned from the server.
         function onDataLoaded(data) {
@@ -8571,7 +8643,6 @@ WebAppLoader.addModule({ name: 'loadingMaskManager', sharedModules: ['pageElemen
         helper              = this.getPlugin('helper'),
         loadingText         = null,
         masks               = {};
-
 
     // Define the loading mask text.
     loadingText = $(el.loadingText);
@@ -9128,7 +9199,7 @@ WebAppLoader.addModule({ name: 'auth', plugins: ['base64'], sharedModules: ['aja
         ajaxManager     = this.getSharedModule('ajaxManager'),
         hash            = '';
 
-    function doLogin(username, password, url) {
+    function doLogin(username, password, url, language) {
         var token, tokenHash;
         
         hash = '';
@@ -9136,7 +9207,7 @@ WebAppLoader.addModule({ name: 'auth', plugins: ['base64'], sharedModules: ['aja
         token = 'Basic ' + tokenHash;
 
         // Post the created token and the user's email to the authenticate action.
-        ajaxManager.post(url, { email: username, token: token }, function (response) {
+        ajaxManager.post(url, { email: username, token: token, lang: language }, function (response) {
             // If our response indicates that the user has been authenticated...
             if (response.authenticated) {
                 hash = tokenHash;
@@ -9592,17 +9663,32 @@ WebAppLoader.addModule({ name: 'presentationManager', plugins: ['helper', 'devic
         
         o = (o == 180) ? 0: o;
         
-        if (o == 90) {
-            width     = '1004px';
-            height    = '768px';
-            left      = '768px';
-            forceTurn = true;
+        if (device.isIPad()) {
+            if (o == 90) {
+                width     = '1004px';
+                height    = '768px';
+                left      = '768px';
+                forceTurn = true;
+            } else {
+                width     = '1024px';
+                height    = '748px';
+                left      = '0';
+                forceTurn = false;
+            }
         } else {
-            width     = '1024px';
-            height    = '748px';
-            left      = '0';
-            forceTurn = false;
+            if (o == 90) {
+                width     = '460px';
+                height    = '320px';
+                left      = '320px';
+                forceTurn = true;
+            } else {
+                width     = '480px';
+                height    = '310px';
+                left      = '0';
+                forceTurn = false;
+            }
         }
+
 
         if (forceTurn) {
             $(el.turnIcon).animate({ opacity: 1 }, { duration: 250, easing: 'ease-out', complete: function () {
@@ -9654,7 +9740,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
             portfoliosSlotItems = null;
 
         // Add event handlers to the object.
-        eventManager.init(this);
+        eventManager.attachTo(repository);
 
         function getPortfoliosSlotItems() {
             return portfoliosSlotItems;
@@ -9662,7 +9748,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
 
         function setPortfoliosSlotItems(items) {
             portfoliosSlotItems = items;
-            eventManager.raiseEvent('onItemsChanged', items);
+            repository.raiseEvent('onItemsChanged', items);
         }
 
         function loadData(callback) {
@@ -9699,7 +9785,6 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
         }
 
         repository.getData = getData;
-        repository.on = on;
 
         return repository;
     })();
@@ -9710,7 +9795,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
             analysisSlotItems = null;
 
         // Add event handlers to the object.
-        eventManager.init(this);
+        eventManager.attachTo(repository);
 
         function getAnalysisSlotItems() {
             // ASA TODO: Investigate...
@@ -9722,7 +9807,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
 
         function setAnalysisSlotItems(items) {
             analysisSlotItems = items;
-            eventManager.raiseEvent('onItemsChanged', items);
+            repository.raiseEvent('onItemsChanged', items);
         }
 
         function setData(analysisPages) {
@@ -9742,7 +9827,6 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
 
         repository.getData = getData;
         repository.setData = setData;
-        repository.on = on;
 
         return repository;
     })();
@@ -9753,7 +9837,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
             timePeriodsSlotItems = null;
 
         // Add event handlers to the object.
-        eventManager.init(this);
+        eventManager.attachTo(repository);
 
         function getTimePeriodsSlotItems() {
             return (timePeriodsSlotItems)
@@ -9763,7 +9847,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
 
         function setTimePeriodsSlotItems(items) {
             timePeriodsSlotItems = items;
-            eventManager.raiseEvent('onItemsChanged', items);
+            repository.raiseEvent('onItemsChanged', items);
         }
 
         function setData(timePeriods) {
@@ -9787,7 +9871,6 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
 
         repository.getData = getData;
         repository.setData = setData;
-        repository.on = on;
 
         return repository;
     })();
@@ -9798,7 +9881,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
             favouritesSlotItems = null;
 
         // Add event handlers to the object.
-        eventManager.init(this);
+        eventManager.attachTo(repository);
 
         function getFavouritesSlotItems() {
             return (favouritesSlotItems)
@@ -9808,7 +9891,7 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
 
         function setFavouritesSlotItems(items) {
             favouritesSlotItems = items;
-            eventManager.raiseEvent('onItemsChanged', items);
+            repository.raiseEvent('onItemsChanged', items);
         }
 
         function setData(favourites) {
@@ -9832,7 +9915,6 @@ WebAppLoader.addModule({ name: 'repositories', sharedModules: ['settings', 'loca
 
         repository.getData = getData;
         repository.setData = setData;
-        repository.on = on;
 
         return repository;
     })();
@@ -10275,14 +10357,13 @@ Zepto(function ($) {
             } else {
                 theApp.goToLoginPage();
             }
-
         }
     };
 
     theApp.doLogin = function (username, password) {
         theApp.lastUsernameUsed = username.toLowerCase();
         theApp.lastPasswordUsed = password;
-        theApp.auth.doLogin(username, password, siteUrls.authenticate);
+        theApp.auth.doLogin(username, password, siteUrls.authenticate, theApp.getLanguage());
     };
 
     theApp.goToLoginPage = function (username) {
@@ -10352,7 +10433,6 @@ Zepto(function ($) {
         theApp.tabbar.getButton('settings').setHighlight(false);
 
         theApp.nav.goToPage($(el.analysisPage), 'dissolve');
-        theApp.mask.show('analysis');
 
         function renderAnalysisPage(portfolio) {
             var chartsToRender = [],
@@ -10444,15 +10524,12 @@ Zepto(function ($) {
     };
 
     theApp.chartComponents.on('onAllChartsLoaded', function () {
-        theApp.scroll.rebuild('analysis');
-        theApp.mask.updateAnalysisText(' ');
-        theApp.mask.hide('analysis');
+        output.log('onAllChartsLoaded');
     });
 
     theApp.chartComponents.on('onChartsLoading', function (chartCount, chartTotal) {
-        theApp.mask.updateAnalysisText('Loading ' + chartCount + ' of ' + chartTotal);
+        output.log('onChartsLoading', chartCount, chartTotal);
     });
-
 
     // ------------------------------------------
     // SETTINGS PAGES
@@ -10482,7 +10559,12 @@ Zepto(function ($) {
     });
 
     theApp.analysisSettingsPage.on('onPageLoaded', function () {
-        // swipeButton params: containerId, label, callback, autoRemove, buttonClass
+        // swipeButton addTo(...) params: 
+        //  - containerId, 
+        //  - label, 
+        //  - callback, 
+        //  - autoRemove, 
+        //  - buttonClass
         theApp.swipeButton.addTo('#listAnalysisSettingsUserPages', 'Delete', theApp.onUserPageDeleted, true);
     });
 
@@ -10621,9 +10703,7 @@ Zepto(function ($) {
     });
 
     theApp.portfolioManager.on('onAnalysisLoaded', function (data) {
-        theApp.scroll.rebuild('analysis');
         theApp.updateAnalysisInfo(data);
-        theApp.mask.hide('analysis');
         theApp.tabbar.show();
     });
 
@@ -10631,7 +10711,6 @@ Zepto(function ($) {
         theApp.scroll.rebuild('error');
         $(el.errorMessageText).html(message);
         theApp.nav.goToPage($(el.errorPage));
-        theApp.mask.hide('analysis');
     });
 
     theApp.updateAnalysisInfo = function (data) {
@@ -10674,12 +10753,12 @@ Zepto(function ($) {
     // ------------------------------------------
 
     var toolbarConfig = {
-        toolbarId: '#analysis .toolbar',  // el.tabbar,
+        toolbarId: '#analysis .toolbar',  // TODO: el.tabbar,
         buttonPrefix: 'toolbar_btn',
         visible: true,
         items: [
             { id: 'favourite', title: lang.tabbar.favourites, btnClass: 'favourite' }
-            // { id: 'test', title: test, btnClass: 'favourite' }
+            // { id: 'test', title: test, btnClass: 'favourite' } // Comment off to add a test button.
         ]
     };
 
@@ -10702,6 +10781,11 @@ Zepto(function ($) {
         theApp.onTestApp();
     });
 
+    // Test
+    theApp.toolbar.on('onTestEvent', function () {
+        alert('toolbar');
+    });
+
     // ------------------------------------------
     // TABBAR
     // ------------------------------------------
@@ -10721,6 +10805,10 @@ Zepto(function ($) {
 
     theApp.tabbar = loader.loadModule('tabbar');
     theApp.tabbar.create(tabbarConfig);
+
+    theApp.tabbar.on('onTestEvent', function () {
+        alert('tabbar');
+    });
 
     theApp.tabbar.on('onFavouritesTap', function () {
         theApp.spinningWheel.getSlot('favourites').show(theApp.lastFavouriteSelected);
@@ -10857,28 +10945,26 @@ Zepto(function ($) {
     });
 
     theApp.pageEventsManager.on('onSettingsStart', function () {
-        theApp.scroll.rebuild('settings');
+        theApp.scroll.rebuild('settings', true); // Pass in true to ensure form elements are clickable.
         output.log('onSettingsStart');
     });
 
     theApp.pageEventsManager.on('onSettingsEnd', function () {
-        // theApp.scroll.rebuild('settings');
         output.log('onSettingsEnd');
     });
 
     theApp.pageEventsManager.on('onAnalysisSettingsEnd', function () {
-        theApp.scroll.rebuild('analysisSettings');
+        theApp.scroll.rebuild('analysisSettings', true); // Pass in true to ensure form elements are clickable.
         output.log('onAnalysisSettingsEnd');
     });
 
     theApp.pageEventsManager.on('onAnalysisPagesSettingsStart', function () {
-        theApp.scroll.rebuild('analysisPagesSettings');
+        theApp.scroll.rebuild('analysisPagesSettings', true); // Pass in true to ensure form elements are clickable.
         theApp.showAnalysisSettingsPage();
         output.log('onAnalysisPagesSettingsStart');
     });
 
     theApp.pageEventsManager.on('onChartSettingsEnd', function () {
-        // theApp.scroll.rebuild('chartSettings');
         // TODO: focus() doesn't work on iOS...
         setTimeout(function () {
             $(el.analysisPageNameTextbox).focus();
@@ -10888,7 +10974,7 @@ Zepto(function ($) {
     });
 
     theApp.pageEventsManager.on('onAboutEnd', function () {
-        theApp.scroll.rebuild('about');
+        theApp.scroll.rebuild('about', true); // Pass in true to ensure form elements are clickable.
         output.log('onAboutEnd');
     });
 
@@ -10898,7 +10984,7 @@ Zepto(function ($) {
     });
 
     theApp.pageEventsManager.on('onResetEnd', function () {
-        theApp.scroll.rebuild('reset');
+        theApp.scroll.rebuild('reset', true); // Pass in true to ensure form elements are clickable.
         output.log('onResetEnd');
     });
 
@@ -11125,18 +11211,13 @@ Zepto(function ($) {
 
     theApp.startHere();
 
-/*
-        animatedChartResizing: true,
-        automaticChartRepositioning: true
-*/
-
     // ------------------------------------------
     // EXTRA FUNCTIONALITIES
     // ------------------------------------------
 
     theApp.synchronizeOrientation = function () {
-        var animationSpeed  = 0,
-            rebuildingDelay = 50,
+        var animationSpeed  = 25,
+            rebuildingDelay = 500,
             el              = null;
 
         if (theApp.presentationManager.isFullScreen()) {
@@ -11145,7 +11226,7 @@ Zepto(function ($) {
 
         animationSpeed  = (theApp.settings.appSettings.animatedChartResizing)
             ? 500
-            : 0;
+            : 25;
 
         theApp.mask.show('turn');
 
@@ -11162,7 +11243,7 @@ Zepto(function ($) {
 
         if (theApp.settings.appSettings.automaticChartRepositioning) {
             theApp.synchronizeOrientation.pendingCount += 1;
-
+             
             // Rebuild the iScroll using a delay is necessary to ensure that the page height
             // is calculate correctly.
             setTimeout(function () {
@@ -11182,7 +11263,7 @@ Zepto(function ($) {
         } else {
             setTimeout(function () {
                 theApp.scroll.rebuild('analysis');
-                theApp.mask.hide('turn');
+                theApp.mask.hide('turn'); // ASA
             }, animationSpeed + rebuildingDelay);
         }
     };
@@ -11228,7 +11309,9 @@ Zepto(function ($) {
         theApp.synchronizeOrientation();
     });
 
+    // Generic test method.
     theApp.onTestApp = function () {
+        // TODO: Add code here.
     };
 });
 
