@@ -133,7 +133,13 @@ exports.client = {
         performanceLineTitle                : 'Return Over Period',
         fixedIncomeContributionsGroupTitle  : 'Fixed Income Contributions',
         fixedIncomeExposuresGroupTitle      : 'Fixed Income Exposures',
-        fixedIncomeRiskNumbersGroupTitle    : 'Fixed Income Risk Numbers'
+        fixedIncomeRiskNumbersGroupTitle    : 'Fixed Income Risk Numbers',
+        performanceMasterTitle              : 'Key Performance Numbers',
+        attributionMasterTitle              : 'Key Attribution Numbers',
+        fixedIncomeMasterTitle              : 'Key Fixed Income Numbers',
+        riskMasterTitle                     : 'Key Risk Numbers',
+        allocationMasterTitle               : 'Key Allocation Numbers',
+        contributionMasterTitle             : 'Key Contribution Numbers'
     },
 
     chartTypes: {
@@ -317,8 +323,8 @@ exports.server = {
         ctptwist                    : 'Twist Contribution',
         ctpyc                       : 'Yield Curve Contribution',
         diversificationgrade        : 'Diversification Grade',
-        downsiderisk                : 'Down Side Risk',
-        downsideriskannualised      : 'Annualized Down Side Risk',
+        downsiderisk                : 'Downside Risk',
+        downsideriskannualised      : 'Annualized Downside Risk',
         durwpend                    : 'Duration Weight End',
         durwpstart                  : 'Duration Weight Start',
         ealloc                      : 'Effect Market Allocation',

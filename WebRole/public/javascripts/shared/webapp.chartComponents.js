@@ -248,7 +248,60 @@ WebAppLoader.addModule({ name: 'chartComponents', plugins: ['helper'], sharedMod
         },
 
         // ------------------------------------------
-        // GRIDS
+        // MASTER GRIDS
+        // ------------------------------------------
+
+        'performanceMaster_grid': {
+            chartId: 'performanceMaster_grid',
+            title: lang.chart.performanceMasterTitle,
+            chartType: 'Table',
+            include: 'childSegments',
+            measures: ['wp', 'rp', 'rb', 'relr', 'ctp'],
+            includeMeasuresFor: ['segment', 'childSegments']
+        },
+        'contributionMaster_grid': {
+            chartId: 'contributionMaster_grid',
+            title: lang.chart.contributionMasterTitle,
+            chartType: 'Table',
+            include: 'childSegments',
+            measures: ['wp', 'ctp', 'wb', 'ctb'],
+            includeMeasuresFor: ['segment', 'childSegments']
+        },
+        'attributionMaster_grid': {
+            chartId: 'attributionMaster_grid',
+            title: lang.chart.attributionMasterTitle,
+            chartType: 'Table',
+            include: 'childSegments',
+            measures: ['wp', 'wb', 'ealloc', 'eselecinter', 'eallocc', 'etotal'],
+            includeMeasuresFor: ['segment', 'childSegments']
+        },
+        'fixedIncomeMaster_grid': {
+            chartId: 'fixedIncomeMaster_grid',
+            title: lang.chart.fixedIncomeMasterTitle,
+            chartType: 'Table',
+            include: 'childSegments',
+            measures: ['wp', 'rp', 'rpyc', 'rpspread', 'ctp'],
+            includeMeasuresFor: ['segment', 'childSegments']
+        },
+        'allocationMaster_grid': {
+            chartId: 'allocationMaster_grid',
+            title: lang.chart.allocationMasterTitle,
+            chartType: 'Table',
+            include: 'childSegments',
+            measures: ['wp', 'wpgross', 'shortexposureend', 'longexposureend', 'mvend'],
+            includeMeasuresFor: ['segment', 'childSegments']
+        },
+        'riskMaster_grid': {
+            chartId: 'riskMaster_grid',
+            title: lang.chart.riskMasterTitle,
+            chartType: 'Table',
+            include: 'childSegments',
+            measures: ['wp', 'valueatrisk', 'valueatriskpercent', 'contributionvar', 'expectedvolatilitypercent'],
+            includeMeasuresFor: ['segment', 'childSegments']
+        },
+
+        // ------------------------------------------
+        // REGULAR GRIDS
         // ------------------------------------------
 
         'performance_grid': {
