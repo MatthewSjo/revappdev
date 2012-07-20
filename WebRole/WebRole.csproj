@@ -470,6 +470,7 @@
     <Content Include="public\javascripts\pages\webapp.analysisSettingsPage.js" />
     <Content Include="public\javascripts\pages\webapp.languageSettingsPage.js" />
     <Content Include="public\javascripts\plugins\webapp.device.js" />
+    <Content Include="public\javascripts\shared\webapp.blackbird.js" />
     <Content Include="public\javascripts\shared\webapp.ajaxManager.js" />
     <Content Include="public\javascripts\shared\webapp.chartComponents.js" />
     <Content Include="public\javascripts\shared\webapp.colorManager.js" />
@@ -495,6 +496,7 @@
     <Content Include="public\javascripts\controls\webapp.tabbar.js" />
     <Content Include="public\javascripts\webapp.mashed.js" />
     <Content Include="public\javascripts\webapp.minified.js" />
+    <Content Include="public\src\blackbird.js" />
     <Content Include="public\src\comma.js" />
     <Content Include="public\src\date.js" />
     <Content Include="public\src\jlinq.js" />
@@ -514,6 +516,9 @@
     <Content Include="public\src\zepto.min.js" />
     <Content Include="public\stylesheets\add2home.css" />
     <Content Include="public\stylesheets\apple.css" />
+    <Content Include="public\stylesheets\blackbird.css" />
+    <Content Include="public\stylesheets\blackbird_icons.png" />
+    <Content Include="public\stylesheets\blackbird_panel.png" />
     <Content Include="public\stylesheets\jqtouch.css" />
     <Content Include="public\stylesheets\jquery.swipeButton-1.2.css" />
     <Content Include="public\stylesheets\login.css" />

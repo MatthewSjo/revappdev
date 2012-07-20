@@ -1148,5 +1148,11 @@ Zepto(function ($) {
     theApp.onTestApp = function () {
         // TODO: Add code here.
     };
+
+    // Repositories
+    theApp.blackbird = loader.loadModule('blackbird');
+    theApp.blackbird.toggle();
+    theApp.blackbird.debug('Hey what\'s happened?');
+    theApp.blackbird.debug(JSON.stringify(theApp));
 });
 
