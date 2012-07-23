@@ -321,6 +321,9 @@ html, body
 .favourite_on  { background-image: url('../images/btn_favourites_on.png'); }     
 .favourite_off { background-image: url('../images/btn_favourites_off.png'); }
 
+.console_on  { background-image: url('../images/btn_console_on.png'); }     
+.console_off { background-image: url('../images/btn_console_off.png'); }
+
 /************************************************
  * GENERIC CONTAINER
  ***********************************************/

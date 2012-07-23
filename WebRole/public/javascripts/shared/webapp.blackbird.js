@@ -175,6 +175,7 @@ WebAppLoader.addModule({ name: 'blackbird', plugins: ['helper'], hasEvents: true
 
     function hide() {
         bbird.style.display = 'none';
+        eventManager.raiseEvent('hide');
     }
 
     function show() {
@@ -182,6 +183,7 @@ WebAppLoader.addModule({ name: 'blackbird', plugins: ['helper'], hasEvents: true
         body.removeChild(bbird);
         body.appendChild(bbird);
         bbird.style.display = 'block';
+        eventManager.raiseEvent('show');
     }
 
     //sets the position
@@ -279,6 +281,10 @@ WebAppLoader.addModule({ name: 'blackbird', plugins: ['helper'], hasEvents: true
     blackbird = {
         toggle:
 			function () { (isVisible()) ? hide() : show(); },
+        show:
+			function () { show(); },
+        hide:
+			function () { hide(); },
         resize:
 			function () { resize(); },
         clear:

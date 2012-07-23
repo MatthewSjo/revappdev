@@ -496,7 +496,6 @@
     <Content Include="public\javascripts\controls\webapp.tabbar.js" />
     <Content Include="public\javascripts\webapp.mashed.js" />
     <Content Include="public\javascripts\webapp.minified.js" />
-    <Content Include="public\src\blackbird.js" />
     <Content Include="public\src\comma.js" />
     <Content Include="public\src\date.js" />
     <Content Include="public\src\jlinq.js" />

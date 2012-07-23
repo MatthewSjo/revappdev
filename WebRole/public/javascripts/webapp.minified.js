@@ -3455,11 +3455,13 @@ state.load=el.checked;
 setState()
 }function scrollToBottom(){outputList.scrollTop=outputList.scrollHeight
 }function isVisible(){return(bbird.style.display=="block")
-}function hide(){bbird.style.display="none"
+}function hide(){bbird.style.display="none";
+eventManager.raiseEvent("hide")
 }function show(){var body=document.getElementsByTagName("BODY")[0];
 body.removeChild(bbird);
 body.appendChild(bbird);
-bbird.style.display="block"
+bbird.style.display="block";
+eventManager.raiseEvent("show")
 }function reposition(position){if(position===undefined||position==null){position=(state&&state.pos===null)?1:(state.pos+1)%4
 }switch(position){case 0:classes[0]="bbTopLeft";
 break;
@@ -3509,6 +3511,8 @@ if(obj.detachEvent){obj.detachEvent("on"+type,obj[type+fn]);
 obj[type+fn]=null
 }else{obj.removeEventListener(type,fn,false)
 }}blackbird={toggle:function(){(isVisible())?hide():show()
+},show:function(){show()
+},hide:function(){hide()
 },resize:function(){resize()
 },clear:function(){clear()
 },move:function(){reposition()
@@ -4209,6 +4213,8 @@ l.ajaxManager=g.loadModule("ajaxManager");
 l.swipeButton=g.loadModule("swipeButton");
 l.localStorage=g.loadModule("localStorageManager");
 l.presentationManager=g.loadModule("presentationManager");
+l.iOSLog=g.loadModule("blackbird");
+l.iOSLog.debug("Hello!");
 l.getLastAnalysisObjectUsed=function(){return l.lastAnalysisObjectUsed
 };
 l.setLastAnalysisObjectUsed=function(n){for(var o in n){if(l.lastAnalysisObjectUsed.hasOwnProperty(o)){l.lastAnalysisObjectUsed[o]=n[o]
@@ -4383,7 +4389,7 @@ q++){if(q>0){n.append(", ")
 }n.append(o[q].name)
 }a(c.analysisPage+"_partial").html("")
 }};
-var m={toolbarId:"#analysis .toolbar",buttonPrefix:"toolbar_btn",visible:true,items:[{id:"favourite",title:f.tabbar.favourites,btnClass:"favourite"}]};
+var m={toolbarId:"#analysis .toolbar",buttonPrefix:"toolbar_btn",visible:true,items:[{id:"favourite",title:f.tabbar.favourites,btnClass:"favourite"},{id:"console",title:"console",btnClass:"console"}]};
 l.toolbar=g.loadModule("toolbar");
 l.toolbar.create(m);
 l.toolbar.on("onTap",function(){l.scroll.goUp()
@@ -4394,6 +4400,12 @@ l.toolbar.on("onFavouriteTap",function(n){if(n){l.addToFavourites()
 l.toolbar.on("onTestTap",function(n){l.onTestApp()
 });
 l.toolbar.on("onTestEvent",function(){alert("toolbar")
+});
+l.toolbar.on("onConsoleTap",function(n){if(n){l.iOSLog.show()
+}else{l.iOSLog.hide()
+}});
+l.iOSLog.on("show",function(){});
+l.iOSLog.on("hide",function(){l.toolbar.getButton("console").deselect()
 });
 var k={tabbarId:c.tabbar,buttonPrefix:"tabbar_btn",visible:false,items:[{id:"favourites",title:f.tabbar.favourites,btnClass:"favourites"},{id:"portfolios",title:f.tabbar.portfolios,btnClass:"portfolios"},{id:"analysis",title:f.tabbar.analysis,btnClass:"analysis"},{id:"timePeriods",title:f.tabbar.timePeriods,btnClass:"timeperiods"},{id:"settings",title:f.tabbar.settings,btnClass:"settings",highlight:true}]};
 l.tabbar=g.loadModule("tabbar");
@@ -4618,9 +4630,5 @@ return o.chartId
 a("body").bind("turn",function(n,o){l.synchronizeOrientation.chartToDisplay=l.getCurrentChartDisplayedInViewport();
 l.synchronizeOrientation()
 });
-l.onTestApp=function(){};
-l.blackbird=g.loadModule("blackbird");
-l.blackbird.toggle();
-l.blackbird.debug("Hey what's happened?");
-l.blackbird.debug(JSON.stringify(l))
+l.onTestApp=function(){}
 });

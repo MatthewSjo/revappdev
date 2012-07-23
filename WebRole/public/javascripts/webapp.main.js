@@ -101,6 +101,12 @@ Zepto(function ($) {
     // Full Screen Manager
     theApp.presentationManager = loader.loadModule('presentationManager');
     
+    // iOS Log
+    theApp.iOSLog = loader.loadModule('blackbird');
+
+    // Test iOS log.
+    theApp.iOSLog.debug('Hello!');
+
     // ------------------------------------------
     // LAST ANALYSIS DATA OBJECT
     // ------------------------------------------
@@ -592,7 +598,8 @@ Zepto(function ($) {
         buttonPrefix: 'toolbar_btn',
         visible: true,
         items: [
-            { id: 'favourite', title: lang.tabbar.favourites, btnClass: 'favourite' }
+            { id: 'favourite', title: lang.tabbar.favourites, btnClass: 'favourite' },
+            { id: 'console', title: 'console', btnClass: 'console' }
             // { id: 'test', title: test, btnClass: 'favourite' } // Comment off to add a test button.
         ]
     };
@@ -620,6 +627,28 @@ Zepto(function ($) {
     theApp.toolbar.on('onTestEvent', function () {
         alert('toolbar');
     });
+
+    // ------------------------------------------
+    // iOS CONSOLE
+    // ------------------------------------------
+
+    theApp.toolbar.on('onConsoleTap', function (isSelected) {
+        if (isSelected) {
+            theApp.iOSLog.show();
+        } else {
+            theApp.iOSLog.hide();
+        }
+    });
+
+    theApp.iOSLog.on('show', function (){
+        // TODO: Add code here...
+    });
+
+    theApp.iOSLog.on('hide', function (){
+        // Deselect Console button.
+        theApp.toolbar.getButton('console').deselect();
+    });
+
 
     // ------------------------------------------
     // TABBAR
@@ -1148,11 +1177,5 @@ Zepto(function ($) {
     theApp.onTestApp = function () {
         // TODO: Add code here.
     };
-
-    // Repositories
-    theApp.blackbird = loader.loadModule('blackbird');
-    theApp.blackbird.toggle();
-    theApp.blackbird.debug('Hey what\'s happened?');
-    theApp.blackbird.debug(JSON.stringify(theApp));
 });
 
